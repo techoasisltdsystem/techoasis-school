@@ -374,118 +374,174 @@
         <!-- STAFF PORTAL (sidebar app shell) -->
         <div id="page-staffDash" class="page-view hidden">
             <div class="flex min-h-screen bg-slate-100">
-                <aside class="hidden md:flex w-64 shrink-0 bg-white border-r flex-col">
-                    <div class="h-16 px-5 flex items-center border-b"><span class="brand-logo"></span></div>
-                    <nav class="p-3 space-y-1 text-sm font-semibold flex-1">
-                        <div class="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Main menu</div>
-                        <button onclick="staffTab('overview')" data-stab="overview" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-house w-4"></i> Overview</button>
-                        <button onclick="staffTab('students')" data-stab="students" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-user-graduate w-4"></i> My Students</button>
+                <aside class="hidden md:flex w-64 shrink-0 bg-gradient-to-b from-[#0c3b2e] to-[#082a21] text-white flex-col sticky top-0 h-screen">
+                    <div class="h-20 px-5 flex items-center"><span class="brand-logo" data-theme="dark"></span></div>
+                    <nav class="px-3 space-y-1 text-sm font-semibold flex-1 overflow-y-auto">
+                        <button onclick="staffTab('overview')" data-stab="overview" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-house w-4"></i> Dashboard</button>
+                        <button onclick="staffTab('classes')" data-stab="classes" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-graduation-cap w-4"></i> My Classes</button>
+                        <button onclick="staffTab('students')" data-stab="students" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-users w-4"></i> Students</button>
+                        <button onclick="staffTab('assignments')" data-stab="assignments" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-clipboard-list w-4"></i> Assignments &amp; Quizzes</button>
+                        <button onclick="staffTab('resources')" data-stab="resources" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-book w-4"></i> Resources</button>
                         <button onclick="staffTab('schedule')" data-stab="schedule" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-calendar-days w-4"></i> Timetable</button>
-                        <div class="px-3 pt-4 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Teaching</div>
-                        <button onclick="staffTab('courses')" data-stab="courses" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-book-open w-4"></i> Course Catalog</button>
-                        <button onclick="staffTab('overview'); document.getElementById('annInput').focus()" class="w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3 text-slate-600 hover:bg-slate-50"><i class="fa-solid fa-bullhorn w-4"></i> Announcements</button>
                     </nav>
-                    <div class="m-3 p-4 rounded-2xl bg-gradient-to-br from-[#0c3b2e] to-[#14584a] text-white">
-                        <div class="text-xs font-bold text-amber-300 uppercase tracking-wider">Staff tip</div>
-                        <p class="text-xs text-emerald-100 mt-1">Students who get feedback within 48 hours are far more likely to finish their course.</p>
+                    <div class="p-5 space-y-3">
+                        <div><div class="text-sm font-bold">Better Teachers</div><div class="text-sm font-bold text-amber-300">Brighter Futures</div><p class="text-[11px] text-emerald-200 mt-1">Together we make learning happen.</p></div>
+                        <button onclick="showPage('home')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-emerald-100 hover:bg-white/10"><i class="fa-solid fa-arrow-left w-4"></i> Back to site</button>
                     </div>
-                    <div class="p-3 border-t"><button onclick="showPage('home')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-500 hover:bg-slate-100"><i class="fa-solid fa-arrow-left w-4"></i> Back to site</button></div>
                 </aside>
+
                 <div class="flex-1 min-w-0">
                     <div class="h-16 bg-white border-b px-4 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30">
-                        <div class="relative w-full max-w-xs">
+                        <div class="relative w-full max-w-md">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                            <input id="staffSearch" oninput="renderStaffDashboard()" placeholder="Search students, courses..." class="w-full bg-slate-100 rounded-full pl-8 pr-3 py-2 text-xs focus:outline-none">
+                            <input id="staffSearch" oninput="renderStaffDashboard()" placeholder="Search students, classes, or resources..." class="w-full bg-slate-100 rounded-full pl-9 pr-3 py-2.5 text-xs focus:outline-none">
                         </div>
-                        <div class="flex items-center gap-3">
-                            <div class="text-right leading-tight"><div id="staffUserName" class="text-xs font-bold text-slate-900">Instructor</div><div class="text-[10px] text-slate-500">Staff / Instructor</div></div>
-                            <div id="staffAvatar" class="w-9 h-9 rounded-full bg-[#0c3b2e] text-white text-xs font-bold flex items-center justify-center">IN</div>
+                        <div class="flex items-center gap-4">
+                            <button onclick="staffTab('assignments')" class="relative text-slate-500 hover:text-slate-800" aria-label="Notifications"><i class="fa-solid fa-bell text-lg"></i><span id="staffBell" class="hidden absolute -top-1.5 -right-2 text-[9px] font-bold bg-rose-500 text-white rounded-full w-4 h-4 flex items-center justify-center"></span></button>
+                            <div class="flex items-center gap-3">
+                                <div id="staffAvatar" class="w-9 h-9 rounded-full bg-[#0c3b2e] text-white text-xs font-bold flex items-center justify-center">IN</div>
+                                <div class="hidden sm:block leading-tight"><div id="staffUserName" class="text-xs font-bold text-slate-900">Instructor</div><div class="text-[10px] text-slate-500">Instructor</div></div>
+                            </div>
                             <button onclick="logoutUser()" class="text-xs font-semibold border rounded-xl px-3 py-2 hover:bg-slate-50"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
                         </div>
                     </div>
+
                     <div class="p-4 sm:p-6 space-y-6">
                         <div class="md:hidden flex gap-2 text-xs font-semibold overflow-x-auto">
-                            <button onclick="staffTab('overview')" class="border bg-white rounded-lg px-3 py-1.5">Overview</button>
-                            <button onclick="staffTab('students')" class="border bg-white rounded-lg px-3 py-1.5">Students</button>
-                            <button onclick="staffTab('schedule')" class="border bg-white rounded-lg px-3 py-1.5">Timetable</button>
-                            <button onclick="staffTab('courses')" class="border bg-white rounded-lg px-3 py-1.5">Courses</button>
+                            <button onclick="staffTab('overview')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Dashboard</button>
+                            <button onclick="staffTab('classes')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Classes</button>
+                            <button onclick="staffTab('students')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Students</button>
+                            <button onclick="staffTab('assignments')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Assignments</button>
+                            <button onclick="staffTab('resources')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Resources</button>
+                            <button onclick="staffTab('schedule')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Timetable</button>
                         </div>
+                        <p id="staffScopeNote" class="hidden text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2"></p>
 
-                        <!-- Welcome banner -->
-                        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0c3b2e] via-[#14584a] to-slate-800 text-white p-6 md:p-8 shadow-lg">
-                            <div class="absolute -right-10 -top-10 w-56 h-56 rounded-full bg-[#C4A649]/20 blur-2xl"></div>
-                            <div class="relative flex flex-wrap items-center justify-between gap-5">
-                                <div>
-                                    <div id="staffDate" class="text-xs font-bold text-amber-300 uppercase tracking-wider"></div>
-                                    <h2 id="staffWelcome" class="text-2xl md:text-3xl font-black mt-1">Welcome back</h2>
-                                    <p id="staffSummary" class="text-sm text-emerald-100 mt-1"></p>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <button onclick="staffTab('schedule')" class="bg-[#C4A649] hover:bg-[#d4b65a] text-slate-900 text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-clipboard-user mr-1.5"></i>Take attendance</button>
-                                    <button onclick="staffTab('students')" class="bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-envelope mr-1.5"></i>Message students</button>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- ============ DASHBOARD ============ -->
+                        <section id="staffTab-overview" class="stab-panel">
+                            <div class="grid xl:grid-cols-4 gap-6">
+                                <div class="xl:col-span-3 space-y-6 min-w-0">
+                                    <!-- Banner -->
+                                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0c3b2e] via-[#14584a] to-[#0c3b2e] text-white p-6 md:p-8 shadow-lg">
+                                        <div class="absolute -right-12 -top-12 w-60 h-60 rounded-full bg-[#C4A649]/15 blur-2xl"></div>
+                                        <div class="relative flex flex-wrap items-center justify-between gap-6">
+                                            <div>
+                                                <div class="text-[11px] font-bold tracking-[0.2em] text-amber-300 uppercase">Welcome back,</div>
+                                                <h2 id="staffWelcome" class="text-3xl md:text-4xl font-black mt-1">Instructor</h2>
+                                                <p class="text-sm text-emerald-100 mt-2">You're making a difference. Keep inspiring your students!</p>
+                                                <p id="staffSummary" class="text-xs text-emerald-200/80 mt-1"></p>
+                                            </div>
+                                            <div class="text-right text-xs text-emerald-100 italic max-w-[240px]">"Education is the most powerful weapon which you can use to change the world."<div class="not-italic text-emerald-300 mt-1">Nelson Mandela</div></div>
+                                        </div>
+                                    </div>
 
-                        <section id="staffTab-overview" class="stab-panel space-y-6">
-                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                                <div class="rounded-2xl p-5 bg-violet-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Total students</div><div id="staffStatStudents" class="text-3xl font-black text-slate-900 mt-1">0</div><div class="text-[11px] text-violet-700 font-semibold mt-1">Across all your courses</div></div><span class="w-11 h-11 rounded-xl bg-white text-violet-600 flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-user-graduate"></i></span></div>
-                                <div class="rounded-2xl p-5 bg-sky-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Active courses</div><div id="staffStatCourses" class="text-3xl font-black text-slate-900 mt-1">0</div><div class="text-[11px] text-sky-700 font-semibold mt-1">In the catalog</div></div><span class="w-11 h-11 rounded-xl bg-white text-sky-600 flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-book-open"></i></span></div>
-                                <div class="rounded-2xl p-5 bg-orange-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Active trials</div><div id="staffStatTrials" class="text-3xl font-black text-slate-900 mt-1">0</div><div class="text-[11px] text-orange-700 font-semibold mt-1">Ready to convert</div></div><span class="w-11 h-11 rounded-xl bg-white text-orange-500 flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-hourglass-half"></i></span></div>
-                                <div class="rounded-2xl p-5 bg-rose-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Need follow-up</div><div id="staffStatExpired" class="text-3xl font-black text-slate-900 mt-1">0</div><div class="text-[11px] text-rose-700 font-semibold mt-1">Trial expired</div></div><span class="w-11 h-11 rounded-xl bg-white text-rose-500 flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-bell"></i></span></div>
-                            </div>
+                                    <!-- Stats -->
+                                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                        <button onclick="staffTab('students')" class="text-left bg-white rounded-2xl border p-4 hover:shadow-md transition"><div class="flex justify-between"><span class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-users"></i></span><i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i></div><div class="text-xs text-slate-600 mt-3">My Students</div><div id="staffStatStudents" class="text-3xl font-black text-slate-900">0</div><div id="staffStatStudentsSub" class="text-[11px] text-emerald-600 font-semibold"></div></button>
+                                        <button onclick="staffTab('classes')" class="text-left bg-white rounded-2xl border p-4 hover:shadow-md transition"><div class="flex justify-between"><span class="w-11 h-11 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center text-lg"><i class="fa-solid fa-graduation-cap"></i></span><i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i></div><div class="text-xs text-slate-600 mt-3">My Classes</div><div id="staffStatCourses" class="text-3xl font-black text-slate-900">0</div><div class="text-[11px] text-violet-600 font-semibold">Active programs</div></button>
+                                        <button onclick="staffTab('assignments')" class="text-left bg-white rounded-2xl border p-4 hover:shadow-md transition"><div class="flex justify-between"><span class="w-11 h-11 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-lg"><i class="fa-solid fa-clipboard-list"></i></span><i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i></div><div class="text-xs text-slate-600 mt-3">Pending Assignments</div><div id="staffStatAssign" class="text-3xl font-black text-slate-900">0</div><div id="staffStatAssignSub" class="text-[11px] text-orange-600 font-semibold"></div></button>
+                                        <button onclick="staffTab('assignments')" class="text-left bg-white rounded-2xl border p-4 hover:shadow-md transition"><div class="flex justify-between"><span class="w-11 h-11 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-lg"><i class="fa-solid fa-file-circle-question"></i></span><i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i></div><div class="text-xs text-slate-600 mt-3">Upcoming Quizzes</div><div id="staffStatQuiz" class="text-3xl font-black text-slate-900">0</div><div id="staffStatQuizSub" class="text-[11px] text-sky-600 font-semibold"></div></button>
+                                    </div>
 
-                            <div class="grid lg:grid-cols-3 gap-6">
-                                <div class="lg:col-span-2 bg-white rounded-2xl border p-5">
-                                    <div class="flex items-center justify-between mb-4"><h3 class="font-bold text-slate-900">Class attendance this week</h3><span id="staffAttAvg" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full"></span></div>
-                                    <div id="staffAttendance" class="flex items-end justify-between gap-3 h-44"></div>
-                                </div>
-                                <div class="bg-white rounded-2xl border p-5">
-                                    <h3 class="font-bold text-slate-900 mb-4">Today's classes</h3>
-                                    <div id="staffToday" class="space-y-4"></div>
-                                </div>
-                            </div>
+                                    <!-- Performance + activity -->
+                                    <div class="grid lg:grid-cols-5 gap-6">
+                                        <div class="lg:col-span-3 bg-white rounded-2xl border p-5 min-w-0">
+                                            <div class="flex items-center justify-between"><h3 class="font-bold text-slate-900">Class Performance</h3><button onclick="staffTab('classes')" class="text-xs font-bold text-emerald-700">View Details <i class="fa-solid fa-arrow-right ml-1"></i></button></div>
+                                            <p class="text-xs text-slate-500 mb-4">Share of students per class by progress</p>
+                                            <div id="staffPerf" class="flex items-end gap-3 h-44 overflow-x-auto border-b"></div>
+                                            <div class="flex gap-5 justify-center mt-3 text-[11px] text-slate-500"><span><i class="fa-solid fa-circle text-emerald-600 text-[8px] mr-1"></i>Completed (70%+)</span><span><i class="fa-solid fa-circle text-teal-400 text-[8px] mr-1"></i>In progress</span><span><i class="fa-solid fa-circle text-sky-200 text-[8px] mr-1"></i>Not started</span></div>
+                                        </div>
+                                        <div class="lg:col-span-2 bg-white rounded-2xl border p-5 min-w-0">
+                                            <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">Recent Activity</h3><button onclick="staffTab('students')" class="text-xs font-bold text-emerald-700">View All</button></div>
+                                            <div id="staffActivity" class="space-y-3"></div>
+                                        </div>
+                                    </div>
 
-                            <div class="grid lg:grid-cols-3 gap-6">
-                                <div class="bg-white rounded-2xl border p-5">
-                                    <h3 class="font-bold text-slate-900 mb-4">Student progress</h3>
-                                    <div id="staffProgress" class="space-y-4"></div>
+                                    <!-- My classes + upcoming assignments -->
+                                    <div class="grid lg:grid-cols-5 gap-6">
+                                        <div class="lg:col-span-3 bg-white rounded-2xl border p-5 min-w-0">
+                                            <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">My Classes</h3><button onclick="staffTab('classes')" class="text-xs font-bold text-emerald-700">View All</button></div>
+                                            <div id="staffClassCards" class="grid sm:grid-cols-2 xl:grid-cols-4 gap-3"></div>
+                                        </div>
+                                        <div class="lg:col-span-2 bg-white rounded-2xl border p-5 min-w-0">
+                                            <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">Upcoming Assignments</h3><button onclick="staffTab('assignments')" class="text-xs font-bold text-emerald-700">View All</button></div>
+                                            <div id="staffUpcoming" class="space-y-3"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="bg-white rounded-2xl border p-5">
-                                    <h3 class="font-bold text-slate-900 mb-4">Enrollments by course</h3>
-                                    <div id="staffBars" class="space-y-3"></div>
-                                </div>
-                                <div class="bg-white rounded-2xl border p-5 flex flex-col">
-                                    <h3 class="font-bold text-slate-900 mb-3">Announcements</h3>
-                                    <form onsubmit="postAnnouncement(event)" class="flex gap-2 mb-3">
-                                        <input id="annInput" required maxlength="140" placeholder="Share an update with students..." class="flex-1 min-w-0 border rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-emerald-700">
-                                        <button class="bg-[#0c3b2e] text-white text-xs font-bold px-3 rounded-lg">Post</button>
-                                    </form>
-                                    <div id="staffAnnouncements" class="space-y-3 overflow-y-auto max-h-56"></div>
+
+                                <!-- Right rail -->
+                                <div class="space-y-6 min-w-0">
+                                    <div class="bg-white rounded-2xl border p-5">
+                                        <h3 class="font-bold text-emerald-900 mb-4">Quick Actions</h3>
+                                        <div class="grid grid-cols-2 gap-3 text-xs font-semibold text-slate-700">
+                                            <button onclick="openStaffAction('assignment')" class="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-50/60 hover:bg-emerald-50 text-left"><span class="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-file-pen"></i></span>Create Assignment</button>
+                                            <button onclick="openStaffAction('live')" class="flex items-center gap-2 p-2.5 rounded-xl bg-violet-50/60 hover:bg-violet-50 text-left"><span class="w-9 h-9 rounded-xl bg-violet-500 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-video"></i></span>Start Live Class</button>
+                                            <button onclick="openStaffAction('resource')" class="flex items-center gap-2 p-2.5 rounded-xl bg-sky-50/60 hover:bg-sky-50 text-left"><span class="w-9 h-9 rounded-xl bg-sky-500 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-folder-plus"></i></span>Add Resources</button>
+                                            <button onclick="staffTab('classes')" class="flex items-center gap-2 p-2.5 rounded-xl bg-amber-50/60 hover:bg-amber-50 text-left"><span class="w-9 h-9 rounded-xl bg-amber-400 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-graduation-cap"></i></span>View My Classes</button>
+                                            <button onclick="openStaffAction('announcement')" class="col-span-2 flex items-center gap-2 p-2.5 rounded-xl bg-rose-50/60 hover:bg-rose-50 text-left"><span class="w-9 h-9 rounded-xl bg-rose-500 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-bullhorn"></i></span>Post Announcement</button>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white rounded-2xl border p-5">
+                                        <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-emerald-900">Today's Schedule</h3><button onclick="staffTab('schedule')" class="text-xs font-bold text-emerald-700">View Timetable</button></div>
+                                        <div id="staffToday" class="space-y-3"></div>
+                                    </div>
+                                    <div class="relative overflow-hidden rounded-2xl text-white min-h-[240px] flex flex-col justify-end p-5 bg-slate-900">
+                                        <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=70" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-[#0c3b2e] via-[#0c3b2e]/70 to-transparent"></div>
+                                        <div class="relative"><h4 class="text-xl font-black leading-tight">Great Teachers Build Great Futures</h4><p class="text-xs text-emerald-100 mt-1">Keep going, you're making an impact!</p></div>
+                                    </div>
                                 </div>
                             </div>
                         </section>
 
+                        <!-- ============ MY CLASSES ============ -->
+                        <section id="staffTab-classes" class="stab-panel hidden space-y-4">
+                            <h3 class="font-bold text-slate-900 text-lg">My Classes</h3>
+                            <div id="staffClassesList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                        </section>
+
+                        <!-- ============ STUDENTS ============ -->
                         <section id="staffTab-students" class="stab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-3">
-                                <h3 class="font-bold text-slate-900 text-lg">Enrolled Students Roster</h3>
-                                <select id="staffCourseFilter" onchange="renderStaffDashboard()" class="border rounded-lg px-3 py-2 text-xs"><option value="">All courses</option></select>
+                                <h3 class="font-bold text-slate-900 text-lg">My Students</h3>
+                                <select id="staffCourseFilter" onchange="renderStaffDashboard()" class="border rounded-lg px-3 py-2 text-xs"><option value="">All my classes</option></select>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left text-sm">
-                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Student</th><th class="p-3">Email Address</th><th class="p-3">Enrolled Course</th><th class="p-3">Progress</th><th class="p-3">Status</th></tr></thead>
+                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Student</th><th class="p-3">Email Address</th><th class="p-3">Class</th><th class="p-3">Progress</th><th class="p-3">Status</th></tr></thead>
                                     <tbody id="staffStudentsTable"></tbody>
                                 </table>
                             </div>
                         </section>
 
+                        <!-- ============ ASSIGNMENTS ============ -->
+                        <section id="staffTab-assignments" class="stab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div><h3 class="font-bold text-slate-900 text-lg">Assignments &amp; Quizzes</h3><p class="text-xs text-slate-500">Everything you've set for your classes.</p></div>
+                                <button onclick="openStaffAction('assignment')" class="bg-[#0c3b2e] text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow"><i class="fa-solid fa-plus mr-1"></i> Create</button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Title</th><th class="p-3">Class</th><th class="p-3">Type</th><th class="p-3">Due</th><th class="p-3"></th></tr></thead>
+                                    <tbody id="staffAssignTable"></tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- ============ RESOURCES ============ -->
+                        <section id="staffTab-resources" class="stab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div><h3 class="font-bold text-slate-900 text-lg">Resources</h3><p class="text-xs text-slate-500">Links, slides and reading for your classes.</p></div>
+                                <button onclick="openStaffAction('resource')" class="bg-[#0c3b2e] text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow"><i class="fa-solid fa-plus mr-1"></i> Add resource</button>
+                            </div>
+                            <div id="staffResourceList" class="grid md:grid-cols-2 gap-3"></div>
+                        </section>
+
+                        <!-- ============ TIMETABLE ============ -->
                         <section id="staffTab-schedule" class="stab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
                             <h3 class="font-bold text-slate-900 text-lg">Weekly timetable</h3>
                             <div class="overflow-x-auto"><table class="w-full text-sm border-separate border-spacing-2" id="staffTimetable"></table></div>
-                        </section>
-
-                        <section id="staffTab-courses" class="stab-panel hidden">
-                            <div id="staffCoursesList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
                         </section>
                     </div>
                 </div>
@@ -855,6 +911,20 @@
         </div>
     </div>
 
+    <!-- Staff quick-action modal (form is built per action) -->
+    <div id="staffActionModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('staffActionModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            <h3 id="staffActionTitle" class="text-xl font-bold text-slate-900 mb-1"></h3>
+            <p id="staffActionHint" class="text-xs text-slate-500 mb-4"></p>
+            <form onsubmit="submitStaffAction(event)" class="space-y-4">
+                <div id="staffActionFields" class="space-y-4"></div>
+                <p id="staffActionError" class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
+                <button id="staffActionBtn" class="w-full bg-[#0c3b2e] text-white font-bold py-2.5 rounded-xl"></button>
+            </form>
+        </div>
+    </div>
+
     <!-- Add/Edit Course Modal -->
     <div id="courseFormModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
@@ -1169,7 +1239,7 @@
                 const on = b.dataset[prefix + 'tab'] === name;
                 const [onCls, offCls] = prefix === 'a'
                     ? [['bg-[#C4A649]', 'text-slate-900'], ['text-emerald-100', 'hover:bg-white/10']]
-                    : [['bg-violet-50', 'text-violet-700'], ['text-slate-600', 'hover:bg-slate-50']];
+                    : [['bg-emerald-600', 'text-white'], ['text-emerald-100', 'hover:bg-white/10']];
                 onCls.forEach(c => b.classList.toggle(c, on)); offCls.forEach(c => b.classList.toggle(c, !on));
             });
         }
@@ -1408,78 +1478,187 @@
         }
 
         // ---- Staff dashboard ----
+        const localISO = offsetDays => new Date(Date.now() + offsetDays * 86400000 - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        const daysUntil = d => Math.ceil((new Date(d + 'T23:59:59') - Date.now()) / 86400000);
+        const fmtDate = d => new Date(d + 'T12:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        const AVATAR_BG = ['bg-emerald-500', 'bg-violet-500', 'bg-sky-500', 'bg-amber-500', 'bg-rose-500'];
+        const CAT_ICON = { 'Design': 'fa-pen-ruler', 'Development': 'fa-code', 'AI & Data': 'fa-brain', 'Security & Cloud': 'fa-cloud' };
+        const CAT_TONE = { 'Design': 'bg-rose-100 text-rose-600', 'Development': 'bg-emerald-100 text-emerald-600', 'AI & Data': 'bg-violet-100 text-violet-600', 'Security & Cloud': 'bg-sky-100 text-sky-600' };
+        const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+
         let announcements = JSON.parse(localStorage.getItem('to_announcements')) || [
-            { text: 'Welcome to the new Instructor Hub. Check your timetable and attendance here.', by: 'Admin', ts: Date.now() - 86400000 },
+            { text: 'Welcome to the new Instructor Hub. Check your timetable and classes here.', by: 'Admin', ts: Date.now() - 86400000 },
             { text: 'Reminder: student trial follow-ups are due by Friday.', by: 'Admin', ts: Date.now() - 3 * 86400000 }
         ];
+        let tasks = JSON.parse(localStorage.getItem('to_tasks')) || [
+            { id: 1, title: 'Build a landing page', course: 'Web Development', type: 'assignment', due: localISO(2), ts: Date.now() - 2 * 86400000 },
+            { id: 2, title: 'JavaScript Fundamentals Quiz', course: 'Web Development', type: 'quiz', due: localISO(4), ts: Date.now() - 86400000 },
+            { id: 3, title: 'Mobile UI mockup', course: 'App Development', type: 'assignment', due: localISO(6), ts: Date.now() - 3 * 86400000 },
+            { id: 4, title: 'React Native Basics Quiz', course: 'App Development', type: 'quiz', due: localISO(9), ts: Date.now() - 4 * 86400000 }
+        ];
+        let resources = JSON.parse(localStorage.getItem('to_resources')) || [
+            { id: 1, title: 'MDN Web Docs', url: 'https://developer.mozilla.org', course: 'Web Development' }
+        ];
+        let liveSession = JSON.parse(localStorage.getItem('to_live')) || null;
+        let staffActionKind = null;
 
-        function postAnnouncement(e) {
-            e.preventDefault();
-            const input = document.getElementById('annInput');
-            announcements.unshift({ text: input.value.trim(), by: currentUser.name, ts: Date.now() });
-            localStorage.setItem('to_announcements', JSON.stringify(announcements.slice(0, 20)));
-            input.value = '';
-            renderStaffDashboard();
-            toast('Announcement posted');
+        // A staff member's classes are the courses that name them as instructor; if none do, show every course
+        function staffScope() {
+            const mine = courses.filter(c => c.instructor.toLowerCase() === currentUser.name.toLowerCase());
+            return { classes: mine.length ? mine : courses, fallback: mine.length === 0 };
         }
+        const avgProgress = (c, list) => { const l = list.filter(s => s.course === c.title); return l.length ? Math.round(l.reduce((a, s) => a + progressOf(s), 0) / l.length) : 0; };
+        const isLive = title => liveSession && liveSession.course === title && Date.now() - liveSession.ts < 2 * 3600000;
 
         function timeAgo(ts) {
-            const d = Math.floor((Date.now() - ts) / 86400000);
-            return d < 1 ? 'Today' : d === 1 ? 'Yesterday' : d + ' days ago';
+            const h = Math.floor((Date.now() - ts) / 3600000);
+            if (h < 1) return 'Just now';
+            if (h < 24) return h + ' hour' + (h === 1 ? '' : 's') + ' ago';
+            const d = Math.floor(h / 24);
+            return d === 1 ? 'Yesterday' : d + ' days ago';
         }
+
+        function openStaffAction(kind) {
+            staffActionKind = kind;
+            const opts = staffScope().classes.map(c => `<option>${escapeHtml(c.title)}</option>`).join('');
+            const inp = 'w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-emerald-700';
+            const lab = t => `<label class="block text-xs font-bold text-slate-700 mb-1">${t}</label>`;
+            const course = `<div>${lab('Class')}<select id="saCourse" class="${inp}">${opts}</select></div>`;
+            const cfg = {
+                assignment: ['Create assignment or quiz', 'Students in the class will see the due date.', 'Create',
+                    `<div>${lab('Title')}<input id="saTitle" required maxlength="80" class="${inp}"></div>${course}
+                     <div class="grid grid-cols-2 gap-3"><div>${lab('Type')}<select id="saType" class="${inp}"><option value="assignment">Assignment</option><option value="quiz">Quiz</option></select></div>
+                     <div>${lab('Due date')}<input id="saDue" type="date" required min="${localISO(0)}" class="${inp}"></div></div>`],
+                live: ['Start live class', 'Marks the class as Live Now on your schedule for the next 2 hours.', 'Go live', course],
+                resource: ['Add resource', 'Share a link, slide deck or reading with a class.', 'Add resource',
+                    `<div>${lab('Title')}<input id="saTitle" required maxlength="80" class="${inp}"></div>${course}<div>${lab('Link (https://...)')}<input id="saUrl" type="url" required placeholder="https://" class="${inp}"></div>`],
+                announcement: ['Post announcement', 'Visible to admins and in the activity feed.', 'Post',
+                    `<div>${lab('Message')}<input id="saText" required maxlength="140" class="${inp}"></div>`]
+            }[kind];
+            document.getElementById('staffActionTitle').textContent = cfg[0];
+            document.getElementById('staffActionHint').textContent = cfg[1];
+            document.getElementById('staffActionBtn').textContent = cfg[2];
+            document.getElementById('staffActionFields').innerHTML = cfg[3];
+            document.getElementById('staffActionError').classList.add('hidden');
+            document.getElementById('staffActionModal').classList.remove('hidden');
+        }
+
+        function submitStaffAction(e) {
+            e.preventDefault();
+            const v = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+            const err = document.getElementById('staffActionError');
+            const fail = m => { err.textContent = m; err.classList.remove('hidden'); };
+            let msg = '';
+            if (staffActionKind === 'assignment') {
+                if (daysUntil(v('saDue')) < 0) return fail("The due date can't be in the past.");
+                tasks.push({ id: Date.now(), title: v('saTitle'), course: v('saCourse'), type: v('saType'), due: v('saDue'), ts: Date.now() });
+                save('to_tasks', tasks); msg = (v('saType') === 'quiz' ? 'Quiz' : 'Assignment') + ' created';
+            } else if (staffActionKind === 'live') {
+                liveSession = { course: v('saCourse'), ts: Date.now() };
+                save('to_live', liveSession); msg = v('saCourse') + ' is now Live';
+            } else if (staffActionKind === 'resource') {
+                if (!/^https?:\/\//i.test(v('saUrl'))) return fail('Enter a link starting with http:// or https://');
+                resources.push({ id: Date.now(), title: v('saTitle'), url: v('saUrl'), course: v('saCourse') });
+                save('to_resources', resources); msg = 'Resource added';
+            } else {
+                announcements.unshift({ text: v('saText'), by: currentUser.name, ts: Date.now() });
+                save('to_announcements', announcements.slice(0, 20)); msg = 'Announcement posted';
+            }
+            closeModal('staffActionModal');
+            renderStaffDashboard();
+            toast(msg);
+        }
+
+        function deleteTask(id) { tasks = tasks.filter(t => t.id !== id); save('to_tasks', tasks); renderStaffDashboard(); }
+        function deleteResource(id) { resources = resources.filter(r => r.id !== id); save('to_resources', resources); renderStaffDashboard(); }
 
         function renderStaffDashboard() {
             if (!currentUser || currentUser.role !== 'staff') return;
             const now = new Date(), hr = now.getHours();
+            const { classes, fallback } = staffScope();
+            const titles = classes.map(c => c.title);
+            const mine = students.filter(s => titles.includes(s.course));
+            const myTasks = tasks.filter(t => titles.includes(t.course)).sort((a, b) => a.due.localeCompare(b.due));
+            const open = myTasks.filter(t => daysUntil(t.due) >= 0);
+            const pendingA = open.filter(t => t.type === 'assignment'), quizzes = open.filter(t => t.type === 'quiz');
+            const dueSoon = open.filter(t => daysUntil(t.due) <= 7).length;
+            const q = document.getElementById('staffSearch').value.trim().toLowerCase();
+
             document.getElementById('staffUserName').textContent = currentUser.name;
             document.getElementById('staffAvatar').textContent = initials(currentUser.name);
-            document.getElementById('staffDate').textContent = now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
-            document.getElementById('staffWelcome').textContent = (hr < 12 ? 'Good morning, ' : hr < 17 ? 'Good afternoon, ' : 'Good evening, ') + firstName(currentUser.name);
+            document.getElementById('staffWelcome').textContent = currentUser.name;
+            document.getElementById('staffSummary').textContent = `${classes.length} class${classes.length === 1 ? '' : 'es'} • ${mine.length} student${mine.length === 1 ? '' : 's'} • ${dueSoon} due this week • ` + now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+            const note = document.getElementById('staffScopeNote');
+            note.classList.toggle('hidden', !fallback);
+            note.textContent = fallback ? 'Showing all courses because none list you as the instructor. Ask an admin to set your name as the instructor on a course to see only your classes.' : '';
 
-            const expired = students.filter(s => s.owing).length;
-            const slots = [['09:00', '10:30', 'Lab 1'], ['11:30', '13:00', 'Lab 2'], ['14:00', '15:30', 'Studio 3']];
-            const today = courses.slice(0, 3).map((c, i) => ({ c, t: slots[i], n: students.filter(s => s.course === c.title).length }));
-            document.getElementById('staffSummary').textContent = `You have ${today.length} classes today and ${expired} student${expired === 1 ? '' : 's'} needing follow-up.`;
+            const followUp = mine.filter(s => s.owing).length + open.filter(t => daysUntil(t.due) <= 2).length;
+            const bell = document.getElementById('staffBell'); bell.textContent = followUp; bell.classList.toggle('hidden', !followUp);
 
-            document.getElementById('staffStatStudents').textContent = students.length;
-            document.getElementById('staffStatCourses').textContent = courses.length;
-            document.getElementById('staffStatTrials').textContent = students.filter(isActiveTrial).length;
-            document.getElementById('staffStatExpired').textContent = expired;
-            barRows(document.getElementById('staffBars'));
+            document.getElementById('staffStatStudents').textContent = mine.length;
+            document.getElementById('staffStatStudentsSub').textContent = mine.filter(isActiveTrial).length + ' on active trial';
+            document.getElementById('staffStatCourses').textContent = classes.length;
+            document.getElementById('staffStatAssign').textContent = pendingA.length;
+            document.getElementById('staffStatAssignSub').textContent = pendingA.filter(t => daysUntil(t.due) <= 7).length + ' due this week';
+            document.getElementById('staffStatQuiz').textContent = quizzes.length;
+            document.getElementById('staffStatQuizSub').textContent = quizzes.length ? 'Next: ' + fmtDate(quizzes[0].due).replace(/, \d{4}/, '') : 'None scheduled';
 
-            // Attendance chart (illustrative values, stable per account)
-            const base = [92, 88, 95, 90, 86], seed = hashStr(currentUser.email);
-            const att = base.map((v, i) => Math.min(99, v + ((seed >> i) % 5) - 2));
-            document.getElementById('staffAttAvg').textContent = Math.round(att.reduce((a, b) => a + b, 0) / att.length) + '% average';
-            document.getElementById('staffAttendance').innerHTML = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((d, i) => `
-                <div class="flex-1 flex flex-col items-center justify-end h-full gap-2"><span class="text-[11px] font-bold text-slate-700">${att[i]}%</span>
-                <div class="w-full max-w-[44px] rounded-t-lg bg-gradient-to-t from-[#0c3b2e] to-emerald-400" style="height:${att[i] * 0.8}%"></div><span class="text-[11px] text-slate-500">${d}</span></div>`).join('');
+            // Class performance: share of each class's students by progress band
+            document.getElementById('staffPerf').innerHTML = classes.slice(0, 8).map(c => {
+                const l = mine.filter(s => s.course === c.title), n = l.length || 1;
+                const done = l.filter(s => progressOf(s) >= 70).length, mid = l.filter(s => progressOf(s) >= 30 && progressOf(s) < 70).length, none = l.length - done - mid;
+                const bar = (cnt, col) => `<div class="w-3 sm:w-4 rounded-t ${col}" style="height:${Math.max(2, cnt / n * 100)}%"></div>`;
+                return `<div class="flex-1 min-w-[64px] flex flex-col items-center justify-end h-full gap-1" title="${escapeHtml(c.title)}: ${l.length} student${l.length === 1 ? '' : 's'}">
+                    <div class="flex items-end gap-1 h-32">${bar(done, 'bg-emerald-600')}${bar(mid, 'bg-teal-400')}${bar(none, 'bg-sky-200')}</div>
+                    <span class="text-[10px] text-slate-500 text-center truncate w-full pb-1">${escapeHtml(c.title.split(' ').slice(0, 2).join(' '))}</span></div>`;
+            }).join('') || '<p class="text-xs text-slate-500 m-auto">No classes yet.</p>';
 
-            document.getElementById('staffToday').innerHTML = today.map(({ c, t, n }) => {
-                const startH = +t[0].slice(0, 2), endH = +t[1].slice(0, 2) + (t[1].endsWith('30') ? 0.5 : 0), cur = hr + now.getMinutes() / 60;
-                const st = cur >= endH ? ['Done', 'bg-slate-100 text-slate-500'] : cur >= startH ? ['Live now', 'bg-emerald-100 text-emerald-700'] : ['Upcoming', 'bg-amber-100 text-amber-700'];
-                return `<div class="flex gap-3"><div class="text-xs font-bold text-slate-500 w-12 shrink-0 pt-0.5">${t[0]}</div>
-                    <div class="flex-1 border-l-2 border-[#C4A649] pl-3"><div class="text-sm font-bold text-slate-900">${escapeHtml(c.title)}</div>
-                    <div class="text-[11px] text-slate-500">${t[2]} • ${n} student${n === 1 ? '' : 's'}</div>
-                    <span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold ${st[1]}">${st[0]}</span></div></div>`;
-            }).join('');
+            // Recent activity: enrollments, assignments you set, announcements
+            const feed = mine.map(s => ({ ts: new Date(s.trialEnd) - 7 * 86400000, who: s.name, text: 'joined your ' + s.course + ' class' }))
+                .concat(myTasks.map(t => ({ ts: t.ts || 0, who: currentUser.name, text: 'set ' + (t.type === 'quiz' ? 'quiz: ' : 'assignment: ') + t.title })))
+                .concat(announcements.slice(0, 3).map(a => ({ ts: a.ts, who: a.by, text: a.text })))
+                .sort((a, b) => b.ts - a.ts).slice(0, 5);
+            document.getElementById('staffActivity').innerHTML = feed.map(f => `
+                <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-full ${AVATAR_BG[hashStr(f.who) % 5]} text-white text-[11px] font-bold flex items-center justify-center shrink-0">${escapeHtml(initials(f.who))}</span>
+                <div class="min-w-0"><div class="text-xs font-bold text-slate-800 truncate">${escapeHtml(f.who)}</div><div class="text-[11px] text-slate-500 truncate">${escapeHtml(f.text)}</div><div class="text-[10px] text-slate-400">${timeAgo(f.ts)}</div></div></div>`).join('') || '<p class="text-xs text-slate-500">No activity yet.</p>';
 
-            const top = students.slice().sort((a, b) => progressOf(b) - progressOf(a)).slice(0, 5);
-            document.getElementById('staffProgress').innerHTML = top.length ? top.map(s => `
-                <div><div class="flex justify-between text-xs mb-1"><span class="font-semibold text-slate-700">${escapeHtml(s.name)}</span><span class="text-slate-500">${progressOf(s)}%</span></div>
-                <div class="h-2 bg-slate-100 rounded-full"><div class="h-2 rounded-full bg-emerald-500" style="width:${progressOf(s)}%"></div></div></div>`).join('')
-                : '<p class="text-xs text-slate-500">No students yet.</p>';
+            // My classes (dashboard cards + full tab)
+            const lessons = c => { const tot = c.syllabus.length * 4, p = avgProgress(c, mine); return [Math.round(p / 100 * tot), tot, p]; };
+            document.getElementById('staffClassCards').innerHTML = classes.filter(c => !q || c.title.toLowerCase().includes(q)).slice(0, 4).map(c => { const [d, t, p] = lessons(c); return `
+                <div class="border rounded-xl p-3"><span class="w-9 h-9 rounded-lg flex items-center justify-center ${CAT_TONE[c.category] || 'bg-slate-100 text-slate-600'}"><i class="fa-solid ${CAT_ICON[c.category] || 'fa-book'}"></i></span>
+                <div class="text-xs font-bold text-slate-900 mt-2 truncate">${escapeHtml(c.title)}</div><div class="text-[10px] text-slate-500">${escapeHtml(c.level)}</div>
+                <div class="h-1.5 bg-slate-100 rounded-full mt-3"><div class="h-1.5 rounded-full bg-emerald-600" style="width:${p}%"></div></div>
+                <div class="flex justify-between text-[10px] text-slate-500 mt-1"><b class="text-slate-700">${p}%</b><span>${d}/${t} lessons</span></div></div>`; }).join('');
+            document.getElementById('staffClassesList').innerHTML = classes.filter(c => !q || c.title.toLowerCase().includes(q)).map(c => { const [d, t, p] = lessons(c); return `
+                <div class="bg-white border rounded-2xl p-5"><div class="flex items-center gap-3"><span class="w-11 h-11 rounded-xl flex items-center justify-center text-lg ${CAT_TONE[c.category] || 'bg-slate-100 text-slate-600'}"><i class="fa-solid ${CAT_ICON[c.category] || 'fa-book'}"></i></span>
+                <div class="min-w-0"><div class="font-bold text-slate-900 truncate">${escapeHtml(c.title)}</div><div class="text-xs text-slate-500">${escapeHtml(c.level)} • ${escapeHtml(c.instructor)}</div></div></div>
+                <div class="flex justify-between text-xs text-slate-600 mt-4"><span>${mine.filter(s => s.course === c.title).length} enrolled</span><span>${d}/${t} lessons • ${p}%</span></div>
+                <div class="h-2 bg-slate-100 rounded-full mt-1.5"><div class="h-2 rounded-full bg-emerald-600" style="width:${p}%"></div></div>
+                <div class="flex flex-wrap gap-1.5 mt-3">${c.syllabus.map(s => `<span class="text-[10px] bg-slate-100 text-slate-600 rounded-full px-2 py-0.5">${escapeHtml(s)}</span>`).join('')}</div></div>`; }).join('') || '<p class="text-xs text-slate-500">No classes match.</p>';
 
-            document.getElementById('staffAnnouncements').innerHTML = announcements.slice(0, 6).map(a => `
-                <div class="border-l-2 border-sky-300 pl-3"><p class="text-xs text-slate-800">${escapeHtml(a.text)}</p><p class="text-[10px] text-slate-400 mt-0.5">${escapeHtml(a.by)} • ${timeAgo(a.ts)}</p></div>`).join('');
+            // Upcoming assignments
+            const chip = t => { const d = daysUntil(t.due); return d < 0 ? ['Overdue', 'bg-rose-100 text-rose-700'] : d <= 2 ? ['Due soon', 'bg-amber-100 text-amber-700'] : ['Upcoming', 'bg-sky-100 text-sky-700']; };
+            document.getElementById('staffUpcoming').innerHTML = myTasks.filter(t => !q || (t.title + t.course).toLowerCase().includes(q)).slice(0, 4).map(t => { const c = chip(t); return `
+                <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${t.type === 'quiz' ? 'bg-sky-100 text-sky-600' : 'bg-orange-100 text-orange-600'}"><i class="fa-solid ${t.type === 'quiz' ? 'fa-file-circle-question' : 'fa-file-lines'}"></i></span>
+                <div class="flex-1 min-w-0"><div class="text-xs font-bold text-slate-800 truncate">${escapeHtml(t.title)}</div><div class="text-[11px] text-slate-500">Due: ${fmtDate(t.due)}</div></div>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${c[1]}">${c[0]}</span></div>`; }).join('') || '<p class="text-xs text-slate-500">Nothing scheduled. Create an assignment to get started.</p>';
 
-            // Roster
-            const filter = document.getElementById('staffCourseFilter');
-            const chosen = filter.value;
-            filter.innerHTML = '<option value="">All courses</option>' + courses.map(c => `<option>${escapeHtml(c.title)}</option>`).join('');
+            // Today's schedule
+            const slots = [[9, 10], [11, 12], [14, 15], [16, 17]], cur = hr + now.getMinutes() / 60;
+            const pad = h => String(h).padStart(2, '0') + ':00';
+            document.getElementById('staffToday').innerHTML = classes.slice(0, 4).map((c, i) => {
+                const [s, e] = slots[i];
+                const st = isLive(c.title) ? ['Live Now', 'bg-emerald-100 text-emerald-700', 'fa-video'] : cur >= e ? ['Done', 'bg-slate-100 text-slate-500', ''] : cur >= s ? ['In session', 'bg-emerald-100 text-emerald-700', ''] : ['Upcoming', 'bg-sky-100 text-sky-700', ''];
+                return `<div class="flex items-center gap-3 border-l-2 ${st[0] === 'Live Now' ? 'border-emerald-500' : 'border-slate-200'} pl-3"><div class="text-[11px] font-bold text-slate-600 w-14 shrink-0">${pad(s)} - ${pad(e)}</div>
+                    <div class="flex-1 min-w-0 text-xs font-semibold text-slate-800 truncate">${escapeHtml(c.title)}</div>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold whitespace-nowrap ${st[1]}">${st[2] ? `<i class="fa-solid ${st[2]} mr-1"></i>` : ''}${st[0]}</span></div>`;
+            }).join('') || '<p class="text-xs text-slate-500">No classes today.</p>';
+
+            // Students tab
+            const filter = document.getElementById('staffCourseFilter'), chosen = filter.value;
+            filter.innerHTML = '<option value="">All my classes</option>' + titles.map(t => `<option>${escapeHtml(t)}</option>`).join('');
             filter.value = chosen;
-            const q = document.getElementById('staffSearch').value.trim().toLowerCase();
-            const rows = students.filter(s => (!chosen || s.course === chosen) && (!q || (s.name + s.email + s.course).toLowerCase().includes(q)));
+            const rows = mine.filter(s => (!chosen || s.course === chosen) && (!q || (s.name + s.email + s.course).toLowerCase().includes(q)));
             document.getElementById('staffStudentsTable').innerHTML = rows.length ? rows.map(s => `
                 <tr class="border-b">
                     <td class="p-3"><div class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center">${escapeHtml(initials(s.name))}</span><span class="font-medium text-slate-900">${escapeHtml(s.name)}</span></div></td>
@@ -1489,21 +1668,28 @@
                     <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.owing ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">${escapeHtml(s.status)}</span></td>
                 </tr>`).join('') : '<tr><td colspan="5" class="p-6 text-center text-xs text-slate-500">No students match.</td></tr>';
 
+            // Assignments tab
+            document.getElementById('staffAssignTable').innerHTML = myTasks.length ? myTasks.map(t => { const c = chip(t); return `
+                <tr class="border-b"><td class="p-3 font-medium text-slate-900">${escapeHtml(t.title)}</td><td class="p-3 text-slate-700">${escapeHtml(t.course)}</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${t.type === 'quiz' ? 'bg-sky-100 text-sky-700' : 'bg-orange-100 text-orange-700'}">${t.type === 'quiz' ? 'Quiz' : 'Assignment'}</span></td>
+                <td class="p-3 text-xs text-slate-600">${fmtDate(t.due)} <span class="ml-1 px-2 py-0.5 rounded text-[10px] font-bold ${c[1]}">${c[0]}</span></td>
+                <td class="p-3 text-right"><button onclick="deleteTask(${t.id})" class="text-xs text-rose-600 font-semibold hover:underline">Delete</button></td></tr>`; }).join('')
+                : '<tr><td colspan="5" class="p-6 text-center text-xs text-slate-500">Nothing set yet.</td></tr>';
+
+            // Resources tab
+            const myRes = resources.filter(r => titles.includes(r.course) && (!q || (r.title + r.course).toLowerCase().includes(q)));
+            document.getElementById('staffResourceList').innerHTML = myRes.map(r => `
+                <div class="border rounded-xl p-4 flex items-center gap-3"><span class="w-10 h-10 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-link"></i></span>
+                <div class="flex-1 min-w-0"><div class="text-sm font-bold text-slate-900 truncate">${/^https?:\/\//i.test(r.url) ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer" class="hover:underline">${escapeHtml(r.title)}</a>` : escapeHtml(r.title)}</div><div class="text-[11px] text-slate-500">${escapeHtml(r.course)}</div></div>
+                <button onclick="deleteResource(${r.id})" class="text-xs text-rose-600 font-semibold hover:underline">Remove</button></div>`).join('') || '<p class="text-xs text-slate-500">No resources yet. Add one to share with your class.</p>';
+
             // Timetable
-            const times = ['09:00', '11:00', '13:00', '15:00'];
+            const times = ['09:00', '11:00', '14:00', '16:00'];
             document.getElementById('staffTimetable').innerHTML = '<thead><tr class="text-xs uppercase text-slate-400"><th class="p-2 text-left">Time</th>' + ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map(d => `<th class="p-2 text-left">${d}</th>`).join('') + '</tr></thead><tbody>'
                 + times.map((tm, r) => `<tr><td class="p-2 text-xs font-bold text-slate-500">${tm}</td>` + [0, 1, 2, 3, 4].map(cI => {
-                    const c = courses.length ? courses[(r * 5 + cI) % courses.length] : null;
+                    const c = classes.length ? classes[(r + cI) % classes.length] : null;
                     return `<td class="p-3 rounded-xl ${(r + cI) % 2 ? 'bg-emerald-50 text-emerald-900' : 'bg-amber-50 text-amber-900'} text-xs font-semibold">${c ? escapeHtml(c.title) : ''}</td>`;
                 }).join('') + '</tr>').join('') + '</tbody>';
-
-            document.getElementById('staffCoursesList').innerHTML = courses.map(c => `
-                <div class="bg-white border rounded-2xl p-5">
-                    <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase">${escapeHtml(c.category)}</span>
-                    <h4 class="font-bold text-slate-900 mt-2">${escapeHtml(c.title)}</h4>
-                    <p class="text-xs text-slate-500 mt-1">${escapeHtml(c.instructor)} • ${escapeHtml(c.level)}</p>
-                    <p class="text-xs text-slate-500 mt-2">${students.filter(s => s.course === c.title).length} enrolled</p>
-                </div>`).join('');
         }
 
         // ---- Admin dashboard ----
