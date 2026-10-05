@@ -293,67 +293,176 @@
         </div>
 
         <!-- STUDENT PORTAL -->
-        <div id="page-studentDash" class="page-view hidden py-12 max-w-6xl mx-auto px-4 space-y-8">
-            <div class="bg-white p-8 rounded-2xl border shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h2 id="studentWelcomeName" class="text-2xl sm:text-3xl font-black text-slate-900">Welcome, Student!</h2>
-                    <p class="text-slate-500 text-xs mt-1">Exploring your tech role and personalized recommendations based on your account.</p>
+        <div id="page-studentDash" class="page-view hidden py-8 max-w-6xl mx-auto px-4 space-y-8">
+
+            <!-- Hero -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0c3b2e] via-[#14584a] to-slate-900 text-white p-8 md:p-10 shadow-xl">
+                <div class="absolute -right-16 -top-16 w-72 h-72 rounded-full bg-[#C4A649]/20 blur-2xl"></div>
+                <div class="absolute right-24 -bottom-20 w-64 h-64 rounded-full bg-emerald-400/10 blur-2xl"></div>
+                <div class="relative grid md:grid-cols-5 gap-8 items-center">
+                    <div class="md:col-span-3 space-y-4">
+                        <span id="studentBadgeLine" class="inline-block bg-white/10 border border-white/20 text-amber-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full"></span>
+                        <h2 id="studentWelcomeName" class="text-3xl md:text-4xl font-black leading-tight">Welcome!</h2>
+                        <p id="studentHeroSub" class="text-emerald-100 text-sm max-w-lg"></p>
+                        <div class="flex flex-wrap gap-3 pt-1">
+                            <button id="studentHeroCta" onclick="document.getElementById('studentRecommended').scrollIntoView({behavior:'smooth'})" class="bg-[#C4A649] hover:bg-[#d4b65a] text-slate-900 font-bold text-sm px-6 py-3 rounded-xl shadow transition"></button>
+                            <button onclick="showPage('home')" class="bg-white/10 hover:bg-white/20 border border-white/20 font-semibold text-sm px-6 py-3 rounded-xl transition">Browse all 12 programs</button>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 grid grid-cols-3 md:grid-cols-1 gap-3">
+                        <div class="bg-white/10 border border-white/10 rounded-2xl p-4"><div class="text-2xl font-black text-amber-300">12</div><div class="text-[11px] text-emerald-100">Career-ready programs</div></div>
+                        <div class="bg-white/10 border border-white/10 rounded-2xl p-4"><div class="text-2xl font-black text-amber-300">7 days</div><div class="text-[11px] text-emerald-100">Free trial on every course</div></div>
+                        <div class="bg-white/10 border border-white/10 rounded-2xl p-4"><div class="text-2xl font-black text-amber-300">$5</div><div class="text-[11px] text-emerald-100">Flat fee, no surprises</div></div>
+                    </div>
                 </div>
-                <button onclick="showPage('home')" class="bg-[#0c3b2e] text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow">Explore More Courses</button>
             </div>
-            <div>
-                <h3 class="font-bold text-lg text-slate-900 mb-4">Resume your exploration</h3>
+
+            <!-- Your journey -->
+            <div class="bg-white rounded-2xl border shadow-sm p-6">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-5">
+                    <h3 class="font-extrabold text-lg text-slate-900">Your journey</h3>
+                    <span id="studentJourneyHint" class="text-xs text-slate-500"></span>
+                </div>
+                <div id="studentSteps" class="grid sm:grid-cols-4 gap-4"></div>
+            </div>
+
+            <!-- Continue learning / enrolled -->
+            <div id="studentLearningWrap">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-extrabold text-lg text-slate-900">Continue learning</h3>
+                    <div class="flex gap-2 text-xs font-bold">
+                        <span class="bg-orange-50 text-orange-700 px-3 py-1.5 rounded-full"><i class="fa-solid fa-fire mr-1"></i><span id="studentStreak">1</span>-day streak</span>
+                        <span class="bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full"><i class="fa-solid fa-bullseye mr-1"></i>Weekly goal: 3 lessons</span>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="studentEnrolledList"></div>
+            </div>
+
+            <!-- Recommended -->
+            <div id="studentRecommended">
+                <h3 class="font-extrabold text-lg text-slate-900">Recommended to start today</h3>
+                <p class="text-xs text-slate-500 mb-4">Hand-picked beginner-friendly programs. Every one starts with a free 1-week trial.</p>
+                <div id="studentRecommendedGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+            </div>
+
+            <!-- Career paths -->
+            <div>
+                <h3 class="font-extrabold text-lg text-slate-900">Where could this take you?</h3>
+                <p class="text-xs text-slate-500 mb-4">Pick a path and see the programs that lead there.</p>
+                <div id="studentPaths" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Achievements -->
+                <div class="lg:col-span-2 bg-white rounded-2xl border shadow-sm p-6">
+                    <h3 class="font-extrabold text-lg text-slate-900 mb-1">Achievements</h3>
+                    <p class="text-xs text-slate-500 mb-4">Unlock badges as you learn.</p>
+                    <div id="studentBadges" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
+                </div>
+                <!-- Inspiration -->
+                <div class="rounded-2xl p-6 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 flex flex-col justify-between">
+                    <div>
+                        <i class="fa-solid fa-quote-left text-amber-400 text-xl"></i>
+                        <p id="studentQuote" class="text-slate-800 font-bold text-lg leading-snug mt-3"></p>
+                        <p id="studentQuoteBy" class="text-xs text-slate-500 mt-2"></p>
+                    </div>
+                    <button onclick="showPage('home')" class="mt-6 bg-[#0c3b2e] text-white text-xs font-bold px-4 py-2.5 rounded-xl self-start">Find my next course</button>
+                </div>
             </div>
         </div>
 
         <!-- STAFF PORTAL (sidebar app shell) -->
         <div id="page-staffDash" class="page-view hidden">
             <div class="flex min-h-screen bg-slate-100">
-                <aside class="hidden md:flex w-60 shrink-0 bg-white border-r flex-col">
-                    <div class="h-16 px-5 flex items-center gap-2 border-b font-black text-slate-900">TECH <span class="gold-text">OASIS</span></div>
+                <aside class="hidden md:flex w-64 shrink-0 bg-white border-r flex-col">
+                    <div class="h-16 px-5 flex items-center border-b"><span class="brand-logo"></span></div>
                     <nav class="p-3 space-y-1 text-sm font-semibold flex-1">
                         <div class="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Main menu</div>
                         <button onclick="staffTab('overview')" data-stab="overview" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-house w-4"></i> Overview</button>
                         <button onclick="staffTab('students')" data-stab="students" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-user-graduate w-4"></i> My Students</button>
-                        <div class="px-3 pt-4 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Courses</div>
+                        <button onclick="staffTab('schedule')" data-stab="schedule" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-calendar-days w-4"></i> Timetable</button>
+                        <div class="px-3 pt-4 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Teaching</div>
                         <button onclick="staffTab('courses')" data-stab="courses" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-book-open w-4"></i> Course Catalog</button>
+                        <button onclick="staffTab('overview'); document.getElementById('annInput').focus()" class="w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3 text-slate-600 hover:bg-slate-50"><i class="fa-solid fa-bullhorn w-4"></i> Announcements</button>
                     </nav>
+                    <div class="m-3 p-4 rounded-2xl bg-gradient-to-br from-[#0c3b2e] to-[#14584a] text-white">
+                        <div class="text-xs font-bold text-amber-300 uppercase tracking-wider">Staff tip</div>
+                        <p class="text-xs text-emerald-100 mt-1">Students who get feedback within 48 hours are far more likely to finish their course.</p>
+                    </div>
                     <div class="p-3 border-t"><button onclick="showPage('home')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-500 hover:bg-slate-100"><i class="fa-solid fa-arrow-left w-4"></i> Back to site</button></div>
                 </aside>
                 <div class="flex-1 min-w-0">
-                    <div class="h-16 bg-white border-b px-4 sm:px-6 flex items-center justify-between gap-4">
+                    <div class="h-16 bg-white border-b px-4 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30">
                         <div class="relative w-full max-w-xs">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
                             <input id="staffSearch" oninput="renderStaffDashboard()" placeholder="Search students, courses..." class="w-full bg-slate-100 rounded-full pl-8 pr-3 py-2 text-xs focus:outline-none">
                         </div>
                         <div class="flex items-center gap-3">
-                            <div class="text-right leading-tight"><div id="staffUserName" class="text-xs font-bold text-slate-900">Instructor</div><div class="text-[10px] text-slate-500">Staff</div></div>
+                            <div class="text-right leading-tight"><div id="staffUserName" class="text-xs font-bold text-slate-900">Instructor</div><div class="text-[10px] text-slate-500">Staff / Instructor</div></div>
                             <div id="staffAvatar" class="w-9 h-9 rounded-full bg-[#0c3b2e] text-white text-xs font-bold flex items-center justify-center">IN</div>
                             <button onclick="logoutUser()" class="text-xs font-semibold border rounded-xl px-3 py-2 hover:bg-slate-50"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
                         </div>
                     </div>
                     <div class="p-4 sm:p-6 space-y-6">
-                        <div class="md:hidden flex gap-2 text-xs font-semibold">
+                        <div class="md:hidden flex gap-2 text-xs font-semibold overflow-x-auto">
                             <button onclick="staffTab('overview')" class="border bg-white rounded-lg px-3 py-1.5">Overview</button>
                             <button onclick="staffTab('students')" class="border bg-white rounded-lg px-3 py-1.5">Students</button>
+                            <button onclick="staffTab('schedule')" class="border bg-white rounded-lg px-3 py-1.5">Timetable</button>
                             <button onclick="staffTab('courses')" class="border bg-white rounded-lg px-3 py-1.5">Courses</button>
                         </div>
-                        <div>
-                            <h2 id="staffWelcome" class="text-2xl font-black text-slate-900">Instructor Hub</h2>
-                            <p class="text-xs text-slate-500 mt-1">Review student enrollments and manage course delivery.</p>
+
+                        <!-- Welcome banner -->
+                        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0c3b2e] via-[#14584a] to-slate-800 text-white p-6 md:p-8 shadow-lg">
+                            <div class="absolute -right-10 -top-10 w-56 h-56 rounded-full bg-[#C4A649]/20 blur-2xl"></div>
+                            <div class="relative flex flex-wrap items-center justify-between gap-5">
+                                <div>
+                                    <div id="staffDate" class="text-xs font-bold text-amber-300 uppercase tracking-wider"></div>
+                                    <h2 id="staffWelcome" class="text-2xl md:text-3xl font-black mt-1">Welcome back</h2>
+                                    <p id="staffSummary" class="text-sm text-emerald-100 mt-1"></p>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <button onclick="staffTab('schedule')" class="bg-[#C4A649] hover:bg-[#d4b65a] text-slate-900 text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-clipboard-user mr-1.5"></i>Take attendance</button>
+                                    <button onclick="staffTab('students')" class="bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-envelope mr-1.5"></i>Message students</button>
+                                </div>
+                            </div>
                         </div>
 
                         <section id="staffTab-overview" class="stab-panel space-y-6">
                             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                                <div class="rounded-2xl p-5 bg-violet-50"><div class="text-xs text-slate-500">Students</div><div id="staffStatStudents" class="text-2xl font-black text-slate-900 mt-1">0</div></div>
-                                <div class="rounded-2xl p-5 bg-sky-50"><div class="text-xs text-slate-500">Courses</div><div id="staffStatCourses" class="text-2xl font-black text-slate-900 mt-1">0</div></div>
-                                <div class="rounded-2xl p-5 bg-orange-50"><div class="text-xs text-slate-500">Active trials</div><div id="staffStatTrials" class="text-2xl font-black text-slate-900 mt-1">0</div></div>
-                                <div class="rounded-2xl p-5 bg-emerald-50"><div class="text-xs text-slate-500">Expired trials</div><div id="staffStatExpired" class="text-2xl font-black text-slate-900 mt-1">0</div></div>
+                                <div class="rounded-2xl p-5 bg-violet-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Total students</div><div id="staffStatStudents" class="text-3xl font-black text-slate-900 mt-1">0</div><div class="text-[11px] text-violet-700 font-semibold mt-1">Across all your courses</div></div><span class="w-11 h-11 rounded-xl bg-white text-violet-600 flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-user-graduate"></i></span></div>
+                                <div class="rounded-2xl p-5 bg-sky-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Active courses</div><div id="staffStatCourses" class="text-3xl font-black text-slate-900 mt-1">0</div><div class="text-[11px] text-sky-700 font-semibold mt-1">In the catalog</div></div><span class="w-11 h-11 rounded-xl bg-white text-sky-600 flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-book-open"></i></span></div>
+                                <div class="rounded-2xl p-5 bg-orange-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Active trials</div><div id="staffStatTrials" class="text-3xl font-black text-slate-900 mt-1">0</div><div class="text-[11px] text-orange-700 font-semibold mt-1">Ready to convert</div></div><span class="w-11 h-11 rounded-xl bg-white text-orange-500 flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-hourglass-half"></i></span></div>
+                                <div class="rounded-2xl p-5 bg-rose-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Need follow-up</div><div id="staffStatExpired" class="text-3xl font-black text-slate-900 mt-1">0</div><div class="text-[11px] text-rose-700 font-semibold mt-1">Trial expired</div></div><span class="w-11 h-11 rounded-xl bg-white text-rose-500 flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-bell"></i></span></div>
                             </div>
-                            <div class="bg-white rounded-2xl border p-5">
-                                <h3 class="font-bold text-slate-900 mb-4">Enrollments by course</h3>
-                                <div id="staffBars" class="space-y-3"></div>
+
+                            <div class="grid lg:grid-cols-3 gap-6">
+                                <div class="lg:col-span-2 bg-white rounded-2xl border p-5">
+                                    <div class="flex items-center justify-between mb-4"><h3 class="font-bold text-slate-900">Class attendance this week</h3><span id="staffAttAvg" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full"></span></div>
+                                    <div id="staffAttendance" class="flex items-end justify-between gap-3 h-44"></div>
+                                </div>
+                                <div class="bg-white rounded-2xl border p-5">
+                                    <h3 class="font-bold text-slate-900 mb-4">Today's classes</h3>
+                                    <div id="staffToday" class="space-y-4"></div>
+                                </div>
+                            </div>
+
+                            <div class="grid lg:grid-cols-3 gap-6">
+                                <div class="bg-white rounded-2xl border p-5">
+                                    <h3 class="font-bold text-slate-900 mb-4">Student progress</h3>
+                                    <div id="staffProgress" class="space-y-4"></div>
+                                </div>
+                                <div class="bg-white rounded-2xl border p-5">
+                                    <h3 class="font-bold text-slate-900 mb-4">Enrollments by course</h3>
+                                    <div id="staffBars" class="space-y-3"></div>
+                                </div>
+                                <div class="bg-white rounded-2xl border p-5 flex flex-col">
+                                    <h3 class="font-bold text-slate-900 mb-3">Announcements</h3>
+                                    <form onsubmit="postAnnouncement(event)" class="flex gap-2 mb-3">
+                                        <input id="annInput" required maxlength="140" placeholder="Share an update with students..." class="flex-1 min-w-0 border rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-emerald-700">
+                                        <button class="bg-[#0c3b2e] text-white text-xs font-bold px-3 rounded-lg">Post</button>
+                                    </form>
+                                    <div id="staffAnnouncements" class="space-y-3 overflow-y-auto max-h-56"></div>
+                                </div>
                             </div>
                         </section>
 
@@ -364,10 +473,15 @@
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left text-sm">
-                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Student</th><th class="p-3">Email Address</th><th class="p-3">Enrolled Course</th><th class="p-3">Status</th></tr></thead>
+                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Student</th><th class="p-3">Email Address</th><th class="p-3">Enrolled Course</th><th class="p-3">Progress</th><th class="p-3">Status</th></tr></thead>
                                     <tbody id="staffStudentsTable"></tbody>
                                 </table>
                             </div>
+                        </section>
+
+                        <section id="staffTab-schedule" class="stab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
+                            <h3 class="font-bold text-slate-900 text-lg">Weekly timetable</h3>
+                            <div class="overflow-x-auto"><table class="w-full text-sm border-separate border-spacing-2" id="staffTimetable"></table></div>
                         </section>
 
                         <section id="staffTab-courses" class="stab-panel hidden">
@@ -382,7 +496,7 @@
         <div id="page-adminLogin" class="page-view hidden">
             <div class="min-h-screen grid lg:grid-cols-2 bg-slate-950">
                 <div class="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-slate-900 via-[#0c3b2e] to-slate-900 text-white">
-                    <div class="font-black tracking-wider text-lg">TECH <span class="gold-text">OASIS</span></div>
+                    <div class="brand-logo" data-theme="dark"></div>
                     <div>
                         <span class="bg-[#C4A649] text-slate-900 text-xs font-bold px-3 py-1 rounded uppercase">Restricted area</span>
                         <h2 class="text-4xl font-black mt-4 leading-tight">Control Center</h2>
@@ -393,7 +507,7 @@
                 <div class="flex items-center justify-center p-6 bg-white">
                     <form onsubmit="handleAdminLogin(event)" class="w-full max-w-sm space-y-5">
                         <div>
-                            <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div class="brand-logo mb-8"></div>
                             <h3 class="text-2xl font-black text-slate-900">Administrator sign in</h3>
                             <p class="text-xs text-slate-500 mt-1">Students and staff: use the main Log In button instead.</p>
                         </div>
@@ -417,7 +531,7 @@
         <div id="page-adminDash" class="page-view hidden">
             <div class="flex min-h-screen bg-slate-100">
                 <aside class="hidden md:flex w-60 shrink-0 bg-white border-r flex-col">
-                    <div class="h-16 px-5 flex items-center gap-2 border-b font-black text-slate-900">TECH <span class="gold-text">OASIS</span></div>
+                    <div class="h-16 px-5 flex items-center border-b"><span class="brand-logo"></span></div>
                     <nav class="p-3 space-y-1 text-sm font-semibold flex-1">
                         <div class="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Main menu</div>
                         <button onclick="adminTab('overview')" data-atab="overview" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-house w-4"></i> Overview</button>
@@ -1031,50 +1145,220 @@
             showPage('studentDash');
         }
 
-        function renderStudentDashboard() {
-            document.getElementById('studentWelcomeName').textContent = 'Welcome, ' + currentUser.name + '!';
+        // ---- Shared helpers ----
+        const isActiveTrial = s => s.status.includes('Active Trial');
+        const hashStr = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+        const progressOf = s => s.owing ? 15 + hashStr(s.email) % 20 : 25 + hashStr(s.email + s.course) % 70;
+        const courseByTitle = t => courses.find(c => c.title === t);
+        const firstName = n => String(n).trim().split(/\s+/)[0] || 'there';
 
-            const myEnrollments = students.filter(s => s.email.toLowerCase() === currentUser.email.toLowerCase());
-            const list = document.getElementById('studentEnrolledList');
-            list.innerHTML = '';
-            if (myEnrollments.length === 0) {
-                list.innerHTML = `<p class="text-sm text-slate-500 py-4">No active explorations found. Browse courses and start your trial!</p>`;
-            } else {
-                myEnrollments.forEach(s => {
-                    const daysLeft = Math.max(0, Math.ceil((new Date(s.trialEnd) - Date.now()) / 86400000));
-                    list.innerHTML += `
-                        <div class="bg-white border p-5 rounded-xl flex justify-between items-center shadow-sm">
-                            <div>
-                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">${s.status}</span>
-                                <h4 class="font-bold text-slate-900 text-base mt-1">${s.course}</h4>
-                                <p class="text-xs text-slate-500">1-week trial • ${daysLeft} days remaining</p>
-                            </div>
-                            <button onclick="openCourseDetail(1)" class="bg-[#0c3b2e] text-white text-xs font-bold px-4 py-2 rounded-lg">Resume</button>
-                        </div>
-                    `;
-                });
-            }
+        function toast(msg) {
+            const t = document.createElement('div');
+            t.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl';
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 2600);
         }
 
-        const isActiveTrial = s => s.status.includes('Active Trial');
+        // Tech Oasis School logo (mark + wordmark), used on every dashboard/login surface
+        function brandLogo(dark) {
+            const main = dark ? '#3A8D7C' : '#225A50', text = dark ? 'text-white' : 'text-slate-900', sub = dark ? 'text-emerald-200' : 'text-slate-500';
+            return `<span class="flex items-center gap-3">
+                <svg viewBox="16 12 496 606" width="30" height="37" role="img" aria-label="Tech Oasis School">
+                    <polygon points="255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160" fill="${main}"/>
+                    <polygon points="125,225 213,176 213,238 179,258 179,583 125,551" fill="${main}"/>
+                    <polygon points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" fill="${main}"/>
+                    <polygon points="452,140 505,166 505,446 232,612 232,545 452,410" fill="${main}"/>
+                    <polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B"/><polygon points="207,272 270,308 270,372 207,338" fill="#AC903F"/><polygon points="270,308 335,272 335,338 270,372" fill="#937733"/>
+                </svg>
+                <span><span class="block text-base font-black tracking-tight leading-none ${text}">TECH <span class="gold-text">OASIS</span></span><span class="block text-[9px] font-semibold tracking-wider uppercase mt-0.5 ${sub}">School</span></span>
+            </span>`;
+        }
+        function applyBrandLogos() {
+            document.querySelectorAll('.brand-logo').forEach(el => { el.innerHTML = brandLogo(el.dataset.theme === 'dark'); });
+        }
+
+        // ---- Student dashboard ----
+        const QUOTES = [
+            ['The best time to start was yesterday. The next best time is now.', 'Keep going, one lesson at a time'],
+            ['Every expert was once a beginner who refused to quit.', 'Tech Oasis School'],
+            ['Small daily progress beats occasional bursts of effort.', 'Build the habit first'],
+            ['You do not have to be great to start, but you have to start to be great.', 'Zig Ziglar'],
+            ['Code is just a language. You already know how to learn.', 'Tech Oasis School']
+        ];
+        const PATHS = [
+            { t: 'Web Developer', ic: 'fa-code', bg: 'bg-emerald-50 text-emerald-700', blurb: 'Build websites and web apps people use every day.', titles: ['Web Design', 'Web Development', 'Coding'] },
+            { t: 'AI & Data Specialist', ic: 'fa-brain', bg: 'bg-violet-50 text-violet-700', blurb: 'Turn data into decisions with machine learning.', titles: ['Data Science', 'Machine Learning', 'Artificial Intelligence (AI)'] },
+            { t: 'Product Designer', ic: 'fa-pen-ruler', bg: 'bg-rose-50 text-rose-700', blurb: 'Design experiences that feel effortless.', titles: ['UI/UX Design', 'Web Design', 'Digital Marketing'] },
+            { t: 'Security & Cloud Engineer', ic: 'fa-shield-halved', bg: 'bg-sky-50 text-sky-700', blurb: 'Protect and scale the systems the world runs on.', titles: ['Cybersecurity', 'Cloud Computing', 'Blockchain'] }
+        ];
+
+        function renderStudentDashboard() {
+            const name = firstName(currentUser.name);
+            const mine = students.filter(s => s.email.toLowerCase() === currentUser.email.toLowerCase());
+            const isNew = mine.length === 0;
+            const enrolledTitles = mine.map(s => s.course);
+
+            document.getElementById('studentWelcomeName').textContent = isNew ? `Welcome to Tech Oasis, ${name}!` : `Welcome back, ${name}!`;
+            document.getElementById('studentBadgeLine').textContent = isNew ? 'Day 1 of your tech journey' : `${mine.length} program${mine.length > 1 ? 's' : ''} in progress`;
+            document.getElementById('studentHeroSub').textContent = isNew
+                ? 'You are in. Pick a program, start your free 7-day trial and build a real, job-ready skill one lesson at a time.'
+                : 'Your next lesson is waiting. A little progress every day adds up faster than you think.';
+            document.getElementById('studentHeroCta').textContent = isNew ? 'Start my first course' : 'Explore more programs';
+            document.getElementById('studentStreak').textContent = isNew ? 0 : 1;
+
+            // Journey steps
+            const steps = [
+                ['Create account', 'You made it here', true],
+                ['Choose a course', 'Pick from 12 programs', !isNew],
+                ['Start free trial', '7 days, $0 today', !isNew],
+                ['Finish first module', 'Your first win', false]
+            ];
+            const cur = steps.findIndex(s => !s[2]);
+            document.getElementById('studentJourneyHint').textContent = isNew ? 'Next up: choose your first course' : 'Next up: finish your first module';
+            document.getElementById('studentSteps').innerHTML = steps.map(([t, d, done], i) => `
+                <div class="rounded-xl border p-4 ${done ? 'bg-emerald-50 border-emerald-200' : i === cur ? 'bg-amber-50 border-amber-300 ring-2 ring-amber-200' : 'bg-slate-50'}">
+                    <div class="flex items-center gap-2 mb-2"><span class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${done ? 'bg-emerald-600 text-white' : i === cur ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-500'}">${done ? '<i class="fa-solid fa-check"></i>' : i + 1}</span>
+                    <span class="text-[10px] font-bold uppercase ${done ? 'text-emerald-700' : i === cur ? 'text-amber-700' : 'text-slate-400'}">${done ? 'Done' : i === cur ? 'Next' : 'Later'}</span></div>
+                    <div class="font-bold text-sm text-slate-900">${t}</div><div class="text-xs text-slate-500">${d}</div>
+                </div>`).join('');
+
+            // Continue learning (or an inviting empty state)
+            const list = document.getElementById('studentEnrolledList');
+            if (isNew) {
+                list.innerHTML = `<div class="md:col-span-2 border-2 border-dashed border-emerald-200 bg-emerald-50/40 rounded-2xl p-8 text-center">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-white text-emerald-700 flex items-center justify-center text-2xl shadow-sm mb-3"><i class="fa-solid fa-rocket"></i></div>
+                    <h4 class="font-extrabold text-slate-900 text-lg">Your learning space is ready</h4>
+                    <p class="text-sm text-slate-600 mt-1 max-w-md mx-auto">Courses you start will appear here with your progress and your next lesson. Choose one below and take the first step today.</p>
+                </div>`;
+            } else {
+                list.innerHTML = mine.map(s => {
+                    const c = courseByTitle(s.course), pct = progressOf(s);
+                    const daysLeft = Math.max(0, Math.ceil((new Date(s.trialEnd) - Date.now()) / 86400000));
+                    const next = c && c.syllabus[Math.min(c.syllabus.length - 1, Math.floor(pct / 30))];
+                    return `<div class="bg-white border p-5 rounded-2xl shadow-sm">
+                        <div class="flex items-start justify-between gap-3">
+                            <div><span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">${escapeHtml(s.status)}</span>
+                            <h4 class="font-bold text-slate-900 text-base mt-1.5">${escapeHtml(s.course)}</h4>
+                            <p class="text-xs text-slate-500">${daysLeft} day${daysLeft === 1 ? '' : 's'} left in your trial${next ? ' • Next: ' + escapeHtml(next) : ''}</p></div>
+                            <button ${c ? `onclick="openCourseDetail(${c.id})"` : 'disabled'} class="bg-[#0c3b2e] text-white text-xs font-bold px-4 py-2 rounded-lg shrink-0">Resume</button>
+                        </div>
+                        <div class="mt-4"><div class="flex justify-between text-[11px] font-semibold text-slate-500 mb-1"><span>Progress</span><span>${pct}%</span></div>
+                        <div class="h-2 bg-slate-100 rounded-full"><div class="h-2 rounded-full bg-gradient-to-r from-emerald-600 to-[#C4A649]" style="width:${pct}%"></div></div></div>
+                    </div>`;
+                }).join('');
+            }
+
+            // Recommended: beginner-friendly programs the student has not started
+            const pool = courses.filter(c => !enrolledTitles.includes(c.title));
+            const rec = pool.filter(c => /beginner|all levels/i.test(c.level)).concat(pool.filter(c => !/beginner|all levels/i.test(c.level))).slice(0, 4);
+            document.getElementById('studentRecommendedGrid').innerHTML = rec.map(c => `
+                <div class="bg-white border rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition flex flex-col justify-between">
+                    <div><span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase">${escapeHtml(c.category)}</span>
+                    <h4 class="font-bold text-slate-900 mt-3">${escapeHtml(c.title)}</h4>
+                    <p class="text-xs text-slate-500 mt-1">${escapeHtml(c.level)} • ${escapeHtml(c.instructor)}</p>
+                    <p class="text-xs text-slate-600 mt-2 line-clamp-2">${escapeHtml(c.desc)}</p></div>
+                    <button onclick="openCourseDetail(${c.id})" class="mt-4 w-full bg-[#0c3b2e] hover:bg-emerald-800 text-white text-xs font-bold py-2.5 rounded-xl transition">Start free trial <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                </div>`).join('');
+
+            // Career paths
+            document.getElementById('studentPaths').innerHTML = PATHS.map(p => `
+                <div class="bg-white border rounded-2xl p-5 shadow-sm">
+                    <span class="w-11 h-11 rounded-xl flex items-center justify-center text-lg ${p.bg}"><i class="fa-solid ${p.ic}"></i></span>
+                    <h4 class="font-bold text-slate-900 mt-3">${p.t}</h4>
+                    <p class="text-xs text-slate-500 mt-1">${p.blurb}</p>
+                    <div class="flex flex-wrap gap-1.5 mt-3">${p.titles.map(courseByTitle).filter(Boolean).map(c => `<button onclick="openCourseDetail(${c.id})" class="text-[10px] font-semibold border rounded-full px-2.5 py-1 hover:bg-slate-50">${escapeHtml(c.title)}</button>`).join('')}</div>
+                </div>`).join('');
+
+            // Achievements
+            const badges = [
+                ['fa-door-open', 'Welcome aboard', 'Joined Tech Oasis', true],
+                ['fa-graduation-cap', 'First enrollment', 'Start a free trial', !isNew],
+                ['fa-flag-checkered', 'First module', 'Finish a module', false],
+                ['fa-fire', '7-day streak', 'Learn 7 days in a row', false]
+            ];
+            document.getElementById('studentBadges').innerHTML = badges.map(([ic, t, d, on]) => `
+                <div class="text-center rounded-xl border p-4 ${on ? 'bg-amber-50 border-amber-200' : 'bg-slate-50 opacity-70'}">
+                    <span class="w-12 h-12 mx-auto rounded-full flex items-center justify-center text-lg ${on ? 'bg-[#C4A649] text-white' : 'bg-slate-200 text-slate-400'}"><i class="fa-solid ${on ? ic : 'fa-lock'}"></i></span>
+                    <div class="text-xs font-bold text-slate-900 mt-2">${t}</div><div class="text-[10px] text-slate-500">${d}</div>
+                </div>`).join('');
+
+            const q = QUOTES[Math.floor(Date.now() / 86400000) % QUOTES.length];
+            document.getElementById('studentQuote').textContent = '“' + q[0] + '”';
+            document.getElementById('studentQuoteBy').textContent = q[1];
+        }
+
+        // ---- Staff dashboard ----
+        let announcements = JSON.parse(localStorage.getItem('to_announcements')) || [
+            { text: 'Welcome to the new Instructor Hub. Check your timetable and attendance here.', by: 'Admin', ts: Date.now() - 86400000 },
+            { text: 'Reminder: student trial follow-ups are due by Friday.', by: 'Admin', ts: Date.now() - 3 * 86400000 }
+        ];
+
+        function postAnnouncement(e) {
+            e.preventDefault();
+            const input = document.getElementById('annInput');
+            announcements.unshift({ text: input.value.trim(), by: currentUser.name, ts: Date.now() });
+            localStorage.setItem('to_announcements', JSON.stringify(announcements.slice(0, 20)));
+            input.value = '';
+            renderStaffDashboard();
+            toast('Announcement posted');
+        }
+
+        function timeAgo(ts) {
+            const d = Math.floor((Date.now() - ts) / 86400000);
+            return d < 1 ? 'Today' : d === 1 ? 'Yesterday' : d + ' days ago';
+        }
 
         function renderStaffDashboard() {
             if (!currentUser || currentUser.role !== 'staff') return;
+            const now = new Date(), hr = now.getHours();
             document.getElementById('staffUserName').textContent = currentUser.name;
             document.getElementById('staffAvatar').textContent = initials(currentUser.name);
-            document.getElementById('staffWelcome').textContent = 'Welcome back, ' + currentUser.name.split(' ')[0];
+            document.getElementById('staffDate').textContent = now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+            document.getElementById('staffWelcome').textContent = (hr < 12 ? 'Good morning, ' : hr < 17 ? 'Good afternoon, ' : 'Good evening, ') + firstName(currentUser.name);
+
+            const expired = students.filter(s => s.owing).length;
+            const slots = [['09:00', '10:30', 'Lab 1'], ['11:30', '13:00', 'Lab 2'], ['14:00', '15:30', 'Studio 3']];
+            const today = courses.slice(0, 3).map((c, i) => ({ c, t: slots[i], n: students.filter(s => s.course === c.title).length }));
+            document.getElementById('staffSummary').textContent = `You have ${today.length} classes today and ${expired} student${expired === 1 ? '' : 's'} needing follow-up.`;
 
             document.getElementById('staffStatStudents').textContent = students.length;
             document.getElementById('staffStatCourses').textContent = courses.length;
             document.getElementById('staffStatTrials').textContent = students.filter(isActiveTrial).length;
-            document.getElementById('staffStatExpired').textContent = students.filter(s => s.owing).length;
+            document.getElementById('staffStatExpired').textContent = expired;
             barRows(document.getElementById('staffBars'));
 
+            // Attendance chart (illustrative values, stable per account)
+            const base = [92, 88, 95, 90, 86], seed = hashStr(currentUser.email);
+            const att = base.map((v, i) => Math.min(99, v + ((seed >> i) % 5) - 2));
+            document.getElementById('staffAttAvg').textContent = Math.round(att.reduce((a, b) => a + b, 0) / att.length) + '% average';
+            document.getElementById('staffAttendance').innerHTML = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((d, i) => `
+                <div class="flex-1 flex flex-col items-center justify-end h-full gap-2"><span class="text-[11px] font-bold text-slate-700">${att[i]}%</span>
+                <div class="w-full max-w-[44px] rounded-t-lg bg-gradient-to-t from-[#0c3b2e] to-emerald-400" style="height:${att[i] * 0.8}%"></div><span class="text-[11px] text-slate-500">${d}</span></div>`).join('');
+
+            document.getElementById('staffToday').innerHTML = today.map(({ c, t, n }) => {
+                const startH = +t[0].slice(0, 2), endH = +t[1].slice(0, 2) + (t[1].endsWith('30') ? 0.5 : 0), cur = hr + now.getMinutes() / 60;
+                const st = cur >= endH ? ['Done', 'bg-slate-100 text-slate-500'] : cur >= startH ? ['Live now', 'bg-emerald-100 text-emerald-700'] : ['Upcoming', 'bg-amber-100 text-amber-700'];
+                return `<div class="flex gap-3"><div class="text-xs font-bold text-slate-500 w-12 shrink-0 pt-0.5">${t[0]}</div>
+                    <div class="flex-1 border-l-2 border-[#C4A649] pl-3"><div class="text-sm font-bold text-slate-900">${escapeHtml(c.title)}</div>
+                    <div class="text-[11px] text-slate-500">${t[2]} • ${n} student${n === 1 ? '' : 's'}</div>
+                    <span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold ${st[1]}">${st[0]}</span></div></div>`;
+            }).join('');
+
+            const top = students.slice().sort((a, b) => progressOf(b) - progressOf(a)).slice(0, 5);
+            document.getElementById('staffProgress').innerHTML = top.length ? top.map(s => `
+                <div><div class="flex justify-between text-xs mb-1"><span class="font-semibold text-slate-700">${escapeHtml(s.name)}</span><span class="text-slate-500">${progressOf(s)}%</span></div>
+                <div class="h-2 bg-slate-100 rounded-full"><div class="h-2 rounded-full bg-emerald-500" style="width:${progressOf(s)}%"></div></div></div>`).join('')
+                : '<p class="text-xs text-slate-500">No students yet.</p>';
+
+            document.getElementById('staffAnnouncements').innerHTML = announcements.slice(0, 6).map(a => `
+                <div class="border-l-2 border-sky-300 pl-3"><p class="text-xs text-slate-800">${escapeHtml(a.text)}</p><p class="text-[10px] text-slate-400 mt-0.5">${escapeHtml(a.by)} • ${timeAgo(a.ts)}</p></div>`).join('');
+
+            // Roster
             const filter = document.getElementById('staffCourseFilter');
             const chosen = filter.value;
             filter.innerHTML = '<option value="">All courses</option>' + courses.map(c => `<option>${escapeHtml(c.title)}</option>`).join('');
             filter.value = chosen;
-
             const q = document.getElementById('staffSearch').value.trim().toLowerCase();
             const rows = students.filter(s => (!chosen || s.course === chosen) && (!q || (s.name + s.email + s.course).toLowerCase().includes(q)));
             document.getElementById('staffStudentsTable').innerHTML = rows.length ? rows.map(s => `
@@ -1082,8 +1366,17 @@
                     <td class="p-3"><div class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center">${escapeHtml(initials(s.name))}</span><span class="font-medium text-slate-900">${escapeHtml(s.name)}</span></div></td>
                     <td class="p-3 text-slate-600 font-mono text-xs">${escapeHtml(s.email)}</td>
                     <td class="p-3 text-slate-700">${escapeHtml(s.course)}</td>
+                    <td class="p-3 w-40"><div class="h-2 bg-slate-100 rounded-full"><div class="h-2 rounded-full bg-emerald-500" style="width:${progressOf(s)}%"></div></div><span class="text-[10px] text-slate-500">${progressOf(s)}%</span></td>
                     <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.owing ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">${escapeHtml(s.status)}</span></td>
-                </tr>`).join('') : '<tr><td colspan="4" class="p-6 text-center text-xs text-slate-500">No students match.</td></tr>';
+                </tr>`).join('') : '<tr><td colspan="5" class="p-6 text-center text-xs text-slate-500">No students match.</td></tr>';
+
+            // Timetable
+            const times = ['09:00', '11:00', '13:00', '15:00'];
+            document.getElementById('staffTimetable').innerHTML = '<thead><tr class="text-xs uppercase text-slate-400"><th class="p-2 text-left">Time</th>' + ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map(d => `<th class="p-2 text-left">${d}</th>`).join('') + '</tr></thead><tbody>'
+                + times.map((tm, r) => `<tr><td class="p-2 text-xs font-bold text-slate-500">${tm}</td>` + [0, 1, 2, 3, 4].map(cI => {
+                    const c = courses.length ? courses[(r * 5 + cI) % courses.length] : null;
+                    return `<td class="p-3 rounded-xl ${(r + cI) % 2 ? 'bg-emerald-50 text-emerald-900' : 'bg-amber-50 text-amber-900'} text-xs font-semibold">${c ? escapeHtml(c.title) : ''}</td>`;
+                }).join('') + '</tr>').join('') + '</tbody>';
 
             document.getElementById('staffCoursesList').innerHTML = courses.map(c => `
                 <div class="bg-white border rounded-2xl p-5">
@@ -1207,6 +1500,7 @@
         }
 
         renderCourses();
+        applyBrandLogos();
         updateAuthNav();
     </script>
 </body>
