@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Oasis School | Where Innovation Meets Expertise</title>
+    <!-- Official SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='16 12 496 606'%3E%3Cpolygon points='255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160' fill='%23225A50'/%3E%3Cpolygon points='125,225 213,176 213,238 179,258 179,583 125,551' fill='%23225A50'/%3E%3Cpolygon points='352,78 405,106 405,386 228,493 228,383 268,404 352,350' fill='%23225A50'/%3E%3Cpolygon points='452,140 505,166 505,446 232,612 232,545 452,410' fill='%23225A50'/%3E%3Cpolygon points='207,272 270,236 335,272 270,308' fill='%23DEC45B'/%3E%3Cpolygon points='207,272 270,308 270,372 207,338' fill='%23AC903F'/%3E%3Cpolygon points='270,308 335,272 335,338 270,372' fill='%23937733'/%3E%3C/svg%3E">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .lm-anim .lm-outline {
+          fill: none;
+          stroke: #C4A649;
+          stroke-width: 2.5;
+          stroke-linejoin: round;
+          stroke-dasharray: 1;
+          stroke-dashoffset: 1;
+          animation: lm-draw 1.3s ease-out forwards, lm-fade-out 0.6s ease-in 1.5s forwards;
+        }
+        .lm-anim .lm-piece {
+          opacity: 0;
+          transform-box: fill-box;
+          transform-origin: center;
+          animation: lm-piece-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+          animation-delay: calc(0.7s + var(--i, 0) * 0.16s);
+        }
+        .lm-anim .lm-cube {
+          opacity: 0;
+          transform-box: fill-box;
+          transform-origin: center;
+          animation: lm-cube-drop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s forwards, lm-float 4s ease-in-out 2.6s infinite;
+        }
+        .lm-anim .lm-glow {
+          opacity: 0;
+          transform-box: fill-box;
+          transform-origin: center;
+          animation: lm-glow 3.2s ease-in-out 2s infinite;
+        }
+        .lm-anim .lm-sheen { animation: lm-sheen 6s ease-in-out 3s infinite; }
+        @keyframes lm-draw { to { stroke-dashoffset: 0; } }
+        @keyframes lm-fade-out { to { opacity: 0; } }
+        @keyframes lm-piece-in {
+          from { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.96); }
+          to { opacity: 1; transform: none; }
+        }
+        @keyframes lm-cube-drop {
+          0% { opacity: 0; transform: translateY(-140px) scale(0.5) rotate(-12deg); }
+          60% { opacity: 1; }
+          100% { opacity: 1; transform: none; }
+        }
+        @keyframes lm-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+        @keyframes lm-glow { 0%, 100% { opacity: 0.25; transform: scale(0.85); } 50% { opacity: 0.85; transform: scale(1.15); } }
+        @keyframes lm-sheen { 0% { transform: translateX(-320px); } 40%, 100% { transform: translateX(760px); } }
+        .gold-text { color: #C4A649; }
+        .bg-brand-dark { background-color: #0c3b2e; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 bg-[#0c3b2e] z-50 flex flex-col items-center justify-center transition-opacity duration-700">
+        <svg class="lm-anim" viewBox="16 12 496 606" width="160" height="195" role="img" aria-label="Tech Oasis">
+            <defs>
+                <radialGradient id="glow-pre"><stop offset="0%" stop-color="#E7CF6A" stop-opacity="0.9" /><stop offset="100%" stop-color="#E7CF6A" stop-opacity="0" /></radialGradient>
+                <linearGradient id="sheen-pre" x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stop-color="#fff" stop-opacity="0" /><stop offset="50%" stop-color="#fff" stop-opacity="0.35" /><stop offset="100%" stop-color="#fff" stop-opacity="0" /></linearGradient>
+                <clipPath id="clip-pre">
+                    <polygon points="255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160" />
+                    <polygon points="125,225 213,176 213,238 179,258 179,583 125,551" />
+                    <polygon points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" />
+                    <polygon points="452,140 505,166 505,446 232,612 232,545 452,410" />
+                </clipPath>
+            </defs>
+            <circle class="lm-glow" cx="270" cy="304" r="150" fill="url(#glow-pre)" />
+            <polygon class="lm-piece" style="--dx:-70px; --dy:-40px; --i:0" points="255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160" fill="#3A8D7C" />
+            <polygon class="lm-piece" style="--dx:-60px; --dy:50px; --i:1" points="125,225 213,176 213,238 179,258 179,583 125,551" fill="#3A8D7C" />
+            <polygon class="lm-piece" style="--dx:60px; --dy:-50px; --i:2" points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" fill="#3A8D7C" />
+            <polygon class="lm-piece" style="--dx:70px; --dy:45px; --i:3" points="452,140 505,166 505,446 232,612 232,545 452,410" fill="#3A8D7C" />
+            <g clip-path="url(#clip-pre)"><rect class="lm-sheen" x="0" y="-100" width="260" height="900" fill="url(#sheen-pre)" transform="skewX(-20)" /></g>
+            <polygon class="lm-outline" pathLength="1" points="255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160" />
+            <polygon class="lm-outline" pathLength="1" points="125,225 213,176 213,238 179,258 179,583 125,551" />
+            <polygon class="lm-outline" pathLength="1" points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" />
+            <polygon class="lm-outline" pathLength="1" points="452,140 505,166 505,446 232,612 232,545 452,410" />
+            <g class="lm-cube">
+                <polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B" />
+                <polygon points="207,272 270,308 270,372 207,338" fill="#AC903F" />
+                <polygon points="270,308 335,272 335,338 270,372" fill="#937733" />
+            </g>
+        </svg>
+        <div class="text-white text-2xl font-black tracking-wider mt-4">TECH <span class="gold-text">OASIS</span></div>
+        <p class="text-xs text-emerald-200 mt-1 uppercase tracking-widest">Where Innovation Meets Expertise</p>
+    </div>
+
+    <!-- Navigation -->
+    <header id="siteHeader" class="bg-white border-b sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <a href="#" onclick="showPage('home')" class="flex items-center gap-3">
+                    <svg class="lm-anim" viewBox="16 12 496 606" width="34" height="42" role="img" aria-label="Tech Oasis">
+                        <polygon points="255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160" fill="#225A50" />
+                        <polygon points="125,225 213,176 213,238 179,258 179,583 125,551" fill="#225A50" />
+                        <polygon points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" fill="#225A50" />
+                        <polygon points="452,140 505,166 505,446 232,612 232,545 452,410" fill="#225A50" />
+                        <g><polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B" /><polygon points="207,272 270,308 270,372 207,338" fill="#AC903F" /><polygon points="270,308 335,272 335,338 270,372" fill="#937733" /></g>
+                    </svg>
+                    <div>
+                        <div class="text-base font-black tracking-tight text-slate-900 leading-none">TECH <span class="gold-text">OASIS</span></div>
+                        <div class="text-[9px] text-slate-500 font-semibold tracking-wider uppercase mt-0.5">School</div>
+                    </div>
+                </a>
+                <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-slate-600">
+                    <a href="#" onclick="showPage('home')" class="hover:text-emerald-700 transition">Explore</a>
+                    <a href="#" onclick="showPage('about')" class="hover:text-emerald-700 transition">About Us</a>
+                    <a href="#" onclick="goToPortal()" class="hover:text-emerald-700 transition">My Portal</a>
+                </nav>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="openCourseraAuthModal()" id="authNavBtn" class="text-sm font-semibold text-slate-700 hover:text-emerald-700 px-4 py-2 border rounded-xl transition flex items-center gap-2">
+                    <i class="fa-solid fa-user-circle text-blue-600"></i> Log In / Register
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="appContainer">
+
+        <!-- PRE-LOGIN HOMEPAGE WITH AUTOMATIC HERO SLIDER -->
+        <div id="page-home" class="page-view max-w-7xl mx-auto px-4 py-8 space-y-8">
+            
+            <!-- Hero Image Slider Section -->
+            <div class="relative bg-slate-900 rounded-2xl overflow-hidden shadow-lg min-h-[380px] flex items-center">
+                <!-- Slide 1 -->
+                <div class="hero-slide absolute inset-0 transition-opacity duration-700 opacity-100 flex flex-col md:flex-row items-center justify-between p-8 md:p-12 bg-gradient-to-r from-slate-900 via-slate-900/90 to-[#0c3b2e]/80 text-white">
+                    <div class="max-w-xl space-y-4">
+                        <span class="bg-amber-500/20 text-amber-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-amber-400/30">Featured Program</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">Learn AI & Software from the companies building it</h2>
+                        <p class="text-sm text-slate-300">Master high-demand tech skills with structured courses and professional certifications for only $5.</p>
+                        <button onclick="showPage('about')" class="bg-[#C4A649] text-slate-900 font-bold text-xs px-6 py-3 rounded-xl shadow">Explore AI Courses →</button>
+                    </div>
+                    <div class="mt-6 md:mt-0 w-full md:w-1/2 flex justify-center">
+                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" alt="Tech Learning" class="rounded-xl shadow-2xl border border-white/10 max-h-64 object-cover">
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="hero-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-between p-8 md:p-12 bg-gradient-to-r from-blue-950 via-slate-900/90 to-slate-900 text-white">
+                    <div class="max-w-xl space-y-4">
+                        <span class="bg-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-blue-400/30">Career Acceleration</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">Navigate your career path in tech with world-class mentors</h2>
+                        <p class="text-sm text-slate-300">Join aspiring tech gurus across Africa and beyond with a 1-week free trial on all 12 programs.</p>
+                        <button onclick="openCourseraAuthModal()" class="bg-blue-600 text-white font-bold text-xs px-6 py-3 rounded-xl shadow">Get Started Now →</button>
+                    </div>
+                    <div class="mt-6 md:mt-0 w-full md:w-1/2 flex justify-center">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Collaboration" class="rounded-xl shadow-2xl border border-white/10 max-h-64 object-cover">
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="hero-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-between p-8 md:p-12 bg-gradient-to-r from-emerald-950 via-slate-900/90 to-slate-900 text-white">
+                    <div class="max-w-xl space-y-4">
+                        <span class="bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-emerald-400/30">Tech Oasis Plus</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">Unlock 12+ Professional Tech Programs & Certificates</h2>
+                        <p class="text-sm text-slate-300">Build real-world apps, databases, and AI models with a flat $5 fee per program.</p>
+                        <button onclick="showPage('home')" class="bg-emerald-600 text-white font-bold text-xs px-6 py-3 rounded-xl shadow">Browse Catalog →</button>
+                    </div>
+                    <div class="mt-6 md:mt-0 w-full md:w-1/2 flex justify-center">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" alt="Coding" class="rounded-xl shadow-2xl border border-white/10 max-h-64 object-cover">
+                    </div>
+                </div>
+                <!-- Slide Controls -->
+                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+                    <button onclick="currentSlide(0)" class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition slide-dot active-dot"></button>
+                    <button onclick="currentSlide(1)" class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition slide-dot"></button>
+                    <button onclick="currentSlide(2)" class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition slide-dot"></button>
+                </div>
+            </div>
+
+            <!-- New and Popular Section -->
+            <div>
+                <h3 class="text-xl font-extrabold text-slate-900 mb-4">New and popular</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-5 rounded-xl border shadow-sm space-y-3">
+                        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Most popular →</span>
+                        <div onclick="openCourseDetail(1)" class="cursor-pointer hover:opacity-80 transition">
+                            <h4 class="font-bold text-slate-900">Google Data Analytics Professional Certificate</h4>
+                            <p class="text-xs text-slate-500 mt-1">Professional Certificate • 4.8 ★</p>
+                        </div>
+                        <div onclick="openCourseDetail(4)" class="cursor-pointer hover:opacity-80 transition border-t pt-2">
+                            <h4 class="font-bold text-slate-900">Google Foundations: Data, Data, Everywhere</h4>
+                            <p class="text-xs text-slate-500 mt-1">Course • 4.7 ★</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border shadow-sm space-y-3">
+                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">Hot new releases →</span>
+                        <div onclick="openCourseDetail(2)" class="cursor-pointer hover:opacity-80 transition">
+                            <h4 class="font-bold text-slate-900">The Complete Claude Code & Anthropic API</h4>
+                            <p class="text-xs text-slate-500 mt-1">Guided Project • 4.9 ★</p>
+                        </div>
+                        <div onclick="openCourseDetail(6)" class="cursor-pointer hover:opacity-80 transition border-t pt-2">
+                            <h4 class="font-bold text-slate-900">AWS Security Engineer Advanced</h4>
+                            <p class="text-xs text-slate-500 mt-1">Professional Certificate • 4.8 ★</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border shadow-sm space-y-3">
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Trending AI courses →</span>
+                        <div onclick="openCourseDetail(5)" class="cursor-pointer hover:opacity-80 transition">
+                            <h4 class="font-bold text-slate-900">AWS Generative AI Developer Advanced</h4>
+                            <p class="text-xs text-slate-500 mt-1">Professional Certificate • 4.9 ★</p>
+                        </div>
+                        <div onclick="openCourseDetail(7)" class="cursor-pointer hover:opacity-80 transition border-t pt-2">
+                            <h4 class="font-bold text-slate-900">Google AI Essentials</h4>
+                            <p class="text-xs text-slate-500 mt-1">Specialization • 4.8 ★</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscription Banner -->
+            <div class="bg-blue-600 text-white p-8 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-6 shadow-md">
+                <div>
+                    <span class="bg-blue-500 text-white text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">Tech Oasis Plus</span>
+                    <h3 class="text-2xl font-black mt-2">Unlock 12+ Professional Tech Programs</h3>
+                    <p class="text-xs text-blue-100 mt-1">Start 1-week free trial • $5 flat fee per course afterwards</p>
+                </div>
+                <button onclick="openCourseraAuthModal()" class="bg-white text-blue-700 font-bold text-xs px-6 py-3 rounded-xl shadow">Start Free Trial</button>
+            </div>
+
+            <!-- Interactive Course Catalog Grid -->
+            <div>
+                <h3 class="text-xl font-extrabold text-slate-900 mb-6">Explore All Tech Programs ($5 each)</h3>
+                <div id="courseGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+            </div>
+        </div>
+
+        <!-- ABOUT US PAGE -->
+        <div id="page-about" class="page-view hidden py-16 max-w-5xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase">About Tech Oasis School</span>
+                <h2 class="text-4xl font-extrabold text-slate-900 mt-3">Where Innovation Meets Expertise</h2>
+                <p class="text-slate-600 mt-2 max-w-2xl mx-auto">We are dedicated to equipping aspiring tech gurus across Africa and beyond with world-class, affordable education in software development, design, artificial intelligence, and cloud systems.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl border shadow-sm">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <h3 class="font-bold text-lg text-slate-900">Affordable Learning</h3>
+                    <p class="text-slate-600 text-sm mt-2">Every program is priced at a flat $5 with a 1-week free trial, ensuring world-class tech skills are accessible to everyone.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border shadow-sm">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h3 class="font-bold text-lg text-slate-900">Practical Projects</h3>
+                    <p class="text-slate-600 text-sm mt-2">Build real-world web apps, mobile solutions, and AI models for your professional portfolio.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border shadow-sm">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-lg flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-globe"></i></div>
+                    <h3 class="font-bold text-lg text-slate-900">Global Community</h3>
+                    <p class="text-slate-600 text-sm mt-2">Join thousands of students and tech leaders collaborating across Africa and beyond.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- INDIVIDUAL COURSE PAGE -->
+        <div id="page-courseDetail" class="page-view hidden py-12 max-w-5xl mx-auto px-4">
+            <button onclick="showPage('home')" class="text-xs font-bold text-emerald-700 mb-6 flex items-center gap-1.5"><i class="fa-solid fa-arrow-left"></i> Back to Catalog</button>
+            <div class="bg-white rounded-2xl border shadow-sm overflow-hidden mb-8">
+                <div class="p-8 bg-[#0c3b2e] text-white">
+                    <span id="detailCat" class="bg-emerald-800 text-emerald-200 text-xs font-bold px-3 py-1 rounded uppercase"></span>
+                    <h1 id="detailTitle" class="text-3xl font-black mt-2"></h1>
+                    <p id="detailLevel" class="text-emerald-200 text-sm mt-1"></p>
+                </div>
+                <div class="p-8 space-y-8">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg uppercase tracking-wider mb-2">Program Description</h3>
+                        <p id="detailDesc" class="text-slate-600 leading-relaxed text-sm"></p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg uppercase tracking-wider mb-3">Featured Video Lecture</h3>
+                        <div class="aspect-video bg-slate-900 rounded-xl overflow-hidden shadow-lg flex items-center justify-center" id="videoContainer"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg uppercase tracking-wider mb-3">Curriculum Syllabus</h3>
+                        <div id="detailSyllabus" class="space-y-3"></div>
+                    </div>
+                    <div class="pt-6 border-t flex justify-between items-center">
+                        <div>
+                            <span class="text-xs text-slate-500 block">Enrollment Fee</span>
+                            <span class="text-2xl font-black text-slate-900">$5 <span class="text-xs text-slate-500 font-normal">one-time ($0 for 1-week trial)</span></span>
+                        </div>
+                        <button onclick="enrollCurrentCourse()" class="bg-[#0c3b2e] hover:bg-emerald-800 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2">
+                            <i class="fa-solid fa-gift"></i> Start 1-Week Free Trial
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STUDENT PORTAL -->
+        <div id="page-studentDash" class="page-view hidden py-12 max-w-6xl mx-auto px-4 space-y-8">
+            <div class="bg-white p-8 rounded-2xl border shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 id="studentWelcomeName" class="text-2xl sm:text-3xl font-black text-slate-900">Welcome, Student!</h2>
+                    <p class="text-slate-500 text-xs mt-1">Exploring your tech role and personalized recommendations based on your account.</p>
+                </div>
+                <button onclick="showPage('home')" class="bg-[#0c3b2e] text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow">Explore More Courses</button>
+            </div>
+            <div>
+                <h3 class="font-bold text-lg text-slate-900 mb-4">Resume your exploration</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="studentEnrolledList"></div>
+            </div>
+        </div>
+
+        <!-- STAFF PORTAL (sidebar app shell) -->
+        <div id="page-staffDash" class="page-view hidden">
+            <div class="flex min-h-screen bg-slate-100">
+                <aside class="hidden md:flex w-60 shrink-0 bg-white border-r flex-col">
+                    <div class="h-16 px-5 flex items-center gap-2 border-b font-black text-slate-900">TECH <span class="gold-text">OASIS</span></div>
+                    <nav class="p-3 space-y-1 text-sm font-semibold flex-1">
+                        <div class="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Main menu</div>
+                        <button onclick="staffTab('overview')" data-stab="overview" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-house w-4"></i> Overview</button>
+                        <button onclick="staffTab('students')" data-stab="students" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-user-graduate w-4"></i> My Students</button>
+                        <div class="px-3 pt-4 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Courses</div>
+                        <button onclick="staffTab('courses')" data-stab="courses" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-book-open w-4"></i> Course Catalog</button>
+                    </nav>
+                    <div class="p-3 border-t"><button onclick="showPage('home')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-500 hover:bg-slate-100"><i class="fa-solid fa-arrow-left w-4"></i> Back to site</button></div>
+                </aside>
+                <div class="flex-1 min-w-0">
+                    <div class="h-16 bg-white border-b px-4 sm:px-6 flex items-center justify-between gap-4">
+                        <div class="relative w-full max-w-xs">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input id="staffSearch" oninput="renderStaffDashboard()" placeholder="Search students, courses..." class="w-full bg-slate-100 rounded-full pl-8 pr-3 py-2 text-xs focus:outline-none">
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="text-right leading-tight"><div id="staffUserName" class="text-xs font-bold text-slate-900">Instructor</div><div class="text-[10px] text-slate-500">Staff</div></div>
+                            <div id="staffAvatar" class="w-9 h-9 rounded-full bg-[#0c3b2e] text-white text-xs font-bold flex items-center justify-center">IN</div>
+                            <button onclick="logoutUser()" class="text-xs font-semibold border rounded-xl px-3 py-2 hover:bg-slate-50"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                        </div>
+                    </div>
+                    <div class="p-4 sm:p-6 space-y-6">
+                        <div class="md:hidden flex gap-2 text-xs font-semibold">
+                            <button onclick="staffTab('overview')" class="border bg-white rounded-lg px-3 py-1.5">Overview</button>
+                            <button onclick="staffTab('students')" class="border bg-white rounded-lg px-3 py-1.5">Students</button>
+                            <button onclick="staffTab('courses')" class="border bg-white rounded-lg px-3 py-1.5">Courses</button>
+                        </div>
+                        <div>
+                            <h2 id="staffWelcome" class="text-2xl font-black text-slate-900">Instructor Hub</h2>
+                            <p class="text-xs text-slate-500 mt-1">Review student enrollments and manage course delivery.</p>
+                        </div>
+
+                        <section id="staffTab-overview" class="stab-panel space-y-6">
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="rounded-2xl p-5 bg-violet-50"><div class="text-xs text-slate-500">Students</div><div id="staffStatStudents" class="text-2xl font-black text-slate-900 mt-1">0</div></div>
+                                <div class="rounded-2xl p-5 bg-sky-50"><div class="text-xs text-slate-500">Courses</div><div id="staffStatCourses" class="text-2xl font-black text-slate-900 mt-1">0</div></div>
+                                <div class="rounded-2xl p-5 bg-orange-50"><div class="text-xs text-slate-500">Active trials</div><div id="staffStatTrials" class="text-2xl font-black text-slate-900 mt-1">0</div></div>
+                                <div class="rounded-2xl p-5 bg-emerald-50"><div class="text-xs text-slate-500">Expired trials</div><div id="staffStatExpired" class="text-2xl font-black text-slate-900 mt-1">0</div></div>
+                            </div>
+                            <div class="bg-white rounded-2xl border p-5">
+                                <h3 class="font-bold text-slate-900 mb-4">Enrollments by course</h3>
+                                <div id="staffBars" class="space-y-3"></div>
+                            </div>
+                        </section>
+
+                        <section id="staffTab-students" class="stab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <h3 class="font-bold text-slate-900 text-lg">Enrolled Students Roster</h3>
+                                <select id="staffCourseFilter" onchange="renderStaffDashboard()" class="border rounded-lg px-3 py-2 text-xs"><option value="">All courses</option></select>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Student</th><th class="p-3">Email Address</th><th class="p-3">Enrolled Course</th><th class="p-3">Status</th></tr></thead>
+                                    <tbody id="staffStudentsTable"></tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section id="staffTab-courses" class="stab-panel hidden">
+                            <div id="staffCoursesList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN LOGIN (dedicated page, separate from student/staff) -->
+        <div id="page-adminLogin" class="page-view hidden">
+            <div class="min-h-screen grid lg:grid-cols-2 bg-slate-950">
+                <div class="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-slate-900 via-[#0c3b2e] to-slate-900 text-white">
+                    <div class="font-black tracking-wider text-lg">TECH <span class="gold-text">OASIS</span></div>
+                    <div>
+                        <span class="bg-[#C4A649] text-slate-900 text-xs font-bold px-3 py-1 rounded uppercase">Restricted area</span>
+                        <h2 class="text-4xl font-black mt-4 leading-tight">Control Center</h2>
+                        <p class="text-slate-300 text-sm mt-3 max-w-sm">Manage curriculum, videos, student payments and re-engagement. Authorized administrators only.</p>
+                    </div>
+                    <p class="text-xs text-slate-400">Activity on this page may be monitored.</p>
+                </div>
+                <div class="flex items-center justify-center p-6 bg-white">
+                    <form onsubmit="handleAdminLogin(event)" class="w-full max-w-sm space-y-5">
+                        <div>
+                            <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+                            <h3 class="text-2xl font-black text-slate-900">Administrator sign in</h3>
+                            <p class="text-xs text-slate-500 mt-1">Students and staff: use the main Log In button instead.</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Admin ID</label>
+                            <input id="adminUserInput" required autocomplete="username" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-amber-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Passcode</label>
+                            <input id="adminPassInput" type="password" required autocomplete="current-password" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-amber-600">
+                        </div>
+                        <p id="adminLoginError" class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
+                        <button id="adminLoginBtn" type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition">Sign in to Admin</button>
+                        <button type="button" onclick="showPage('home')" class="w-full text-xs font-semibold text-slate-500 hover:text-slate-800">&larr; Back to site</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN PORTAL (sidebar app shell) -->
+        <div id="page-adminDash" class="page-view hidden">
+            <div class="flex min-h-screen bg-slate-100">
+                <aside class="hidden md:flex w-60 shrink-0 bg-white border-r flex-col">
+                    <div class="h-16 px-5 flex items-center gap-2 border-b font-black text-slate-900">TECH <span class="gold-text">OASIS</span></div>
+                    <nav class="p-3 space-y-1 text-sm font-semibold flex-1">
+                        <div class="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Main menu</div>
+                        <button onclick="adminTab('overview')" data-atab="overview" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-house w-4"></i> Overview</button>
+                        <button onclick="adminTab('students')" data-atab="students" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-user-graduate w-4"></i> Students &amp; Payments</button>
+                        <div class="px-3 pt-4 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Administration</div>
+                        <button onclick="adminTab('courses')" data-atab="courses" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-book-open w-4"></i> Courses &amp; Videos</button>
+                    </nav>
+                    <div class="p-3 border-t"><button onclick="showPage('home')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-500 hover:bg-slate-100"><i class="fa-solid fa-arrow-left w-4"></i> Exit to site</button></div>
+                </aside>
+                <div class="flex-1 min-w-0">
+                    <div class="h-16 bg-white border-b px-4 sm:px-6 flex items-center justify-between gap-4">
+                        <div class="relative w-full max-w-xs">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input id="adminSearch" oninput="renderAdminDashboard()" placeholder="Search students or courses..." class="w-full bg-slate-100 rounded-full pl-8 pr-3 py-2 text-xs focus:outline-none">
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="text-right leading-tight"><div class="text-xs font-bold text-slate-900">Administrator</div><div class="text-[10px] text-slate-500">Admin</div></div>
+                            <div class="w-9 h-9 rounded-full bg-[#C4A649] text-slate-900 text-xs font-bold flex items-center justify-center">AD</div>
+                            <button onclick="adminLogout()" class="text-xs font-semibold border rounded-xl px-3 py-2 hover:bg-slate-50"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                        </div>
+                    </div>
+                    <div class="p-4 sm:p-6 space-y-6">
+                        <div class="md:hidden flex gap-2 text-xs font-semibold">
+                            <button onclick="adminTab('overview')" class="border bg-white rounded-lg px-3 py-1.5">Overview</button>
+                            <button onclick="adminTab('students')" class="border bg-white rounded-lg px-3 py-1.5">Students</button>
+                            <button onclick="adminTab('courses')" class="border bg-white rounded-lg px-3 py-1.5">Courses</button>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-amber-500"></i> Tech Oasis Control Center</h2>
+                            <p class="text-xs text-slate-500 mt-1">Manage curriculum, upload videos, track student payments ($5 flat) and re-engagement.</p>
+                        </div>
+
+                        <section id="adminTab-overview" class="atab-panel space-y-6">
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="rounded-2xl p-5 bg-violet-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Total students</div><h4 id="adminStatStudents" class="text-2xl font-black text-slate-900 mt-1">0</h4></div><i class="fa-solid fa-users text-violet-500 text-xl"></i></div>
+                                <div class="rounded-2xl p-5 bg-sky-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Active trials</div><h4 id="adminStatTrials" class="text-2xl font-black text-slate-900 mt-1">0</h4></div><i class="fa-solid fa-clock text-sky-500 text-xl"></i></div>
+                                <div class="rounded-2xl p-5 bg-orange-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Owing / overdue</div><h4 id="adminStatOwing" class="text-2xl font-black text-slate-900 mt-1">0</h4></div><i class="fa-solid fa-triangle-exclamation text-orange-500 text-xl"></i></div>
+                                <div class="rounded-2xl p-5 bg-emerald-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Revenue ($5)</div><h4 id="adminStatRev" class="text-2xl font-black text-slate-900 mt-1">$0</h4></div><i class="fa-solid fa-wallet text-emerald-500 text-xl"></i></div>
+                            </div>
+                            <div class="grid lg:grid-cols-3 gap-6">
+                                <div class="lg:col-span-2 bg-white rounded-2xl border p-5">
+                                    <h3 class="font-bold text-slate-900 mb-4">Enrollments by course</h3>
+                                    <div id="adminBars" class="space-y-3"></div>
+                                </div>
+                                <div class="bg-white rounded-2xl border p-5">
+                                    <h3 class="font-bold text-slate-900 mb-4">Payment status</h3>
+                                    <div id="adminPayBreakdown" class="space-y-4"></div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="adminTab-students" class="atab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <h3 class="font-bold text-slate-900 text-lg">Student Roster &amp; Payments ($5 per course)</h3>
+                                <div class="flex items-center gap-2">
+                                    <select id="adminStatusFilter" onchange="renderAdminDashboard()" class="border rounded-lg px-3 py-2 text-xs"><option value="">All statuses</option><option value="trial">Active trial</option><option value="owing">Owing</option></select>
+                                    <button onclick="exportStudentsCsv()" class="border rounded-lg px-3 py-2 text-xs font-semibold hover:bg-slate-50"><i class="fa-solid fa-download mr-1"></i> Export data</button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Student</th><th class="p-3">Course</th><th class="p-3">Card</th><th class="p-3">Status</th><th class="p-3">Action</th></tr></thead>
+                                    <tbody id="adminStudentsTable"></tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section id="adminTab-courses" class="atab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-bold text-slate-900 text-lg">Manage Courses &amp; Videos</h3>
+                                <button onclick="openCourseForm()" class="bg-[#0c3b2e] text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow"><i class="fa-solid fa-plus"></i> Add Course</button>
+                            </div>
+                            <div id="adminCoursesList" class="grid md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="siteFooter" class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <div class="text-xl font-bold text-white flex items-center gap-2">
+                    <svg class="lm-anim" viewBox="16 12 496 606" width="22" height="28" role="img" aria-label="Tech Oasis">
+                        <polygon points="255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160" fill="#3A8D7C" />
+                        <polygon points="125,225 213,176 213,238 179,258 179,583 125,551" fill="#3A8D7C" />
+                        <polygon points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" fill="#3A8D7C" />
+                        <polygon points="452,140 505,166 505,446 232,612 232,545 452,410" fill="#3A8D7C" />
+                        <g><polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B" /><polygon points="207,272 270,308 270,372 207,338" fill="#AC903F" /><polygon points="270,308 335,272 335,338 270,372" fill="#937733" /></g>
+                    </svg>
+                    Tech Oasis School
+                </div>
+                <p class="text-sm mt-2">Where Innovation Meets Expertise. Empowering tech gurus across Africa and beyond.</p>
+            </div>
+            <div class="flex items-center space-x-6">
+                <button onclick="openAdminLogin()" class="text-slate-500 hover:text-amber-400 transition p-2 bg-slate-800 rounded-lg text-xs" title="Admin Portal">
+                    <i class="fa-solid fa-lock text-sm"></i> Admin Portal
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Student & Staff Login Modal (role first, then credentials) -->
+    <div id="courseraAuthModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('courseraAuthModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600" aria-label="Close"><i class="fa-solid fa-xmark text-lg"></i></button>
+
+            <!-- Step 1: choose role -->
+            <div id="authStepRole">
+                <h3 class="text-2xl font-bold text-slate-900">Welcome to Tech Oasis</h3>
+                <p class="text-xs text-slate-500 mt-1 mb-6">First, tell us who you are so we can take you to the right place.</p>
+                <div class="space-y-3">
+                    <button onclick="chooseRole('student')" class="w-full text-left border-2 rounded-xl p-4 flex items-center gap-4 hover:border-[#0c3b2e] hover:bg-emerald-50/50 transition">
+                        <span class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg"><i class="fa-solid fa-user-graduate"></i></span>
+                        <span class="flex-1"><span class="block font-bold text-slate-900">I'm a Student</span><span class="block text-xs text-slate-500">Browse courses, start trials and learn.</span></span>
+                        <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                    </button>
+                    <button onclick="chooseRole('staff')" class="w-full text-left border-2 rounded-xl p-4 flex items-center gap-4 hover:border-[#0c3b2e] hover:bg-emerald-50/50 transition">
+                        <span class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg"><i class="fa-solid fa-chalkboard-user"></i></span>
+                        <span class="flex-1"><span class="block font-bold text-slate-900">I'm Staff / Instructor</span><span class="block text-xs text-slate-500">Manage your students and course delivery.</span></span>
+                        <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                    </button>
+                </div>
+                <p class="mt-6 text-[11px] text-slate-400">Administrators sign in from a separate, dedicated page.</p>
+            </div>
+
+            <!-- Step 2: credentials -->
+            <div id="authStepForm" class="hidden">
+                <button onclick="backToRole()" class="text-xs font-bold text-slate-500 hover:text-slate-800 mb-4"><i class="fa-solid fa-arrow-left mr-1"></i> Change role</button>
+                <span id="authRoleBadge" class="inline-block text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 mb-2"></span>
+                <h3 id="authTitle" class="text-2xl font-bold text-slate-900">Log in</h3>
+
+                <div id="authModeTabs" class="grid grid-cols-2 gap-1 bg-slate-100 p-1 rounded-xl my-4 text-sm font-semibold">
+                    <button type="button" id="tabLogin" onclick="setAuthMode('login')" class="py-2 rounded-lg">Log in</button>
+                    <button type="button" id="tabRegister" onclick="setAuthMode('register')" class="py-2 rounded-lg">Create account</button>
+                </div>
+
+                <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                    <div id="authNameWrap" class="hidden">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
+                        <input type="text" id="authNameInput" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-700" placeholder="Margaret" autocomplete="name">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Email <span class="text-red-500">*</span></label>
+                        <input type="email" id="authEmailInput" required class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-700" placeholder="name@email.com" autocomplete="email">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Password <span class="text-red-500">*</span></label>
+                        <input type="password" id="authPassInput" required minlength="6" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-700" placeholder="At least 6 characters" autocomplete="current-password">
+                    </div>
+                    <p id="authError" class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
+                    <button type="submit" id="authSubmitBtn" class="w-full bg-[#0c3b2e] hover:bg-emerald-800 text-white font-bold py-3 rounded-xl shadow transition">Log in</button>
+                </form>
+
+                <div id="authSocial" class="hidden">
+                    <div class="relative flex py-4 items-center">
+                        <div class="flex-grow border-t border-slate-200"></div>
+                        <span class="flex-shrink mx-4 text-slate-400 text-xs uppercase tracking-wider">or</span>
+                        <div class="flex-grow border-t border-slate-200"></div>
+                    </div>
+                    <div class="space-y-3">
+                        <button onclick="socialLogin('Google')" class="w-full border border-slate-300 hover:bg-slate-50 font-semibold text-sm py-2.5 rounded-xl flex items-center justify-center gap-3 transition"><i class="fa-brands fa-google text-red-500"></i> Continue with Google</button>
+                        <button onclick="socialLogin('Facebook')" class="w-full border border-slate-300 hover:bg-slate-50 font-semibold text-sm py-2.5 rounded-xl flex items-center justify-center gap-3 transition"><i class="fa-brands fa-facebook text-blue-600"></i> Continue with Facebook</button>
+                        <button onclick="socialLogin('Apple')" class="w-full border border-slate-300 hover:bg-slate-50 font-semibold text-sm py-2.5 rounded-xl flex items-center justify-center gap-3 transition"><i class="fa-brands fa-apple text-slate-900"></i> Continue with Apple</button>
+                    </div>
+                </div>
+                <p id="authStaffNote" class="hidden mt-4 text-[11px] text-slate-500 bg-slate-50 border rounded-lg p-3">Staff accounts are created by an administrator. Demo staff login: <code class="font-bold text-slate-700">instructor@techoasis.com</code> / <code class="font-bold text-slate-700">staff123</code></p>
+                <p class="mt-4 text-[11px] text-slate-500">I accept Tech Oasis's <a href="#" class="text-blue-600 underline">Terms of Use</a> and <a href="#" class="text-blue-600 underline">Privacy Notice</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trial & Card Connection Modal -->
+    <div id="trialModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeModal('trialModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xl"><i class="fa-solid fa-credit-card"></i></div>
+                <h3 class="text-xl font-bold text-slate-900">Start 1-Week Free Trial</h3>
+                <p class="text-xs text-slate-500 mt-1">Connect card for verification. <span class="font-bold text-emerald-700">$0 due today</span> ($5 one-time charge after trial).</p>
+            </div>
+            <form onsubmit="handleTrialSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Card Number (Visa / Mastercard)</label>
+                    <input type="text" id="cardNumber" required class="w-full border rounded-lg px-3 py-2 text-sm font-mono" placeholder="4532 •••• •••• 8821">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Expiry</label>
+                        <input type="text" required class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="MM/YY">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">CVV</label>
+                        <input type="password" maxlength="4" required class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="123">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-[#0c3b2e] hover:bg-emerald-800 text-white font-bold py-3 rounded-xl shadow-md transition mt-2">
+                    Activate Free Trial
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Course Modal -->
+    <div id="courseFormModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('courseFormModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            <h3 id="courseFormTitle" class="text-xl font-bold text-slate-900 mb-4">Add/Edit Course & Content</h3>
+            <form onsubmit="handleCourseSave(event)" class="space-y-4">
+                <input type="hidden" id="editCourseId">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Course Title</label>
+                    <input type="text" id="formTitle" required class="w-full border rounded-lg px-3 py-2 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Category</label>
+                    <select id="formCat" class="w-full border rounded-lg px-3 py-2 text-sm">
+                        <option value="Development">Development</option>
+                        <option value="Design">Design</option>
+                        <option value="AI & Data">AI & Data</option>
+                        <option value="Security & Cloud">Security & Cloud</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Level</label>
+                    <input type="text" id="formLevel" required class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="Beginner Level">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Instructor</label>
+                    <input type="text" id="formInstructor" required class="w-full border rounded-lg px-3 py-2 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Detailed Description</label>
+                    <textarea id="formDesc" rows="3" required class="w-full border rounded-lg px-3 py-2 text-sm"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Video Lecture Source (Upload File OR Enter Embed URL)</label>
+                    <div class="space-y-2">
+                        <input type="file" id="formVideoFile" accept="video/*" class="w-full border rounded-lg px-3 py-2 text-xs bg-slate-50">
+                        <input type="text" id="formVideoUrl" class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="https://www.youtube.com/embed/ScMzIvxBSi4">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Curriculum Modules (comma separated)</label>
+                    <input type="text" id="formSyllabus" required class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="Introduction, Core Concepts, Advanced Projects">
+                </div>
+                <button type="submit" class="w-full bg-[#0c3b2e] text-white font-bold py-2.5 rounded-xl">Save Course Content</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Email Re-engagement Modal -->
+    <div id="emailModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeModal('emailModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-xl font-bold text-slate-900 mb-1">Send Re-engagement Email</h3>
+            <p id="emailRecipientLabel" class="text-xs text-slate-500 mb-4"></p>
+            <form onsubmit="sendReengagementEmail(event)" class="space-y-4">
+                <input type="hidden" id="emailTargetStudent">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Subject</label>
+                    <input type="text" id="emailSubject" required class="w-full border rounded-lg px-3 py-2 text-sm" value="Continue your Tech Oasis learning journey ($5 course)">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Message</label>
+                    <textarea id="emailBody" rows="4" required class="w-full border rounded-lg px-3 py-2 text-sm">We noticed you haven't logged in recently. Jump back in today and master top tech skills!</textarea>
+                </div>
+                <button type="submit" class="w-full bg-[#0c3b2e] text-white font-bold py-2.5 rounded-xl flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Send Email Now
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 700);
+            }, 2000);
+        });
+
+        // Hero Slider Logic
+        let currentSlideIdx = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.slide-dot');
+
+        function showSlide(idx) {
+            slides.forEach((slide, i) => {
+                slide.style.opacity = i === idx ? '1' : '0';
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('bg-white', i === idx);
+                dot.classList.toggle('bg-white/50', i !== idx);
+            });
+        }
+
+        function currentSlide(idx) {
+            currentSlideIdx = idx;
+            showSlide(currentSlideIdx);
+        }
+
+        setInterval(() => {
+            currentSlideIdx = (currentSlideIdx + 1) % slides.length;
+            showSlide(currentSlideIdx);
+        }, 5000);
+
+        let courses = JSON.parse(localStorage.getItem('to_courses')) || [
+            { id: 1, title: 'Web Design', category: 'Design', level: 'Beginner Level', instructor: 'Yepa Udeami', desc: 'Master modern UI layout principles, wireframing, and responsive web aesthetics.', video: 'https://www.youtube.com/embed/ScMzIvxBSi4', syllabus: ['Introduction to UI', 'Figma & Prototyping', 'Responsive Grids', 'Design Systems'] },
+            { id: 2, title: 'Web Development', category: 'Development', level: 'Intermediate', instructor: 'Clifford Mensah', desc: 'Build full-stack dynamic websites utilizing modern frontend and backend tools.', video: 'https://www.youtube.com/embed/zJSY8tbf_ys', syllabus: ['HTML5 & CSS3', 'JavaScript ES6+', 'React & Tailwind', 'Node.js & Supabase'] },
+            { id: 3, title: 'Coding', category: 'Development', level: 'All Levels', instructor: 'Tech Oasis Faculty', desc: 'Learn core programming logic, algorithms, and syntax across popular languages.', video: 'https://www.youtube.com/embed/rfscVS0vtbw', syllabus: ['Variables & Logic', 'Data Structures', 'Algorithms', 'Debugging'] },
+            { id: 4, title: 'Artificial Intelligence (AI)', category: 'AI & Data', level: 'Intermediate', instructor: 'Dr. Kofi Mensah', desc: 'Understand neural networks, prompt engineering, and generative AI models.', video: 'https://www.youtube.com/embed/JMUxmLyrhSk', syllabus: ['AI Fundamentals', 'Prompt Engineering', 'Generative Models', 'API Integration'] },
+            { id: 5, title: 'Machine Learning', category: 'AI & Data', level: 'Advanced', instructor: 'Dr. Kofi Mensah', desc: 'Train predictive models and evaluate algorithms using Python and data libraries.', video: 'https://www.youtube.com/embed/i_LwzRVP7bg', syllabus: ['Python for ML', 'Scikit-Learn', 'Supervised Learning', 'Model Evaluation'] },
+            { id: 6, title: 'Cybersecurity', category: 'Security & Cloud', level: 'Intermediate', instructor: 'Security Team', desc: 'Protect networks, detect threats, and learn ethical hacking protocols.', video: 'https://www.youtube.com/embed/3Kq1MIfTWCE', syllabus: ['Network Security', 'Threat Analysis', 'Ethical Hacking', 'Defense Protocols'] },
+            { id: 7, title: 'Data Science', category: 'AI & Data', level: 'Beginner Level', instructor: 'Data Faculty', desc: 'Analyze complex datasets, visualize metrics, and draw data-backed insights.', video: 'https://www.youtube.com/embed/ua-CiDNNj30', syllabus: ['Data Cleaning', 'Pandas & NumPy', 'Data Visualization', 'SQL Queries'] },
+            { id: 8, title: 'App Development', category: 'Development', level: 'Intermediate', instructor: 'Clifford Mensah', desc: 'Design and build native and cross-platform mobile apps for iOS and Android.', video: 'https://www.youtube.com/embed/fis26HvvDII', syllabus: ['Mobile UI UX', 'React Native', 'State Management', 'App Store Deployment'] },
+            { id: 9, title: 'UI/UX Design', category: 'Design', level: 'Beginner Level', instructor: 'Yepa Udeami', desc: 'Craft user-centered interfaces, user flows, and interactive prototypes in Figma.', video: 'https://www.youtube.com/embed/c9Wg6Cb_YlU', syllabus: ['User Research', 'Wireframing', 'Interactive Prototypes', 'Usability Testing'] },
+            { id: 10, title: 'Digital Marketing', category: 'Design', level: 'Beginner Level', instructor: 'Marketing Faculty', desc: 'Drive online growth with SEO, social media advertising, and content funnels.', video: 'https://www.youtube.com/embed/nU-IIXBWlS4', syllabus: ['SEO Strategies', 'Social Media Ads', 'Content Funnels', 'Analytics & ROI'] },
+            { id: 11, title: 'Cloud Computing', category: 'Security & Cloud', level: 'Intermediate', instructor: 'Cloud Faculty', desc: 'Deploy and manage scalable cloud architectures across major platforms.', video: 'https://www.youtube.com/embed/RWbOihx6-bQ', syllabus: ['Cloud Basics', 'AWS & Vercel', 'Serverless Functions', 'DevOps Pipelines'] },
+            { id: 12, title: 'Blockchain', category: 'Development', level: 'Advanced', instructor: 'Web3 Faculty', desc: 'Understand distributed ledgers, smart contracts, and decentralized apps.', video: 'https://www.youtube.com/embed/gyMwXuJrbJQ', syllabus: ['Blockchain Basics', 'Solidity Smart Contracts', 'DApp Architecture', 'Security Audits'] }
+        ];
+
+        let students = JSON.parse(localStorage.getItem('to_students')) || [
+            { id: 1, name: 'Margaret', email: 'margaret@gmail.com', course: 'Web Development', card: '•••• 4242', status: 'Active Trial ($5 fee pending)', owing: false, trialEnd: new Date(Date.now() + 6 * 86400000).toISOString() },
+            { id: 2, name: 'Kofi Annan Jr.', email: 'kofi@gmail.com', course: 'Artificial Intelligence (AI)', card: '•••• 8821', status: 'Trial Expired', owing: true, trialEnd: new Date(Date.now() - 86400000).toISOString() }
+        ];
+
+        // ---- Accounts & sessions ----
+        // Student/staff accounts share one store; each has a role. Admin is separate (sessionStorage, own login page).
+        // NOTE: front-end demo only - credentials live in the browser, so this is not real security.
+        let users = JSON.parse(localStorage.getItem('to_users')) || [
+            { role: 'staff', name: 'Clifford Mensah', email: 'instructor@techoasis.com', password: 'staff123' }
+        ];
+        let currentUser = JSON.parse(localStorage.getItem('to_current_user'));
+        if (currentUser && !currentUser.role) currentUser.role = 'student';
+        let selectedCourse = null;
+        let authRole = null, authMode = 'login';
+        const ADMIN_ID = 'admin', ADMIN_PASS = 'admin123';
+        let adminFails = 0, adminLockUntil = 0;
+
+        const isAdmin = () => sessionStorage.getItem('to_admin_session') === '1';
+        const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        const initials = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || '?';
+
+        function showPage(pageId) {
+            // Route guards: each portal needs the matching role
+            if (pageId === 'studentDash' && !(currentUser && currentUser.role === 'student')) return currentUser ? goToPortal() : openCourseraAuthModal('student');
+            if (pageId === 'staffDash' && !(currentUser && currentUser.role === 'staff')) return currentUser ? goToPortal() : openCourseraAuthModal('staff');
+            if (pageId === 'adminDash' && !isAdmin()) return showPage('adminLogin');
+
+            document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+            window.scrollTo(0, 0);
+
+            // Dashboards and the admin login use their own app shell, without the public header/footer
+            const shell = ['staffDash', 'adminDash', 'adminLogin'].includes(pageId);
+            document.getElementById('siteHeader').classList.toggle('hidden', shell);
+            document.getElementById('siteFooter').classList.toggle('hidden', shell);
+
+            if (pageId === 'studentDash') renderStudentDashboard();
+            if (pageId === 'staffDash') { staffTab('overview'); renderStaffDashboard(); }
+            if (pageId === 'adminDash') { adminTab('overview'); renderAdminDashboard(); }
+            updateAuthNav();
+        }
+
+        function goToPortal() {
+            if (!currentUser) return openCourseraAuthModal();
+            showPage(currentUser.role === 'staff' ? 'staffDash' : 'studentDash');
+        }
+
+        function updateAuthNav() {
+            const btn = document.getElementById('authNavBtn');
+            if (currentUser) {
+                btn.innerHTML = `<i class="fa-solid fa-user-check text-emerald-600"></i> ${escapeHtml(currentUser.name)} <span class="text-[10px] uppercase font-bold text-slate-400">${currentUser.role}</span> <span class="text-xs text-slate-400 ml-1" onclick="logoutUser(event)">(Logout)</span>`;
+            } else {
+                btn.innerHTML = `<i class="fa-solid fa-user-circle text-blue-600"></i> Log In / Register`;
+            }
+        }
+
+        function logoutUser(e) {
+            if (e) e.stopPropagation();
+            currentUser = null;
+            localStorage.removeItem('to_current_user');
+            updateAuthNav();
+            showPage('home');
+        }
+
+        function startSession(user) {
+            currentUser = { name: user.name, email: user.email, role: user.role };
+            localStorage.setItem('to_current_user', JSON.stringify(currentUser));
+            closeModal('courseraAuthModal');
+            showPage(user.role === 'staff' ? 'staffDash' : 'studentDash');
+        }
+
+        // ---- Student / staff login (role first) ----
+        function openCourseraAuthModal(role) {
+            document.getElementById('courseraAuthModal').classList.remove('hidden');
+            if (role) chooseRole(role); else backToRole();
+        }
+
+        function backToRole() {
+            authRole = null;
+            document.getElementById('authStepRole').classList.remove('hidden');
+            document.getElementById('authStepForm').classList.add('hidden');
+        }
+
+        function chooseRole(role) {
+            authRole = role;
+            const staff = role === 'staff';
+            document.getElementById('authStepRole').classList.add('hidden');
+            document.getElementById('authStepForm').classList.remove('hidden');
+            const badge = document.getElementById('authRoleBadge');
+            badge.textContent = staff ? 'Staff / Instructor' : 'Student';
+            badge.className = 'inline-block text-[10px] font-bold uppercase px-2.5 py-1 rounded-full mb-2 ' + (staff ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800');
+            // Staff can only log in; students can also register and use social sign-in
+            document.getElementById('authModeTabs').classList.toggle('hidden', staff);
+            document.getElementById('authSocial').classList.toggle('hidden', staff);
+            document.getElementById('authStaffNote').classList.toggle('hidden', !staff);
+            setAuthMode('login');
+        }
+
+        function setAuthMode(mode) {
+            authMode = mode;
+            const reg = mode === 'register';
+            document.getElementById('authNameWrap').classList.toggle('hidden', !reg);
+            document.getElementById('authNameInput').required = reg;
+            document.getElementById('authTitle').textContent = reg ? 'Create your student account' : (authRole === 'staff' ? 'Staff log in' : 'Log in');
+            document.getElementById('authSubmitBtn').textContent = reg ? 'Create account' : 'Log in';
+            document.getElementById('authPassInput').autocomplete = reg ? 'new-password' : 'current-password';
+            document.getElementById('tabLogin').className = 'py-2 rounded-lg ' + (reg ? 'text-slate-500' : 'bg-white shadow text-slate-900');
+            document.getElementById('tabRegister').className = 'py-2 rounded-lg ' + (reg ? 'bg-white shadow text-slate-900' : 'text-slate-500');
+            showAuthError('');
+        }
+
+        function showAuthError(msg) {
+            const el = document.getElementById('authError');
+            el.textContent = msg;
+            el.classList.toggle('hidden', !msg);
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmailInput').value.trim().toLowerCase();
+            const password = document.getElementById('authPassInput').value;
+            const found = users.find(u => u.email === email);
+
+            if (authMode === 'register' && authRole === 'student') {
+                if (found) return showAuthError('An account with this email already exists. Please log in.');
+                const user = { role: 'student', name: document.getElementById('authNameInput').value.trim() || email.split('@')[0], email, password };
+                users.push(user);
+                localStorage.setItem('to_users', JSON.stringify(users));
+                return startSession(user);
+            }
+
+            if (!found || found.password !== password) return showAuthError('Incorrect email or password.');
+            if (found.role !== authRole) {
+                return showAuthError(found.role === 'staff'
+                    ? 'This is a staff account. Go back and choose "Staff / Instructor".'
+                    : 'This is a student account. Go back and choose "Student".');
+            }
+            startSession(found);
+        }
+
+        function socialLogin(provider) {
+            // Social sign-in is offered to students only
+            const email = 'user@' + provider.toLowerCase() + '.com';
+            let user = users.find(u => u.email === email);
+            if (!user) {
+                user = { role: 'student', name: provider + ' User', email, password: '' };
+                users.push(user);
+                localStorage.setItem('to_users', JSON.stringify(users));
+            }
+            startSession(user);
+        }
+
+        // ---- Admin login (separate page + session) ----
+        function openAdminLogin() {
+            showPage(isAdmin() ? 'adminDash' : 'adminLogin');
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const err = document.getElementById('adminLoginError');
+            const now = Date.now();
+            if (now < adminLockUntil) {
+                err.textContent = 'Too many attempts. Try again in ' + Math.ceil((adminLockUntil - now) / 1000) + 's.';
+                return err.classList.remove('hidden');
+            }
+            const id = document.getElementById('adminUserInput').value.trim();
+            const pass = document.getElementById('adminPassInput').value;
+            if (id === ADMIN_ID && pass === ADMIN_PASS) {
+                adminFails = 0;
+                sessionStorage.setItem('to_admin_session', '1');
+                document.getElementById('adminPassInput').value = '';
+                err.classList.add('hidden');
+                return showPage('adminDash');
+            }
+            adminFails++;
+            if (adminFails >= 5) { adminLockUntil = now + 30000; adminFails = 0; err.textContent = 'Too many attempts. Locked for 30 seconds.'; }
+            else err.textContent = 'Invalid admin ID or passcode.';
+            err.classList.remove('hidden');
+        }
+
+        function adminLogout() {
+            sessionStorage.removeItem('to_admin_session');
+            showPage('home');
+        }
+
+        // ---- Dashboard tabs ----
+        function switchTab(prefix, name) {
+            const idBase = prefix === 's' ? 'staffTab-' : 'adminTab-';
+            document.querySelectorAll('.' + prefix + 'tab-panel').forEach(p => p.classList.toggle('hidden', p.id !== idBase + name));
+            document.querySelectorAll('.' + prefix + 'tab').forEach(b => {
+                const on = b.dataset[prefix + 'tab'] === name;
+                b.classList.toggle('bg-violet-50', on); b.classList.toggle('text-violet-700', on);
+                b.classList.toggle('text-slate-600', !on); b.classList.toggle('hover:bg-slate-50', !on);
+            });
+        }
+        const staffTab = n => switchTab('s', n);
+        const adminTab = n => switchTab('a', n);
+
+        function barRows(el) {
+            const counts = courses.map(c => ({ t: c.title, n: students.filter(s => s.course === c.title).length })).filter(x => x.n > 0);
+            const max = Math.max(1, ...counts.map(x => x.n));
+            el.innerHTML = counts.length ? counts.map(x => `
+                <div><div class="flex justify-between text-xs mb-1"><span class="font-semibold text-slate-700">${escapeHtml(x.t)}</span><span class="text-slate-500">${x.n}</span></div>
+                <div class="h-2 bg-slate-100 rounded-full"><div class="h-2 rounded-full bg-gradient-to-r from-violet-600 to-orange-400" style="width:${x.n / max * 100}%"></div></div></div>`).join('')
+                : '<p class="text-xs text-slate-500">No enrollments yet.</p>';
+        }
+
+        function exportStudentsCsv() {
+            const q = v => '"' + String(v).replace(/"/g, '""') + '"';
+            const rows = [['Name', 'Email', 'Course', 'Card', 'Status']].concat(students.map(s => [s.name, s.email, s.course, s.card, s.owing ? 'Owing ($5)' : s.status]));
+            const url = URL.createObjectURL(new Blob([rows.map(r => r.map(q).join(',')).join('\n')], { type: 'text/csv' }));
+            const a = document.createElement('a'); a.href = url; a.download = 'students.csv'; a.click(); URL.revokeObjectURL(url);
+        }
+
+        function renderCourses(list = courses) {
+            const grid = document.getElementById('courseGrid');
+            grid.innerHTML = '';
+            list.forEach(c => {
+                grid.innerHTML += `
+                    <div onclick="openCourseDetail(${c.id})" class="bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between group">
+                        <div class="p-5">
+                            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase">${c.category}</span>
+                            <h4 class="font-bold text-base text-slate-900 mt-2.5 group-hover:text-emerald-700 transition">${c.title}</h4>
+                            <p class="text-xs text-slate-500 mt-1">${c.instructor} • 4.8 ★</p>
+                        </div>
+                        <div class="px-5 py-3.5 bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-slate-50 border-t flex items-center justify-between text-xs transition group-hover:from-emerald-100 group-hover:to-teal-50">
+                            <span class="font-bold text-slate-900 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span> $5 <span class="text-[10px] font-normal text-slate-500">one-time</span></span>
+                            <span class="font-bold text-emerald-800 flex items-center gap-1 group-hover:translate-x-1 transition-transform">View & Video <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openCourseDetail(id) {
+            selectedCourse = courses.find(c => c.id === id);
+            document.getElementById('detailCat').innerText = selectedCourse.category;
+            document.getElementById('detailTitle').innerText = selectedCourse.title;
+            document.getElementById('detailLevel').innerText = selectedCourse.level + ' • Led by ' + selectedCourse.instructor;
+            document.getElementById('detailDesc').innerText = selectedCourse.desc;
+            
+            const vContainer = document.getElementById('videoContainer');
+            if (selectedCourse.video.startsWith('blob:') || selectedCourse.video.endsWith('.mp4') || selectedCourse.video.endsWith('.webm')) {
+                vContainer.innerHTML = `<video class="w-full h-full object-cover" controls src="${selectedCourse.video}"></video>`;
+            } else {
+                vContainer.innerHTML = `<iframe class="w-full h-full" src="${selectedCourse.video}" frameborder="0" allowfullscreen></iframe>`;
+            }
+
+            const syll = document.getElementById('detailSyllabus');
+            syll.innerHTML = '';
+            selectedCourse.syllabus.forEach((s, idx) => {
+                syll.innerHTML += `<div class="bg-slate-50 p-3 rounded-xl text-xs font-semibold text-slate-700 border flex items-center gap-3"><span class="w-6 h-6 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center text-xs font-bold">${idx+1}</span> ${s}</div>`;
+            });
+
+            showPage('courseDetail');
+        }
+
+        function enrollCurrentCourse() {
+            if (!currentUser) return openCourseraAuthModal('student');
+            if (currentUser.role !== 'student') return alert('Only student accounts can enroll in courses.');
+            document.getElementById('trialModal').classList.remove('hidden');
+        }
+
+        function handleTrialSubmit(e) {
+            e.preventDefault();
+            const card = document.getElementById('cardNumber').value;
+            const maskedCard = '•••• ' + card.slice(-4);
+
+            const newStudent = {
+                id: students.length + 1,
+                name: currentUser.name,
+                email: currentUser.email,
+                course: selectedCourse ? selectedCourse.title : 'Web Development',
+                card: maskedCard,
+                status: 'Active Trial ($5 fee pending)',
+                owing: false,
+                trialEnd: new Date(Date.now() + 7 * 86400000).toISOString()
+            };
+
+            students.push(newStudent);
+            localStorage.setItem('to_students', JSON.stringify(students));
+            closeModal('trialModal');
+            alert('Success! Your 1-week free trial for ' + newStudent.course + ' has started.');
+            showPage('studentDash');
+        }
+
+        function renderStudentDashboard() {
+            document.getElementById('studentWelcomeName').textContent = 'Welcome, ' + currentUser.name + '!';
+
+            const myEnrollments = students.filter(s => s.email.toLowerCase() === currentUser.email.toLowerCase());
+            const list = document.getElementById('studentEnrolledList');
+            list.innerHTML = '';
+            if (myEnrollments.length === 0) {
+                list.innerHTML = `<p class="text-sm text-slate-500 py-4">No active explorations found. Browse courses and start your trial!</p>`;
+            } else {
+                myEnrollments.forEach(s => {
+                    const daysLeft = Math.max(0, Math.ceil((new Date(s.trialEnd) - Date.now()) / 86400000));
+                    list.innerHTML += `
+                        <div class="bg-white border p-5 rounded-xl flex justify-between items-center shadow-sm">
+                            <div>
+                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">${s.status}</span>
+                                <h4 class="font-bold text-slate-900 text-base mt-1">${s.course}</h4>
+                                <p class="text-xs text-slate-500">1-week trial • ${daysLeft} days remaining</p>
+                            </div>
+                            <button onclick="openCourseDetail(1)" class="bg-[#0c3b2e] text-white text-xs font-bold px-4 py-2 rounded-lg">Resume</button>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        const isActiveTrial = s => s.status.includes('Active Trial');
+
+        function renderStaffDashboard() {
+            if (!currentUser || currentUser.role !== 'staff') return;
+            document.getElementById('staffUserName').textContent = currentUser.name;
+            document.getElementById('staffAvatar').textContent = initials(currentUser.name);
+            document.getElementById('staffWelcome').textContent = 'Welcome back, ' + currentUser.name.split(' ')[0];
+
+            document.getElementById('staffStatStudents').textContent = students.length;
+            document.getElementById('staffStatCourses').textContent = courses.length;
+            document.getElementById('staffStatTrials').textContent = students.filter(isActiveTrial).length;
+            document.getElementById('staffStatExpired').textContent = students.filter(s => s.owing).length;
+            barRows(document.getElementById('staffBars'));
+
+            const filter = document.getElementById('staffCourseFilter');
+            const chosen = filter.value;
+            filter.innerHTML = '<option value="">All courses</option>' + courses.map(c => `<option>${escapeHtml(c.title)}</option>`).join('');
+            filter.value = chosen;
+
+            const q = document.getElementById('staffSearch').value.trim().toLowerCase();
+            const rows = students.filter(s => (!chosen || s.course === chosen) && (!q || (s.name + s.email + s.course).toLowerCase().includes(q)));
+            document.getElementById('staffStudentsTable').innerHTML = rows.length ? rows.map(s => `
+                <tr class="border-b">
+                    <td class="p-3"><div class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center">${escapeHtml(initials(s.name))}</span><span class="font-medium text-slate-900">${escapeHtml(s.name)}</span></div></td>
+                    <td class="p-3 text-slate-600 font-mono text-xs">${escapeHtml(s.email)}</td>
+                    <td class="p-3 text-slate-700">${escapeHtml(s.course)}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.owing ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">${escapeHtml(s.status)}</span></td>
+                </tr>`).join('') : '<tr><td colspan="4" class="p-6 text-center text-xs text-slate-500">No students match.</td></tr>';
+
+            document.getElementById('staffCoursesList').innerHTML = courses.map(c => `
+                <div class="bg-white border rounded-2xl p-5">
+                    <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase">${escapeHtml(c.category)}</span>
+                    <h4 class="font-bold text-slate-900 mt-2">${escapeHtml(c.title)}</h4>
+                    <p class="text-xs text-slate-500 mt-1">${escapeHtml(c.instructor)} • ${escapeHtml(c.level)}</p>
+                    <p class="text-xs text-slate-500 mt-2">${students.filter(s => s.course === c.title).length} enrolled</p>
+                </div>`).join('');
+        }
+
+        function renderAdminDashboard() {
+            if (!isAdmin()) return;
+            const owing = students.filter(s => s.owing).length, trials = students.filter(isActiveTrial).length;
+            document.getElementById('adminStatStudents').textContent = students.length;
+            document.getElementById('adminStatTrials').textContent = trials;
+            document.getElementById('adminStatOwing').textContent = owing;
+            document.getElementById('adminStatRev').textContent = '$' + (students.length * 5);
+            barRows(document.getElementById('adminBars'));
+
+            const total = Math.max(1, students.length);
+            const pay = [['Active trial', trials, 'bg-sky-500'], ['Owing', owing, 'bg-orange-400'], ['Other', students.length - trials - owing, 'bg-slate-300']];
+            document.getElementById('adminPayBreakdown').innerHTML = pay.map(([l, n, c]) => `
+                <div><div class="flex justify-between text-xs mb-1"><span class="font-semibold text-slate-700">${l}</span><span class="text-slate-500">${n}</span></div>
+                <div class="h-2 bg-slate-100 rounded-full"><div class="h-2 rounded-full ${c}" style="width:${n / total * 100}%"></div></div></div>`).join('');
+
+            const q = document.getElementById('adminSearch').value.trim().toLowerCase();
+
+            document.getElementById('adminCoursesList').innerHTML = courses.filter(c => !q || (c.title + c.category).toLowerCase().includes(q)).map(c => `
+                <div class="bg-slate-50 p-3 rounded-xl border flex justify-between items-center text-sm">
+                    <div>
+                        <span class="font-bold text-slate-900">${escapeHtml(c.title)}</span>
+                        <span class="text-xs text-slate-500 block">$5 • ${escapeHtml(c.category)}</span>
+                    </div>
+                    <button onclick="editCourse(${c.id})" class="text-xs bg-white border hover:bg-slate-100 px-3 py-1 rounded-lg font-semibold text-slate-700">Edit Content</button>
+                </div>`).join('');
+
+            const sf = document.getElementById('adminStatusFilter').value;
+            const rows = students.filter(s => (!sf || (sf === 'owing' ? s.owing : isActiveTrial(s))) && (!q || (s.name + s.email + s.course).toLowerCase().includes(q)));
+            document.getElementById('adminStudentsTable').innerHTML = rows.length ? rows.map(s => `
+                <tr class="border-b">
+                    <td class="p-3"><div class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-violet-100 text-violet-800 text-xs font-bold flex items-center justify-center">${escapeHtml(initials(s.name))}</span><div><span class="font-medium text-slate-900">${escapeHtml(s.name)}</span><br><span class="text-xs text-slate-500 font-mono">${escapeHtml(s.email)}</span></div></div></td>
+                    <td class="p-3 text-slate-700">${escapeHtml(s.course)}</td>
+                    <td class="p-3 font-mono text-xs">${escapeHtml(s.card)}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.owing ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">${s.owing ? 'Owing ($5)' : escapeHtml(s.status)}</span></td>
+                    <td class="p-3"><button data-email="${escapeHtml(s.email)}" data-name="${escapeHtml(s.name)}" onclick="openEmailModal(this.dataset.email, this.dataset.name)" class="text-xs bg-[#0c3b2e] text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-emerald-800"><i class="fa-solid fa-envelope"></i> Email</button></td>
+                </tr>`).join('') : '<tr><td colspan="5" class="p-6 text-center text-xs text-slate-500">No students match.</td></tr>';
+        }
+
+        function openCourseForm() {
+            document.getElementById('editCourseId').value = '';
+            document.getElementById('formTitle').value = '';
+            document.getElementById('formLevel').value = 'Beginner Level';
+            document.getElementById('formInstructor').value = 'Tech Oasis Instructor';
+            document.getElementById('formDesc').value = '';
+            document.getElementById('formVideoUrl').value = 'https://www.youtube.com/embed/ScMzIvxBSi4';
+            document.getElementById('formVideoFile').value = '';
+            document.getElementById('formSyllabus').value = 'Module 1, Module 2, Module 3';
+            document.getElementById('courseFormModal').classList.remove('hidden');
+        }
+
+        function editCourse(id) {
+            const c = courses.find(item => item.id === id);
+            document.getElementById('editCourseId').value = c.id;
+            document.getElementById('formTitle').value = c.title;
+            document.getElementById('formCat').value = c.category;
+            document.getElementById('formLevel').value = c.level;
+            document.getElementById('formInstructor').value = c.instructor;
+            document.getElementById('formDesc').value = c.desc;
+            document.getElementById('formVideoUrl').value = c.video.startsWith('blob:') ? '' : c.video;
+            document.getElementById('formVideoFile').value = '';
+            document.getElementById('formSyllabus').value = c.syllabus.join(', ');
+            document.getElementById('courseFormModal').classList.remove('hidden');
+        }
+
+        function handleCourseSave(e) {
+            e.preventDefault();
+            const id = document.getElementById('editCourseId').value;
+            const title = document.getElementById('formTitle').value;
+            const category = document.getElementById('formCat').value;
+            const level = document.getElementById('formLevel').value;
+            const instructor = document.getElementById('formInstructor').value;
+            const desc = document.getElementById('formDesc').value;
+            const videoUrl = document.getElementById('formVideoUrl').value;
+            const videoFile = document.getElementById('formVideoFile').files[0];
+            const syllabus = document.getElementById('formSyllabus').value.split(',').map(s => s.trim());
+
+            let saveVideo = videoUrl;
+            if (videoFile) {
+                saveVideo = URL.createObjectURL(videoFile);
+            }
+
+            if (id) {
+                const c = courses.find(item => item.id == id);
+                c.title = title; c.category = category; c.level = level; c.instructor = instructor; c.desc = desc; c.video = saveVideo; c.syllabus = syllabus;
+            } else {
+                courses.push({ id: courses.length + 1, title, category, level, instructor, desc, video: saveVideo, syllabus });
+            }
+
+            localStorage.setItem('to_courses', JSON.stringify(courses));
+            closeModal('courseFormModal');
+            renderCourses();
+            renderAdminDashboard();
+            alert('Course content successfully saved with uploaded/embedded video!');
+        }
+
+        function openEmailModal(email, name) {
+            document.getElementById('emailTargetStudent').value = email;
+            document.getElementById('emailRecipientLabel').innerText = 'To: ' + name + ' (' + email + ')';
+            document.getElementById('emailModal').classList.remove('hidden');
+        }
+
+        function sendReengagementEmail(e) {
+            e.preventDefault();
+            const email = document.getElementById('emailTargetStudent').value;
+            alert('Re-engagement email successfully sent to ' + email + '!');
+            closeModal('emailModal');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        renderCourses();
+        updateAuthNav();
+    </script>
+</body>
+</html>
