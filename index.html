@@ -530,64 +530,144 @@
         <!-- ADMIN PORTAL (sidebar app shell) -->
         <div id="page-adminDash" class="page-view hidden">
             <div class="flex min-h-screen bg-slate-100">
-                <aside class="hidden md:flex w-60 shrink-0 bg-white border-r flex-col">
-                    <div class="h-16 px-5 flex items-center border-b"><span class="brand-logo"></span></div>
-                    <nav class="p-3 space-y-1 text-sm font-semibold flex-1">
-                        <div class="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Main menu</div>
-                        <button onclick="adminTab('overview')" data-atab="overview" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-house w-4"></i> Overview</button>
-                        <button onclick="adminTab('students')" data-atab="students" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-user-graduate w-4"></i> Students &amp; Payments</button>
-                        <div class="px-3 pt-4 pb-1 text-[10px] uppercase tracking-wider text-slate-400">Administration</div>
+                <aside class="hidden md:flex w-64 shrink-0 bg-[#0c3b2e] text-white flex-col sticky top-0 h-screen">
+                    <div class="h-20 px-5 flex items-center"><span class="brand-logo" data-theme="dark"></span></div>
+                    <nav class="px-3 space-y-1 text-sm font-semibold flex-1 overflow-y-auto">
+                        <button onclick="adminTab('overview')" data-atab="overview" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-house w-4"></i> Dashboard</button>
+                        <button onclick="adminTab('students')" data-atab="students" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-user-graduate w-4"></i> Students</button>
+                        <button onclick="adminTab('staff')" data-atab="staff" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-chalkboard-user w-4"></i> Instructors</button>
                         <button onclick="adminTab('courses')" data-atab="courses" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-book-open w-4"></i> Courses &amp; Videos</button>
+                        <button onclick="adminTab('payments')" data-atab="payments" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-wallet w-4"></i> Payments <span id="adminPayBadge" class="ml-auto hidden text-[10px] font-bold bg-rose-500 text-white rounded-full px-1.5 py-0.5"></span></button>
                     </nav>
-                    <div class="p-3 border-t"><button onclick="showPage('home')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-500 hover:bg-slate-100"><i class="fa-solid fa-arrow-left w-4"></i> Exit to site</button></div>
+                    <div class="p-3 space-y-3">
+                        <div class="px-3 py-3 rounded-xl bg-white/5 text-[11px] text-emerald-100"><span class="font-bold text-amber-300 block">Learning Today</span>Building Tomorrow</div>
+                        <button onclick="showPage('home')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-emerald-100 hover:bg-white/10"><i class="fa-solid fa-arrow-left w-4"></i> Exit to site</button>
+                    </div>
                 </aside>
                 <div class="flex-1 min-w-0">
-                    <div class="h-16 bg-white border-b px-4 sm:px-6 flex items-center justify-between gap-4">
-                        <div class="relative w-full max-w-xs">
+                    <div class="h-16 bg-white border-b px-4 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30">
+                        <div class="relative w-full max-w-md">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                            <input id="adminSearch" oninput="renderAdminDashboard()" placeholder="Search students or courses..." class="w-full bg-slate-100 rounded-full pl-8 pr-3 py-2 text-xs focus:outline-none">
+                            <input id="adminSearch" oninput="renderAdminDashboard()" placeholder="Search students, instructors, courses..." class="w-full bg-slate-100 rounded-full pl-9 pr-3 py-2.5 text-xs focus:outline-none">
                         </div>
-                        <div class="flex items-center gap-3">
-                            <div class="text-right leading-tight"><div class="text-xs font-bold text-slate-900">Administrator</div><div class="text-[10px] text-slate-500">Admin</div></div>
-                            <div class="w-9 h-9 rounded-full bg-[#C4A649] text-slate-900 text-xs font-bold flex items-center justify-center">AD</div>
+                        <div class="flex items-center gap-4">
+                            <button onclick="adminTab('payments')" class="relative text-slate-500 hover:text-slate-800" aria-label="Notifications"><i class="fa-solid fa-bell text-lg"></i><span id="adminBell" class="hidden absolute -top-1.5 -right-2 text-[9px] font-bold bg-rose-500 text-white rounded-full w-4 h-4 flex items-center justify-center"></span></button>
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-full bg-[#C4A649] text-slate-900 text-xs font-bold flex items-center justify-center">AD</div>
+                                <div class="hidden sm:block leading-tight"><div class="text-xs font-bold text-slate-900">Admin</div><div class="text-[10px] text-slate-500">School Administrator</div></div>
+                            </div>
                             <button onclick="adminLogout()" class="text-xs font-semibold border rounded-xl px-3 py-2 hover:bg-slate-50"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
                         </div>
                     </div>
+
                     <div class="p-4 sm:p-6 space-y-6">
-                        <div class="md:hidden flex gap-2 text-xs font-semibold">
-                            <button onclick="adminTab('overview')" class="border bg-white rounded-lg px-3 py-1.5">Overview</button>
+                        <div class="md:hidden flex gap-2 text-xs font-semibold overflow-x-auto">
+                            <button onclick="adminTab('overview')" class="border bg-white rounded-lg px-3 py-1.5">Dashboard</button>
                             <button onclick="adminTab('students')" class="border bg-white rounded-lg px-3 py-1.5">Students</button>
+                            <button onclick="adminTab('staff')" class="border bg-white rounded-lg px-3 py-1.5">Instructors</button>
                             <button onclick="adminTab('courses')" class="border bg-white rounded-lg px-3 py-1.5">Courses</button>
-                        </div>
-                        <div>
-                            <h2 class="text-2xl font-black text-slate-900 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-amber-500"></i> Tech Oasis Control Center</h2>
-                            <p class="text-xs text-slate-500 mt-1">Manage curriculum, upload videos, track student payments ($5 flat) and re-engagement.</p>
+                            <button onclick="adminTab('payments')" class="border bg-white rounded-lg px-3 py-1.5">Payments</button>
                         </div>
 
-                        <section id="adminTab-overview" class="atab-panel space-y-6">
-                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                                <div class="rounded-2xl p-5 bg-violet-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Total students</div><h4 id="adminStatStudents" class="text-2xl font-black text-slate-900 mt-1">0</h4></div><i class="fa-solid fa-users text-violet-500 text-xl"></i></div>
-                                <div class="rounded-2xl p-5 bg-sky-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Active trials</div><h4 id="adminStatTrials" class="text-2xl font-black text-slate-900 mt-1">0</h4></div><i class="fa-solid fa-clock text-sky-500 text-xl"></i></div>
-                                <div class="rounded-2xl p-5 bg-orange-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Owing / overdue</div><h4 id="adminStatOwing" class="text-2xl font-black text-slate-900 mt-1">0</h4></div><i class="fa-solid fa-triangle-exclamation text-orange-500 text-xl"></i></div>
-                                <div class="rounded-2xl p-5 bg-emerald-50 flex items-center justify-between"><div><div class="text-xs text-slate-500">Revenue ($5)</div><h4 id="adminStatRev" class="text-2xl font-black text-slate-900 mt-1">$0</h4></div><i class="fa-solid fa-wallet text-emerald-500 text-xl"></i></div>
+                        <div class="flex flex-wrap items-end justify-between gap-3">
+                            <div>
+                                <div class="text-[11px] font-bold tracking-[0.2em] text-slate-500 uppercase">Welcome back,</div>
+                                <h2 class="text-3xl font-black text-slate-900">Admin</h2>
+                                <p class="text-xs text-slate-500 mt-1">Here's what's happening at <b>Tech Oasis School</b> today.</p>
                             </div>
-                            <div class="grid lg:grid-cols-3 gap-6">
-                                <div class="lg:col-span-2 bg-white rounded-2xl border p-5">
-                                    <h3 class="font-bold text-slate-900 mb-4">Enrollments by course</h3>
-                                    <div id="adminBars" class="space-y-3"></div>
+                            <div class="text-right text-xs text-slate-500"><div id="adminDate" class="font-semibold text-slate-700"></div>Where Innovation Meets Expertise.</div>
+                        </div>
+
+                        <!-- ============ DASHBOARD ============ -->
+                        <section id="adminTab-overview" class="atab-panel">
+                            <div class="grid xl:grid-cols-4 gap-6">
+                                <div class="xl:col-span-3 space-y-6 min-w-0">
+                                    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                                        <div class="bg-white rounded-2xl border p-4"><span class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center"><i class="fa-solid fa-user-graduate"></i></span><div class="text-xs text-slate-500 mt-3">Total Students</div><div id="adminStatStudents" class="text-2xl font-black text-slate-900">0</div><div id="adminStatStudentsSub" class="text-[11px] text-emerald-600 font-semibold"></div></div>
+                                        <div class="bg-white rounded-2xl border p-4"><span class="w-10 h-10 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center"><i class="fa-solid fa-chalkboard-user"></i></span><div class="text-xs text-slate-500 mt-3">Instructors</div><div id="adminStatStaff" class="text-2xl font-black text-slate-900">0</div><div class="text-[11px] text-slate-500 font-semibold">Teaching staff</div></div>
+                                        <div class="bg-white rounded-2xl border p-4"><span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-book-open"></i></span><div class="text-xs text-slate-500 mt-3">Total Courses</div><div id="adminStatCourses" class="text-2xl font-black text-slate-900">0</div><div class="text-[11px] text-slate-500 font-semibold">$5 per program</div></div>
+                                        <div class="bg-white rounded-2xl border p-4"><span class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center"><i class="fa-solid fa-hourglass-half"></i></span><div class="text-xs text-slate-500 mt-3">Active Trials</div><div id="adminStatTrials" class="text-2xl font-black text-slate-900">0</div><div id="adminStatOwing" class="text-[11px] text-rose-600 font-semibold"></div></div>
+                                        <div class="bg-white rounded-2xl border p-4"><span class="w-10 h-10 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center"><i class="fa-solid fa-dollar-sign"></i></span><div class="text-xs text-slate-500 mt-3">Fees Collected</div><div id="adminStatRev" class="text-2xl font-black text-slate-900">$0</div><div id="adminStatRevSub" class="text-[11px] text-slate-500 font-semibold"></div></div>
+                                    </div>
+
+                                    <div class="grid lg:grid-cols-2 gap-6">
+                                        <div class="bg-white rounded-2xl border p-5 min-w-0">
+                                            <div class="flex items-center justify-between mb-4"><h3 class="font-bold text-slate-900">Enrollment by Course</h3><span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-full">Live data</span></div>
+                                            <div id="adminEnrollChart" class="flex items-end gap-2 h-44 overflow-x-auto"></div>
+                                            <div class="flex gap-4 justify-center mt-3 text-[11px] text-slate-500"><span><i class="fa-solid fa-circle text-sky-500 text-[8px] mr-1"></i>Active trial</span><span><i class="fa-solid fa-circle text-violet-400 text-[8px] mr-1"></i>Needs follow-up</span></div>
+                                        </div>
+                                        <div class="bg-white rounded-2xl border p-5 min-w-0">
+                                            <div class="flex items-center justify-between mb-4"><h3 class="font-bold text-slate-900">Learner Activity Trend</h3><span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded-full">Sample data</span></div>
+                                            <svg id="adminTrend" viewBox="0 0 320 170" class="w-full h-44"></svg>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid lg:grid-cols-5 gap-6">
+                                        <div class="lg:col-span-3 bg-white rounded-2xl border p-5 min-w-0">
+                                            <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">Recent Enrollments</h3><button onclick="adminTab('students')" class="text-xs font-bold text-emerald-700">View All</button></div>
+                                            <div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="text-slate-500 text-xs border-b"><tr><th class="py-2">Student</th><th class="py-2">Course</th><th class="py-2">Date</th><th class="py-2">Status</th></tr></thead><tbody id="adminRecentTable"></tbody></table></div>
+                                        </div>
+                                        <div class="lg:col-span-2 bg-white rounded-2xl border p-5">
+                                            <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">Fee Collection</h3><span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-full">All time</span></div>
+                                            <div class="flex items-center gap-5">
+                                                <div id="adminDonut" class="w-28 h-28 rounded-full shrink-0 flex items-center justify-center" style="background:conic-gradient(#10b981 0 0%, #e2e8f0 0)"><div class="w-20 h-20 rounded-full bg-white flex flex-col items-center justify-center"><span id="adminDonutPct" class="text-lg font-black text-slate-900">0%</span><span class="text-[10px] text-slate-500">Collected</span></div></div>
+                                                <div class="text-xs space-y-2 flex-1">
+                                                    <div class="flex justify-between"><span class="text-slate-600"><i class="fa-solid fa-circle text-emerald-500 text-[8px] mr-1.5"></i>Collected</span><b id="adminFeeCollected">$0</b></div>
+                                                    <div class="flex justify-between"><span class="text-slate-600"><i class="fa-solid fa-circle text-slate-300 text-[8px] mr-1.5"></i>Pending</span><b id="adminFeePending">$0</b></div>
+                                                    <div class="flex justify-between border-t pt-2"><span class="text-slate-600">Total fees</span><b id="adminFeeTotal">$0</b></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid lg:grid-cols-2 gap-6">
+                                        <div class="bg-white rounded-2xl border p-5">
+                                            <h3 class="font-bold text-slate-900 mb-3">Recent Activity</h3>
+                                            <div id="adminActivity" class="space-y-3"></div>
+                                        </div>
+                                        <div class="bg-white rounded-2xl border p-5">
+                                            <h3 class="font-bold text-slate-900 mb-3">Upcoming Live Sessions <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded-full ml-1">Sample</span></h3>
+                                            <div id="adminEvents" class="space-y-3"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="bg-white rounded-2xl border p-5">
-                                    <h3 class="font-bold text-slate-900 mb-4">Payment status</h3>
-                                    <div id="adminPayBreakdown" class="space-y-4"></div>
+
+                                <!-- Right rail -->
+                                <div class="space-y-6 min-w-0">
+                                    <div class="bg-white rounded-2xl border p-5">
+                                        <h3 class="font-bold text-slate-900 mb-4">Quick Actions</h3>
+                                        <div class="grid grid-cols-2 gap-3 text-xs font-semibold text-slate-700">
+                                            <button onclick="openCourseForm()" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-plus"></i></span>Add Course</button>
+                                            <button onclick="openStaffModal()" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-plus"></i></span>Add Instructor</button>
+                                            <button onclick="adminTab('students')" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-envelope"></i></span>Email Students</button>
+                                            <button onclick="adminTab('payments')" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-dollar-sign"></i></span>Record Payment</button>
+                                            <button onclick="exportStudentsCsv()" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-export"></i></span>Export Report</button>
+                                            <button onclick="adminTab('courses')" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-video"></i></span>Upload Video</button>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white rounded-2xl border p-5">
+                                        <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">Needs Attention</h3><button onclick="adminTab('payments')" class="text-xs font-bold text-emerald-700">View All</button></div>
+                                        <div id="adminAttention" class="space-y-3"></div>
+                                    </div>
+                                    <div class="relative overflow-hidden rounded-2xl text-white min-h-[260px] flex flex-col justify-end p-5 bg-slate-900">
+                                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=70" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-[#0c3b2e] via-[#0c3b2e]/70 to-transparent"></div>
+                                        <div class="relative">
+                                            <h4 class="text-xl font-black leading-tight">Together for Greater Learning</h4>
+                                            <p class="text-xs text-emerald-100 mt-1">Quality tech education, online, for every learner.</p>
+                                            <button onclick="showPage('about')" class="mt-3 bg-[#C4A649] text-slate-900 text-xs font-bold px-4 py-2 rounded-xl">About Our School <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </section>
 
+                        <!-- ============ STUDENTS ============ -->
                         <section id="adminTab-students" class="atab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-3">
-                                <h3 class="font-bold text-slate-900 text-lg">Student Roster &amp; Payments ($5 per course)</h3>
+                                <div><h3 class="font-bold text-slate-900 text-lg">Students</h3><p id="adminStudentCount" class="text-xs text-slate-500"></p></div>
                                 <div class="flex items-center gap-2">
-                                    <select id="adminStatusFilter" onchange="renderAdminDashboard()" class="border rounded-lg px-3 py-2 text-xs"><option value="">All statuses</option><option value="trial">Active trial</option><option value="owing">Owing</option></select>
+                                    <select id="adminStatusFilter" onchange="renderAdminDashboard()" class="border rounded-lg px-3 py-2 text-xs"><option value="">All statuses</option><option value="trial">Active trial</option><option value="owing">Owing</option><option value="paid">Paid</option></select>
                                     <button onclick="exportStudentsCsv()" class="border rounded-lg px-3 py-2 text-xs font-semibold hover:bg-slate-50"><i class="fa-solid fa-download mr-1"></i> Export data</button>
                                 </div>
                             </div>
@@ -599,12 +679,33 @@
                             </div>
                         </section>
 
+                        <!-- ============ INSTRUCTORS ============ -->
+                        <section id="adminTab-staff" class="atab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div><h3 class="font-bold text-slate-900 text-lg">Instructors &amp; Staff</h3><p class="text-xs text-slate-500">Staff sign in from the main Log In button, choosing "Staff / Instructor".</p></div>
+                                <button onclick="openStaffModal()" class="bg-[#0c3b2e] text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow"><i class="fa-solid fa-user-plus mr-1"></i> Add Instructor</button>
+                            </div>
+                            <div id="adminStaffList" class="grid md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+                        </section>
+
+                        <!-- ============ COURSES ============ -->
                         <section id="adminTab-courses" class="atab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
                             <div class="flex justify-between items-center">
                                 <h3 class="font-bold text-slate-900 text-lg">Manage Courses &amp; Videos</h3>
                                 <button onclick="openCourseForm()" class="bg-[#0c3b2e] text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow"><i class="fa-solid fa-plus"></i> Add Course</button>
                             </div>
                             <div id="adminCoursesList" class="grid md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+                        </section>
+
+                        <!-- ============ PAYMENTS ============ -->
+                        <section id="adminTab-payments" class="atab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
+                            <div><h3 class="font-bold text-slate-900 text-lg">Payments</h3><p class="text-xs text-slate-500">Record the $5 course fee once a student has paid.</p></div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Student</th><th class="p-3">Course</th><th class="p-3">Amount</th><th class="p-3">Status</th><th class="p-3">Action</th></tr></thead>
+                                    <tbody id="adminPaymentsTable"></tbody>
+                                </table>
+                            </div>
                         </section>
                     </div>
                 </div>
@@ -734,6 +835,22 @@
                 <button type="submit" class="w-full bg-[#0c3b2e] hover:bg-emerald-800 text-white font-bold py-3 rounded-xl shadow-md transition mt-2">
                     Activate Free Trial
                 </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Instructor Modal (admin) -->
+    <div id="staffModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeModal('staffModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-xl font-bold text-slate-900 mb-1">Add Instructor</h3>
+            <p class="text-xs text-slate-500 mb-4">They will log in as "Staff / Instructor" with these details.</p>
+            <form onsubmit="addStaff(event)" class="space-y-4">
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Full name</label><input id="staffNameInput" required class="w-full border rounded-lg px-3 py-2 text-sm"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Email</label><input id="staffEmailInput" type="email" required class="w-full border rounded-lg px-3 py-2 text-sm"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Temporary password</label><input id="staffPassInput" type="text" required minlength="6" class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="At least 6 characters"></div>
+                <p id="staffModalError" class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
+                <button class="w-full bg-[#0c3b2e] text-white font-bold py-2.5 rounded-xl">Create instructor account</button>
             </form>
         </div>
     </div>
@@ -1050,8 +1167,10 @@
             document.querySelectorAll('.' + prefix + 'tab-panel').forEach(p => p.classList.toggle('hidden', p.id !== idBase + name));
             document.querySelectorAll('.' + prefix + 'tab').forEach(b => {
                 const on = b.dataset[prefix + 'tab'] === name;
-                b.classList.toggle('bg-violet-50', on); b.classList.toggle('text-violet-700', on);
-                b.classList.toggle('text-slate-600', !on); b.classList.toggle('hover:bg-slate-50', !on);
+                const [onCls, offCls] = prefix === 'a'
+                    ? [['bg-[#C4A649]', 'text-slate-900'], ['text-emerald-100', 'hover:bg-white/10']]
+                    : [['bg-violet-50', 'text-violet-700'], ['text-slate-600', 'hover:bg-slate-50']];
+                onCls.forEach(c => b.classList.toggle(c, on)); offCls.forEach(c => b.classList.toggle(c, !on));
             });
         }
         const staffTab = n => switchTab('s', n);
@@ -1387,42 +1506,155 @@
                 </div>`).join('');
         }
 
+        // ---- Admin dashboard ----
+        const isPaid = s => /^paid/i.test(s.status);
+        const money = n => '$' + n.toLocaleString();
+
+        function markPaid(email, course) {
+            const s = students.find(x => x.email === email && x.course === course);
+            if (!s) return;
+            s.owing = false;
+            s.status = 'Paid ($5)';
+            localStorage.setItem('to_students', JSON.stringify(students));
+            renderAdminDashboard();
+            toast('Payment recorded for ' + s.name);
+        }
+
+        function openStaffModal() {
+            document.getElementById('staffModalError').classList.add('hidden');
+            ['staffNameInput', 'staffEmailInput', 'staffPassInput'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('staffModal').classList.remove('hidden');
+        }
+
+        function addStaff(e) {
+            e.preventDefault();
+            const email = document.getElementById('staffEmailInput').value.trim().toLowerCase();
+            const err = document.getElementById('staffModalError');
+            if (users.some(u => u.email === email)) {
+                err.textContent = 'An account with this email already exists.';
+                return err.classList.remove('hidden');
+            }
+            users.push({ role: 'staff', name: document.getElementById('staffNameInput').value.trim(), email, password: document.getElementById('staffPassInput').value });
+            localStorage.setItem('to_users', JSON.stringify(users));
+            closeModal('staffModal');
+            renderAdminDashboard();
+            toast('Instructor account created');
+        }
+
+        function removeStaff(email) {
+            if (!confirm('Remove this instructor account?')) return;
+            users = users.filter(u => !(u.role === 'staff' && u.email === email));
+            localStorage.setItem('to_users', JSON.stringify(users));
+            renderAdminDashboard();
+        }
+
         function renderAdminDashboard() {
             if (!isAdmin()) return;
-            const owing = students.filter(s => s.owing).length, trials = students.filter(isActiveTrial).length;
-            document.getElementById('adminStatStudents').textContent = students.length;
-            document.getElementById('adminStatTrials').textContent = trials;
-            document.getElementById('adminStatOwing').textContent = owing;
-            document.getElementById('adminStatRev').textContent = '$' + (students.length * 5);
-            barRows(document.getElementById('adminBars'));
+            const staff = users.filter(u => u.role === 'staff');
+            const trials = students.filter(isActiveTrial).length, owing = students.filter(s => s.owing).length;
+            const paid = students.filter(isPaid).length, total = students.length * 5, collected = paid * 5, pending = total - collected;
+            const pct = total ? Math.round(collected / total * 100) : 0;
 
-            const total = Math.max(1, students.length);
-            const pay = [['Active trial', trials, 'bg-sky-500'], ['Owing', owing, 'bg-orange-400'], ['Other', students.length - trials - owing, 'bg-slate-300']];
-            document.getElementById('adminPayBreakdown').innerHTML = pay.map(([l, n, c]) => `
-                <div><div class="flex justify-between text-xs mb-1"><span class="font-semibold text-slate-700">${l}</span><span class="text-slate-500">${n}</span></div>
-                <div class="h-2 bg-slate-100 rounded-full"><div class="h-2 rounded-full ${c}" style="width:${n / total * 100}%"></div></div></div>`).join('');
+            document.getElementById('adminDate').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('adminStatStudents').textContent = students.length;
+            document.getElementById('adminStatStudentsSub').textContent = trials + ' on active trial';
+            document.getElementById('adminStatStaff').textContent = staff.length;
+            document.getElementById('adminStatCourses').textContent = courses.length;
+            document.getElementById('adminStatTrials').textContent = trials;
+            document.getElementById('adminStatOwing').textContent = owing + ' need follow-up';
+            document.getElementById('adminStatRev').textContent = money(collected);
+            document.getElementById('adminStatRevSub').textContent = money(pending) + ' pending';
+            document.getElementById('adminFeeCollected').textContent = money(collected);
+            document.getElementById('adminFeePending').textContent = money(pending);
+            document.getElementById('adminFeeTotal').textContent = money(total);
+            document.getElementById('adminDonutPct').textContent = pct + '%';
+            document.getElementById('adminDonut').style.background = `conic-gradient(#10b981 0 ${pct}%, #e2e8f0 0)`;
+            const bell = document.getElementById('adminBell'), badge = document.getElementById('adminPayBadge');
+            [bell, badge].forEach(el => { el.textContent = owing; el.classList.toggle('hidden', !owing); });
+
+            // Enrollment by course (stacked: active trial vs needs follow-up)
+            const per = courses.map(c => ({ t: c.title, a: students.filter(s => s.course === c.title && !s.owing).length, o: students.filter(s => s.course === c.title && s.owing).length })).filter(x => x.a + x.o > 0);
+            const max = Math.max(1, ...per.map(x => x.a + x.o));
+            document.getElementById('adminEnrollChart').innerHTML = per.length ? per.map(x => `
+                <div class="flex-1 min-w-[44px] h-full flex flex-col items-center justify-end gap-1" title="${escapeHtml(x.t)}">
+                    <span class="text-[11px] font-bold text-slate-700">${x.a + x.o}</span>
+                    <div class="w-full max-w-[36px] flex flex-col justify-end rounded-t-md overflow-hidden" style="height:${(x.a + x.o) / max * 78}%">
+                        <div class="bg-violet-400" style="flex:${x.o}"></div><div class="bg-sky-500" style="flex:${x.a}"></div></div>
+                    <span class="text-[9px] text-slate-500 truncate w-full text-center">${escapeHtml(x.t.split(' ')[0])}</span></div>`).join('')
+                : '<p class="text-xs text-slate-500 m-auto">No enrollments yet.</p>';
+
+            // Sample trend line (illustrative)
+            const pts = [58, 64, 61, 72, 78, 85], mo = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'];
+            const xy = pts.map((v, i) => [30 + i * 52, 140 - (v - 50) * 3.2]);
+            document.getElementById('adminTrend').innerHTML = [0, 1, 2, 3].map(i => `<line x1="30" x2="300" y1="${20 + i * 40}" y2="${20 + i * 40}" stroke="#e2e8f0"/>`).join('')
+                + `<polyline fill="none" stroke="#10b981" stroke-width="2.5" points="${xy.map(p => p.join(',')).join(' ')}"/>`
+                + xy.map((p, i) => `<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#10b981"/><text x="${p[0]}" y="160" font-size="9" text-anchor="middle" fill="#64748b">${mo[i]}</text>`).join('');
+
+            // Recent enrollments
+            const recent = students.slice().sort((a, b) => new Date(b.trialEnd) - new Date(a.trialEnd)).slice(0, 5);
+            document.getElementById('adminRecentTable').innerHTML = recent.length ? recent.map(s => `
+                <tr class="border-b last:border-0"><td class="py-2.5"><div class="flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-sky-100 text-sky-700 text-[10px] font-bold flex items-center justify-center">${escapeHtml(initials(s.name))}</span><span class="font-semibold text-slate-800">${escapeHtml(s.name)}</span></div></td>
+                    <td class="py-2.5 text-slate-600 text-xs">${escapeHtml(s.course)}</td>
+                    <td class="py-2.5 text-slate-500 text-xs">${new Date(new Date(s.trialEnd) - 7 * 86400000).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</td>
+                    <td class="py-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.owing ? 'bg-amber-100 text-amber-700' : isPaid(s) ? 'bg-emerald-100 text-emerald-700' : 'bg-sky-100 text-sky-700'}">${s.owing ? 'Owing' : isPaid(s) ? 'Paid' : 'Trial'}</span></td></tr>`).join('')
+                : '<tr><td colspan="4" class="py-6 text-center text-xs text-slate-500">No enrollments yet.</td></tr>';
+
+            // Recent activity (from real records)
+            const acts = recent.map(s => s.owing
+                ? ['fa-triangle-exclamation', 'bg-amber-100 text-amber-600', `${escapeHtml(s.name)}'s trial for ${escapeHtml(s.course)} has expired`]
+                : isPaid(s) ? ['fa-dollar-sign', 'bg-emerald-100 text-emerald-600', `Fee received from ${escapeHtml(s.name)} for ${escapeHtml(s.course)}`]
+                : ['fa-plus', 'bg-sky-100 text-sky-600', `${escapeHtml(s.name)} enrolled in ${escapeHtml(s.course)}`]);
+            announcements.slice(0, 2).forEach(a => acts.push(['fa-bullhorn', 'bg-violet-100 text-violet-600', `${escapeHtml(a.by)}: ${escapeHtml(a.text)}`]));
+            document.getElementById('adminActivity').innerHTML = acts.slice(0, 5).map(a => `<div class="flex items-center gap-3"><span class="w-8 h-8 rounded-lg flex items-center justify-center text-xs shrink-0 ${a[1]}"><i class="fa-solid ${a[0]}"></i></span><span class="text-xs text-slate-700">${a[2]}</span></div>`).join('') || '<p class="text-xs text-slate-500">Nothing yet.</p>';
+
+            // Sample upcoming sessions, dated relative to today
+            const ev = [['Live Q&A: Getting started in tech', 2, '5:00 PM'], ['Web Development workshop', 5, '6:30 PM'], ['AI & Data open class', 9, '4:00 PM'], ['New student orientation', 14, '5:00 PM']];
+            document.getElementById('adminEvents').innerHTML = ev.map(([t, d, tm]) => { const dt = new Date(Date.now() + d * 86400000); return `<div class="flex items-center gap-3"><div class="w-11 text-center rounded-lg bg-slate-100 py-1 shrink-0"><div class="text-[9px] font-bold text-slate-500 uppercase">${dt.toLocaleDateString(undefined, { month: 'short' })}</div><div class="text-sm font-black text-slate-800 leading-none">${dt.getDate()}</div></div><div><div class="text-xs font-semibold text-slate-800">${t}</div><div class="text-[11px] text-slate-500">${tm} • Online</div></div></div>`; }).join('');
+
+            // Needs attention (owing students)
+            const att = students.filter(s => s.owing);
+            document.getElementById('adminAttention').innerHTML = att.length ? att.slice(0, 4).map(s => `
+                <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-rose-100 text-rose-700 text-[11px] font-bold flex items-center justify-center shrink-0">${escapeHtml(initials(s.name))}</span>
+                <div class="flex-1 min-w-0"><div class="text-xs font-bold text-slate-800 truncate">${escapeHtml(s.name)}</div><div class="text-[11px] text-slate-500 truncate">Trial expired • ${escapeHtml(s.course)}</div></div>
+                <button data-email="${escapeHtml(s.email)}" data-name="${escapeHtml(s.name)}" onclick="openEmailModal(this.dataset.email, this.dataset.name)" class="text-[11px] font-bold text-emerald-700 hover:underline">Email</button></div>`).join('')
+                : '<p class="text-xs text-slate-500">All caught up. Nobody needs follow-up.</p>';
 
             const q = document.getElementById('adminSearch').value.trim().toLowerCase();
 
-            document.getElementById('adminCoursesList').innerHTML = courses.filter(c => !q || (c.title + c.category).toLowerCase().includes(q)).map(c => `
-                <div class="bg-slate-50 p-3 rounded-xl border flex justify-between items-center text-sm">
-                    <div>
-                        <span class="font-bold text-slate-900">${escapeHtml(c.title)}</span>
-                        <span class="text-xs text-slate-500 block">$5 • ${escapeHtml(c.category)}</span>
-                    </div>
-                    <button onclick="editCourse(${c.id})" class="text-xs bg-white border hover:bg-slate-100 px-3 py-1 rounded-lg font-semibold text-slate-700">Edit Content</button>
-                </div>`).join('');
-
+            // Students
             const sf = document.getElementById('adminStatusFilter').value;
-            const rows = students.filter(s => (!sf || (sf === 'owing' ? s.owing : isActiveTrial(s))) && (!q || (s.name + s.email + s.course).toLowerCase().includes(q)));
+            const match = s => !q || (s.name + s.email + s.course).toLowerCase().includes(q);
+            const rows = students.filter(s => (!sf || (sf === 'owing' ? s.owing : sf === 'paid' ? isPaid(s) : isActiveTrial(s))) && match(s));
+            document.getElementById('adminStudentCount').textContent = `${rows.length} of ${students.length} students`;
             document.getElementById('adminStudentsTable').innerHTML = rows.length ? rows.map(s => `
                 <tr class="border-b">
-                    <td class="p-3"><div class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-violet-100 text-violet-800 text-xs font-bold flex items-center justify-center">${escapeHtml(initials(s.name))}</span><div><span class="font-medium text-slate-900">${escapeHtml(s.name)}</span><br><span class="text-xs text-slate-500 font-mono">${escapeHtml(s.email)}</span></div></div></td>
+                    <td class="p-3"><div class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-sky-100 text-sky-800 text-xs font-bold flex items-center justify-center">${escapeHtml(initials(s.name))}</span><div><span class="font-medium text-slate-900">${escapeHtml(s.name)}</span><br><span class="text-xs text-slate-500 font-mono">${escapeHtml(s.email)}</span></div></div></td>
                     <td class="p-3 text-slate-700">${escapeHtml(s.course)}</td>
                     <td class="p-3 font-mono text-xs">${escapeHtml(s.card)}</td>
                     <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.owing ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">${s.owing ? 'Owing ($5)' : escapeHtml(s.status)}</span></td>
                     <td class="p-3"><button data-email="${escapeHtml(s.email)}" data-name="${escapeHtml(s.name)}" onclick="openEmailModal(this.dataset.email, this.dataset.name)" class="text-xs bg-[#0c3b2e] text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-emerald-800"><i class="fa-solid fa-envelope"></i> Email</button></td>
                 </tr>`).join('') : '<tr><td colspan="5" class="p-6 text-center text-xs text-slate-500">No students match.</td></tr>';
+
+            // Instructors
+            document.getElementById('adminStaffList').innerHTML = staff.filter(u => !q || (u.name + u.email).toLowerCase().includes(q)).map(u => `
+                <div class="border rounded-2xl p-4 flex items-center gap-3"><span class="w-11 h-11 rounded-full bg-violet-100 text-violet-700 font-bold flex items-center justify-center shrink-0">${escapeHtml(initials(u.name))}</span>
+                <div class="flex-1 min-w-0"><div class="font-bold text-sm text-slate-900 truncate">${escapeHtml(u.name)}</div><div class="text-xs text-slate-500 font-mono truncate">${escapeHtml(u.email)}</div></div>
+                <button data-email="${escapeHtml(u.email)}" onclick="removeStaff(this.dataset.email)" class="text-xs text-rose-600 font-semibold hover:underline">Remove</button></div>`).join('') || '<p class="text-xs text-slate-500">No instructors yet.</p>';
+
+            // Courses
+            document.getElementById('adminCoursesList').innerHTML = courses.filter(c => !q || (c.title + c.category).toLowerCase().includes(q)).map(c => `
+                <div class="bg-slate-50 p-3 rounded-xl border flex justify-between items-center text-sm">
+                    <div><span class="font-bold text-slate-900">${escapeHtml(c.title)}</span><span class="text-xs text-slate-500 block">$5 • ${escapeHtml(c.category)} • ${students.filter(s => s.course === c.title).length} enrolled</span></div>
+                    <button onclick="editCourse(${c.id})" class="text-xs bg-white border hover:bg-slate-100 px-3 py-1 rounded-lg font-semibold text-slate-700">Edit Content</button>
+                </div>`).join('');
+
+            // Payments
+            document.getElementById('adminPaymentsTable').innerHTML = students.filter(match).map(s => `
+                <tr class="border-b"><td class="p-3 font-medium text-slate-900">${escapeHtml(s.name)}<br><span class="text-xs text-slate-500 font-mono">${escapeHtml(s.email)}</span></td>
+                    <td class="p-3 text-slate-700">${escapeHtml(s.course)}</td><td class="p-3 font-semibold">$5</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${isPaid(s) ? 'bg-emerald-100 text-emerald-700' : s.owing ? 'bg-amber-100 text-amber-700' : 'bg-sky-100 text-sky-700'}">${isPaid(s) ? 'Paid' : s.owing ? 'Overdue' : 'Pending (trial)'}</span></td>
+                    <td class="p-3">${isPaid(s) ? '<span class="text-xs text-slate-400">Recorded</span>' : `<button data-email="${escapeHtml(s.email)}" data-course="${escapeHtml(s.course)}" onclick="markPaid(this.dataset.email, this.dataset.course)" class="text-xs bg-emerald-600 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-emerald-700">Mark as paid</button>`}</td></tr>`).join('')
+                || '<tr><td colspan="5" class="p-6 text-center text-xs text-slate-500">No payments to show.</td></tr>';
         }
 
         function openCourseForm() {
