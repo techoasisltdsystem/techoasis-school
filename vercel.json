@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/student", "destination": "/student/index.html" },
+    { "source": "/student/:path*", "destination": "/student/index.html" },
+    { "source": "/admin", "destination": "/admin.html" }
+  ]
+}

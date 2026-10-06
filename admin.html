@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin CMS | Tech Oasis School</title>
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#0A1F1A">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='16 12 496 606'%3E%3Cpolygon points='255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160' fill='%23225A50'/%3E%3Cpolygon points='125,225 213,176 213,238 179,258 179,583 125,551' fill='%23225A50'/%3E%3Cpolygon points='352,78 405,106 405,386 228,493 228,383 268,404 352,350' fill='%23225A50'/%3E%3Cpolygon points='452,140 505,166 505,446 232,612 232,545 452,410' fill='%23225A50'/%3E%3Cpolygon points='207,272 270,236 335,272 270,308' fill='%23DEC45B'/%3E%3Cpolygon points='207,272 270,308 270,372 207,338' fill='%23AC903F'/%3E%3Cpolygon points='270,308 335,272 335,338 270,372' fill='%23937733'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/tw.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/tos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+</head>
+<body class="bg-[#F5F3EE] text-slate-800 font-sans antialiased">
+
+    <!-- Login -->
+    <div id="login" class="hidden min-h-screen grid lg:grid-cols-2">
+        <div class="hidden lg:flex flex-col justify-between p-12 bg-ink text-white relative overflow-hidden grain">
+            <div class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-gold/15 blur-3xl"></div>
+            <a href="index.html" class="relative brand-logo" data-theme="dark" data-size="44"></a>
+            <div class="relative"><span class="pill bg-gold text-ink">Restricted area</span>
+                <h1 class="font-display text-5xl mt-5 leading-tight">School Control Center</h1>
+                <p class="text-white/65 mt-4 max-w-md">Build courses section by section, manage learners and instructors, grade work, issue certificates and track performance.</p></div>
+            <p class="relative text-xs text-white/40">Authorized administrators only. Activity may be monitored.</p>
+        </div>
+        <div class="flex items-center justify-center p-6 bg-white">
+            <form id="loginForm" class="w-full max-w-sm space-y-5">
+                <span class="brand-logo lg:hidden" data-size="40"></span>
+                <div><h2 class="font-display text-3xl text-ink">Administrator sign in</h2><p class="text-sm text-slate-500 mt-1">Students and staff sign in on the <a href="index.html" class="underline">main site</a>.</p></div>
+                <div><label class="field-label" for="adminId">Admin email</label><input id="adminId" required autocomplete="username" class="field h-11" placeholder="school@techoasisltd.com"></div>
+                <div><label class="field-label" for="adminPass">Passcode</label><input id="adminPass" type="password" required autocomplete="current-password" class="field h-11"></div>
+                <p id="loginErr" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-100 rounded-lg px-3 py-2" role="alert"></p>
+                <button class="btn btn-ink w-full h-12">Sign in</button>
+                <a href="index.html" class="block text-center text-xs font-semibold text-slate-500 hover:text-ink">&larr; Back to site</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- App shell -->
+    <div id="shell" class="hidden flex min-h-screen">
+        <aside id="nav" class="fixed lg:sticky top-0 left-0 z-40 w-[272px] h-screen bg-ink text-white/80 flex flex-col -translate-x-full lg:translate-x-0 transition-transform shrink-0">
+            <div class="h-[72px] px-5 flex items-center border-b border-white/10"><a href="#/dashboard" class="brand-logo" data-theme="dark" data-size="36"></a></div>
+            <nav id="navList" class="flex-1 overflow-y-auto thin-scroll px-3 py-4 text-[13px]" aria-label="Admin"></nav>
+            <div class="p-3 border-t border-white/10 space-y-1 text-[13px]">
+                <a href="index.html" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5"><i class="fa-solid fa-arrow-up-right-from-square w-4 text-white/40"></i>View website</a>
+                <button id="logoutBtn" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 text-left"><i class="fa-solid fa-right-from-bracket w-4 text-white/40"></i>Log out</button>
+            </div>
+        </aside>
+        <div id="navScrim" class="hidden fixed inset-0 bg-ink/50 z-30 lg:hidden"></div>
+
+        <div class="flex-1 min-w-0 flex flex-col">
+            <header class="h-[72px] bg-white border-b border-slate-200/80 px-4 sm:px-6 flex items-center gap-4 sticky top-0 z-20">
+                <button id="navToggle" class="lg:hidden w-10 h-10 rounded-full hover:bg-slate-100" aria-label="Open navigation"><i class="fa-solid fa-bars"></i></button>
+                <div id="crumbs" class="hidden md:flex items-center gap-2 text-sm text-slate-500 min-w-0"></div>
+                <div class="relative ml-auto w-full max-w-xs">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input id="globalSearch" type="search" placeholder="Search this page…" class="w-full h-10 rounded-full bg-slate-100 pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-forest-600/20 focus:bg-white" aria-label="Search">
+                </div>
+                <button onclick="location.hash='#/assignments'" class="relative w-10 h-10 rounded-full hover:bg-slate-100 text-slate-500" aria-label="Items needing attention"><i class="fa-regular fa-bell"></i><span id="bell" class="hidden absolute top-1 right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-600 text-white text-[10px] font-bold flex items-center justify-center"></span></button>
+                <div class="hidden sm:flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-gold text-ink text-xs font-bold flex items-center justify-center">AD</span><div class="leading-tight"><div class="text-sm font-semibold text-ink">Administrator</div><div id="adminEmailLabel" class="text-xs text-slate-500"></div></div></div>
+            </header>
+            <main id="view" class="flex-1 p-4 sm:p-6 lg:p-8 min-w-0"></main>
+        </div>
+    </div>
+
+    <script src="assets/js/core/ui.js"></script>
+    <script src="assets/js/core/db.js"></script>
+    <script src="assets/js/core/seed.js"></script>
+    <script src="assets/js/core/lms.js"></script>
+    <script src="assets/js/core/video.js"></script>
+    <script src="assets/js/core/auth.js"></script>
+    <script src="assets/js/core/engage.js"></script>
+    <script src="assets/js/admin/app.js"></script>
+    <script src="assets/js/admin/courses.js"></script>
+    <script src="assets/js/admin/lesson.js"></script>
+    <script src="assets/js/admin/learning.js"></script>
+    <script src="assets/js/admin/people.js"></script>
+    <script src="assets/js/admin/commerce.js"></script>
+    <script src="assets/js/admin/analytics.js"></script>
+    <script src="assets/js/admin/settings.js"></script>
+    <script src="assets/js/admin/portal.js"></script>
+    <script>A.start();</script>
+</body>
+</html>

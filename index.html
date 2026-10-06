@@ -4,71 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tech Oasis School | Where Innovation Meets Expertise</title>
-    <!-- Official SVG Favicon -->
+    <meta name="description" content="Tech Oasis School: career-ready programs in software, AI, data, design and cloud, with structured lessons, real projects and verified certificates.">
+    <meta name="theme-color" content="#0C3B2E">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='16 12 496 606'%3E%3Cpolygon points='255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160' fill='%23225A50'/%3E%3Cpolygon points='125,225 213,176 213,238 179,258 179,583 125,551' fill='%23225A50'/%3E%3Cpolygon points='352,78 405,106 405,386 228,493 228,383 268,404 352,350' fill='%23225A50'/%3E%3Cpolygon points='452,140 505,166 505,446 232,612 232,545 452,410' fill='%23225A50'/%3E%3Cpolygon points='207,272 270,236 335,272 270,308' fill='%23DEC45B'/%3E%3Cpolygon points='207,272 270,308 270,372 207,338' fill='%23AC903F'/%3E%3Cpolygon points='270,308 335,272 335,338 270,372' fill='%23937733'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/tw.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .lm-anim .lm-outline {
-          fill: none;
-          stroke: #C4A649;
-          stroke-width: 2.5;
-          stroke-linejoin: round;
-          stroke-dasharray: 1;
-          stroke-dashoffset: 1;
-          animation: lm-draw 1.3s ease-out forwards, lm-fade-out 0.6s ease-in 1.5s forwards;
-        }
-        .lm-anim .lm-piece {
-          opacity: 0;
-          transform-box: fill-box;
-          transform-origin: center;
-          animation: lm-piece-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-          animation-delay: calc(0.7s + var(--i, 0) * 0.16s);
-        }
-        .lm-anim .lm-cube {
-          opacity: 0;
-          transform-box: fill-box;
-          transform-origin: center;
-          animation: lm-cube-drop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s forwards, lm-float 4s ease-in-out 2.6s infinite;
-        }
-        .lm-anim .lm-glow {
-          opacity: 0;
-          transform-box: fill-box;
-          transform-origin: center;
-          animation: lm-glow 3.2s ease-in-out 2s infinite;
-        }
-        .lm-anim .lm-sheen { animation: lm-sheen 6s ease-in-out 3s infinite; }
-        @keyframes lm-draw { to { stroke-dashoffset: 0; } }
-        @keyframes lm-fade-out { to { opacity: 0; } }
-        @keyframes lm-piece-in {
-          from { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.96); }
-          to { opacity: 1; transform: none; }
-        }
-        @keyframes lm-cube-drop {
-          0% { opacity: 0; transform: translateY(-140px) scale(0.5) rotate(-12deg); }
-          60% { opacity: 1; }
-          100% { opacity: 1; transform: none; }
-        }
-        @keyframes lm-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
-        @keyframes lm-glow { 0%, 100% { opacity: 0.25; transform: scale(0.85); } 50% { opacity: 0.85; transform: scale(1.15); } }
-        @keyframes lm-sheen { 0% { transform: translateX(-320px); } 40%, 100% { transform: translateX(760px); } }
-        .gold-text { color: #C4A649; }
-        .bg-brand-dark { background-color: #0c3b2e; }
-    </style>
+    <link rel="stylesheet" href="assets/css/tos.css">
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+<body class="bg-ivory text-slate-800 font-sans antialiased">
 
     <!-- Preloader -->
-    <div id="preloader" class="fixed inset-0 bg-[#0c3b2e] z-50 flex flex-col items-center justify-center transition-opacity duration-700">
-        <svg class="lm-anim" viewBox="16 12 496 606" width="160" height="195" role="img" aria-label="Tech Oasis">
+    <div id="preloader" class="fixed inset-0 bg-forest z-[100] flex flex-col items-center justify-center transition-opacity duration-700">
+        <svg class="lm-anim" viewBox="16 12 496 606" width="140" height="171" role="img" aria-label="Tech Oasis">
             <defs>
                 <radialGradient id="glow-pre"><stop offset="0%" stop-color="#E7CF6A" stop-opacity="0.9" /><stop offset="100%" stop-color="#E7CF6A" stop-opacity="0" /></radialGradient>
                 <linearGradient id="sheen-pre" x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stop-color="#fff" stop-opacity="0" /><stop offset="50%" stop-color="#fff" stop-opacity="0.35" /><stop offset="100%" stop-color="#fff" stop-opacity="0" /></linearGradient>
                 <clipPath id="clip-pre">
-                    <polygon points="255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160" />
-                    <polygon points="125,225 213,176 213,238 179,258 179,583 125,551" />
-                    <polygon points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" />
-                    <polygon points="452,140 505,166 505,446 232,612 232,545 452,410" />
+                    <polygon points="255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160" /><polygon points="125,225 213,176 213,238 179,258 179,583 125,551" />
+                    <polygon points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" /><polygon points="452,140 505,166 505,446 232,612 232,545 452,410" />
                 </clipPath>
             </defs>
             <circle class="lm-glow" cx="270" cy="304" r="150" fill="url(#glow-pre)" />
@@ -81,294 +37,297 @@
             <polygon class="lm-outline" pathLength="1" points="125,225 213,176 213,238 179,258 179,583 125,551" />
             <polygon class="lm-outline" pathLength="1" points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" />
             <polygon class="lm-outline" pathLength="1" points="452,140 505,166 505,446 232,612 232,545 452,410" />
-            <g class="lm-cube">
-                <polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B" />
-                <polygon points="207,272 270,308 270,372 207,338" fill="#AC903F" />
-                <polygon points="270,308 335,272 335,338 270,372" fill="#937733" />
-            </g>
+            <g class="lm-cube"><polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B" /><polygon points="207,272 270,308 270,372 207,338" fill="#AC903F" /><polygon points="270,308 335,272 335,338 270,372" fill="#937733" /></g>
         </svg>
-        <div class="text-white text-2xl font-black tracking-wider mt-4">TECH <span class="gold-text">OASIS</span></div>
-        <p class="text-xs text-emerald-200 mt-1 uppercase tracking-widest">Where Innovation Meets Expertise</p>
+        <div class="text-white text-xl font-extrabold tracking-[0.2em] mt-5">TECH <span class="gold-text">OASIS</span></div>
+        <p class="text-[10px] text-forest-200 mt-2 uppercase tracking-[0.4em]">Where Innovation Meets Expertise</p>
     </div>
 
-    <!-- Navigation -->
-    <header id="siteHeader" class="bg-white border-b sticky top-0 z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-8">
-                <a href="#" onclick="showPage('home')" class="flex items-center gap-3">
-                    <svg class="lm-anim" viewBox="16 12 496 606" width="34" height="42" role="img" aria-label="Tech Oasis">
-                        <polygon points="255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160" fill="#225A50" />
-                        <polygon points="125,225 213,176 213,238 179,258 179,583 125,551" fill="#225A50" />
-                        <polygon points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" fill="#225A50" />
-                        <polygon points="452,140 505,166 505,446 232,612 232,545 452,410" fill="#225A50" />
-                        <g><polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B" /><polygon points="207,272 270,308 270,372 207,338" fill="#AC903F" /><polygon points="270,308 335,272 335,338 270,372" fill="#937733" /></g>
-                    </svg>
-                    <div>
-                        <div class="text-base font-black tracking-tight text-slate-900 leading-none">TECH <span class="gold-text">OASIS</span></div>
-                        <div class="text-[9px] text-slate-500 font-semibold tracking-wider uppercase mt-0.5">School</div>
-                    </div>
-                </a>
-                <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-slate-600">
-                    <a href="#" onclick="showPage('home')" class="hover:text-emerald-700 transition">Explore</a>
-                    <a href="#" onclick="showPage('about')" class="hover:text-emerald-700 transition">About Us</a>
-                    <a href="#" onclick="goToPortal()" class="hover:text-emerald-700 transition">My Portal</a>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] btn btn-gold btn-sm">Skip to content</a>
+
+    <!-- ================= HEADER ================= -->
+    <header id="siteHeader" class="sticky top-0 z-40">
+        <!-- Audience bar -->
+        <div class="bg-ink text-white/80 text-[13px]">
+            <div class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-between gap-4">
+                <nav class="flex items-center gap-1 overflow-x-auto no-scrollbar" aria-label="Audience">
+                    <a href="#" onclick="return go('home')" class="px-3 h-10 flex items-center font-semibold text-white border-b-2 border-gold whitespace-nowrap">For Individuals</a>
+                    <a href="#organisations" onclick="return go('home', 'organisations')" class="px-3 h-10 flex items-center hover:text-white whitespace-nowrap">For Organisations</a>
+                    <a href="#organisations" onclick="return go('home', 'organisations')" class="px-3 h-10 hidden sm:flex items-center hover:text-white whitespace-nowrap">For Schools</a>
+                    <a href="verify.html" class="px-3 h-10 hidden sm:flex items-center hover:text-white whitespace-nowrap">Verify a Certificate</a>
                 </nav>
+                <a data-email="students" class="hidden md:flex items-center gap-2 hover:text-gold whitespace-nowrap"><i class="fa-regular fa-envelope text-gold"></i><span data-email-text></span></a>
             </div>
-            <div class="flex items-center space-x-3">
-                <button onclick="openCourseraAuthModal()" id="authNavBtn" class="text-sm font-semibold text-slate-700 hover:text-emerald-700 px-4 py-2 border rounded-xl transition flex items-center gap-2">
-                    <i class="fa-solid fa-user-circle text-blue-600"></i> Log In / Register
-                </button>
+        </div>
+        <!-- Main bar -->
+        <div class="bg-white/95 backdrop-blur border-b border-slate-200/70">
+            <div class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center gap-4 lg:gap-6">
+                <button class="lg:hidden w-10 h-10 -ml-2 rounded-full hover:bg-slate-100" onclick="toggleDrawer(true)" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+                <a href="#" onclick="return go('home')" class="brand-logo shrink-0" data-size="40" aria-label="Tech Oasis School home"></a>
+
+                <div class="relative hidden lg:block" id="exploreWrap">
+                    <button onclick="toggleExplore()" id="exploreBtn" aria-expanded="false" class="flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-forest px-2 py-2">Explore <i class="fa-solid fa-chevron-down text-[10px] transition-transform" id="exploreChevron"></i></button>
+                    <div id="exploreMenu" class="hidden absolute left-0 top-full mt-3 w-[760px] bg-white rounded-2xl shadow-lift border border-slate-100 p-6 grid grid-cols-3 gap-6"></div>
+                </div>
+                <a href="#catalog" onclick="return go('catalog')" class="hidden lg:block text-sm font-semibold text-slate-700 hover:text-forest">Programs</a>
+
+                <div class="relative flex-1 max-w-xl hidden md:block" id="searchWrap">
+                    <input id="searchInput" type="search" autocomplete="off" placeholder="What do you want to learn?" aria-label="Search programs"
+                        class="w-full h-12 rounded-full border border-slate-200 bg-ivory/60 pl-5 pr-14 text-sm focus:outline-none focus:border-forest-600 focus:bg-white focus:ring-4 focus:ring-forest-600/10 transition">
+                    <button onclick="submitSearch()" class="absolute right-1.5 top-1.5 w-9 h-9 rounded-full bg-forest text-white hover:bg-forest-600" aria-label="Search"><i class="fa-solid fa-magnifying-glass text-sm"></i></button>
+                    <div id="searchSuggest" class="hidden absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-lift border border-slate-100 py-2 max-h-[420px] overflow-y-auto thin-scroll"></div>
+                </div>
+
+                <div class="ml-auto flex items-center gap-2 sm:gap-3" id="authArea"></div>
             </div>
         </div>
     </header>
 
-    <!-- MAIN APP CONTAINER -->
+    <!-- Mobile drawer -->
+    <div id="drawer" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-ink/50" onclick="toggleDrawer(false)"></div>
+        <aside class="absolute left-0 top-0 bottom-0 w-[86%] max-w-sm bg-white p-5 overflow-y-auto">
+            <div class="flex items-center justify-between mb-6"><span class="brand-logo" data-size="36"></span><button onclick="toggleDrawer(false)" class="w-10 h-10 rounded-full hover:bg-slate-100" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="relative mb-5"><input id="mSearchInput" type="search" placeholder="What do you want to learn?" class="field rounded-full pl-4 pr-10 h-11"><button onclick="submitSearch(true)" class="absolute right-2 top-1.5 w-8 h-8 rounded-full bg-forest text-white" aria-label="Search"><i class="fa-solid fa-magnifying-glass text-xs"></i></button></div>
+            <nav class="space-y-1 text-sm font-semibold">
+                <a href="#" onclick="toggleDrawer(false); return go('home')" class="block px-3 py-2.5 rounded-xl hover:bg-ivory">Home</a>
+                <a href="#catalog" onclick="toggleDrawer(false); return go('catalog')" class="block px-3 py-2.5 rounded-xl hover:bg-ivory">All programs</a>
+                <a href="#about" onclick="toggleDrawer(false); return go('about')" class="block px-3 py-2.5 rounded-xl hover:bg-ivory">About the school</a>
+                <a href="verify.html" class="block px-3 py-2.5 rounded-xl hover:bg-ivory">Verify a certificate</a>
+            </nav>
+            <div class="mt-5 pt-5 border-t"><div class="text-[11px] uppercase tracking-[0.2em] text-slate-400 font-bold mb-2 px-3">Categories</div><div id="drawerCats" class="space-y-1 text-sm"></div></div>
+        </aside>
+    </div>
+
+    <main id="main" class="[overflow-x:clip]">
     <div id="appContainer">
 
-        <!-- PRE-LOGIN HOMEPAGE WITH AUTOMATIC HERO SLIDER -->
-        <div id="page-home" class="page-view max-w-7xl mx-auto px-4 py-8 space-y-8">
-            
-            <!-- Hero Image Slider Section -->
-            <div class="relative bg-slate-900 rounded-2xl overflow-hidden shadow-lg min-h-[380px] flex items-center">
-                <!-- Slide 1 -->
-                <div class="hero-slide absolute inset-0 transition-opacity duration-700 opacity-100 flex flex-col md:flex-row items-center justify-between p-8 md:p-12 bg-gradient-to-r from-slate-900 via-slate-900/90 to-[#0c3b2e]/80 text-white">
-                    <div class="max-w-xl space-y-4">
-                        <span class="bg-amber-500/20 text-amber-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-amber-400/30">Featured Program</span>
-                        <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">Learn AI & Software from the companies building it</h2>
-                        <p class="text-sm text-slate-300">Master high-demand tech skills with structured courses and professional certifications for only $5.</p>
-                        <button onclick="showPage('about')" class="bg-[#C4A649] text-slate-900 font-bold text-xs px-6 py-3 rounded-xl shadow">Explore AI Courses →</button>
-                    </div>
-                    <div class="mt-6 md:mt-0 w-full md:w-1/2 flex justify-center">
-                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" alt="Tech Learning" class="rounded-xl shadow-2xl border border-white/10 max-h-64 object-cover">
-                    </div>
-                </div>
-                <!-- Slide 2 -->
-                <div class="hero-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-between p-8 md:p-12 bg-gradient-to-r from-blue-950 via-slate-900/90 to-slate-900 text-white">
-                    <div class="max-w-xl space-y-4">
-                        <span class="bg-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-blue-400/30">Career Acceleration</span>
-                        <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">Navigate your career path in tech with world-class mentors</h2>
-                        <p class="text-sm text-slate-300">Join aspiring tech gurus across Africa and beyond with a 1-week free trial on all 12 programs.</p>
-                        <button onclick="openCourseraAuthModal()" class="bg-blue-600 text-white font-bold text-xs px-6 py-3 rounded-xl shadow">Get Started Now →</button>
-                    </div>
-                    <div class="mt-6 md:mt-0 w-full md:w-1/2 flex justify-center">
-                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Collaboration" class="rounded-xl shadow-2xl border border-white/10 max-h-64 object-cover">
-                    </div>
-                </div>
-                <!-- Slide 3 -->
-                <div class="hero-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-between p-8 md:p-12 bg-gradient-to-r from-emerald-950 via-slate-900/90 to-slate-900 text-white">
-                    <div class="max-w-xl space-y-4">
-                        <span class="bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-emerald-400/30">Tech Oasis Plus</span>
-                        <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">Unlock 12+ Professional Tech Programs & Certificates</h2>
-                        <p class="text-sm text-slate-300">Build real-world apps, databases, and AI models with a flat $5 fee per program.</p>
-                        <button onclick="showPage('home')" class="bg-emerald-600 text-white font-bold text-xs px-6 py-3 rounded-xl shadow">Browse Catalog →</button>
-                    </div>
-                    <div class="mt-6 md:mt-0 w-full md:w-1/2 flex justify-center">
-                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" alt="Coding" class="rounded-xl shadow-2xl border border-white/10 max-h-64 object-cover">
-                    </div>
-                </div>
-                <!-- Slide Controls -->
-                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
-                    <button onclick="currentSlide(0)" class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition slide-dot active-dot"></button>
-                    <button onclick="currentSlide(1)" class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition slide-dot"></button>
-                    <button onclick="currentSlide(2)" class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition slide-dot"></button>
-                </div>
-            </div>
+        <!-- ================= HOME ================= -->
+        <div id="page-home" class="page-view">
 
-            <!-- New and Popular Section -->
-            <div>
-                <h3 class="text-xl font-extrabold text-slate-900 mb-4">New and popular</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white p-5 rounded-xl border shadow-sm space-y-3">
-                        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Most popular →</span>
-                        <div onclick="openCourseDetail(1)" class="cursor-pointer hover:opacity-80 transition">
-                            <h4 class="font-bold text-slate-900">Google Data Analytics Professional Certificate</h4>
-                            <p class="text-xs text-slate-500 mt-1">Professional Certificate • 4.8 ★</p>
-                        </div>
-                        <div onclick="openCourseDetail(4)" class="cursor-pointer hover:opacity-80 transition border-t pt-2">
-                            <h4 class="font-bold text-slate-900">Google Foundations: Data, Data, Everywhere</h4>
-                            <p class="text-xs text-slate-500 mt-1">Course • 4.7 ★</p>
-                        </div>
+            <!-- Hero carousel -->
+            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8" aria-roledescription="carousel" aria-label="Featured">
+                <div class="relative" id="hero" onmouseenter="heroPause(true)" onmouseleave="heroPause(false)" onfocusin="heroPause(true)" onfocusout="heroPause(false)">
+                    <div class="overflow-hidden rounded-[28px]">
+                        <div id="heroTrack" class="flex transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)]"></div>
                     </div>
-                    <div class="bg-white p-5 rounded-xl border shadow-sm space-y-3">
-                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">Hot new releases →</span>
-                        <div onclick="openCourseDetail(2)" class="cursor-pointer hover:opacity-80 transition">
-                            <h4 class="font-bold text-slate-900">The Complete Claude Code & Anthropic API</h4>
-                            <p class="text-xs text-slate-500 mt-1">Guided Project • 4.9 ★</p>
-                        </div>
-                        <div onclick="openCourseDetail(6)" class="cursor-pointer hover:opacity-80 transition border-t pt-2">
-                            <h4 class="font-bold text-slate-900">AWS Security Engineer Advanced</h4>
-                            <p class="text-xs text-slate-500 mt-1">Professional Certificate • 4.8 ★</p>
-                        </div>
-                    </div>
-                    <div class="bg-white p-5 rounded-xl border shadow-sm space-y-3">
-                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Trending AI courses →</span>
-                        <div onclick="openCourseDetail(5)" class="cursor-pointer hover:opacity-80 transition">
-                            <h4 class="font-bold text-slate-900">AWS Generative AI Developer Advanced</h4>
-                            <p class="text-xs text-slate-500 mt-1">Professional Certificate • 4.9 ★</p>
-                        </div>
-                        <div onclick="openCourseDetail(7)" class="cursor-pointer hover:opacity-80 transition border-t pt-2">
-                            <h4 class="font-bold text-slate-900">Google AI Essentials</h4>
-                            <p class="text-xs text-slate-500 mt-1">Specialization • 4.8 ★</p>
-                        </div>
-                    </div>
+                    <button onclick="heroGo(-1)" class="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white shadow-luxe items-center justify-center text-ink hover:bg-ivory" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button onclick="heroGo(1)" class="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white shadow-luxe items-center justify-center text-ink hover:bg-ivory" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
-            </div>
+                <div id="heroDots" class="flex items-center gap-2 mt-5"></div>
+            </section>
 
-            <!-- Subscription Banner -->
-            <div class="bg-blue-600 text-white p-8 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-6 shadow-md">
-                <div>
-                    <span class="bg-blue-500 text-white text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">Tech Oasis Plus</span>
-                    <h3 class="text-2xl font-black mt-2">Unlock 12+ Professional Tech Programs</h3>
-                    <p class="text-xs text-blue-100 mt-1">Start 1-week free trial • $5 flat fee per course afterwards</p>
+            <!-- New and popular -->
+            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-14 reveal">
+                <div class="flex items-end justify-between gap-4 mb-6">
+                    <div><p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">Curated for you</p><h2 class="font-display text-3xl sm:text-4xl text-ink mt-1">New and popular</h2></div>
+                    <a href="#catalog" onclick="return go('catalog')" class="hidden sm:inline-flex text-sm font-semibold text-forest hover:text-forest-600">Browse all programs <i class="fa-solid fa-arrow-right ml-2 text-xs"></i></a>
                 </div>
-                <button onclick="openCourseraAuthModal()" class="bg-white text-blue-700 font-bold text-xs px-6 py-3 rounded-xl shadow">Start Free Trial</button>
-            </div>
+                <div id="popularCols" class="grid md:grid-cols-3 gap-5"></div>
+            </section>
 
-            <!-- Interactive Course Catalog Grid -->
-            <div>
-                <h3 class="text-xl font-extrabold text-slate-900 mb-6">Explore All Tech Programs ($5 each)</h3>
-                <div id="courseGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-            </div>
-        </div>
-
-        <!-- ABOUT US PAGE -->
-        <div id="page-about" class="page-view hidden py-16 max-w-5xl mx-auto px-4">
-            <div class="text-center mb-12">
-                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase">About Tech Oasis School</span>
-                <h2 class="text-4xl font-extrabold text-slate-900 mt-3">Where Innovation Meets Expertise</h2>
-                <p class="text-slate-600 mt-2 max-w-2xl mx-auto">We are dedicated to equipping aspiring tech gurus across Africa and beyond with world-class, affordable education in software development, design, artificial intelligence, and cloud systems.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-xl border shadow-sm">
-                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-graduation-cap"></i></div>
-                    <h3 class="font-bold text-lg text-slate-900">Affordable Learning</h3>
-                    <p class="text-slate-600 text-sm mt-2">Every program is priced at a flat $5 with a 1-week free trial, ensuring world-class tech skills are accessible to everyone.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border shadow-sm">
-                    <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-laptop-code"></i></div>
-                    <h3 class="font-bold text-lg text-slate-900">Practical Projects</h3>
-                    <p class="text-slate-600 text-sm mt-2">Build real-world web apps, mobile solutions, and AI models for your professional portfolio.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border shadow-sm">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-lg flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-globe"></i></div>
-                    <h3 class="font-bold text-lg text-slate-900">Global Community</h3>
-                    <p class="text-slate-600 text-sm mt-2">Join thousands of students and tech leaders collaborating across Africa and beyond.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- INDIVIDUAL COURSE PAGE -->
-        <div id="page-courseDetail" class="page-view hidden py-12 max-w-5xl mx-auto px-4">
-            <button onclick="showPage('home')" class="text-xs font-bold text-emerald-700 mb-6 flex items-center gap-1.5"><i class="fa-solid fa-arrow-left"></i> Back to Catalog</button>
-            <div class="bg-white rounded-2xl border shadow-sm overflow-hidden mb-8">
-                <div class="p-8 bg-[#0c3b2e] text-white">
-                    <span id="detailCat" class="bg-emerald-800 text-emerald-200 text-xs font-bold px-3 py-1 rounded uppercase"></span>
-                    <h1 id="detailTitle" class="text-3xl font-black mt-2"></h1>
-                    <p id="detailLevel" class="text-emerald-200 text-sm mt-1"></p>
-                </div>
-                <div class="p-8 space-y-8">
-                    <div>
-                        <h3 class="font-bold text-slate-900 text-lg uppercase tracking-wider mb-2">Program Description</h3>
-                        <p id="detailDesc" class="text-slate-600 leading-relaxed text-sm"></p>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-900 text-lg uppercase tracking-wider mb-3">Featured Video Lecture</h3>
-                        <div class="aspect-video bg-slate-900 rounded-xl overflow-hidden shadow-lg flex items-center justify-center" id="videoContainer"></div>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-900 text-lg uppercase tracking-wider mb-3">Curriculum Syllabus</h3>
-                        <div id="detailSyllabus" class="space-y-3"></div>
-                    </div>
-                    <div class="pt-6 border-t flex justify-between items-center">
-                        <div>
-                            <span class="text-xs text-slate-500 block">Enrollment Fee</span>
-                            <span class="text-2xl font-black text-slate-900">$5 <span class="text-xs text-slate-500 font-normal">one-time ($0 for 1-week trial)</span></span>
-                        </div>
-                        <button onclick="enrollCurrentCourse()" class="bg-[#0c3b2e] hover:bg-emerald-800 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2">
-                            <i class="fa-solid fa-gift"></i> Start 1-Week Free Trial
-                        </button>
+            <!-- Promo pair -->
+            <section id="organisations" class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-14 grid lg:grid-cols-2 gap-5 reveal scroll-mt-32">
+                <div id="promoAi" class="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-forest-50 via-white to-gold-50 border border-forest-100 p-8 sm:p-10 min-h-[300px] flex flex-col justify-between"></div>
+                <div class="relative overflow-hidden rounded-[28px] bg-ink text-white p-8 sm:p-10 min-h-[300px] grain">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=70" alt="" class="absolute inset-0 w-full h-full object-cover opacity-25">
+                    <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/90 to-ink/40"></div>
+                    <div class="relative max-w-md">
+                        <div class="text-sm font-semibold"><span class="font-extrabold tracking-[0.08em]">TECH <span class="gold-text">OASIS</span></span> <span class="text-white/70">for Organisations</span></div>
+                        <h3 class="font-display text-3xl sm:text-[34px] leading-tight mt-4">Build a team that is ready for what's next</h3>
+                        <p class="text-white/70 text-sm mt-3">Structured programs, progress reporting and certificates for your staff, schools or government departments.</p>
+                        <a data-email="school" data-subject="Tech Oasis for Organisations" class="btn btn-gold mt-6">Talk to our team <i class="fa-solid fa-arrow-right text-xs"></i></a>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <!-- STUDENT PORTAL -->
-        <div id="page-studentDash" class="page-view hidden py-8 max-w-6xl mx-auto px-4 space-y-8">
-
-            <!-- Hero -->
-            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0c3b2e] via-[#14584a] to-slate-900 text-white p-8 md:p-10 shadow-xl">
-                <div class="absolute -right-16 -top-16 w-72 h-72 rounded-full bg-[#C4A649]/20 blur-2xl"></div>
-                <div class="absolute right-24 -bottom-20 w-64 h-64 rounded-full bg-emerald-400/10 blur-2xl"></div>
-                <div class="relative grid md:grid-cols-5 gap-8 items-center">
-                    <div class="md:col-span-3 space-y-4">
-                        <span id="studentBadgeLine" class="inline-block bg-white/10 border border-white/20 text-amber-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full"></span>
-                        <h2 id="studentWelcomeName" class="text-3xl md:text-4xl font-black leading-tight">Welcome!</h2>
-                        <p id="studentHeroSub" class="text-emerald-100 text-sm max-w-lg"></p>
-                        <div class="flex flex-wrap gap-3 pt-1">
-                            <button id="studentHeroCta" onclick="document.getElementById('studentRecommended').scrollIntoView({behavior:'smooth'})" class="bg-[#C4A649] hover:bg-[#d4b65a] text-slate-900 font-bold text-sm px-6 py-3 rounded-xl shadow transition"></button>
-                            <button onclick="showPage('home')" class="bg-white/10 hover:bg-white/20 border border-white/20 font-semibold text-sm px-6 py-3 rounded-xl transition">Browse all 12 programs</button>
-                        </div>
-                    </div>
-                    <div class="md:col-span-2 grid grid-cols-3 md:grid-cols-1 gap-3">
-                        <div class="bg-white/10 border border-white/10 rounded-2xl p-4"><div class="text-2xl font-black text-amber-300">12</div><div class="text-[11px] text-emerald-100">Career-ready programs</div></div>
-                        <div class="bg-white/10 border border-white/10 rounded-2xl p-4"><div class="text-2xl font-black text-amber-300">7 days</div><div class="text-[11px] text-emerald-100">Free trial on every course</div></div>
-                        <div class="bg-white/10 border border-white/10 rounded-2xl p-4"><div class="text-2xl font-black text-amber-300">$5</div><div class="text-[11px] text-emerald-100">Flat fee, no surprises</div></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Your journey -->
-            <div class="bg-white rounded-2xl border shadow-sm p-6">
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-5">
-                    <h3 class="font-extrabold text-lg text-slate-900">Your journey</h3>
-                    <span id="studentJourneyHint" class="text-xs text-slate-500"></span>
-                </div>
-                <div id="studentSteps" class="grid sm:grid-cols-4 gap-4"></div>
-            </div>
-
-            <!-- Continue learning / enrolled -->
-            <div id="studentLearningWrap">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-extrabold text-lg text-slate-900">Continue learning</h3>
-                    <div class="flex gap-2 text-xs font-bold">
-                        <span class="bg-orange-50 text-orange-700 px-3 py-1.5 rounded-full"><i class="fa-solid fa-fire mr-1"></i><span id="studentStreak">1</span>-day streak</span>
-                        <span class="bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full"><i class="fa-solid fa-bullseye mr-1"></i>Weekly goal: 3 lessons</span>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="studentEnrolledList"></div>
-            </div>
-
-            <!-- Recommended -->
-            <div id="studentRecommended">
-                <h3 class="font-extrabold text-lg text-slate-900">Recommended to start today</h3>
-                <p class="text-xs text-slate-500 mb-4">Hand-picked beginner-friendly programs. Every one starts with a free 1-week trial.</p>
-                <div id="studentRecommendedGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
-            </div>
+            <!-- Tools strip -->
+            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 reveal">
+                <h2 class="font-display text-2xl sm:text-3xl text-ink">Master the tools the industry runs on</h2>
+                <div class="mt-5 flex gap-3 overflow-x-auto no-scrollbar pb-1" id="toolStrip"></div>
+            </section>
 
             <!-- Career paths -->
-            <div>
-                <h3 class="font-extrabold text-lg text-slate-900">Where could this take you?</h3>
-                <p class="text-xs text-slate-500 mb-4">Pick a path and see the programs that lead there.</p>
-                <div id="studentPaths" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
-            </div>
-
-            <div class="grid lg:grid-cols-3 gap-6">
-                <!-- Achievements -->
-                <div class="lg:col-span-2 bg-white rounded-2xl border shadow-sm p-6">
-                    <h3 class="font-extrabold text-lg text-slate-900 mb-1">Achievements</h3>
-                    <p class="text-xs text-slate-500 mb-4">Unlock badges as you learn.</p>
-                    <div id="studentBadges" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
-                </div>
-                <!-- Inspiration -->
-                <div class="rounded-2xl p-6 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 flex flex-col justify-between">
-                    <div>
-                        <i class="fa-solid fa-quote-left text-amber-400 text-xl"></i>
-                        <p id="studentQuote" class="text-slate-800 font-bold text-lg leading-snug mt-3"></p>
-                        <p id="studentQuoteBy" class="text-xs text-slate-500 mt-2"></p>
+            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 reveal">
+                <div class="rounded-[28px] bg-gradient-to-br from-forest via-forest-600 to-ink text-white p-6 sm:p-10 relative overflow-hidden grain">
+                    <div class="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-gold/20 blur-3xl"></div>
+                    <div class="relative">
+                        <a href="#catalog" onclick="return go('catalog')" class="font-display text-2xl sm:text-[32px] leading-tight hover:text-gold-200 inline-flex items-center gap-3">Skills for the work you do, and the career you want <i class="fa-solid fa-arrow-right text-lg"></i></a>
+                        <p class="text-white/75 text-sm mt-2">Choose a path. We'll show you the programs that lead there.</p>
+                        <div id="pathTabs" class="flex gap-2 mt-6 overflow-x-auto no-scrollbar pb-1" role="tablist"></div>
+                        <div id="pathCards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6"></div>
                     </div>
-                    <button onclick="showPage('home')" class="mt-6 bg-[#0c3b2e] text-white text-xs font-bold px-4 py-2.5 rounded-xl self-start">Find my next course</button>
                 </div>
-            </div>
+            </section>
+
+            <!-- What brings you here -->
+            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 reveal">
+                <div class="rounded-[28px] bg-white border border-slate-200/70 p-6 sm:p-8 shadow-luxe">
+                    <div class="flex flex-col lg:flex-row lg:items-center gap-5">
+                        <h2 class="font-display text-2xl text-ink lg:w-72 shrink-0">What brings you to Tech Oasis today?</h2>
+                        <div id="goalChips" class="flex flex-wrap gap-3"></div>
+                    </div>
+                    <div id="goalCards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-7"></div>
+                </div>
+            </section>
+
+            <!-- Job-ready by category -->
+            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 reveal">
+                <div class="grid lg:grid-cols-[320px_1fr] gap-6 rounded-[28px] bg-ivory-100 border border-ivory-200 p-6 sm:p-8">
+                    <div class="flex flex-col justify-between">
+                        <div><p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">Career programs</p>
+                        <h2 class="font-display text-3xl text-ink mt-2 leading-tight">Get job-ready for an in-demand career</h2>
+                        <p class="text-sm text-slate-600 mt-3">No prior experience needed. Learn at your own pace, practise on real projects and earn a certificate.</p></div>
+                        <a href="#catalog" onclick="return go('catalog')" class="btn btn-forest mt-6 self-start">Explore programs <i class="fa-solid fa-arrow-right text-xs"></i></a>
+                    </div>
+                    <div class="min-w-0">
+                        <div id="catTabs" class="flex gap-2 overflow-x-auto no-scrollbar pb-1" role="tablist"></div>
+                        <div id="catCards" class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-5"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How it works -->
+            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-20 reveal">
+                <div class="text-center max-w-2xl mx-auto">
+                    <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">The Tech Oasis method</p>
+                    <h2 class="font-display text-3xl sm:text-4xl text-ink mt-2">A learning journey designed like a great school</h2>
+                    <p class="text-slate-600 mt-3">Every program is built course by course, section by section, so you always know what comes next and how far you've come.</p>
+                </div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-10">
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-compass"></i></span><div class="text-[11px] font-bold text-gold-600 tracking-[0.2em] mt-5">STEP 01</div><h3 class="font-display text-xl text-ink mt-1">Choose a program</h3><p class="text-sm text-slate-600 mt-2">Start with a free preview lesson and a 7-day free trial.</p></div>
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-layer-group"></i></span><div class="text-[11px] font-bold text-gold-600 tracking-[0.2em] mt-5">STEP 02</div><h3 class="font-display text-xl text-ink mt-1">Learn section by section</h3><p class="text-sm text-slate-600 mt-2">Short videos, readings and resources in a clear sequence.</p></div>
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-list-check"></i></span><div class="text-[11px] font-bold text-gold-600 tracking-[0.2em] mt-5">STEP 03</div><h3 class="font-display text-xl text-ink mt-1">Practise and get feedback</h3><p class="text-sm text-slate-600 mt-2">Quizzes check understanding; instructors grade your projects.</p></div>
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-award"></i></span><div class="text-[11px] font-bold text-gold-600 tracking-[0.2em] mt-5">STEP 04</div><h3 class="font-display text-xl text-ink mt-1">Earn your certificate</h3><p class="text-sm text-slate-600 mt-2">A verifiable certificate with a unique ID employers can check.</p></div>
+                </div>
+            </section>
+
+            <!-- Certificate showcase + promise -->
+            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-20 reveal">
+                <div class="grid lg:grid-cols-2 gap-10 items-center">
+                    <div class="relative">
+                        <div class="absolute -inset-6 bg-gradient-to-br from-gold/20 to-forest/10 rounded-[36px] blur-2xl"></div>
+                        <div class="relative bg-white rounded-[24px] shadow-lift p-2">
+                            <div class="rounded-[18px] border-2 border-gold/50 p-8 sm:p-10 text-center bg-[radial-gradient(circle_at_top,#FBF7EA,white_60%)]">
+                                <div class="flex justify-center" id="certLogo"></div>
+                                <div class="text-[10px] tracking-[0.4em] uppercase text-gold-600 font-bold mt-5">Certificate of Completion</div>
+                                <div class="text-xs text-slate-500 mt-5">This certifies that</div>
+                                <div class="font-display text-3xl text-ink mt-1 italic">Your Name</div>
+                                <div class="hairline-gold w-40 mx-auto my-4"></div>
+                                <div class="text-xs text-slate-500">has successfully completed</div>
+                                <div class="font-display text-xl text-forest mt-1">Web Development</div>
+                                <div class="flex justify-between items-end mt-8 text-left text-[10px] text-slate-500">
+                                    <div><div class="font-semibold text-slate-700">Clifford Mensah</div>Instructor</div>
+                                    <span class="w-14 h-14 rounded-full bg-gradient-to-br from-gold-300 to-gold-600 text-white flex items-center justify-center shadow"><i class="fa-solid fa-award text-xl"></i></span>
+                                    <div class="text-right"><div class="font-semibold text-slate-700 font-mono">TOS-2026-XXXXXX</div>Verify online</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">Recognised achievement</p>
+                        <h2 class="font-display text-3xl sm:text-4xl text-ink mt-2 leading-tight">A certificate that means something</h2>
+                        <p class="text-slate-600 mt-4">Certificates are issued only when you complete the lessons, pass the quizzes and have your projects graded. Each one carries a unique ID and a public verification page, so employers can confirm it in seconds.</p>
+                        <ul class="mt-6 space-y-3 text-sm text-slate-700">
+                            <li class="flex gap-3"><i class="fa-solid fa-circle-check text-forest-400 mt-0.5"></i>Earned through real, graded work, not attendance</li>
+                            <li class="flex gap-3"><i class="fa-solid fa-circle-check text-forest-400 mt-0.5"></i>Instantly verifiable at a permanent link</li>
+                            <li class="flex gap-3"><i class="fa-solid fa-circle-check text-forest-400 mt-0.5"></i>Shareable on LinkedIn and your CV</li>
+                        </ul>
+                        <a href="verify.html" class="btn btn-outline mt-7"><i class="fa-solid fa-shield-halved"></i> Verify a certificate</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials (from published reviews) -->
+            <section id="reviewsSection" class="mt-20 bg-ink text-white py-16 sm:py-20 relative overflow-hidden grain reveal">
+                <div class="absolute left-1/2 -translate-x-1/2 -top-32 w-[600px] h-[300px] rounded-full bg-gold/10 blur-3xl"></div>
+                <div class="relative max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-wrap items-end justify-between gap-4">
+                        <div><p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold">Learner stories</p><h2 class="font-display text-3xl sm:text-4xl mt-2">In their words</h2></div>
+                        <div id="reviewSummary" class="text-sm text-white/70"></div>
+                    </div>
+                    <div id="reviewCards" class="grid md:grid-cols-3 gap-5 mt-10"></div>
+                </div>
+            </section>
+
+            <!-- Pricing -->
+            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-20 reveal">
+                <div class="text-center max-w-2xl mx-auto"><p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">Simple pricing</p><h2 class="font-display text-3xl sm:text-4xl text-ink mt-2">World-class learning, honestly priced</h2></div>
+                <div class="grid md:grid-cols-3 gap-5 mt-10 max-w-5xl mx-auto">
+                    <div class="bg-white rounded-3xl border border-slate-200/70 p-7 shadow-luxe flex flex-col"><h3 class="font-display text-xl text-ink">Free courses</h3><p class="text-sm text-slate-500 mt-1">Start learning today</p><div class="font-display text-4xl text-ink mt-5">Free</div><ul class="text-sm text-slate-600 space-y-2 mt-5 flex-1"><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Selected full courses</li><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Preview lessons in every program</li><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Progress tracking</li></ul><a href="#catalog" onclick="return go('catalog', null, {price:'free'})" class="btn btn-outline mt-6">Browse free courses</a></div>
+                    <div class="relative bg-forest text-white rounded-3xl p-7 shadow-lift flex flex-col ring-2 ring-gold"><span class="absolute -top-3 left-7 bg-gold text-ink text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full">Most popular</span><h3 class="font-display text-xl">Per program</h3><p class="text-sm text-white/70 mt-1">Everything in one career program</p><div class="font-display text-4xl mt-5"><span id="priceFlat">$5</span> <span class="text-sm font-sans text-white/60">one-time</span></div><ul class="text-sm text-white/85 space-y-2 mt-5 flex-1"><li><i class="fa-solid fa-check text-gold mr-2"></i><span id="trialLine">7-day free trial</span></li><li><i class="fa-solid fa-check text-gold mr-2"></i>All lessons, quizzes and projects</li><li><i class="fa-solid fa-check text-gold mr-2"></i>Instructor-graded assignments</li><li><i class="fa-solid fa-check text-gold mr-2"></i>Verified certificate</li></ul><a href="#catalog" onclick="return go('catalog')" class="btn btn-gold mt-6">Choose a program</a></div>
+                    <div class="bg-white rounded-3xl border border-slate-200/70 p-7 shadow-luxe flex flex-col"><h3 class="font-display text-xl text-ink">Organisations</h3><p class="text-sm text-slate-500 mt-1">Teams, schools and government</p><div class="font-display text-4xl text-ink mt-5">Custom</div><ul class="text-sm text-slate-600 space-y-2 mt-5 flex-1"><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Group enrollment</li><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Progress reports</li><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Dedicated support</li></ul><a data-email="school" data-subject="Organisation enquiry" class="btn btn-outline mt-6">Contact us</a></div>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="max-w-3xl mx-auto px-4 sm:px-6 mt-20 reveal">
+                <h2 class="font-display text-3xl sm:text-4xl text-ink text-center">Frequently asked questions</h2>
+                <div id="faq" class="mt-8 divide-y divide-slate-200 border-y border-slate-200"></div>
+            </section>
+
+            <!-- Closing CTA -->
+            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-20 reveal">
+                <div class="rounded-[28px] bg-gradient-to-r from-gold-100 via-ivory to-forest-50 border border-gold-200 p-8 sm:p-12 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                    <div class="max-w-xl"><h2 class="font-display text-3xl sm:text-4xl text-ink leading-tight">Your next chapter starts with one lesson.</h2><p class="text-slate-600 mt-3">Join free, explore any program, and learn from instructors who build technology for a living.</p></div>
+                    <form onsubmit="subscribe(event)" class="w-full lg:w-auto">
+                        <label for="newsEmail" class="text-xs font-semibold text-slate-600">Get new programs and scholarships by email</label>
+                        <div class="flex gap-2 mt-2"><input id="newsEmail" type="email" required placeholder="you@email.com" class="field h-12 lg:w-72"><button class="btn btn-forest h-12">Subscribe</button></div>
+                    </form>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= CATALOG ================= -->
+        <div id="page-catalog" class="page-view hidden">
+            <section class="bg-ink text-white relative overflow-hidden grain">
+                <div class="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-gold/10 blur-3xl"></div>
+                <div class="relative max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold">Catalog</p>
+                    <h1 class="font-display text-4xl sm:text-5xl mt-2">Explore every program</h1>
+                    <p class="text-white/70 mt-3 max-w-xl" id="catalogLead"></p>
+                </div>
+            </section>
+            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-8 grid lg:grid-cols-[260px_1fr] gap-8">
+                <aside class="space-y-6">
+                    <div><label class="field-label" for="catSearch">Search</label><input id="catSearch" type="search" class="field" placeholder="Course, skill or instructor"></div>
+                    <div><div class="field-label">Category</div><div id="filterCats" class="space-y-1"></div></div>
+                    <div><div class="field-label">Level</div><div id="filterLevels" class="flex flex-wrap gap-2"></div></div>
+                    <div><div class="field-label">Price</div><div id="filterPrice" class="flex flex-wrap gap-2"></div></div>
+                </aside>
+                <div>
+                    <div class="flex items-center justify-between gap-3 mb-5"><p id="catalogCount" class="text-sm text-slate-600"></p>
+                        <select id="catSort" class="field w-auto"><option value="popular">Most popular</option><option value="newest">Newest</option><option value="rating">Highest rated</option><option value="az">A–Z</option></select></div>
+                    <div id="catalogGrid" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= ABOUT ================= -->
+        <div id="page-about" class="page-view hidden">
+            <section class="max-w-5xl mx-auto px-4 py-16 sm:py-20 text-center">
+                <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">About Tech Oasis School</p>
+                <h1 class="font-display text-4xl sm:text-5xl text-ink mt-3">Where Innovation Meets Expertise</h1>
+                <p class="text-slate-600 mt-5 max-w-2xl mx-auto text-lg">We equip aspiring technologists across Africa and beyond with world-class, affordable education in software, design, artificial intelligence and cloud systems.</p>
+            </section>
+            <section class="max-w-[1100px] mx-auto px-4 grid md:grid-cols-3 gap-5 pb-8">
+                <div class="bg-white p-7 rounded-3xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-graduation-cap"></i></span><h3 class="font-display text-xl text-ink mt-5">Affordable excellence</h3><p class="text-slate-600 text-sm mt-2">Career programs at a flat, honest price with a free trial, so talent, not budget, decides who learns.</p></div>
+                <div class="bg-white p-7 rounded-3xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-laptop-code"></i></span><h3 class="font-display text-xl text-ink mt-5">Practical by design</h3><p class="text-slate-600 text-sm mt-2">Every program ends in a real project, graded by working professionals.</p></div>
+                <div class="bg-white p-7 rounded-3xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-globe-africa"></i></span><h3 class="font-display text-xl text-ink mt-5">A global community</h3><p class="text-slate-600 text-sm mt-2">Learn alongside peers across Africa and beyond, with discussions on every lesson.</p></div>
+            </section>
+            <section class="max-w-[1100px] mx-auto px-4 py-12">
+                <h2 class="font-display text-3xl text-ink">Meet our instructors</h2>
+                <div id="aboutInstructors" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-6"></div>
+            </section>
+            <section class="max-w-[1100px] mx-auto px-4 pb-8">
+                <div class="rounded-3xl bg-forest text-white p-8 sm:p-10 grid md:grid-cols-2 gap-6">
+                    <div><h2 class="font-display text-3xl">Get in touch</h2><p class="text-white/70 text-sm mt-2">We usually reply within one working day.</p></div>
+                    <div class="space-y-3 text-sm">
+                        <a data-email="school" class="flex items-center gap-3 hover:text-gold"><span class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center"><i class="fa-regular fa-envelope text-gold"></i></span><span><span class="block text-white/60 text-xs">General &amp; admissions</span><span data-email-text></span></span></a>
+                        <a data-email="students" class="flex items-center gap-3 hover:text-gold"><span class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center"><i class="fa-solid fa-user-graduate text-gold"></i></span><span><span class="block text-white/60 text-xs">Student support</span><span data-email-text></span></span></a>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <!-- STAFF PORTAL (sidebar app shell) -->
@@ -381,6 +340,7 @@
                         <button onclick="staffTab('classes')" data-stab="classes" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-graduation-cap w-4"></i> My Classes</button>
                         <button onclick="staffTab('students')" data-stab="students" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-users w-4"></i> Students</button>
                         <button onclick="staffTab('assignments')" data-stab="assignments" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-clipboard-list w-4"></i> Assignments &amp; Quizzes</button>
+                        <button onclick="staffTab('messages'); renderStaffMessages()" data-stab="messages" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-envelope w-4"></i> Messages <span id="staffMsgBadge" class="ml-auto hidden text-[10px] font-bold bg-rose-500 text-white rounded-full px-1.5 py-0.5"></span></button>
                         <button onclick="staffTab('resources')" data-stab="resources" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-book w-4"></i> Resources</button>
                         <button onclick="staffTab('schedule')" data-stab="schedule" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-calendar-days w-4"></i> Timetable</button>
                     </nav>
@@ -412,6 +372,7 @@
                             <button onclick="staffTab('classes')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Classes</button>
                             <button onclick="staffTab('students')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Students</button>
                             <button onclick="staffTab('assignments')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Assignments</button>
+                            <button onclick="staffTab('messages'); renderStaffMessages()" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Messages</button>
                             <button onclick="staffTab('resources')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Resources</button>
                             <button onclick="staffTab('schedule')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Timetable</button>
                         </div>
@@ -538,6 +499,11 @@
                             <div id="staffResourceList" class="grid md:grid-cols-2 gap-3"></div>
                         </section>
 
+                        <!-- ============ MESSAGES ============ -->
+                        <section id="staffTab-messages" class="stab-panel hidden bg-white rounded-2xl border overflow-hidden">
+                            <div class="grid lg:grid-cols-[320px_1fr] min-h-[520px]"><div id="staffConvList" class="border-r overflow-y-auto max-h-[640px]"></div><div id="staffThread" class="flex flex-col"></div></div>
+                        </section>
+
                         <!-- ============ TIMETABLE ============ -->
                         <section id="staffTab-schedule" class="stab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
                             <h3 class="font-bold text-slate-900 text-lg">Weekly timetable</h3>
@@ -548,1378 +514,110 @@
             </div>
         </div>
 
-        <!-- ADMIN LOGIN (dedicated page, separate from student/staff) -->
-        <div id="page-adminLogin" class="page-view hidden">
-            <div class="min-h-screen grid lg:grid-cols-2 bg-slate-950">
-                <div class="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-slate-900 via-[#0c3b2e] to-slate-900 text-white">
-                    <div class="brand-logo" data-theme="dark"></div>
-                    <div>
-                        <span class="bg-[#C4A649] text-slate-900 text-xs font-bold px-3 py-1 rounded uppercase">Restricted area</span>
-                        <h2 class="text-4xl font-black mt-4 leading-tight">Control Center</h2>
-                        <p class="text-slate-300 text-sm mt-3 max-w-sm">Manage curriculum, videos, student payments and re-engagement. Authorized administrators only.</p>
-                    </div>
-                    <p class="text-xs text-slate-400">Activity on this page may be monitored.</p>
-                </div>
-                <div class="flex items-center justify-center p-6 bg-white">
-                    <form onsubmit="handleAdminLogin(event)" class="w-full max-w-sm space-y-5">
-                        <div>
-                            <div class="brand-logo mb-8"></div>
-                            <h3 class="text-2xl font-black text-slate-900">Administrator sign in</h3>
-                            <p class="text-xs text-slate-500 mt-1">Students and staff: use the main Log In button instead.</p>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Admin ID</label>
-                            <input id="adminUserInput" required autocomplete="username" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-amber-600">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Passcode</label>
-                            <input id="adminPassInput" type="password" required autocomplete="current-password" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-amber-600">
-                        </div>
-                        <p id="adminLoginError" class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
-                        <button id="adminLoginBtn" type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition">Sign in to Admin</button>
-                        <button type="button" onclick="showPage('home')" class="w-full text-xs font-semibold text-slate-500 hover:text-slate-800">&larr; Back to site</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- ADMIN PORTAL (sidebar app shell) -->
-        <div id="page-adminDash" class="page-view hidden">
-            <div class="flex min-h-screen bg-slate-100">
-                <aside class="hidden md:flex w-64 shrink-0 bg-[#0c3b2e] text-white flex-col sticky top-0 h-screen">
-                    <div class="h-20 px-5 flex items-center"><span class="brand-logo" data-theme="dark"></span></div>
-                    <nav class="px-3 space-y-1 text-sm font-semibold flex-1 overflow-y-auto">
-                        <button onclick="adminTab('overview')" data-atab="overview" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-house w-4"></i> Dashboard</button>
-                        <button onclick="adminTab('students')" data-atab="students" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-user-graduate w-4"></i> Students</button>
-                        <button onclick="adminTab('staff')" data-atab="staff" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-chalkboard-user w-4"></i> Instructors</button>
-                        <button onclick="adminTab('courses')" data-atab="courses" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-book-open w-4"></i> Courses &amp; Videos</button>
-                        <button onclick="adminTab('payments')" data-atab="payments" class="atab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-wallet w-4"></i> Payments <span id="adminPayBadge" class="ml-auto hidden text-[10px] font-bold bg-rose-500 text-white rounded-full px-1.5 py-0.5"></span></button>
-                    </nav>
-                    <div class="p-3 space-y-3">
-                        <div class="px-3 py-3 rounded-xl bg-white/5 text-[11px] text-emerald-100"><span class="font-bold text-amber-300 block">Learning Today</span>Building Tomorrow</div>
-                        <button onclick="showPage('home')" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-emerald-100 hover:bg-white/10"><i class="fa-solid fa-arrow-left w-4"></i> Exit to site</button>
-                    </div>
-                </aside>
-                <div class="flex-1 min-w-0">
-                    <div class="h-16 bg-white border-b px-4 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30">
-                        <div class="relative w-full max-w-md">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                            <input id="adminSearch" oninput="renderAdminDashboard()" placeholder="Search students, instructors, courses..." class="w-full bg-slate-100 rounded-full pl-9 pr-3 py-2.5 text-xs focus:outline-none">
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <button onclick="adminTab('payments')" class="relative text-slate-500 hover:text-slate-800" aria-label="Notifications"><i class="fa-solid fa-bell text-lg"></i><span id="adminBell" class="hidden absolute -top-1.5 -right-2 text-[9px] font-bold bg-rose-500 text-white rounded-full w-4 h-4 flex items-center justify-center"></span></button>
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-[#C4A649] text-slate-900 text-xs font-bold flex items-center justify-center">AD</div>
-                                <div class="hidden sm:block leading-tight"><div class="text-xs font-bold text-slate-900">Admin</div><div class="text-[10px] text-slate-500">School Administrator</div></div>
-                            </div>
-                            <button onclick="adminLogout()" class="text-xs font-semibold border rounded-xl px-3 py-2 hover:bg-slate-50"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-                        </div>
-                    </div>
-
-                    <div class="p-4 sm:p-6 space-y-6">
-                        <div class="md:hidden flex gap-2 text-xs font-semibold overflow-x-auto">
-                            <button onclick="adminTab('overview')" class="border bg-white rounded-lg px-3 py-1.5">Dashboard</button>
-                            <button onclick="adminTab('students')" class="border bg-white rounded-lg px-3 py-1.5">Students</button>
-                            <button onclick="adminTab('staff')" class="border bg-white rounded-lg px-3 py-1.5">Instructors</button>
-                            <button onclick="adminTab('courses')" class="border bg-white rounded-lg px-3 py-1.5">Courses</button>
-                            <button onclick="adminTab('payments')" class="border bg-white rounded-lg px-3 py-1.5">Payments</button>
-                        </div>
-
-                        <div class="flex flex-wrap items-end justify-between gap-3">
-                            <div>
-                                <div class="text-[11px] font-bold tracking-[0.2em] text-slate-500 uppercase">Welcome back,</div>
-                                <h2 class="text-3xl font-black text-slate-900">Admin</h2>
-                                <p class="text-xs text-slate-500 mt-1">Here's what's happening at <b>Tech Oasis School</b> today.</p>
-                            </div>
-                            <div class="text-right text-xs text-slate-500"><div id="adminDate" class="font-semibold text-slate-700"></div>Where Innovation Meets Expertise.</div>
-                        </div>
-
-                        <!-- ============ DASHBOARD ============ -->
-                        <section id="adminTab-overview" class="atab-panel">
-                            <div class="grid xl:grid-cols-4 gap-6">
-                                <div class="xl:col-span-3 space-y-6 min-w-0">
-                                    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
-                                        <div class="bg-white rounded-2xl border p-4"><span class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center"><i class="fa-solid fa-user-graduate"></i></span><div class="text-xs text-slate-500 mt-3">Total Students</div><div id="adminStatStudents" class="text-2xl font-black text-slate-900">0</div><div id="adminStatStudentsSub" class="text-[11px] text-emerald-600 font-semibold"></div></div>
-                                        <div class="bg-white rounded-2xl border p-4"><span class="w-10 h-10 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center"><i class="fa-solid fa-chalkboard-user"></i></span><div class="text-xs text-slate-500 mt-3">Instructors</div><div id="adminStatStaff" class="text-2xl font-black text-slate-900">0</div><div class="text-[11px] text-slate-500 font-semibold">Teaching staff</div></div>
-                                        <div class="bg-white rounded-2xl border p-4"><span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-book-open"></i></span><div class="text-xs text-slate-500 mt-3">Total Courses</div><div id="adminStatCourses" class="text-2xl font-black text-slate-900">0</div><div class="text-[11px] text-slate-500 font-semibold">$5 per program</div></div>
-                                        <div class="bg-white rounded-2xl border p-4"><span class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center"><i class="fa-solid fa-hourglass-half"></i></span><div class="text-xs text-slate-500 mt-3">Active Trials</div><div id="adminStatTrials" class="text-2xl font-black text-slate-900">0</div><div id="adminStatOwing" class="text-[11px] text-rose-600 font-semibold"></div></div>
-                                        <div class="bg-white rounded-2xl border p-4"><span class="w-10 h-10 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center"><i class="fa-solid fa-dollar-sign"></i></span><div class="text-xs text-slate-500 mt-3">Fees Collected</div><div id="adminStatRev" class="text-2xl font-black text-slate-900">$0</div><div id="adminStatRevSub" class="text-[11px] text-slate-500 font-semibold"></div></div>
-                                    </div>
-
-                                    <div class="grid lg:grid-cols-2 gap-6">
-                                        <div class="bg-white rounded-2xl border p-5 min-w-0">
-                                            <div class="flex items-center justify-between mb-4"><h3 class="font-bold text-slate-900">Enrollment by Course</h3><span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-full">Live data</span></div>
-                                            <div id="adminEnrollChart" class="flex items-end gap-2 h-44 overflow-x-auto"></div>
-                                            <div class="flex gap-4 justify-center mt-3 text-[11px] text-slate-500"><span><i class="fa-solid fa-circle text-sky-500 text-[8px] mr-1"></i>Active trial</span><span><i class="fa-solid fa-circle text-violet-400 text-[8px] mr-1"></i>Needs follow-up</span></div>
-                                        </div>
-                                        <div class="bg-white rounded-2xl border p-5 min-w-0">
-                                            <div class="flex items-center justify-between mb-4"><h3 class="font-bold text-slate-900">Learner Activity Trend</h3><span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded-full">Sample data</span></div>
-                                            <svg id="adminTrend" viewBox="0 0 320 170" class="w-full h-44"></svg>
-                                        </div>
-                                    </div>
-
-                                    <div class="grid lg:grid-cols-5 gap-6">
-                                        <div class="lg:col-span-3 bg-white rounded-2xl border p-5 min-w-0">
-                                            <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">Recent Enrollments</h3><button onclick="adminTab('students')" class="text-xs font-bold text-emerald-700">View All</button></div>
-                                            <div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="text-slate-500 text-xs border-b"><tr><th class="py-2">Student</th><th class="py-2">Course</th><th class="py-2">Date</th><th class="py-2">Status</th></tr></thead><tbody id="adminRecentTable"></tbody></table></div>
-                                        </div>
-                                        <div class="lg:col-span-2 bg-white rounded-2xl border p-5">
-                                            <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">Fee Collection</h3><span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-full">All time</span></div>
-                                            <div class="flex items-center gap-5">
-                                                <div id="adminDonut" class="w-28 h-28 rounded-full shrink-0 flex items-center justify-center" style="background:conic-gradient(#10b981 0 0%, #e2e8f0 0)"><div class="w-20 h-20 rounded-full bg-white flex flex-col items-center justify-center"><span id="adminDonutPct" class="text-lg font-black text-slate-900">0%</span><span class="text-[10px] text-slate-500">Collected</span></div></div>
-                                                <div class="text-xs space-y-2 flex-1">
-                                                    <div class="flex justify-between"><span class="text-slate-600"><i class="fa-solid fa-circle text-emerald-500 text-[8px] mr-1.5"></i>Collected</span><b id="adminFeeCollected">$0</b></div>
-                                                    <div class="flex justify-between"><span class="text-slate-600"><i class="fa-solid fa-circle text-slate-300 text-[8px] mr-1.5"></i>Pending</span><b id="adminFeePending">$0</b></div>
-                                                    <div class="flex justify-between border-t pt-2"><span class="text-slate-600">Total fees</span><b id="adminFeeTotal">$0</b></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="grid lg:grid-cols-2 gap-6">
-                                        <div class="bg-white rounded-2xl border p-5">
-                                            <h3 class="font-bold text-slate-900 mb-3">Recent Activity</h3>
-                                            <div id="adminActivity" class="space-y-3"></div>
-                                        </div>
-                                        <div class="bg-white rounded-2xl border p-5">
-                                            <h3 class="font-bold text-slate-900 mb-3">Upcoming Live Sessions <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded-full ml-1">Sample</span></h3>
-                                            <div id="adminEvents" class="space-y-3"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Right rail -->
-                                <div class="space-y-6 min-w-0">
-                                    <div class="bg-white rounded-2xl border p-5">
-                                        <h3 class="font-bold text-slate-900 mb-4">Quick Actions</h3>
-                                        <div class="grid grid-cols-2 gap-3 text-xs font-semibold text-slate-700">
-                                            <button onclick="openCourseForm()" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-plus"></i></span>Add Course</button>
-                                            <button onclick="openStaffModal()" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-plus"></i></span>Add Instructor</button>
-                                            <button onclick="adminTab('students')" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-envelope"></i></span>Email Students</button>
-                                            <button onclick="adminTab('payments')" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-dollar-sign"></i></span>Record Payment</button>
-                                            <button onclick="exportStudentsCsv()" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-export"></i></span>Export Report</button>
-                                            <button onclick="adminTab('courses')" class="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-50 text-left"><span class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-video"></i></span>Upload Video</button>
-                                        </div>
-                                    </div>
-                                    <div class="bg-white rounded-2xl border p-5">
-                                        <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">Needs Attention</h3><button onclick="adminTab('payments')" class="text-xs font-bold text-emerald-700">View All</button></div>
-                                        <div id="adminAttention" class="space-y-3"></div>
-                                    </div>
-                                    <div class="relative overflow-hidden rounded-2xl text-white min-h-[260px] flex flex-col justify-end p-5 bg-slate-900">
-                                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=70" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-[#0c3b2e] via-[#0c3b2e]/70 to-transparent"></div>
-                                        <div class="relative">
-                                            <h4 class="text-xl font-black leading-tight">Together for Greater Learning</h4>
-                                            <p class="text-xs text-emerald-100 mt-1">Quality tech education, online, for every learner.</p>
-                                            <button onclick="showPage('about')" class="mt-3 bg-[#C4A649] text-slate-900 text-xs font-bold px-4 py-2 rounded-xl">About Our School <i class="fa-solid fa-arrow-right ml-1"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
-                        <!-- ============ STUDENTS ============ -->
-                        <section id="adminTab-students" class="atab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-3">
-                                <div><h3 class="font-bold text-slate-900 text-lg">Students</h3><p id="adminStudentCount" class="text-xs text-slate-500"></p></div>
-                                <div class="flex items-center gap-2">
-                                    <select id="adminStatusFilter" onchange="renderAdminDashboard()" class="border rounded-lg px-3 py-2 text-xs"><option value="">All statuses</option><option value="trial">Active trial</option><option value="owing">Owing</option><option value="paid">Paid</option></select>
-                                    <button onclick="exportStudentsCsv()" class="border rounded-lg px-3 py-2 text-xs font-semibold hover:bg-slate-50"><i class="fa-solid fa-download mr-1"></i> Export data</button>
-                                </div>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-sm">
-                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Student</th><th class="p-3">Course</th><th class="p-3">Card</th><th class="p-3">Status</th><th class="p-3">Action</th></tr></thead>
-                                    <tbody id="adminStudentsTable"></tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <!-- ============ INSTRUCTORS ============ -->
-                        <section id="adminTab-staff" class="atab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-3">
-                                <div><h3 class="font-bold text-slate-900 text-lg">Instructors &amp; Staff</h3><p class="text-xs text-slate-500">Staff sign in from the main Log In button, choosing "Staff / Instructor".</p></div>
-                                <button onclick="openStaffModal()" class="bg-[#0c3b2e] text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow"><i class="fa-solid fa-user-plus mr-1"></i> Add Instructor</button>
-                            </div>
-                            <div id="adminStaffList" class="grid md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
-                        </section>
-
-                        <!-- ============ COURSES ============ -->
-                        <section id="adminTab-courses" class="atab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-bold text-slate-900 text-lg">Manage Courses &amp; Videos</h3>
-                                <button onclick="openCourseForm()" class="bg-[#0c3b2e] text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow"><i class="fa-solid fa-plus"></i> Add Course</button>
-                            </div>
-                            <div id="adminCoursesList" class="grid md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
-                        </section>
-
-                        <!-- ============ PAYMENTS ============ -->
-                        <section id="adminTab-payments" class="atab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
-                            <div><h3 class="font-bold text-slate-900 text-lg">Payments</h3><p class="text-xs text-slate-500">Record the $5 course fee once a student has paid.</p></div>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-sm">
-                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Student</th><th class="p-3">Course</th><th class="p-3">Amount</th><th class="p-3">Status</th><th class="p-3">Action</th></tr></thead>
-                                    <tbody id="adminPaymentsTable"></tbody>
-                                </table>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
+    </main>
 
-    <!-- Footer -->
-    <footer id="siteFooter" class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 mt-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div>
-                <div class="text-xl font-bold text-white flex items-center gap-2">
-                    <svg class="lm-anim" viewBox="16 12 496 606" width="22" height="28" role="img" aria-label="Tech Oasis">
-                        <polygon points="255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160" fill="#3A8D7C" />
-                        <polygon points="125,225 213,176 213,238 179,258 179,583 125,551" fill="#3A8D7C" />
-                        <polygon points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" fill="#3A8D7C" />
-                        <polygon points="452,140 505,166 505,446 232,612 232,545 452,410" fill="#3A8D7C" />
-                        <g><polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B" /><polygon points="207,272 270,308 270,372 207,338" fill="#AC903F" /><polygon points="270,308 335,272 335,338 270,372" fill="#937733" /></g>
-                    </svg>
-                    Tech Oasis School
+    <!-- ================= FOOTER ================= -->
+    <footer id="siteFooter" class="bg-ink text-white/70 mt-24 relative overflow-hidden">
+        <div class="hairline-gold"></div>
+        <div class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
+            <div class="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+                <div>
+                    <span class="brand-logo" data-theme="dark" data-size="44"></span>
+                    <p class="text-sm mt-5 max-w-xs">Where Innovation Meets Expertise. Career-ready technology education for learners across Africa and beyond.</p>
+                    <div class="flex gap-2 mt-6">
+                        <a href="#" aria-label="LinkedIn" class="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="X" class="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube" class="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
                 </div>
-                <p class="text-sm mt-2">Where Innovation Meets Expertise. Empowering tech gurus across Africa and beyond.</p>
+                <div><h3 class="text-white font-semibold text-sm mb-4">Programs</h3><ul id="footerCats" class="space-y-2.5 text-sm"></ul></div>
+                <div><h3 class="text-white font-semibold text-sm mb-4">School</h3><ul class="space-y-2.5 text-sm">
+                    <li><a href="#about" onclick="return go('about')" class="hover:text-gold">About us</a></li>
+                    <li><a href="#catalog" onclick="return go('catalog')" class="hover:text-gold">All programs</a></li>
+                    <li><a href="verify.html" class="hover:text-gold">Verify a certificate</a></li>
+                    <li><a href="#organisations" onclick="return go('home', 'organisations')" class="hover:text-gold">For organisations</a></li>
+                </ul></div>
+                <div><h3 class="text-white font-semibold text-sm mb-4">Contact</h3><ul class="space-y-3 text-sm">
+                    <li><span class="block text-white/40 text-xs">General &amp; admissions</span><a data-email="school" class="hover:text-gold"><span data-email-text></span></a></li>
+                    <li><span class="block text-white/40 text-xs">Student support</span><a data-email="students" class="hover:text-gold"><span data-email-text></span></a></li>
+                </ul></div>
             </div>
-            <div class="flex items-center space-x-6">
-                <button onclick="openAdminLogin()" class="text-slate-500 hover:text-amber-400 transition p-2 bg-slate-800 rounded-lg text-xs" title="Admin Portal">
-                    <i class="fa-solid fa-lock text-sm"></i> Admin Portal
-                </button>
+            <div class="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/40">
+                <p>&copy; <span id="year"></span> Tech Oasis School. All rights reserved.</p>
+                <div class="flex items-center gap-5"><a href="#" class="hover:text-white">Terms</a><a href="#" class="hover:text-white">Privacy</a></div>
             </div>
         </div>
     </footer>
 
     <!-- Student & Staff Login Modal (role first, then credentials) -->
-    <div id="courseraAuthModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeModal('courseraAuthModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600" aria-label="Close"><i class="fa-solid fa-xmark text-lg"></i></button>
-
-            <!-- Step 1: choose role -->
+    <div id="courseraAuthModal" class="fixed inset-0 bg-ink/60 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[24px] max-w-md w-full shadow-lift relative max-h-[92vh] overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+            <div class="h-1.5 bg-gradient-to-r from-forest via-gold to-forest rounded-t-[24px]"></div>
+            <div class="p-8">
+            <button onclick="closeModal('courseraAuthModal')" class="absolute top-5 right-5 w-9 h-9 rounded-full hover:bg-slate-100 text-slate-500" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             <div id="authStepRole">
-                <h3 class="text-2xl font-bold text-slate-900">Welcome to Tech Oasis</h3>
-                <p class="text-xs text-slate-500 mt-1 mb-6">First, tell us who you are so we can take you to the right place.</p>
+                <span class="brand-logo" data-size="34"></span>
+                <h3 class="font-display text-2xl text-ink mt-6">Welcome to Tech Oasis</h3>
+                <p class="text-sm text-slate-500 mt-1 mb-6">Tell us who you are so we can take you to the right place.</p>
                 <div class="space-y-3">
-                    <button onclick="chooseRole('student')" class="w-full text-left border-2 rounded-xl p-4 flex items-center gap-4 hover:border-[#0c3b2e] hover:bg-emerald-50/50 transition">
-                        <span class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg"><i class="fa-solid fa-user-graduate"></i></span>
-                        <span class="flex-1"><span class="block font-bold text-slate-900">I'm a Student</span><span class="block text-xs text-slate-500">Browse courses, start trials and learn.</span></span>
+                    <button onclick="chooseRole('student')" class="w-full text-left border border-slate-200 rounded-2xl p-4 flex items-center gap-4 hover:border-forest hover:bg-forest-50/50 transition">
+                        <span class="w-11 h-11 rounded-xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-user-graduate"></i></span>
+                        <span class="flex-1"><span class="block font-semibold text-ink">I'm a Student</span><span class="block text-xs text-slate-500">Enroll, learn and earn certificates.</span></span>
                         <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                     </button>
-                    <button onclick="chooseRole('staff')" class="w-full text-left border-2 rounded-xl p-4 flex items-center gap-4 hover:border-[#0c3b2e] hover:bg-emerald-50/50 transition">
-                        <span class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg"><i class="fa-solid fa-chalkboard-user"></i></span>
-                        <span class="flex-1"><span class="block font-bold text-slate-900">I'm Staff / Instructor</span><span class="block text-xs text-slate-500">Manage your students and course delivery.</span></span>
+                    <button onclick="chooseRole('staff')" class="w-full text-left border border-slate-200 rounded-2xl p-4 flex items-center gap-4 hover:border-forest hover:bg-forest-50/50 transition">
+                        <span class="w-11 h-11 rounded-xl bg-gold-100 text-gold-700 flex items-center justify-center text-lg"><i class="fa-solid fa-chalkboard-user"></i></span>
+                        <span class="flex-1"><span class="block font-semibold text-ink">I'm Staff / Instructor</span><span class="block text-xs text-slate-500">Manage your students and classes.</span></span>
                         <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                     </button>
                 </div>
-                <p class="mt-6 text-[11px] text-slate-400">Administrators sign in from a separate, dedicated page.</p>
             </div>
-
-            <!-- Step 2: credentials -->
             <div id="authStepForm" class="hidden">
-                <button onclick="backToRole()" class="text-xs font-bold text-slate-500 hover:text-slate-800 mb-4"><i class="fa-solid fa-arrow-left mr-1"></i> Change role</button>
-                <span id="authRoleBadge" class="inline-block text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 mb-2"></span>
-                <h3 id="authTitle" class="text-2xl font-bold text-slate-900">Log in</h3>
-
+                <button onclick="backToRole()" class="text-xs font-semibold text-slate-500 hover:text-ink mb-4"><i class="fa-solid fa-arrow-left mr-1"></i> Change role</button>
+                <span id="authRoleBadge" class="pill mb-2"></span>
+                <h3 id="authTitle" class="font-display text-2xl text-ink">Log in</h3>
                 <div id="authModeTabs" class="grid grid-cols-2 gap-1 bg-slate-100 p-1 rounded-xl my-4 text-sm font-semibold">
                     <button type="button" id="tabLogin" onclick="setAuthMode('login')" class="py-2 rounded-lg">Log in</button>
-                    <button type="button" id="tabRegister" onclick="setAuthMode('register')" class="py-2 rounded-lg">Create account</button>
+                    <button type="button" id="tabRegister" onclick="setAuthMode('register')" class="py-2 rounded-lg">Join for free</button>
                 </div>
-
-                <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
-                    <div id="authNameWrap" class="hidden">
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
-                        <input type="text" id="authNameInput" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-700" placeholder="Margaret" autocomplete="name">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Email <span class="text-red-500">*</span></label>
-                        <input type="email" id="authEmailInput" required class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-700" placeholder="name@email.com" autocomplete="email">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Password <span class="text-red-500">*</span></label>
-                        <input type="password" id="authPassInput" required minlength="6" class="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-700" placeholder="At least 6 characters" autocomplete="current-password">
-                    </div>
-                    <p id="authError" class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
-                    <button type="submit" id="authSubmitBtn" class="w-full bg-[#0c3b2e] hover:bg-emerald-800 text-white font-bold py-3 rounded-xl shadow transition">Log in</button>
+                <form onsubmit="handleAuthSubmit(event)" class="space-y-4 mt-4">
+                    <div id="authNameWrap" class="hidden"><label class="field-label" for="authNameInput">Full name</label><input type="text" id="authNameInput" class="field" autocomplete="name"></div>
+                    <div><label class="field-label" for="authEmailInput">Email</label><input type="email" id="authEmailInput" required class="field" placeholder="name@email.com" autocomplete="email"></div>
+                    <div><label class="field-label" for="authPassInput">Password</label><input type="password" id="authPassInput" required minlength="6" class="field" placeholder="At least 6 characters" autocomplete="current-password"></div>
+                    <p id="authError" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-100 rounded-lg px-3 py-2" role="alert"></p>
+                    <button type="submit" id="authSubmitBtn" class="btn btn-forest w-full h-12">Log in</button>
                 </form>
-
-                <div id="authSocial" class="hidden">
-                    <div class="relative flex py-4 items-center">
-                        <div class="flex-grow border-t border-slate-200"></div>
-                        <span class="flex-shrink mx-4 text-slate-400 text-xs uppercase tracking-wider">or</span>
-                        <div class="flex-grow border-t border-slate-200"></div>
-                    </div>
-                    <div class="space-y-3">
-                        <button onclick="socialLogin('Google')" class="w-full border border-slate-300 hover:bg-slate-50 font-semibold text-sm py-2.5 rounded-xl flex items-center justify-center gap-3 transition"><i class="fa-brands fa-google text-red-500"></i> Continue with Google</button>
-                        <button onclick="socialLogin('Facebook')" class="w-full border border-slate-300 hover:bg-slate-50 font-semibold text-sm py-2.5 rounded-xl flex items-center justify-center gap-3 transition"><i class="fa-brands fa-facebook text-blue-600"></i> Continue with Facebook</button>
-                        <button onclick="socialLogin('Apple')" class="w-full border border-slate-300 hover:bg-slate-50 font-semibold text-sm py-2.5 rounded-xl flex items-center justify-center gap-3 transition"><i class="fa-brands fa-apple text-slate-900"></i> Continue with Apple</button>
-                    </div>
-                </div>
                 <p id="authStaffNote" class="hidden mt-4 text-[11px] text-slate-500 bg-slate-50 border rounded-lg p-3">Staff accounts are created by an administrator. Demo staff login: <code class="font-bold text-slate-700">instructor@techoasis.com</code> / <code class="font-bold text-slate-700">staff123</code></p>
-                <p class="mt-4 text-[11px] text-slate-500">I accept Tech Oasis's <a href="#" class="text-blue-600 underline">Terms of Use</a> and <a href="#" class="text-blue-600 underline">Privacy Notice</a>.</p>
+                <p class="mt-5 text-[11px] text-slate-500">By continuing you accept our <a href="#" class="underline">Terms of Use</a> and <a href="#" class="underline">Privacy Notice</a>.</p>
             </div>
-        </div>
-    </div>
-
-    <!-- Trial & Card Connection Modal -->
-    <div id="trialModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeModal('trialModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xl"><i class="fa-solid fa-credit-card"></i></div>
-                <h3 class="text-xl font-bold text-slate-900">Start 1-Week Free Trial</h3>
-                <p class="text-xs text-slate-500 mt-1">Connect card for verification. <span class="font-bold text-emerald-700">$0 due today</span> ($5 one-time charge after trial).</p>
             </div>
-            <form onsubmit="handleTrialSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Card Number (Visa / Mastercard)</label>
-                    <input type="text" id="cardNumber" required class="w-full border rounded-lg px-3 py-2 text-sm font-mono" placeholder="4532 •••• •••• 8821">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Expiry</label>
-                        <input type="text" required class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="MM/YY">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">CVV</label>
-                        <input type="password" maxlength="4" required class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="123">
-                    </div>
-                </div>
-                <button type="submit" class="w-full bg-[#0c3b2e] hover:bg-emerald-800 text-white font-bold py-3 rounded-xl shadow-md transition mt-2">
-                    Activate Free Trial
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Add Instructor Modal (admin) -->
-    <div id="staffModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeModal('staffModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-xl font-bold text-slate-900 mb-1">Add Instructor</h3>
-            <p class="text-xs text-slate-500 mb-4">They will log in as "Staff / Instructor" with these details.</p>
-            <form onsubmit="addStaff(event)" class="space-y-4">
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Full name</label><input id="staffNameInput" required class="w-full border rounded-lg px-3 py-2 text-sm"></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Email</label><input id="staffEmailInput" type="email" required class="w-full border rounded-lg px-3 py-2 text-sm"></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Temporary password</label><input id="staffPassInput" type="text" required minlength="6" class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="At least 6 characters"></div>
-                <p id="staffModalError" class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
-                <button class="w-full bg-[#0c3b2e] text-white font-bold py-2.5 rounded-xl">Create instructor account</button>
-            </form>
         </div>
     </div>
 
     <!-- Staff quick-action modal (form is built per action) -->
-    <div id="staffActionModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+    <div id="staffActionModal" class="fixed inset-0 bg-ink/60 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-lift relative max-h-[90vh] overflow-y-auto">
             <button onclick="closeModal('staffActionModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             <h3 id="staffActionTitle" class="text-xl font-bold text-slate-900 mb-1"></h3>
             <p id="staffActionHint" class="text-xs text-slate-500 mb-4"></p>
             <form onsubmit="submitStaffAction(event)" class="space-y-4">
                 <div id="staffActionFields" class="space-y-4"></div>
                 <p id="staffActionError" class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
-                <button id="staffActionBtn" class="w-full bg-[#0c3b2e] text-white font-bold py-2.5 rounded-xl"></button>
+                <button id="staffActionBtn" class="w-full bg-forest text-white font-bold py-2.5 rounded-xl"></button>
             </form>
         </div>
     </div>
 
-    <!-- Add/Edit Course Modal -->
-    <div id="courseFormModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeModal('courseFormModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
-            <h3 id="courseFormTitle" class="text-xl font-bold text-slate-900 mb-4">Add/Edit Course & Content</h3>
-            <form onsubmit="handleCourseSave(event)" class="space-y-4">
-                <input type="hidden" id="editCourseId">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Course Title</label>
-                    <input type="text" id="formTitle" required class="w-full border rounded-lg px-3 py-2 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Category</label>
-                    <select id="formCat" class="w-full border rounded-lg px-3 py-2 text-sm">
-                        <option value="Development">Development</option>
-                        <option value="Design">Design</option>
-                        <option value="AI & Data">AI & Data</option>
-                        <option value="Security & Cloud">Security & Cloud</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Level</label>
-                    <input type="text" id="formLevel" required class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="Beginner Level">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Instructor</label>
-                    <input type="text" id="formInstructor" required class="w-full border rounded-lg px-3 py-2 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Detailed Description</label>
-                    <textarea id="formDesc" rows="3" required class="w-full border rounded-lg px-3 py-2 text-sm"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Video Lecture Source (Upload File OR Enter Embed URL)</label>
-                    <div class="space-y-2">
-                        <input type="file" id="formVideoFile" accept="video/*" class="w-full border rounded-lg px-3 py-2 text-xs bg-slate-50">
-                        <input type="text" id="formVideoUrl" class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="https://www.youtube.com/embed/ScMzIvxBSi4">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Curriculum Modules (comma separated)</label>
-                    <input type="text" id="formSyllabus" required class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="Introduction, Core Concepts, Advanced Projects">
-                </div>
-                <button type="submit" class="w-full bg-[#0c3b2e] text-white font-bold py-2.5 rounded-xl">Save Course Content</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Email Re-engagement Modal -->
-    <div id="emailModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeModal('emailModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-xl font-bold text-slate-900 mb-1">Send Re-engagement Email</h3>
-            <p id="emailRecipientLabel" class="text-xs text-slate-500 mb-4"></p>
-            <form onsubmit="sendReengagementEmail(event)" class="space-y-4">
-                <input type="hidden" id="emailTargetStudent">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Subject</label>
-                    <input type="text" id="emailSubject" required class="w-full border rounded-lg px-3 py-2 text-sm" value="Continue your Tech Oasis learning journey ($5 course)">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Message</label>
-                    <textarea id="emailBody" rows="4" required class="w-full border rounded-lg px-3 py-2 text-sm">We noticed you haven't logged in recently. Jump back in today and master top tech skills!</textarea>
-                </div>
-                <button type="submit" class="w-full bg-[#0c3b2e] text-white font-bold py-2.5 rounded-xl flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-paper-plane"></i> Send Email Now
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const preloader = document.getElementById('preloader');
-                preloader.style.opacity = '0';
-                setTimeout(() => preloader.style.display = 'none', 700);
-            }, 2000);
-        });
-
-        // Hero Slider Logic
-        let currentSlideIdx = 0;
-        const slides = document.querySelectorAll('.hero-slide');
-        const dots = document.querySelectorAll('.slide-dot');
-
-        function showSlide(idx) {
-            slides.forEach((slide, i) => {
-                slide.style.opacity = i === idx ? '1' : '0';
-            });
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('bg-white', i === idx);
-                dot.classList.toggle('bg-white/50', i !== idx);
-            });
-        }
-
-        function currentSlide(idx) {
-            currentSlideIdx = idx;
-            showSlide(currentSlideIdx);
-        }
-
-        setInterval(() => {
-            currentSlideIdx = (currentSlideIdx + 1) % slides.length;
-            showSlide(currentSlideIdx);
-        }, 5000);
-
-        let courses = JSON.parse(localStorage.getItem('to_courses')) || [
-            { id: 1, title: 'Web Design', category: 'Design', level: 'Beginner Level', instructor: 'Yepa Udeami', desc: 'Master modern UI layout principles, wireframing, and responsive web aesthetics.', video: 'https://www.youtube.com/embed/ScMzIvxBSi4', syllabus: ['Introduction to UI', 'Figma & Prototyping', 'Responsive Grids', 'Design Systems'] },
-            { id: 2, title: 'Web Development', category: 'Development', level: 'Intermediate', instructor: 'Clifford Mensah', desc: 'Build full-stack dynamic websites utilizing modern frontend and backend tools.', video: 'https://www.youtube.com/embed/zJSY8tbf_ys', syllabus: ['HTML5 & CSS3', 'JavaScript ES6+', 'React & Tailwind', 'Node.js & Supabase'] },
-            { id: 3, title: 'Coding', category: 'Development', level: 'All Levels', instructor: 'Tech Oasis Faculty', desc: 'Learn core programming logic, algorithms, and syntax across popular languages.', video: 'https://www.youtube.com/embed/rfscVS0vtbw', syllabus: ['Variables & Logic', 'Data Structures', 'Algorithms', 'Debugging'] },
-            { id: 4, title: 'Artificial Intelligence (AI)', category: 'AI & Data', level: 'Intermediate', instructor: 'Dr. Kofi Mensah', desc: 'Understand neural networks, prompt engineering, and generative AI models.', video: 'https://www.youtube.com/embed/JMUxmLyrhSk', syllabus: ['AI Fundamentals', 'Prompt Engineering', 'Generative Models', 'API Integration'] },
-            { id: 5, title: 'Machine Learning', category: 'AI & Data', level: 'Advanced', instructor: 'Dr. Kofi Mensah', desc: 'Train predictive models and evaluate algorithms using Python and data libraries.', video: 'https://www.youtube.com/embed/i_LwzRVP7bg', syllabus: ['Python for ML', 'Scikit-Learn', 'Supervised Learning', 'Model Evaluation'] },
-            { id: 6, title: 'Cybersecurity', category: 'Security & Cloud', level: 'Intermediate', instructor: 'Security Team', desc: 'Protect networks, detect threats, and learn ethical hacking protocols.', video: 'https://www.youtube.com/embed/3Kq1MIfTWCE', syllabus: ['Network Security', 'Threat Analysis', 'Ethical Hacking', 'Defense Protocols'] },
-            { id: 7, title: 'Data Science', category: 'AI & Data', level: 'Beginner Level', instructor: 'Data Faculty', desc: 'Analyze complex datasets, visualize metrics, and draw data-backed insights.', video: 'https://www.youtube.com/embed/ua-CiDNNj30', syllabus: ['Data Cleaning', 'Pandas & NumPy', 'Data Visualization', 'SQL Queries'] },
-            { id: 8, title: 'App Development', category: 'Development', level: 'Intermediate', instructor: 'Clifford Mensah', desc: 'Design and build native and cross-platform mobile apps for iOS and Android.', video: 'https://www.youtube.com/embed/fis26HvvDII', syllabus: ['Mobile UI UX', 'React Native', 'State Management', 'App Store Deployment'] },
-            { id: 9, title: 'UI/UX Design', category: 'Design', level: 'Beginner Level', instructor: 'Yepa Udeami', desc: 'Craft user-centered interfaces, user flows, and interactive prototypes in Figma.', video: 'https://www.youtube.com/embed/c9Wg6Cb_YlU', syllabus: ['User Research', 'Wireframing', 'Interactive Prototypes', 'Usability Testing'] },
-            { id: 10, title: 'Digital Marketing', category: 'Design', level: 'Beginner Level', instructor: 'Marketing Faculty', desc: 'Drive online growth with SEO, social media advertising, and content funnels.', video: 'https://www.youtube.com/embed/nU-IIXBWlS4', syllabus: ['SEO Strategies', 'Social Media Ads', 'Content Funnels', 'Analytics & ROI'] },
-            { id: 11, title: 'Cloud Computing', category: 'Security & Cloud', level: 'Intermediate', instructor: 'Cloud Faculty', desc: 'Deploy and manage scalable cloud architectures across major platforms.', video: 'https://www.youtube.com/embed/RWbOihx6-bQ', syllabus: ['Cloud Basics', 'AWS & Vercel', 'Serverless Functions', 'DevOps Pipelines'] },
-            { id: 12, title: 'Blockchain', category: 'Development', level: 'Advanced', instructor: 'Web3 Faculty', desc: 'Understand distributed ledgers, smart contracts, and decentralized apps.', video: 'https://www.youtube.com/embed/gyMwXuJrbJQ', syllabus: ['Blockchain Basics', 'Solidity Smart Contracts', 'DApp Architecture', 'Security Audits'] }
-        ];
-
-        let students = JSON.parse(localStorage.getItem('to_students')) || [
-            { id: 1, name: 'Margaret', email: 'margaret@gmail.com', course: 'Web Development', card: '•••• 4242', status: 'Active Trial ($5 fee pending)', owing: false, trialEnd: new Date(Date.now() + 6 * 86400000).toISOString() },
-            { id: 2, name: 'Kofi Annan Jr.', email: 'kofi@gmail.com', course: 'Artificial Intelligence (AI)', card: '•••• 8821', status: 'Trial Expired', owing: true, trialEnd: new Date(Date.now() - 86400000).toISOString() }
-        ];
-
-        // ---- Accounts & sessions ----
-        // Student/staff accounts share one store; each has a role. Admin is separate (sessionStorage, own login page).
-        // NOTE: front-end demo only - credentials live in the browser, so this is not real security.
-        let users = JSON.parse(localStorage.getItem('to_users')) || [
-            { role: 'staff', name: 'Clifford Mensah', email: 'instructor@techoasis.com', password: 'staff123' }
-        ];
-        let currentUser = JSON.parse(localStorage.getItem('to_current_user'));
-        if (currentUser && !currentUser.role) currentUser.role = 'student';
-        let selectedCourse = null;
-        let authRole = null, authMode = 'login';
-        const ADMIN_ID = 'admin', ADMIN_PASS = 'admin123';
-        let adminFails = 0, adminLockUntil = 0;
-
-        const isAdmin = () => sessionStorage.getItem('to_admin_session') === '1';
-        const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-        const initials = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || '?';
-
-        function showPage(pageId) {
-            // Route guards: each portal needs the matching role
-            if (pageId === 'studentDash' && !(currentUser && currentUser.role === 'student')) return currentUser ? goToPortal() : openCourseraAuthModal('student');
-            if (pageId === 'staffDash' && !(currentUser && currentUser.role === 'staff')) return currentUser ? goToPortal() : openCourseraAuthModal('staff');
-            if (pageId === 'adminDash' && !isAdmin()) return showPage('adminLogin');
-
-            document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
-            document.getElementById('page-' + pageId).classList.remove('hidden');
-            window.scrollTo(0, 0);
-
-            // Dashboards and the admin login use their own app shell, without the public header/footer
-            const shell = ['staffDash', 'adminDash', 'adminLogin'].includes(pageId);
-            document.getElementById('siteHeader').classList.toggle('hidden', shell);
-            document.getElementById('siteFooter').classList.toggle('hidden', shell);
-
-            if (pageId === 'studentDash') renderStudentDashboard();
-            if (pageId === 'staffDash') { staffTab('overview'); renderStaffDashboard(); }
-            if (pageId === 'adminDash') { adminTab('overview'); renderAdminDashboard(); }
-            updateAuthNav();
-        }
-
-        function goToPortal() {
-            if (!currentUser) return openCourseraAuthModal();
-            showPage(currentUser.role === 'staff' ? 'staffDash' : 'studentDash');
-        }
-
-        function updateAuthNav() {
-            const btn = document.getElementById('authNavBtn');
-            if (currentUser) {
-                btn.innerHTML = `<i class="fa-solid fa-user-check text-emerald-600"></i> ${escapeHtml(currentUser.name)} <span class="text-[10px] uppercase font-bold text-slate-400">${currentUser.role}</span> <span class="text-xs text-slate-400 ml-1" onclick="logoutUser(event)">(Logout)</span>`;
-            } else {
-                btn.innerHTML = `<i class="fa-solid fa-user-circle text-blue-600"></i> Log In / Register`;
-            }
-        }
-
-        function logoutUser(e) {
-            if (e) e.stopPropagation();
-            currentUser = null;
-            localStorage.removeItem('to_current_user');
-            updateAuthNav();
-            showPage('home');
-        }
-
-        function startSession(user) {
-            currentUser = { name: user.name, email: user.email, role: user.role };
-            localStorage.setItem('to_current_user', JSON.stringify(currentUser));
-            closeModal('courseraAuthModal');
-            showPage(user.role === 'staff' ? 'staffDash' : 'studentDash');
-        }
-
-        // ---- Student / staff login (role first) ----
-        function openCourseraAuthModal(role) {
-            document.getElementById('courseraAuthModal').classList.remove('hidden');
-            if (role) chooseRole(role); else backToRole();
-        }
-
-        function backToRole() {
-            authRole = null;
-            document.getElementById('authStepRole').classList.remove('hidden');
-            document.getElementById('authStepForm').classList.add('hidden');
-        }
-
-        function chooseRole(role) {
-            authRole = role;
-            const staff = role === 'staff';
-            document.getElementById('authStepRole').classList.add('hidden');
-            document.getElementById('authStepForm').classList.remove('hidden');
-            const badge = document.getElementById('authRoleBadge');
-            badge.textContent = staff ? 'Staff / Instructor' : 'Student';
-            badge.className = 'inline-block text-[10px] font-bold uppercase px-2.5 py-1 rounded-full mb-2 ' + (staff ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800');
-            // Staff can only log in; students can also register and use social sign-in
-            document.getElementById('authModeTabs').classList.toggle('hidden', staff);
-            document.getElementById('authSocial').classList.toggle('hidden', staff);
-            document.getElementById('authStaffNote').classList.toggle('hidden', !staff);
-            setAuthMode('login');
-        }
-
-        function setAuthMode(mode) {
-            authMode = mode;
-            const reg = mode === 'register';
-            document.getElementById('authNameWrap').classList.toggle('hidden', !reg);
-            document.getElementById('authNameInput').required = reg;
-            document.getElementById('authTitle').textContent = reg ? 'Create your student account' : (authRole === 'staff' ? 'Staff log in' : 'Log in');
-            document.getElementById('authSubmitBtn').textContent = reg ? 'Create account' : 'Log in';
-            document.getElementById('authPassInput').autocomplete = reg ? 'new-password' : 'current-password';
-            document.getElementById('tabLogin').className = 'py-2 rounded-lg ' + (reg ? 'text-slate-500' : 'bg-white shadow text-slate-900');
-            document.getElementById('tabRegister').className = 'py-2 rounded-lg ' + (reg ? 'bg-white shadow text-slate-900' : 'text-slate-500');
-            showAuthError('');
-        }
-
-        function showAuthError(msg) {
-            const el = document.getElementById('authError');
-            el.textContent = msg;
-            el.classList.toggle('hidden', !msg);
-        }
-
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('authEmailInput').value.trim().toLowerCase();
-            const password = document.getElementById('authPassInput').value;
-            const found = users.find(u => u.email === email);
-
-            if (authMode === 'register' && authRole === 'student') {
-                if (found) return showAuthError('An account with this email already exists. Please log in.');
-                const user = { role: 'student', name: document.getElementById('authNameInput').value.trim() || email.split('@')[0], email, password };
-                users.push(user);
-                localStorage.setItem('to_users', JSON.stringify(users));
-                return startSession(user);
-            }
-
-            if (!found || found.password !== password) return showAuthError('Incorrect email or password.');
-            if (found.role !== authRole) {
-                return showAuthError(found.role === 'staff'
-                    ? 'This is a staff account. Go back and choose "Staff / Instructor".'
-                    : 'This is a student account. Go back and choose "Student".');
-            }
-            startSession(found);
-        }
-
-        function socialLogin(provider) {
-            // Social sign-in is offered to students only
-            const email = 'user@' + provider.toLowerCase() + '.com';
-            let user = users.find(u => u.email === email);
-            if (!user) {
-                user = { role: 'student', name: provider + ' User', email, password: '' };
-                users.push(user);
-                localStorage.setItem('to_users', JSON.stringify(users));
-            }
-            startSession(user);
-        }
-
-        // ---- Admin login (separate page + session) ----
-        function openAdminLogin() {
-            showPage(isAdmin() ? 'adminDash' : 'adminLogin');
-        }
-
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            const err = document.getElementById('adminLoginError');
-            const now = Date.now();
-            if (now < adminLockUntil) {
-                err.textContent = 'Too many attempts. Try again in ' + Math.ceil((adminLockUntil - now) / 1000) + 's.';
-                return err.classList.remove('hidden');
-            }
-            const id = document.getElementById('adminUserInput').value.trim();
-            const pass = document.getElementById('adminPassInput').value;
-            if (id === ADMIN_ID && pass === ADMIN_PASS) {
-                adminFails = 0;
-                sessionStorage.setItem('to_admin_session', '1');
-                document.getElementById('adminPassInput').value = '';
-                err.classList.add('hidden');
-                return showPage('adminDash');
-            }
-            adminFails++;
-            if (adminFails >= 5) { adminLockUntil = now + 30000; adminFails = 0; err.textContent = 'Too many attempts. Locked for 30 seconds.'; }
-            else err.textContent = 'Invalid admin ID or passcode.';
-            err.classList.remove('hidden');
-        }
-
-        function adminLogout() {
-            sessionStorage.removeItem('to_admin_session');
-            showPage('home');
-        }
-
-        // ---- Dashboard tabs ----
-        function switchTab(prefix, name) {
-            const idBase = prefix === 's' ? 'staffTab-' : 'adminTab-';
-            document.querySelectorAll('.' + prefix + 'tab-panel').forEach(p => p.classList.toggle('hidden', p.id !== idBase + name));
-            document.querySelectorAll('.' + prefix + 'tab').forEach(b => {
-                const on = b.dataset[prefix + 'tab'] === name;
-                const [onCls, offCls] = prefix === 'a'
-                    ? [['bg-[#C4A649]', 'text-slate-900'], ['text-emerald-100', 'hover:bg-white/10']]
-                    : [['bg-emerald-600', 'text-white'], ['text-emerald-100', 'hover:bg-white/10']];
-                onCls.forEach(c => b.classList.toggle(c, on)); offCls.forEach(c => b.classList.toggle(c, !on));
-            });
-        }
-        const staffTab = n => switchTab('s', n);
-        const adminTab = n => switchTab('a', n);
-
-        function barRows(el) {
-            const counts = courses.map(c => ({ t: c.title, n: students.filter(s => s.course === c.title).length })).filter(x => x.n > 0);
-            const max = Math.max(1, ...counts.map(x => x.n));
-            el.innerHTML = counts.length ? counts.map(x => `
-                <div><div class="flex justify-between text-xs mb-1"><span class="font-semibold text-slate-700">${escapeHtml(x.t)}</span><span class="text-slate-500">${x.n}</span></div>
-                <div class="h-2 bg-slate-100 rounded-full"><div class="h-2 rounded-full bg-gradient-to-r from-violet-600 to-orange-400" style="width:${x.n / max * 100}%"></div></div></div>`).join('')
-                : '<p class="text-xs text-slate-500">No enrollments yet.</p>';
-        }
-
-        function exportStudentsCsv() {
-            const q = v => '"' + String(v).replace(/"/g, '""') + '"';
-            const rows = [['Name', 'Email', 'Course', 'Card', 'Status']].concat(students.map(s => [s.name, s.email, s.course, s.card, s.owing ? 'Owing ($5)' : s.status]));
-            const url = URL.createObjectURL(new Blob([rows.map(r => r.map(q).join(',')).join('\n')], { type: 'text/csv' }));
-            const a = document.createElement('a'); a.href = url; a.download = 'students.csv'; a.click(); URL.revokeObjectURL(url);
-        }
-
-        function renderCourses(list = courses) {
-            const grid = document.getElementById('courseGrid');
-            grid.innerHTML = '';
-            list.forEach(c => {
-                grid.innerHTML += `
-                    <div onclick="openCourseDetail(${c.id})" class="bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between group">
-                        <div class="p-5">
-                            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase">${c.category}</span>
-                            <h4 class="font-bold text-base text-slate-900 mt-2.5 group-hover:text-emerald-700 transition">${c.title}</h4>
-                            <p class="text-xs text-slate-500 mt-1">${c.instructor} • 4.8 ★</p>
-                        </div>
-                        <div class="px-5 py-3.5 bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-slate-50 border-t flex items-center justify-between text-xs transition group-hover:from-emerald-100 group-hover:to-teal-50">
-                            <span class="font-bold text-slate-900 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span> $5 <span class="text-[10px] font-normal text-slate-500">one-time</span></span>
-                            <span class="font-bold text-emerald-800 flex items-center gap-1 group-hover:translate-x-1 transition-transform">View & Video <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function openCourseDetail(id) {
-            selectedCourse = courses.find(c => c.id === id);
-            document.getElementById('detailCat').innerText = selectedCourse.category;
-            document.getElementById('detailTitle').innerText = selectedCourse.title;
-            document.getElementById('detailLevel').innerText = selectedCourse.level + ' • Led by ' + selectedCourse.instructor;
-            document.getElementById('detailDesc').innerText = selectedCourse.desc;
-            
-            const vContainer = document.getElementById('videoContainer');
-            if (selectedCourse.video.startsWith('blob:') || selectedCourse.video.endsWith('.mp4') || selectedCourse.video.endsWith('.webm')) {
-                vContainer.innerHTML = `<video class="w-full h-full object-cover" controls src="${selectedCourse.video}"></video>`;
-            } else {
-                vContainer.innerHTML = `<iframe class="w-full h-full" src="${selectedCourse.video}" frameborder="0" allowfullscreen></iframe>`;
-            }
-
-            const syll = document.getElementById('detailSyllabus');
-            syll.innerHTML = '';
-            selectedCourse.syllabus.forEach((s, idx) => {
-                syll.innerHTML += `<div class="bg-slate-50 p-3 rounded-xl text-xs font-semibold text-slate-700 border flex items-center gap-3"><span class="w-6 h-6 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center text-xs font-bold">${idx+1}</span> ${s}</div>`;
-            });
-
-            showPage('courseDetail');
-        }
-
-        function enrollCurrentCourse() {
-            if (!currentUser) return openCourseraAuthModal('student');
-            if (currentUser.role !== 'student') return alert('Only student accounts can enroll in courses.');
-            document.getElementById('trialModal').classList.remove('hidden');
-        }
-
-        function handleTrialSubmit(e) {
-            e.preventDefault();
-            const card = document.getElementById('cardNumber').value;
-            const maskedCard = '•••• ' + card.slice(-4);
-
-            const newStudent = {
-                id: students.length + 1,
-                name: currentUser.name,
-                email: currentUser.email,
-                course: selectedCourse ? selectedCourse.title : 'Web Development',
-                card: maskedCard,
-                status: 'Active Trial ($5 fee pending)',
-                owing: false,
-                trialEnd: new Date(Date.now() + 7 * 86400000).toISOString()
-            };
-
-            students.push(newStudent);
-            localStorage.setItem('to_students', JSON.stringify(students));
-            closeModal('trialModal');
-            alert('Success! Your 1-week free trial for ' + newStudent.course + ' has started.');
-            showPage('studentDash');
-        }
-
-        // ---- Shared helpers ----
-        const isActiveTrial = s => s.status.includes('Active Trial');
-        const hashStr = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
-        const progressOf = s => s.owing ? 15 + hashStr(s.email) % 20 : 25 + hashStr(s.email + s.course) % 70;
-        const courseByTitle = t => courses.find(c => c.title === t);
-        const firstName = n => String(n).trim().split(/\s+/)[0] || 'there';
-
-        function toast(msg) {
-            const t = document.createElement('div');
-            t.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl';
-            t.textContent = msg;
-            document.body.appendChild(t);
-            setTimeout(() => t.remove(), 2600);
-        }
-
-        // Tech Oasis School logo (mark + wordmark), used on every dashboard/login surface
-        function brandLogo(dark) {
-            const main = dark ? '#3A8D7C' : '#225A50', text = dark ? 'text-white' : 'text-slate-900', sub = dark ? 'text-emerald-200' : 'text-slate-500';
-            return `<span class="flex items-center gap-3">
-                <svg viewBox="16 12 496 606" width="30" height="37" role="img" aria-label="Tech Oasis School">
-                    <polygon points="255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160" fill="${main}"/>
-                    <polygon points="125,225 213,176 213,238 179,258 179,583 125,551" fill="${main}"/>
-                    <polygon points="352,78 405,106 405,386 228,493 228,383 268,404 352,350" fill="${main}"/>
-                    <polygon points="452,140 505,166 505,446 232,612 232,545 452,410" fill="${main}"/>
-                    <polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B"/><polygon points="207,272 270,308 270,372 207,338" fill="#AC903F"/><polygon points="270,308 335,272 335,338 270,372" fill="#937733"/>
-                </svg>
-                <span><span class="block text-base font-black tracking-tight leading-none ${text}">TECH <span class="gold-text">OASIS</span></span><span class="block text-[9px] font-semibold tracking-wider uppercase mt-0.5 ${sub}">School</span></span>
-            </span>`;
-        }
-        function applyBrandLogos() {
-            document.querySelectorAll('.brand-logo').forEach(el => { el.innerHTML = brandLogo(el.dataset.theme === 'dark'); });
-        }
-
-        // ---- Student dashboard ----
-        const QUOTES = [
-            ['The best time to start was yesterday. The next best time is now.', 'Keep going, one lesson at a time'],
-            ['Every expert was once a beginner who refused to quit.', 'Tech Oasis School'],
-            ['Small daily progress beats occasional bursts of effort.', 'Build the habit first'],
-            ['You do not have to be great to start, but you have to start to be great.', 'Zig Ziglar'],
-            ['Code is just a language. You already know how to learn.', 'Tech Oasis School']
-        ];
-        const PATHS = [
-            { t: 'Web Developer', ic: 'fa-code', bg: 'bg-emerald-50 text-emerald-700', blurb: 'Build websites and web apps people use every day.', titles: ['Web Design', 'Web Development', 'Coding'] },
-            { t: 'AI & Data Specialist', ic: 'fa-brain', bg: 'bg-violet-50 text-violet-700', blurb: 'Turn data into decisions with machine learning.', titles: ['Data Science', 'Machine Learning', 'Artificial Intelligence (AI)'] },
-            { t: 'Product Designer', ic: 'fa-pen-ruler', bg: 'bg-rose-50 text-rose-700', blurb: 'Design experiences that feel effortless.', titles: ['UI/UX Design', 'Web Design', 'Digital Marketing'] },
-            { t: 'Security & Cloud Engineer', ic: 'fa-shield-halved', bg: 'bg-sky-50 text-sky-700', blurb: 'Protect and scale the systems the world runs on.', titles: ['Cybersecurity', 'Cloud Computing', 'Blockchain'] }
-        ];
-
-        function renderStudentDashboard() {
-            const name = firstName(currentUser.name);
-            const mine = students.filter(s => s.email.toLowerCase() === currentUser.email.toLowerCase());
-            const isNew = mine.length === 0;
-            const enrolledTitles = mine.map(s => s.course);
-
-            document.getElementById('studentWelcomeName').textContent = isNew ? `Welcome to Tech Oasis, ${name}!` : `Welcome back, ${name}!`;
-            document.getElementById('studentBadgeLine').textContent = isNew ? 'Day 1 of your tech journey' : `${mine.length} program${mine.length > 1 ? 's' : ''} in progress`;
-            document.getElementById('studentHeroSub').textContent = isNew
-                ? 'You are in. Pick a program, start your free 7-day trial and build a real, job-ready skill one lesson at a time.'
-                : 'Your next lesson is waiting. A little progress every day adds up faster than you think.';
-            document.getElementById('studentHeroCta').textContent = isNew ? 'Start my first course' : 'Explore more programs';
-            document.getElementById('studentStreak').textContent = isNew ? 0 : 1;
-
-            // Journey steps
-            const steps = [
-                ['Create account', 'You made it here', true],
-                ['Choose a course', 'Pick from 12 programs', !isNew],
-                ['Start free trial', '7 days, $0 today', !isNew],
-                ['Finish first module', 'Your first win', false]
-            ];
-            const cur = steps.findIndex(s => !s[2]);
-            document.getElementById('studentJourneyHint').textContent = isNew ? 'Next up: choose your first course' : 'Next up: finish your first module';
-            document.getElementById('studentSteps').innerHTML = steps.map(([t, d, done], i) => `
-                <div class="rounded-xl border p-4 ${done ? 'bg-emerald-50 border-emerald-200' : i === cur ? 'bg-amber-50 border-amber-300 ring-2 ring-amber-200' : 'bg-slate-50'}">
-                    <div class="flex items-center gap-2 mb-2"><span class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${done ? 'bg-emerald-600 text-white' : i === cur ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-500'}">${done ? '<i class="fa-solid fa-check"></i>' : i + 1}</span>
-                    <span class="text-[10px] font-bold uppercase ${done ? 'text-emerald-700' : i === cur ? 'text-amber-700' : 'text-slate-400'}">${done ? 'Done' : i === cur ? 'Next' : 'Later'}</span></div>
-                    <div class="font-bold text-sm text-slate-900">${t}</div><div class="text-xs text-slate-500">${d}</div>
-                </div>`).join('');
-
-            // Continue learning (or an inviting empty state)
-            const list = document.getElementById('studentEnrolledList');
-            if (isNew) {
-                list.innerHTML = `<div class="md:col-span-2 border-2 border-dashed border-emerald-200 bg-emerald-50/40 rounded-2xl p-8 text-center">
-                    <div class="w-14 h-14 mx-auto rounded-2xl bg-white text-emerald-700 flex items-center justify-center text-2xl shadow-sm mb-3"><i class="fa-solid fa-rocket"></i></div>
-                    <h4 class="font-extrabold text-slate-900 text-lg">Your learning space is ready</h4>
-                    <p class="text-sm text-slate-600 mt-1 max-w-md mx-auto">Courses you start will appear here with your progress and your next lesson. Choose one below and take the first step today.</p>
-                </div>`;
-            } else {
-                list.innerHTML = mine.map(s => {
-                    const c = courseByTitle(s.course), pct = progressOf(s);
-                    const daysLeft = Math.max(0, Math.ceil((new Date(s.trialEnd) - Date.now()) / 86400000));
-                    const next = c && c.syllabus[Math.min(c.syllabus.length - 1, Math.floor(pct / 30))];
-                    return `<div class="bg-white border p-5 rounded-2xl shadow-sm">
-                        <div class="flex items-start justify-between gap-3">
-                            <div><span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">${escapeHtml(s.status)}</span>
-                            <h4 class="font-bold text-slate-900 text-base mt-1.5">${escapeHtml(s.course)}</h4>
-                            <p class="text-xs text-slate-500">${daysLeft} day${daysLeft === 1 ? '' : 's'} left in your trial${next ? ' • Next: ' + escapeHtml(next) : ''}</p></div>
-                            <button ${c ? `onclick="openCourseDetail(${c.id})"` : 'disabled'} class="bg-[#0c3b2e] text-white text-xs font-bold px-4 py-2 rounded-lg shrink-0">Resume</button>
-                        </div>
-                        <div class="mt-4"><div class="flex justify-between text-[11px] font-semibold text-slate-500 mb-1"><span>Progress</span><span>${pct}%</span></div>
-                        <div class="h-2 bg-slate-100 rounded-full"><div class="h-2 rounded-full bg-gradient-to-r from-emerald-600 to-[#C4A649]" style="width:${pct}%"></div></div></div>
-                    </div>`;
-                }).join('');
-            }
-
-            // Recommended: beginner-friendly programs the student has not started
-            const pool = courses.filter(c => !enrolledTitles.includes(c.title));
-            const rec = pool.filter(c => /beginner|all levels/i.test(c.level)).concat(pool.filter(c => !/beginner|all levels/i.test(c.level))).slice(0, 4);
-            document.getElementById('studentRecommendedGrid').innerHTML = rec.map(c => `
-                <div class="bg-white border rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition flex flex-col justify-between">
-                    <div><span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase">${escapeHtml(c.category)}</span>
-                    <h4 class="font-bold text-slate-900 mt-3">${escapeHtml(c.title)}</h4>
-                    <p class="text-xs text-slate-500 mt-1">${escapeHtml(c.level)} • ${escapeHtml(c.instructor)}</p>
-                    <p class="text-xs text-slate-600 mt-2 line-clamp-2">${escapeHtml(c.desc)}</p></div>
-                    <button onclick="openCourseDetail(${c.id})" class="mt-4 w-full bg-[#0c3b2e] hover:bg-emerald-800 text-white text-xs font-bold py-2.5 rounded-xl transition">Start free trial <i class="fa-solid fa-arrow-right ml-1"></i></button>
-                </div>`).join('');
-
-            // Career paths
-            document.getElementById('studentPaths').innerHTML = PATHS.map(p => `
-                <div class="bg-white border rounded-2xl p-5 shadow-sm">
-                    <span class="w-11 h-11 rounded-xl flex items-center justify-center text-lg ${p.bg}"><i class="fa-solid ${p.ic}"></i></span>
-                    <h4 class="font-bold text-slate-900 mt-3">${p.t}</h4>
-                    <p class="text-xs text-slate-500 mt-1">${p.blurb}</p>
-                    <div class="flex flex-wrap gap-1.5 mt-3">${p.titles.map(courseByTitle).filter(Boolean).map(c => `<button onclick="openCourseDetail(${c.id})" class="text-[10px] font-semibold border rounded-full px-2.5 py-1 hover:bg-slate-50">${escapeHtml(c.title)}</button>`).join('')}</div>
-                </div>`).join('');
-
-            // Achievements
-            const badges = [
-                ['fa-door-open', 'Welcome aboard', 'Joined Tech Oasis', true],
-                ['fa-graduation-cap', 'First enrollment', 'Start a free trial', !isNew],
-                ['fa-flag-checkered', 'First module', 'Finish a module', false],
-                ['fa-fire', '7-day streak', 'Learn 7 days in a row', false]
-            ];
-            document.getElementById('studentBadges').innerHTML = badges.map(([ic, t, d, on]) => `
-                <div class="text-center rounded-xl border p-4 ${on ? 'bg-amber-50 border-amber-200' : 'bg-slate-50 opacity-70'}">
-                    <span class="w-12 h-12 mx-auto rounded-full flex items-center justify-center text-lg ${on ? 'bg-[#C4A649] text-white' : 'bg-slate-200 text-slate-400'}"><i class="fa-solid ${on ? ic : 'fa-lock'}"></i></span>
-                    <div class="text-xs font-bold text-slate-900 mt-2">${t}</div><div class="text-[10px] text-slate-500">${d}</div>
-                </div>`).join('');
-
-            const q = QUOTES[Math.floor(Date.now() / 86400000) % QUOTES.length];
-            document.getElementById('studentQuote').textContent = '“' + q[0] + '”';
-            document.getElementById('studentQuoteBy').textContent = q[1];
-        }
-
-        // ---- Staff dashboard ----
-        const localISO = offsetDays => new Date(Date.now() + offsetDays * 86400000 - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-        const daysUntil = d => Math.ceil((new Date(d + 'T23:59:59') - Date.now()) / 86400000);
-        const fmtDate = d => new Date(d + 'T12:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-        const AVATAR_BG = ['bg-emerald-500', 'bg-violet-500', 'bg-sky-500', 'bg-amber-500', 'bg-rose-500'];
-        const CAT_ICON = { 'Design': 'fa-pen-ruler', 'Development': 'fa-code', 'AI & Data': 'fa-brain', 'Security & Cloud': 'fa-cloud' };
-        const CAT_TONE = { 'Design': 'bg-rose-100 text-rose-600', 'Development': 'bg-emerald-100 text-emerald-600', 'AI & Data': 'bg-violet-100 text-violet-600', 'Security & Cloud': 'bg-sky-100 text-sky-600' };
-        const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
-
-        let announcements = JSON.parse(localStorage.getItem('to_announcements')) || [
-            { text: 'Welcome to the new Instructor Hub. Check your timetable and classes here.', by: 'Admin', ts: Date.now() - 86400000 },
-            { text: 'Reminder: student trial follow-ups are due by Friday.', by: 'Admin', ts: Date.now() - 3 * 86400000 }
-        ];
-        let tasks = JSON.parse(localStorage.getItem('to_tasks')) || [
-            { id: 1, title: 'Build a landing page', course: 'Web Development', type: 'assignment', due: localISO(2), ts: Date.now() - 2 * 86400000 },
-            { id: 2, title: 'JavaScript Fundamentals Quiz', course: 'Web Development', type: 'quiz', due: localISO(4), ts: Date.now() - 86400000 },
-            { id: 3, title: 'Mobile UI mockup', course: 'App Development', type: 'assignment', due: localISO(6), ts: Date.now() - 3 * 86400000 },
-            { id: 4, title: 'React Native Basics Quiz', course: 'App Development', type: 'quiz', due: localISO(9), ts: Date.now() - 4 * 86400000 }
-        ];
-        let resources = JSON.parse(localStorage.getItem('to_resources')) || [
-            { id: 1, title: 'MDN Web Docs', url: 'https://developer.mozilla.org', course: 'Web Development' }
-        ];
-        let liveSession = JSON.parse(localStorage.getItem('to_live')) || null;
-        let staffActionKind = null;
-
-        // A staff member's classes are the courses that name them as instructor; if none do, show every course
-        function staffScope() {
-            const mine = courses.filter(c => c.instructor.toLowerCase() === currentUser.name.toLowerCase());
-            return { classes: mine.length ? mine : courses, fallback: mine.length === 0 };
-        }
-        const avgProgress = (c, list) => { const l = list.filter(s => s.course === c.title); return l.length ? Math.round(l.reduce((a, s) => a + progressOf(s), 0) / l.length) : 0; };
-        const isLive = title => liveSession && liveSession.course === title && Date.now() - liveSession.ts < 2 * 3600000;
-
-        function timeAgo(ts) {
-            const h = Math.floor((Date.now() - ts) / 3600000);
-            if (h < 1) return 'Just now';
-            if (h < 24) return h + ' hour' + (h === 1 ? '' : 's') + ' ago';
-            const d = Math.floor(h / 24);
-            return d === 1 ? 'Yesterday' : d + ' days ago';
-        }
-
-        function openStaffAction(kind) {
-            staffActionKind = kind;
-            const opts = staffScope().classes.map(c => `<option>${escapeHtml(c.title)}</option>`).join('');
-            const inp = 'w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-emerald-700';
-            const lab = t => `<label class="block text-xs font-bold text-slate-700 mb-1">${t}</label>`;
-            const course = `<div>${lab('Class')}<select id="saCourse" class="${inp}">${opts}</select></div>`;
-            const cfg = {
-                assignment: ['Create assignment or quiz', 'Students in the class will see the due date.', 'Create',
-                    `<div>${lab('Title')}<input id="saTitle" required maxlength="80" class="${inp}"></div>${course}
-                     <div class="grid grid-cols-2 gap-3"><div>${lab('Type')}<select id="saType" class="${inp}"><option value="assignment">Assignment</option><option value="quiz">Quiz</option></select></div>
-                     <div>${lab('Due date')}<input id="saDue" type="date" required min="${localISO(0)}" class="${inp}"></div></div>`],
-                live: ['Start live class', 'Marks the class as Live Now on your schedule for the next 2 hours.', 'Go live', course],
-                resource: ['Add resource', 'Share a link, slide deck or reading with a class.', 'Add resource',
-                    `<div>${lab('Title')}<input id="saTitle" required maxlength="80" class="${inp}"></div>${course}<div>${lab('Link (https://...)')}<input id="saUrl" type="url" required placeholder="https://" class="${inp}"></div>`],
-                announcement: ['Post announcement', 'Visible to admins and in the activity feed.', 'Post',
-                    `<div>${lab('Message')}<input id="saText" required maxlength="140" class="${inp}"></div>`]
-            }[kind];
-            document.getElementById('staffActionTitle').textContent = cfg[0];
-            document.getElementById('staffActionHint').textContent = cfg[1];
-            document.getElementById('staffActionBtn').textContent = cfg[2];
-            document.getElementById('staffActionFields').innerHTML = cfg[3];
-            document.getElementById('staffActionError').classList.add('hidden');
-            document.getElementById('staffActionModal').classList.remove('hidden');
-        }
-
-        function submitStaffAction(e) {
-            e.preventDefault();
-            const v = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
-            const err = document.getElementById('staffActionError');
-            const fail = m => { err.textContent = m; err.classList.remove('hidden'); };
-            let msg = '';
-            if (staffActionKind === 'assignment') {
-                if (daysUntil(v('saDue')) < 0) return fail("The due date can't be in the past.");
-                tasks.push({ id: Date.now(), title: v('saTitle'), course: v('saCourse'), type: v('saType'), due: v('saDue'), ts: Date.now() });
-                save('to_tasks', tasks); msg = (v('saType') === 'quiz' ? 'Quiz' : 'Assignment') + ' created';
-            } else if (staffActionKind === 'live') {
-                liveSession = { course: v('saCourse'), ts: Date.now() };
-                save('to_live', liveSession); msg = v('saCourse') + ' is now Live';
-            } else if (staffActionKind === 'resource') {
-                if (!/^https?:\/\//i.test(v('saUrl'))) return fail('Enter a link starting with http:// or https://');
-                resources.push({ id: Date.now(), title: v('saTitle'), url: v('saUrl'), course: v('saCourse') });
-                save('to_resources', resources); msg = 'Resource added';
-            } else {
-                announcements.unshift({ text: v('saText'), by: currentUser.name, ts: Date.now() });
-                save('to_announcements', announcements.slice(0, 20)); msg = 'Announcement posted';
-            }
-            closeModal('staffActionModal');
-            renderStaffDashboard();
-            toast(msg);
-        }
-
-        function deleteTask(id) { tasks = tasks.filter(t => t.id !== id); save('to_tasks', tasks); renderStaffDashboard(); }
-        function deleteResource(id) { resources = resources.filter(r => r.id !== id); save('to_resources', resources); renderStaffDashboard(); }
-
-        function renderStaffDashboard() {
-            if (!currentUser || currentUser.role !== 'staff') return;
-            const now = new Date(), hr = now.getHours();
-            const { classes, fallback } = staffScope();
-            const titles = classes.map(c => c.title);
-            const mine = students.filter(s => titles.includes(s.course));
-            const myTasks = tasks.filter(t => titles.includes(t.course)).sort((a, b) => a.due.localeCompare(b.due));
-            const open = myTasks.filter(t => daysUntil(t.due) >= 0);
-            const pendingA = open.filter(t => t.type === 'assignment'), quizzes = open.filter(t => t.type === 'quiz');
-            const dueSoon = open.filter(t => daysUntil(t.due) <= 7).length;
-            const q = document.getElementById('staffSearch').value.trim().toLowerCase();
-
-            document.getElementById('staffUserName').textContent = currentUser.name;
-            document.getElementById('staffAvatar').textContent = initials(currentUser.name);
-            document.getElementById('staffWelcome').textContent = currentUser.name;
-            document.getElementById('staffSummary').textContent = `${classes.length} class${classes.length === 1 ? '' : 'es'} • ${mine.length} student${mine.length === 1 ? '' : 's'} • ${dueSoon} due this week • ` + now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
-            const note = document.getElementById('staffScopeNote');
-            note.classList.toggle('hidden', !fallback);
-            note.textContent = fallback ? 'Showing all courses because none list you as the instructor. Ask an admin to set your name as the instructor on a course to see only your classes.' : '';
-
-            const followUp = mine.filter(s => s.owing).length + open.filter(t => daysUntil(t.due) <= 2).length;
-            const bell = document.getElementById('staffBell'); bell.textContent = followUp; bell.classList.toggle('hidden', !followUp);
-
-            document.getElementById('staffStatStudents').textContent = mine.length;
-            document.getElementById('staffStatStudentsSub').textContent = mine.filter(isActiveTrial).length + ' on active trial';
-            document.getElementById('staffStatCourses').textContent = classes.length;
-            document.getElementById('staffStatAssign').textContent = pendingA.length;
-            document.getElementById('staffStatAssignSub').textContent = pendingA.filter(t => daysUntil(t.due) <= 7).length + ' due this week';
-            document.getElementById('staffStatQuiz').textContent = quizzes.length;
-            document.getElementById('staffStatQuizSub').textContent = quizzes.length ? 'Next: ' + fmtDate(quizzes[0].due).replace(/, \d{4}/, '') : 'None scheduled';
-
-            // Class performance: share of each class's students by progress band
-            document.getElementById('staffPerf').innerHTML = classes.slice(0, 8).map(c => {
-                const l = mine.filter(s => s.course === c.title), n = l.length || 1;
-                const done = l.filter(s => progressOf(s) >= 70).length, mid = l.filter(s => progressOf(s) >= 30 && progressOf(s) < 70).length, none = l.length - done - mid;
-                const bar = (cnt, col) => `<div class="w-3 sm:w-4 rounded-t ${col}" style="height:${Math.max(2, cnt / n * 100)}%"></div>`;
-                return `<div class="flex-1 min-w-[64px] flex flex-col items-center justify-end h-full gap-1" title="${escapeHtml(c.title)}: ${l.length} student${l.length === 1 ? '' : 's'}">
-                    <div class="flex items-end gap-1 h-32">${bar(done, 'bg-emerald-600')}${bar(mid, 'bg-teal-400')}${bar(none, 'bg-sky-200')}</div>
-                    <span class="text-[10px] text-slate-500 text-center truncate w-full pb-1">${escapeHtml(c.title.split(' ').slice(0, 2).join(' '))}</span></div>`;
-            }).join('') || '<p class="text-xs text-slate-500 m-auto">No classes yet.</p>';
-
-            // Recent activity: enrollments, assignments you set, announcements
-            const feed = mine.map(s => ({ ts: new Date(s.trialEnd) - 7 * 86400000, who: s.name, text: 'joined your ' + s.course + ' class' }))
-                .concat(myTasks.map(t => ({ ts: t.ts || 0, who: currentUser.name, text: 'set ' + (t.type === 'quiz' ? 'quiz: ' : 'assignment: ') + t.title })))
-                .concat(announcements.slice(0, 3).map(a => ({ ts: a.ts, who: a.by, text: a.text })))
-                .sort((a, b) => b.ts - a.ts).slice(0, 5);
-            document.getElementById('staffActivity').innerHTML = feed.map(f => `
-                <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-full ${AVATAR_BG[hashStr(f.who) % 5]} text-white text-[11px] font-bold flex items-center justify-center shrink-0">${escapeHtml(initials(f.who))}</span>
-                <div class="min-w-0"><div class="text-xs font-bold text-slate-800 truncate">${escapeHtml(f.who)}</div><div class="text-[11px] text-slate-500 truncate">${escapeHtml(f.text)}</div><div class="text-[10px] text-slate-400">${timeAgo(f.ts)}</div></div></div>`).join('') || '<p class="text-xs text-slate-500">No activity yet.</p>';
-
-            // My classes (dashboard cards + full tab)
-            const lessons = c => { const tot = c.syllabus.length * 4, p = avgProgress(c, mine); return [Math.round(p / 100 * tot), tot, p]; };
-            document.getElementById('staffClassCards').innerHTML = classes.filter(c => !q || c.title.toLowerCase().includes(q)).slice(0, 4).map(c => { const [d, t, p] = lessons(c); return `
-                <div class="border rounded-xl p-3"><span class="w-9 h-9 rounded-lg flex items-center justify-center ${CAT_TONE[c.category] || 'bg-slate-100 text-slate-600'}"><i class="fa-solid ${CAT_ICON[c.category] || 'fa-book'}"></i></span>
-                <div class="text-xs font-bold text-slate-900 mt-2 truncate">${escapeHtml(c.title)}</div><div class="text-[10px] text-slate-500">${escapeHtml(c.level)}</div>
-                <div class="h-1.5 bg-slate-100 rounded-full mt-3"><div class="h-1.5 rounded-full bg-emerald-600" style="width:${p}%"></div></div>
-                <div class="flex justify-between text-[10px] text-slate-500 mt-1"><b class="text-slate-700">${p}%</b><span>${d}/${t} lessons</span></div></div>`; }).join('');
-            document.getElementById('staffClassesList').innerHTML = classes.filter(c => !q || c.title.toLowerCase().includes(q)).map(c => { const [d, t, p] = lessons(c); return `
-                <div class="bg-white border rounded-2xl p-5"><div class="flex items-center gap-3"><span class="w-11 h-11 rounded-xl flex items-center justify-center text-lg ${CAT_TONE[c.category] || 'bg-slate-100 text-slate-600'}"><i class="fa-solid ${CAT_ICON[c.category] || 'fa-book'}"></i></span>
-                <div class="min-w-0"><div class="font-bold text-slate-900 truncate">${escapeHtml(c.title)}</div><div class="text-xs text-slate-500">${escapeHtml(c.level)} • ${escapeHtml(c.instructor)}</div></div></div>
-                <div class="flex justify-between text-xs text-slate-600 mt-4"><span>${mine.filter(s => s.course === c.title).length} enrolled</span><span>${d}/${t} lessons • ${p}%</span></div>
-                <div class="h-2 bg-slate-100 rounded-full mt-1.5"><div class="h-2 rounded-full bg-emerald-600" style="width:${p}%"></div></div>
-                <div class="flex flex-wrap gap-1.5 mt-3">${c.syllabus.map(s => `<span class="text-[10px] bg-slate-100 text-slate-600 rounded-full px-2 py-0.5">${escapeHtml(s)}</span>`).join('')}</div></div>`; }).join('') || '<p class="text-xs text-slate-500">No classes match.</p>';
-
-            // Upcoming assignments
-            const chip = t => { const d = daysUntil(t.due); return d < 0 ? ['Overdue', 'bg-rose-100 text-rose-700'] : d <= 2 ? ['Due soon', 'bg-amber-100 text-amber-700'] : ['Upcoming', 'bg-sky-100 text-sky-700']; };
-            document.getElementById('staffUpcoming').innerHTML = myTasks.filter(t => !q || (t.title + t.course).toLowerCase().includes(q)).slice(0, 4).map(t => { const c = chip(t); return `
-                <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${t.type === 'quiz' ? 'bg-sky-100 text-sky-600' : 'bg-orange-100 text-orange-600'}"><i class="fa-solid ${t.type === 'quiz' ? 'fa-file-circle-question' : 'fa-file-lines'}"></i></span>
-                <div class="flex-1 min-w-0"><div class="text-xs font-bold text-slate-800 truncate">${escapeHtml(t.title)}</div><div class="text-[11px] text-slate-500">Due: ${fmtDate(t.due)}</div></div>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${c[1]}">${c[0]}</span></div>`; }).join('') || '<p class="text-xs text-slate-500">Nothing scheduled. Create an assignment to get started.</p>';
-
-            // Today's schedule
-            const slots = [[9, 10], [11, 12], [14, 15], [16, 17]], cur = hr + now.getMinutes() / 60;
-            const pad = h => String(h).padStart(2, '0') + ':00';
-            document.getElementById('staffToday').innerHTML = classes.slice(0, 4).map((c, i) => {
-                const [s, e] = slots[i];
-                const st = isLive(c.title) ? ['Live Now', 'bg-emerald-100 text-emerald-700', 'fa-video'] : cur >= e ? ['Done', 'bg-slate-100 text-slate-500', ''] : cur >= s ? ['In session', 'bg-emerald-100 text-emerald-700', ''] : ['Upcoming', 'bg-sky-100 text-sky-700', ''];
-                return `<div class="flex items-center gap-3 border-l-2 ${st[0] === 'Live Now' ? 'border-emerald-500' : 'border-slate-200'} pl-3"><div class="text-[11px] font-bold text-slate-600 w-14 shrink-0">${pad(s)} - ${pad(e)}</div>
-                    <div class="flex-1 min-w-0 text-xs font-semibold text-slate-800 truncate">${escapeHtml(c.title)}</div>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold whitespace-nowrap ${st[1]}">${st[2] ? `<i class="fa-solid ${st[2]} mr-1"></i>` : ''}${st[0]}</span></div>`;
-            }).join('') || '<p class="text-xs text-slate-500">No classes today.</p>';
-
-            // Students tab
-            const filter = document.getElementById('staffCourseFilter'), chosen = filter.value;
-            filter.innerHTML = '<option value="">All my classes</option>' + titles.map(t => `<option>${escapeHtml(t)}</option>`).join('');
-            filter.value = chosen;
-            const rows = mine.filter(s => (!chosen || s.course === chosen) && (!q || (s.name + s.email + s.course).toLowerCase().includes(q)));
-            document.getElementById('staffStudentsTable').innerHTML = rows.length ? rows.map(s => `
-                <tr class="border-b">
-                    <td class="p-3"><div class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center">${escapeHtml(initials(s.name))}</span><span class="font-medium text-slate-900">${escapeHtml(s.name)}</span></div></td>
-                    <td class="p-3 text-slate-600 font-mono text-xs">${escapeHtml(s.email)}</td>
-                    <td class="p-3 text-slate-700">${escapeHtml(s.course)}</td>
-                    <td class="p-3 w-40"><div class="h-2 bg-slate-100 rounded-full"><div class="h-2 rounded-full bg-emerald-500" style="width:${progressOf(s)}%"></div></div><span class="text-[10px] text-slate-500">${progressOf(s)}%</span></td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.owing ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">${escapeHtml(s.status)}</span></td>
-                </tr>`).join('') : '<tr><td colspan="5" class="p-6 text-center text-xs text-slate-500">No students match.</td></tr>';
-
-            // Assignments tab
-            document.getElementById('staffAssignTable').innerHTML = myTasks.length ? myTasks.map(t => { const c = chip(t); return `
-                <tr class="border-b"><td class="p-3 font-medium text-slate-900">${escapeHtml(t.title)}</td><td class="p-3 text-slate-700">${escapeHtml(t.course)}</td>
-                <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${t.type === 'quiz' ? 'bg-sky-100 text-sky-700' : 'bg-orange-100 text-orange-700'}">${t.type === 'quiz' ? 'Quiz' : 'Assignment'}</span></td>
-                <td class="p-3 text-xs text-slate-600">${fmtDate(t.due)} <span class="ml-1 px-2 py-0.5 rounded text-[10px] font-bold ${c[1]}">${c[0]}</span></td>
-                <td class="p-3 text-right"><button onclick="deleteTask(${t.id})" class="text-xs text-rose-600 font-semibold hover:underline">Delete</button></td></tr>`; }).join('')
-                : '<tr><td colspan="5" class="p-6 text-center text-xs text-slate-500">Nothing set yet.</td></tr>';
-
-            // Resources tab
-            const myRes = resources.filter(r => titles.includes(r.course) && (!q || (r.title + r.course).toLowerCase().includes(q)));
-            document.getElementById('staffResourceList').innerHTML = myRes.map(r => `
-                <div class="border rounded-xl p-4 flex items-center gap-3"><span class="w-10 h-10 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-link"></i></span>
-                <div class="flex-1 min-w-0"><div class="text-sm font-bold text-slate-900 truncate">${/^https?:\/\//i.test(r.url) ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer" class="hover:underline">${escapeHtml(r.title)}</a>` : escapeHtml(r.title)}</div><div class="text-[11px] text-slate-500">${escapeHtml(r.course)}</div></div>
-                <button onclick="deleteResource(${r.id})" class="text-xs text-rose-600 font-semibold hover:underline">Remove</button></div>`).join('') || '<p class="text-xs text-slate-500">No resources yet. Add one to share with your class.</p>';
-
-            // Timetable
-            const times = ['09:00', '11:00', '14:00', '16:00'];
-            document.getElementById('staffTimetable').innerHTML = '<thead><tr class="text-xs uppercase text-slate-400"><th class="p-2 text-left">Time</th>' + ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map(d => `<th class="p-2 text-left">${d}</th>`).join('') + '</tr></thead><tbody>'
-                + times.map((tm, r) => `<tr><td class="p-2 text-xs font-bold text-slate-500">${tm}</td>` + [0, 1, 2, 3, 4].map(cI => {
-                    const c = classes.length ? classes[(r + cI) % classes.length] : null;
-                    return `<td class="p-3 rounded-xl ${(r + cI) % 2 ? 'bg-emerald-50 text-emerald-900' : 'bg-amber-50 text-amber-900'} text-xs font-semibold">${c ? escapeHtml(c.title) : ''}</td>`;
-                }).join('') + '</tr>').join('') + '</tbody>';
-        }
-
-        // ---- Admin dashboard ----
-        const isPaid = s => /^paid/i.test(s.status);
-        const money = n => '$' + n.toLocaleString();
-
-        function markPaid(email, course) {
-            const s = students.find(x => x.email === email && x.course === course);
-            if (!s) return;
-            s.owing = false;
-            s.status = 'Paid ($5)';
-            localStorage.setItem('to_students', JSON.stringify(students));
-            renderAdminDashboard();
-            toast('Payment recorded for ' + s.name);
-        }
-
-        function openStaffModal() {
-            document.getElementById('staffModalError').classList.add('hidden');
-            ['staffNameInput', 'staffEmailInput', 'staffPassInput'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('staffModal').classList.remove('hidden');
-        }
-
-        function addStaff(e) {
-            e.preventDefault();
-            const email = document.getElementById('staffEmailInput').value.trim().toLowerCase();
-            const err = document.getElementById('staffModalError');
-            if (users.some(u => u.email === email)) {
-                err.textContent = 'An account with this email already exists.';
-                return err.classList.remove('hidden');
-            }
-            users.push({ role: 'staff', name: document.getElementById('staffNameInput').value.trim(), email, password: document.getElementById('staffPassInput').value });
-            localStorage.setItem('to_users', JSON.stringify(users));
-            closeModal('staffModal');
-            renderAdminDashboard();
-            toast('Instructor account created');
-        }
-
-        function removeStaff(email) {
-            if (!confirm('Remove this instructor account?')) return;
-            users = users.filter(u => !(u.role === 'staff' && u.email === email));
-            localStorage.setItem('to_users', JSON.stringify(users));
-            renderAdminDashboard();
-        }
-
-        function renderAdminDashboard() {
-            if (!isAdmin()) return;
-            const staff = users.filter(u => u.role === 'staff');
-            const trials = students.filter(isActiveTrial).length, owing = students.filter(s => s.owing).length;
-            const paid = students.filter(isPaid).length, total = students.length * 5, collected = paid * 5, pending = total - collected;
-            const pct = total ? Math.round(collected / total * 100) : 0;
-
-            document.getElementById('adminDate').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            document.getElementById('adminStatStudents').textContent = students.length;
-            document.getElementById('adminStatStudentsSub').textContent = trials + ' on active trial';
-            document.getElementById('adminStatStaff').textContent = staff.length;
-            document.getElementById('adminStatCourses').textContent = courses.length;
-            document.getElementById('adminStatTrials').textContent = trials;
-            document.getElementById('adminStatOwing').textContent = owing + ' need follow-up';
-            document.getElementById('adminStatRev').textContent = money(collected);
-            document.getElementById('adminStatRevSub').textContent = money(pending) + ' pending';
-            document.getElementById('adminFeeCollected').textContent = money(collected);
-            document.getElementById('adminFeePending').textContent = money(pending);
-            document.getElementById('adminFeeTotal').textContent = money(total);
-            document.getElementById('adminDonutPct').textContent = pct + '%';
-            document.getElementById('adminDonut').style.background = `conic-gradient(#10b981 0 ${pct}%, #e2e8f0 0)`;
-            const bell = document.getElementById('adminBell'), badge = document.getElementById('adminPayBadge');
-            [bell, badge].forEach(el => { el.textContent = owing; el.classList.toggle('hidden', !owing); });
-
-            // Enrollment by course (stacked: active trial vs needs follow-up)
-            const per = courses.map(c => ({ t: c.title, a: students.filter(s => s.course === c.title && !s.owing).length, o: students.filter(s => s.course === c.title && s.owing).length })).filter(x => x.a + x.o > 0);
-            const max = Math.max(1, ...per.map(x => x.a + x.o));
-            document.getElementById('adminEnrollChart').innerHTML = per.length ? per.map(x => `
-                <div class="flex-1 min-w-[44px] h-full flex flex-col items-center justify-end gap-1" title="${escapeHtml(x.t)}">
-                    <span class="text-[11px] font-bold text-slate-700">${x.a + x.o}</span>
-                    <div class="w-full max-w-[36px] flex flex-col justify-end rounded-t-md overflow-hidden" style="height:${(x.a + x.o) / max * 78}%">
-                        <div class="bg-violet-400" style="flex:${x.o}"></div><div class="bg-sky-500" style="flex:${x.a}"></div></div>
-                    <span class="text-[9px] text-slate-500 truncate w-full text-center">${escapeHtml(x.t.split(' ')[0])}</span></div>`).join('')
-                : '<p class="text-xs text-slate-500 m-auto">No enrollments yet.</p>';
-
-            // Sample trend line (illustrative)
-            const pts = [58, 64, 61, 72, 78, 85], mo = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'];
-            const xy = pts.map((v, i) => [30 + i * 52, 140 - (v - 50) * 3.2]);
-            document.getElementById('adminTrend').innerHTML = [0, 1, 2, 3].map(i => `<line x1="30" x2="300" y1="${20 + i * 40}" y2="${20 + i * 40}" stroke="#e2e8f0"/>`).join('')
-                + `<polyline fill="none" stroke="#10b981" stroke-width="2.5" points="${xy.map(p => p.join(',')).join(' ')}"/>`
-                + xy.map((p, i) => `<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#10b981"/><text x="${p[0]}" y="160" font-size="9" text-anchor="middle" fill="#64748b">${mo[i]}</text>`).join('');
-
-            // Recent enrollments
-            const recent = students.slice().sort((a, b) => new Date(b.trialEnd) - new Date(a.trialEnd)).slice(0, 5);
-            document.getElementById('adminRecentTable').innerHTML = recent.length ? recent.map(s => `
-                <tr class="border-b last:border-0"><td class="py-2.5"><div class="flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-sky-100 text-sky-700 text-[10px] font-bold flex items-center justify-center">${escapeHtml(initials(s.name))}</span><span class="font-semibold text-slate-800">${escapeHtml(s.name)}</span></div></td>
-                    <td class="py-2.5 text-slate-600 text-xs">${escapeHtml(s.course)}</td>
-                    <td class="py-2.5 text-slate-500 text-xs">${new Date(new Date(s.trialEnd) - 7 * 86400000).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</td>
-                    <td class="py-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.owing ? 'bg-amber-100 text-amber-700' : isPaid(s) ? 'bg-emerald-100 text-emerald-700' : 'bg-sky-100 text-sky-700'}">${s.owing ? 'Owing' : isPaid(s) ? 'Paid' : 'Trial'}</span></td></tr>`).join('')
-                : '<tr><td colspan="4" class="py-6 text-center text-xs text-slate-500">No enrollments yet.</td></tr>';
-
-            // Recent activity (from real records)
-            const acts = recent.map(s => s.owing
-                ? ['fa-triangle-exclamation', 'bg-amber-100 text-amber-600', `${escapeHtml(s.name)}'s trial for ${escapeHtml(s.course)} has expired`]
-                : isPaid(s) ? ['fa-dollar-sign', 'bg-emerald-100 text-emerald-600', `Fee received from ${escapeHtml(s.name)} for ${escapeHtml(s.course)}`]
-                : ['fa-plus', 'bg-sky-100 text-sky-600', `${escapeHtml(s.name)} enrolled in ${escapeHtml(s.course)}`]);
-            announcements.slice(0, 2).forEach(a => acts.push(['fa-bullhorn', 'bg-violet-100 text-violet-600', `${escapeHtml(a.by)}: ${escapeHtml(a.text)}`]));
-            document.getElementById('adminActivity').innerHTML = acts.slice(0, 5).map(a => `<div class="flex items-center gap-3"><span class="w-8 h-8 rounded-lg flex items-center justify-center text-xs shrink-0 ${a[1]}"><i class="fa-solid ${a[0]}"></i></span><span class="text-xs text-slate-700">${a[2]}</span></div>`).join('') || '<p class="text-xs text-slate-500">Nothing yet.</p>';
-
-            // Sample upcoming sessions, dated relative to today
-            const ev = [['Live Q&A: Getting started in tech', 2, '5:00 PM'], ['Web Development workshop', 5, '6:30 PM'], ['AI & Data open class', 9, '4:00 PM'], ['New student orientation', 14, '5:00 PM']];
-            document.getElementById('adminEvents').innerHTML = ev.map(([t, d, tm]) => { const dt = new Date(Date.now() + d * 86400000); return `<div class="flex items-center gap-3"><div class="w-11 text-center rounded-lg bg-slate-100 py-1 shrink-0"><div class="text-[9px] font-bold text-slate-500 uppercase">${dt.toLocaleDateString(undefined, { month: 'short' })}</div><div class="text-sm font-black text-slate-800 leading-none">${dt.getDate()}</div></div><div><div class="text-xs font-semibold text-slate-800">${t}</div><div class="text-[11px] text-slate-500">${tm} • Online</div></div></div>`; }).join('');
-
-            // Needs attention (owing students)
-            const att = students.filter(s => s.owing);
-            document.getElementById('adminAttention').innerHTML = att.length ? att.slice(0, 4).map(s => `
-                <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-full bg-rose-100 text-rose-700 text-[11px] font-bold flex items-center justify-center shrink-0">${escapeHtml(initials(s.name))}</span>
-                <div class="flex-1 min-w-0"><div class="text-xs font-bold text-slate-800 truncate">${escapeHtml(s.name)}</div><div class="text-[11px] text-slate-500 truncate">Trial expired • ${escapeHtml(s.course)}</div></div>
-                <button data-email="${escapeHtml(s.email)}" data-name="${escapeHtml(s.name)}" onclick="openEmailModal(this.dataset.email, this.dataset.name)" class="text-[11px] font-bold text-emerald-700 hover:underline">Email</button></div>`).join('')
-                : '<p class="text-xs text-slate-500">All caught up. Nobody needs follow-up.</p>';
-
-            const q = document.getElementById('adminSearch').value.trim().toLowerCase();
-
-            // Students
-            const sf = document.getElementById('adminStatusFilter').value;
-            const match = s => !q || (s.name + s.email + s.course).toLowerCase().includes(q);
-            const rows = students.filter(s => (!sf || (sf === 'owing' ? s.owing : sf === 'paid' ? isPaid(s) : isActiveTrial(s))) && match(s));
-            document.getElementById('adminStudentCount').textContent = `${rows.length} of ${students.length} students`;
-            document.getElementById('adminStudentsTable').innerHTML = rows.length ? rows.map(s => `
-                <tr class="border-b">
-                    <td class="p-3"><div class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-sky-100 text-sky-800 text-xs font-bold flex items-center justify-center">${escapeHtml(initials(s.name))}</span><div><span class="font-medium text-slate-900">${escapeHtml(s.name)}</span><br><span class="text-xs text-slate-500 font-mono">${escapeHtml(s.email)}</span></div></div></td>
-                    <td class="p-3 text-slate-700">${escapeHtml(s.course)}</td>
-                    <td class="p-3 font-mono text-xs">${escapeHtml(s.card)}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.owing ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">${s.owing ? 'Owing ($5)' : escapeHtml(s.status)}</span></td>
-                    <td class="p-3"><button data-email="${escapeHtml(s.email)}" data-name="${escapeHtml(s.name)}" onclick="openEmailModal(this.dataset.email, this.dataset.name)" class="text-xs bg-[#0c3b2e] text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-emerald-800"><i class="fa-solid fa-envelope"></i> Email</button></td>
-                </tr>`).join('') : '<tr><td colspan="5" class="p-6 text-center text-xs text-slate-500">No students match.</td></tr>';
-
-            // Instructors
-            document.getElementById('adminStaffList').innerHTML = staff.filter(u => !q || (u.name + u.email).toLowerCase().includes(q)).map(u => `
-                <div class="border rounded-2xl p-4 flex items-center gap-3"><span class="w-11 h-11 rounded-full bg-violet-100 text-violet-700 font-bold flex items-center justify-center shrink-0">${escapeHtml(initials(u.name))}</span>
-                <div class="flex-1 min-w-0"><div class="font-bold text-sm text-slate-900 truncate">${escapeHtml(u.name)}</div><div class="text-xs text-slate-500 font-mono truncate">${escapeHtml(u.email)}</div></div>
-                <button data-email="${escapeHtml(u.email)}" onclick="removeStaff(this.dataset.email)" class="text-xs text-rose-600 font-semibold hover:underline">Remove</button></div>`).join('') || '<p class="text-xs text-slate-500">No instructors yet.</p>';
-
-            // Courses
-            document.getElementById('adminCoursesList').innerHTML = courses.filter(c => !q || (c.title + c.category).toLowerCase().includes(q)).map(c => `
-                <div class="bg-slate-50 p-3 rounded-xl border flex justify-between items-center text-sm">
-                    <div><span class="font-bold text-slate-900">${escapeHtml(c.title)}</span><span class="text-xs text-slate-500 block">$5 • ${escapeHtml(c.category)} • ${students.filter(s => s.course === c.title).length} enrolled</span></div>
-                    <button onclick="editCourse(${c.id})" class="text-xs bg-white border hover:bg-slate-100 px-3 py-1 rounded-lg font-semibold text-slate-700">Edit Content</button>
-                </div>`).join('');
-
-            // Payments
-            document.getElementById('adminPaymentsTable').innerHTML = students.filter(match).map(s => `
-                <tr class="border-b"><td class="p-3 font-medium text-slate-900">${escapeHtml(s.name)}<br><span class="text-xs text-slate-500 font-mono">${escapeHtml(s.email)}</span></td>
-                    <td class="p-3 text-slate-700">${escapeHtml(s.course)}</td><td class="p-3 font-semibold">$5</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${isPaid(s) ? 'bg-emerald-100 text-emerald-700' : s.owing ? 'bg-amber-100 text-amber-700' : 'bg-sky-100 text-sky-700'}">${isPaid(s) ? 'Paid' : s.owing ? 'Overdue' : 'Pending (trial)'}</span></td>
-                    <td class="p-3">${isPaid(s) ? '<span class="text-xs text-slate-400">Recorded</span>' : `<button data-email="${escapeHtml(s.email)}" data-course="${escapeHtml(s.course)}" onclick="markPaid(this.dataset.email, this.dataset.course)" class="text-xs bg-emerald-600 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-emerald-700">Mark as paid</button>`}</td></tr>`).join('')
-                || '<tr><td colspan="5" class="p-6 text-center text-xs text-slate-500">No payments to show.</td></tr>';
-        }
-
-        function openCourseForm() {
-            document.getElementById('editCourseId').value = '';
-            document.getElementById('formTitle').value = '';
-            document.getElementById('formLevel').value = 'Beginner Level';
-            document.getElementById('formInstructor').value = 'Tech Oasis Instructor';
-            document.getElementById('formDesc').value = '';
-            document.getElementById('formVideoUrl').value = 'https://www.youtube.com/embed/ScMzIvxBSi4';
-            document.getElementById('formVideoFile').value = '';
-            document.getElementById('formSyllabus').value = 'Module 1, Module 2, Module 3';
-            document.getElementById('courseFormModal').classList.remove('hidden');
-        }
-
-        function editCourse(id) {
-            const c = courses.find(item => item.id === id);
-            document.getElementById('editCourseId').value = c.id;
-            document.getElementById('formTitle').value = c.title;
-            document.getElementById('formCat').value = c.category;
-            document.getElementById('formLevel').value = c.level;
-            document.getElementById('formInstructor').value = c.instructor;
-            document.getElementById('formDesc').value = c.desc;
-            document.getElementById('formVideoUrl').value = c.video.startsWith('blob:') ? '' : c.video;
-            document.getElementById('formVideoFile').value = '';
-            document.getElementById('formSyllabus').value = c.syllabus.join(', ');
-            document.getElementById('courseFormModal').classList.remove('hidden');
-        }
-
-        function handleCourseSave(e) {
-            e.preventDefault();
-            const id = document.getElementById('editCourseId').value;
-            const title = document.getElementById('formTitle').value;
-            const category = document.getElementById('formCat').value;
-            const level = document.getElementById('formLevel').value;
-            const instructor = document.getElementById('formInstructor').value;
-            const desc = document.getElementById('formDesc').value;
-            const videoUrl = document.getElementById('formVideoUrl').value;
-            const videoFile = document.getElementById('formVideoFile').files[0];
-            const syllabus = document.getElementById('formSyllabus').value.split(',').map(s => s.trim());
-
-            let saveVideo = videoUrl;
-            if (videoFile) {
-                saveVideo = URL.createObjectURL(videoFile);
-            }
-
-            if (id) {
-                const c = courses.find(item => item.id == id);
-                c.title = title; c.category = category; c.level = level; c.instructor = instructor; c.desc = desc; c.video = saveVideo; c.syllabus = syllabus;
-            } else {
-                courses.push({ id: courses.length + 1, title, category, level, instructor, desc, video: saveVideo, syllabus });
-            }
-
-            localStorage.setItem('to_courses', JSON.stringify(courses));
-            closeModal('courseFormModal');
-            renderCourses();
-            renderAdminDashboard();
-            alert('Course content successfully saved with uploaded/embedded video!');
-        }
-
-        function openEmailModal(email, name) {
-            document.getElementById('emailTargetStudent').value = email;
-            document.getElementById('emailRecipientLabel').innerText = 'To: ' + name + ' (' + email + ')';
-            document.getElementById('emailModal').classList.remove('hidden');
-        }
-
-        function sendReengagementEmail(e) {
-            e.preventDefault();
-            const email = document.getElementById('emailTargetStudent').value;
-            alert('Re-engagement email successfully sent to ' + email + '!');
-            closeModal('emailModal');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-        }
-
-        renderCourses();
-        applyBrandLogos();
-        updateAuthNav();
-    </script>
+    <script src="assets/js/core/ui.js"></script>
+    <script src="assets/js/core/db.js"></script>
+    <script src="assets/js/core/seed.js"></script>
+    <script src="assets/js/core/lms.js"></script>
+    <script src="assets/js/core/video.js"></script>
+    <script src="assets/js/core/auth.js"></script>
+    <script src="assets/js/core/engage.js"></script>
+    <script src="assets/js/pages/home.js"></script>
+    <script src="assets/js/pages/portal.js"></script>
 </body>
 </html>
