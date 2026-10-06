@@ -38,7 +38,7 @@
 
     const fail = (code, message) => { const e = new Error(message); e.code = code; throw e; };
     const lower = s => String(s || '').trim().toLowerCase();
-    const link = path => { try { return new URL(path, location.origin).href; } catch (e) { return path; } };
+    const link = path => db.siteUrl(path);
     const school = () => db.settings().school;
 
     // ---------------- Email outbox ----------------

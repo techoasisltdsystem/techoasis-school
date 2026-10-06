@@ -18,7 +18,7 @@
         };
 
         // ---------- Instructors (+ one staff login) ----------
-        const staffUser = db.insert('users', { role: 'staff', name: 'Clifford Mensah', email: 'instructor@techoasis.com', password: 'staff123' });
+        const staffUser = db.insert('users', { role: 'staff', name: 'Clifford Mensah', email: 'instructor@techoasisschool.com', password: 'staff123' });
         const ins = (name, title, bio, avatar, userId) => db.insert('instructors', { name, title, bio, avatar: avatar ? IMG(avatar) : '', email: '', userId: userId || null });
         const I = {
             clifford: ins('Clifford Mensah', 'Senior Full-Stack Engineer', 'Clifford has shipped web and mobile products for fintech and e-commerce teams across West Africa for over a decade.', 'photo-1506794778202-cad84cf45f1d', staffUser.id),

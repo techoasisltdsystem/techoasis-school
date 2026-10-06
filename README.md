@@ -14,7 +14,7 @@ Static site (no build step): Tailwind via CDN, vanilla JavaScript, deployable as
 | `course.html?c=<slug>` | Course landing page (curriculum, instructor, reviews, enrollment). `&preview=1` = admin preview incl. drafts |
 | `learn.html?...&preview=1` | Admin lesson preview (students are redirected to `/student/learn/:lessonId`) |
 | `verify.html?code=<id>` | Certificate view, print/PDF, public verification |
-| `admin.html` (`/admin`) | Admin CMS, including **People → Staff Applications** (review, request info, approve with role/permissions/courses, reject) and **People → Staff** (edit, permissions, suspend, ban, unban, archive, soft delete, force password reset). Queued emails: **Settings → Email Outbox**.<br>Admin CMS (sign in: `school@techoasisltd.com` / `admin123`; change it in **Settings → School**) |
+| `admin.html` (`/admin`) | Admin CMS, including **People → Staff Applications** (review, request info, approve with role/permissions/courses, reject) and **People → Staff** (edit, permissions, suspend, ban, unban, archive, soft delete, force password reset). Queued emails: **Settings → Email Outbox**.<br>Admin CMS (sign in: `school@techoasisschool.com` / `admin123`; change it in **Settings → School**) |
 
 ## Code map
 
@@ -52,7 +52,7 @@ npx serve -l 5501
 ```
 
 Student sign-in: `/student/login` (sample student: `margaret@gmail.com` / `student123`). Staff: `/staff/login`
-(sample instructor: `instructor@techoasis.com` / `staff123`). Admin: `/admin`. Two sample applications are waiting in
+(sample instructor: `instructor@techoasisschool.com` / `staff123`). Admin: `/admin`. Two sample applications are waiting in
 **Admin → Staff Applications**.
 
 VS Code Live Server: `.vscode/settings.json` sets `"liveServer.settings.file": "portal.html"`, so unknown paths fall back to the

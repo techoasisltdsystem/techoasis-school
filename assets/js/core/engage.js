@@ -227,7 +227,7 @@
         ev({ title: 'JavaScript workshop', type: 'event', courseId: null, startsAt: at(4, 16), endsAt: at(4, 18), description: 'Hands-on workshop open to every student.' });
         db.insert('announcements', { courseId: null, title: 'JavaScript workshop this Friday', body: 'A hands-on JavaScript workshop is open to every student this Friday at 4pm. Bring a laptop and your questions.', authorName: 'Tech Oasis School', important: true, eventDate: at(4, 16) });
         // A sample conversation between a student and their instructor
-        const margaret = db.first('users', { email: 'margaret@gmail.com' }), clifford = db.first('users', { email: 'instructor@techoasis.com' });
+        const margaret = db.first('users', { email: 'margaret@gmail.com' }), clifford = db.first('users', { email: 'instructor@techoasisschool.com' });
         if (margaret && clifford && web) {
             const cv = db.insert('conversations', { studentId: margaret.id, recipientType: 'instructor', recipientUserId: clifford.id, courseId: web.id, subject: 'Question about Flexbox', lastMessageAt: db.now(), status: 'open' });
             db.insert('messages', { conversationId: cv.id, senderId: margaret.id, senderName: margaret.name, senderRole: 'student', body: 'Hi Clifford, when should I use Flexbox instead of Grid?', attachments: [], readAt: db.now(), createdAt: new Date(Date.now() - 2 * DAY).toISOString() });

@@ -341,7 +341,7 @@
         return db.insert('certificates', { code, userId, courseId, issuedAt: db.now(), studentName: user.name, courseTitle: course.title, instructorName: ins ? ins.name : '', schoolName: st.school.name, hours: courseMeta(courseId).hours, revoked: false, revokedReason: '' });
     }
     const certificateByCode = code => db.first('certificates', c => c.code.toUpperCase() === String(code || '').trim().toUpperCase());
-    const verifyUrl = code => new URL('verify.html?code=' + encodeURIComponent(code), location.href).href;
+    const verifyUrl = code => db.siteUrl('/verify.html?code=' + encodeURIComponent(code));
 
     // ================= Commerce =================
     const priceOf = c => c.isFree ? 0 : +c.price || 0;

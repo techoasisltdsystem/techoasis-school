@@ -70,8 +70,9 @@
     const DEFAULT_SETTINGS = {
         school: {
             name: 'Tech Oasis School', tagline: 'Where Innovation Meets Expertise',
-            email: 'school@techoasisltd.com', studentEmail: 'students@techoasisltd.com',
-            adminEmail: 'school@techoasisltd.com'
+            website: 'https://techoasisschool.com',
+            email: 'school@techoasisschool.com', studentEmail: 'students@techoasisschool.com',
+            adminEmail: 'school@techoasisschool.com'
         },
         courses: { defaultLanguage: 'English', discussionsEnabled: true, sequentialByDefault: false, videoCompleteAt: 90, levels: ['Beginner', 'Intermediate', 'Advanced'] },
         certificates: {
@@ -208,6 +209,12 @@
         tx(fn) { batching++; try { return fn(api); } finally { batching--; if (!batching && dirty) persist(); } },
 
         settings: () => ensure().settings,
+        // Absolute link for emails and certificates: the live domain, or this server while testing locally
+        siteUrl(path) {
+            const local = typeof location !== 'undefined' && /^(localhost|127\.0\.0\.1|\[::1\]|.+\.localhost)$/.test(location.hostname);
+            const base = local || !ensure().settings.school.website ? location.origin : ensure().settings.school.website;
+            try { return new URL(path || '/', base).href; } catch (e) { return path; }
+        },
         updateSettings(group, patch) { ensure(); state.settings[group] = Object.assign({}, state.settings[group], patch); persist(); },
 
         onChange(fn) { listeners.add(fn); return () => listeners.delete(fn); },
@@ -238,4 +245,15 @@
     LocalStorageAdapter.onExternalChange(() => { if (adapter === LocalStorageAdapter) api.reload(); });
 
     TOS.db = api;
+
+    // Domain move to techoasisschool.com: update school emails and the sample instructor saved in older data
+    (TOS.migrations = TOS.migrations || []).push(function (db) {
+        const st = db.settings().school, patch = {};
+        ['email', 'studentEmail', 'adminEmail'].forEach(k => { if (/@techoasisltd\.com$/i.test(st[k] || '')) patch[k] = st[k].replace(/@techoasisltd\.com$/i, '@techoasisschool.com'); });
+        if (!st.website) patch.website = DEFAULT_SETTINGS.school.website;
+        if (Object.keys(patch).length) db.updateSettings('school', patch);
+        const OLD = 'instructor@techoasis.com', NEW = 'instructor@techoasisschool.com';
+        db.where('users', { email: OLD }).forEach(u => { if (!db.first('users', { email: NEW })) db.update('users', u.id, { email: NEW }); });
+        db.where('instructors', { email: OLD }).forEach(i => db.update('instructors', i.id, { email: NEW }));
+    });
 })();
