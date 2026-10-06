@@ -128,7 +128,7 @@
             ui.$$('[data-edit]').forEach(b => b.onclick = () => instructorModal(db.get('instructors', b.dataset.edit), draw));
             ui.$$('[data-del]').forEach(b => b.onclick = async () => { const i = db.get('instructors', b.dataset.del); if (await ui.confirmBox(`Remove ${i.name}? They will be unassigned from their courses.`, { okText: 'Remove', danger: true })) { db.remove('instructors', i.id); draw(); } });
         };
-        A.view().innerHTML = A.header('Instructors', 'Instructor profiles appear on course pages. Give them a staff login to use the Instructor Hub.', '<button id="add" class="btn btn-forest btn-sm"><i class="fa-solid fa-plus"></i>Add instructor</button>') + '<div id="grid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>';
+        A.view().innerHTML = A.header('Instructors', 'Public instructor profiles shown on course pages. Staff Portal logins are created by approving a staff application.', '<button id="add" class="btn btn-forest btn-sm"><i class="fa-solid fa-plus"></i>Add instructor</button>') + '<div id="grid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>';
         document.getElementById('add').onclick = () => instructorModal(null, draw);
         A.bindSearch(draw); draw();
     });
@@ -138,9 +138,9 @@
             <div class="grid sm:grid-cols-2 gap-4">${A.field('Full name *', A.input('name', i ? i.name : '', 'required'))}${A.field('Title', A.input('title', i ? i.title : '', 'placeholder="Senior Engineer"'))}</div>
             ${A.field('Bio', A.textarea('bio', i ? i.bio : '', 4))}
             ${A.field('Photo URL', A.input('avatar', i && !String(i.avatar).startsWith('data:') ? i.avatar : '', 'id="avUrl" placeholder="https://…"'))}<label class="btn btn-outline btn-sm cursor-pointer"><i class="fa-solid fa-upload"></i>Upload photo<input type="file" accept="image/*" id="avFile" class="hidden"></label>
-            <div class="rounded-xl bg-ivory p-4 space-y-3"><div class="text-sm font-semibold text-ink">Staff login ${login ? '<span class="pill pill-active ml-1">active</span>' : ''}</div>
-                ${A.field('Login email', A.input('email', login ? login.email : (i ? i.email : ''), 'type="email" placeholder="Optional"'))}
-                ${A.field(login ? 'Reset password' : 'Password', A.input('password', '', 'type="text" minlength="6" placeholder="' + (login ? 'Leave blank to keep' : 'Set to create a login') + '"'))}</div>
+            <div class="rounded-xl bg-ivory p-4 text-sm"><div class="font-semibold text-ink">Staff Portal access</div>
+                ${login ? `<p class="text-slate-600 mt-1">Linked to the staff account <b>${esc(login.email)}</b> (${esc((TOS.staff.ACCOUNT_STATUS[login.status] || 'Active'))}). <a href="#/staff?open=${login.id}" class="underline">Manage account</a></p>`
+                    : '<p class="text-slate-600 mt-1">No login. Staff accounts are created only by approving a <a href="#/staff-applications" class="underline">staff application</a>.</p>'}</div>
             <p data-err class="hidden text-xs text-rose-700"></p>
             <div class="flex justify-end gap-2"><button type="button" data-c class="btn btn-outline btn-sm">Cancel</button><button class="btn btn-forest btn-sm">Save instructor</button></div></form>` });
         let avatar = i && String(i.avatar).startsWith('data:') ? i.avatar : null;
@@ -148,16 +148,8 @@
         m.el.querySelector('[data-c]').onclick = m.close;
         m.el.querySelector('form').onsubmit = e => {
             e.preventDefault();
-            const d = A.formData(e.target), err = m.el.querySelector('[data-err]');
-            const email = (d.email || '').toLowerCase();
-            let userId = i ? i.userId : null;
-            if (email && (d.password || login)) {
-                const clash = db.first('users', x => x.email === email && x.id !== userId);
-                if (clash) { err.textContent = 'That email is already used by another account.'; return err.classList.remove('hidden'); }
-                if (login) db.update('users', login.id, Object.assign({ email, name: d.name }, d.password ? { password: d.password } : {}));
-                else { if (d.password.length < 6) { err.textContent = 'Password must be at least 6 characters.'; return err.classList.remove('hidden'); } userId = db.insert('users', { role: 'staff', name: d.name, email, password: d.password }).id; }
-            }
-            const row = { name: d.name, title: d.title, bio: d.bio, avatar: avatar || d.avatar, email, userId };
+            const d = A.formData(e.target);
+            const row = { name: d.name, title: d.title, bio: d.bio, avatar: avatar || d.avatar };
             if (i) db.update('instructors', i.id, row); else db.insert('instructors', row);
             m.close(); done(); ui.toast('Instructor saved');
         };

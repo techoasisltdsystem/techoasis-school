@@ -330,190 +330,6 @@
             </section>
         </div>
 
-        <!-- STAFF PORTAL (sidebar app shell) -->
-        <div id="page-staffDash" class="page-view hidden">
-            <div class="flex min-h-screen bg-slate-100">
-                <aside class="hidden md:flex w-64 shrink-0 bg-gradient-to-b from-[#0c3b2e] to-[#082a21] text-white flex-col sticky top-0 h-screen">
-                    <div class="h-20 px-5 flex items-center"><span class="brand-logo" data-theme="dark"></span></div>
-                    <nav class="px-3 space-y-1 text-sm font-semibold flex-1 overflow-y-auto">
-                        <button onclick="staffTab('overview')" data-stab="overview" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-house w-4"></i> Dashboard</button>
-                        <button onclick="staffTab('classes')" data-stab="classes" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-graduation-cap w-4"></i> My Classes</button>
-                        <button onclick="staffTab('students')" data-stab="students" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-users w-4"></i> Students</button>
-                        <button onclick="staffTab('assignments')" data-stab="assignments" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-clipboard-list w-4"></i> Assignments &amp; Quizzes</button>
-                        <button onclick="staffTab('messages'); renderStaffMessages()" data-stab="messages" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-envelope w-4"></i> Messages <span id="staffMsgBadge" class="ml-auto hidden text-[10px] font-bold bg-rose-500 text-white rounded-full px-1.5 py-0.5"></span></button>
-                        <button onclick="staffTab('resources')" data-stab="resources" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-book w-4"></i> Resources</button>
-                        <button onclick="staffTab('schedule')" data-stab="schedule" class="stab w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3"><i class="fa-solid fa-calendar-days w-4"></i> Timetable</button>
-                    </nav>
-                    <div class="p-5 space-y-3">
-                        <div><div class="text-sm font-bold">Better Teachers</div><div class="text-sm font-bold text-amber-300">Brighter Futures</div><p class="text-[11px] text-emerald-200 mt-1">Together we make learning happen.</p></div>
-                        <button onclick="showPage('home')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-emerald-100 hover:bg-white/10"><i class="fa-solid fa-arrow-left w-4"></i> Back to site</button>
-                    </div>
-                </aside>
-
-                <div class="flex-1 min-w-0">
-                    <div class="h-16 bg-white border-b px-4 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30">
-                        <div class="relative w-full max-w-md">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                            <input id="staffSearch" oninput="renderStaffDashboard()" placeholder="Search students, classes, or resources..." class="w-full bg-slate-100 rounded-full pl-9 pr-3 py-2.5 text-xs focus:outline-none">
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <button onclick="staffTab('assignments')" class="relative text-slate-500 hover:text-slate-800" aria-label="Notifications"><i class="fa-solid fa-bell text-lg"></i><span id="staffBell" class="hidden absolute -top-1.5 -right-2 text-[9px] font-bold bg-rose-500 text-white rounded-full w-4 h-4 flex items-center justify-center"></span></button>
-                            <div class="flex items-center gap-3">
-                                <div id="staffAvatar" class="w-9 h-9 rounded-full bg-[#0c3b2e] text-white text-xs font-bold flex items-center justify-center">IN</div>
-                                <div class="hidden sm:block leading-tight"><div id="staffUserName" class="text-xs font-bold text-slate-900">Instructor</div><div class="text-[10px] text-slate-500">Instructor</div></div>
-                            </div>
-                            <button onclick="logoutUser()" class="text-xs font-semibold border rounded-xl px-3 py-2 hover:bg-slate-50"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-                        </div>
-                    </div>
-
-                    <div class="p-4 sm:p-6 space-y-6">
-                        <div class="md:hidden flex gap-2 text-xs font-semibold overflow-x-auto">
-                            <button onclick="staffTab('overview')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Dashboard</button>
-                            <button onclick="staffTab('classes')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Classes</button>
-                            <button onclick="staffTab('students')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Students</button>
-                            <button onclick="staffTab('assignments')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Assignments</button>
-                            <button onclick="staffTab('messages'); renderStaffMessages()" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Messages</button>
-                            <button onclick="staffTab('resources')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Resources</button>
-                            <button onclick="staffTab('schedule')" class="border bg-white rounded-lg px-3 py-1.5 shrink-0">Timetable</button>
-                        </div>
-                        <p id="staffScopeNote" class="hidden text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2"></p>
-
-                        <!-- ============ DASHBOARD ============ -->
-                        <section id="staffTab-overview" class="stab-panel">
-                            <div class="grid xl:grid-cols-4 gap-6">
-                                <div class="xl:col-span-3 space-y-6 min-w-0">
-                                    <!-- Banner -->
-                                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0c3b2e] via-[#14584a] to-[#0c3b2e] text-white p-6 md:p-8 shadow-lg">
-                                        <div class="absolute -right-12 -top-12 w-60 h-60 rounded-full bg-[#C4A649]/15 blur-2xl"></div>
-                                        <div class="relative flex flex-wrap items-center justify-between gap-6">
-                                            <div>
-                                                <div class="text-[11px] font-bold tracking-[0.2em] text-amber-300 uppercase">Welcome back,</div>
-                                                <h2 id="staffWelcome" class="text-3xl md:text-4xl font-black mt-1">Instructor</h2>
-                                                <p class="text-sm text-emerald-100 mt-2">You're making a difference. Keep inspiring your students!</p>
-                                                <p id="staffSummary" class="text-xs text-emerald-200/80 mt-1"></p>
-                                            </div>
-                                            <div class="text-right text-xs text-emerald-100 italic max-w-[240px]">"Education is the most powerful weapon which you can use to change the world."<div class="not-italic text-emerald-300 mt-1">Nelson Mandela</div></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Stats -->
-                                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                                        <button onclick="staffTab('students')" class="text-left bg-white rounded-2xl border p-4 hover:shadow-md transition"><div class="flex justify-between"><span class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-users"></i></span><i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i></div><div class="text-xs text-slate-600 mt-3">My Students</div><div id="staffStatStudents" class="text-3xl font-black text-slate-900">0</div><div id="staffStatStudentsSub" class="text-[11px] text-emerald-600 font-semibold"></div></button>
-                                        <button onclick="staffTab('classes')" class="text-left bg-white rounded-2xl border p-4 hover:shadow-md transition"><div class="flex justify-between"><span class="w-11 h-11 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center text-lg"><i class="fa-solid fa-graduation-cap"></i></span><i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i></div><div class="text-xs text-slate-600 mt-3">My Classes</div><div id="staffStatCourses" class="text-3xl font-black text-slate-900">0</div><div class="text-[11px] text-violet-600 font-semibold">Active programs</div></button>
-                                        <button onclick="staffTab('assignments')" class="text-left bg-white rounded-2xl border p-4 hover:shadow-md transition"><div class="flex justify-between"><span class="w-11 h-11 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-lg"><i class="fa-solid fa-clipboard-list"></i></span><i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i></div><div class="text-xs text-slate-600 mt-3">Pending Assignments</div><div id="staffStatAssign" class="text-3xl font-black text-slate-900">0</div><div id="staffStatAssignSub" class="text-[11px] text-orange-600 font-semibold"></div></button>
-                                        <button onclick="staffTab('assignments')" class="text-left bg-white rounded-2xl border p-4 hover:shadow-md transition"><div class="flex justify-between"><span class="w-11 h-11 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-lg"><i class="fa-solid fa-file-circle-question"></i></span><i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i></div><div class="text-xs text-slate-600 mt-3">Upcoming Quizzes</div><div id="staffStatQuiz" class="text-3xl font-black text-slate-900">0</div><div id="staffStatQuizSub" class="text-[11px] text-sky-600 font-semibold"></div></button>
-                                    </div>
-
-                                    <!-- Performance + activity -->
-                                    <div class="grid lg:grid-cols-5 gap-6">
-                                        <div class="lg:col-span-3 bg-white rounded-2xl border p-5 min-w-0">
-                                            <div class="flex items-center justify-between"><h3 class="font-bold text-slate-900">Class Performance</h3><button onclick="staffTab('classes')" class="text-xs font-bold text-emerald-700">View Details <i class="fa-solid fa-arrow-right ml-1"></i></button></div>
-                                            <p class="text-xs text-slate-500 mb-4">Share of students per class by progress</p>
-                                            <div id="staffPerf" class="flex items-end gap-3 h-44 overflow-x-auto border-b"></div>
-                                            <div class="flex gap-5 justify-center mt-3 text-[11px] text-slate-500"><span><i class="fa-solid fa-circle text-emerald-600 text-[8px] mr-1"></i>Completed (70%+)</span><span><i class="fa-solid fa-circle text-teal-400 text-[8px] mr-1"></i>In progress</span><span><i class="fa-solid fa-circle text-sky-200 text-[8px] mr-1"></i>Not started</span></div>
-                                        </div>
-                                        <div class="lg:col-span-2 bg-white rounded-2xl border p-5 min-w-0">
-                                            <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">Recent Activity</h3><button onclick="staffTab('students')" class="text-xs font-bold text-emerald-700">View All</button></div>
-                                            <div id="staffActivity" class="space-y-3"></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- My classes + upcoming assignments -->
-                                    <div class="grid lg:grid-cols-5 gap-6">
-                                        <div class="lg:col-span-3 bg-white rounded-2xl border p-5 min-w-0">
-                                            <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">My Classes</h3><button onclick="staffTab('classes')" class="text-xs font-bold text-emerald-700">View All</button></div>
-                                            <div id="staffClassCards" class="grid sm:grid-cols-2 xl:grid-cols-4 gap-3"></div>
-                                        </div>
-                                        <div class="lg:col-span-2 bg-white rounded-2xl border p-5 min-w-0">
-                                            <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-slate-900">Upcoming Assignments</h3><button onclick="staffTab('assignments')" class="text-xs font-bold text-emerald-700">View All</button></div>
-                                            <div id="staffUpcoming" class="space-y-3"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Right rail -->
-                                <div class="space-y-6 min-w-0">
-                                    <div class="bg-white rounded-2xl border p-5">
-                                        <h3 class="font-bold text-emerald-900 mb-4">Quick Actions</h3>
-                                        <div class="grid grid-cols-2 gap-3 text-xs font-semibold text-slate-700">
-                                            <button onclick="openStaffAction('assignment')" class="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-50/60 hover:bg-emerald-50 text-left"><span class="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-file-pen"></i></span>Create Assignment</button>
-                                            <button onclick="openStaffAction('live')" class="flex items-center gap-2 p-2.5 rounded-xl bg-violet-50/60 hover:bg-violet-50 text-left"><span class="w-9 h-9 rounded-xl bg-violet-500 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-video"></i></span>Start Live Class</button>
-                                            <button onclick="openStaffAction('resource')" class="flex items-center gap-2 p-2.5 rounded-xl bg-sky-50/60 hover:bg-sky-50 text-left"><span class="w-9 h-9 rounded-xl bg-sky-500 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-folder-plus"></i></span>Add Resources</button>
-                                            <button onclick="staffTab('classes')" class="flex items-center gap-2 p-2.5 rounded-xl bg-amber-50/60 hover:bg-amber-50 text-left"><span class="w-9 h-9 rounded-xl bg-amber-400 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-graduation-cap"></i></span>View My Classes</button>
-                                            <button onclick="openStaffAction('announcement')" class="col-span-2 flex items-center gap-2 p-2.5 rounded-xl bg-rose-50/60 hover:bg-rose-50 text-left"><span class="w-9 h-9 rounded-xl bg-rose-500 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-bullhorn"></i></span>Post Announcement</button>
-                                        </div>
-                                    </div>
-                                    <div class="bg-white rounded-2xl border p-5">
-                                        <div class="flex items-center justify-between mb-3"><h3 class="font-bold text-emerald-900">Today's Schedule</h3><button onclick="staffTab('schedule')" class="text-xs font-bold text-emerald-700">View Timetable</button></div>
-                                        <div id="staffToday" class="space-y-3"></div>
-                                    </div>
-                                    <div class="relative overflow-hidden rounded-2xl text-white min-h-[240px] flex flex-col justify-end p-5 bg-slate-900">
-                                        <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=70" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-[#0c3b2e] via-[#0c3b2e]/70 to-transparent"></div>
-                                        <div class="relative"><h4 class="text-xl font-black leading-tight">Great Teachers Build Great Futures</h4><p class="text-xs text-emerald-100 mt-1">Keep going, you're making an impact!</p></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
-                        <!-- ============ MY CLASSES ============ -->
-                        <section id="staffTab-classes" class="stab-panel hidden space-y-4">
-                            <h3 class="font-bold text-slate-900 text-lg">My Classes</h3>
-                            <div id="staffClassesList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
-                        </section>
-
-                        <!-- ============ STUDENTS ============ -->
-                        <section id="staffTab-students" class="stab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-3">
-                                <h3 class="font-bold text-slate-900 text-lg">My Students</h3>
-                                <select id="staffCourseFilter" onchange="renderStaffDashboard()" class="border rounded-lg px-3 py-2 text-xs"><option value="">All my classes</option></select>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-sm">
-                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Student</th><th class="p-3">Email Address</th><th class="p-3">Class</th><th class="p-3">Progress</th><th class="p-3">Status</th></tr></thead>
-                                    <tbody id="staffStudentsTable"></tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <!-- ============ ASSIGNMENTS ============ -->
-                        <section id="staffTab-assignments" class="stab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-3">
-                                <div><h3 class="font-bold text-slate-900 text-lg">Assignments &amp; Quizzes</h3><p class="text-xs text-slate-500">Everything you've set for your classes.</p></div>
-                                <button onclick="openStaffAction('assignment')" class="bg-[#0c3b2e] text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow"><i class="fa-solid fa-plus mr-1"></i> Create</button>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-sm">
-                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><tr><th class="p-3">Title</th><th class="p-3">Class</th><th class="p-3">Type</th><th class="p-3">Due</th><th class="p-3"></th></tr></thead>
-                                    <tbody id="staffAssignTable"></tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <!-- ============ RESOURCES ============ -->
-                        <section id="staffTab-resources" class="stab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-3">
-                                <div><h3 class="font-bold text-slate-900 text-lg">Resources</h3><p class="text-xs text-slate-500">Links, slides and reading for your classes.</p></div>
-                                <button onclick="openStaffAction('resource')" class="bg-[#0c3b2e] text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow"><i class="fa-solid fa-plus mr-1"></i> Add resource</button>
-                            </div>
-                            <div id="staffResourceList" class="grid md:grid-cols-2 gap-3"></div>
-                        </section>
-
-                        <!-- ============ MESSAGES ============ -->
-                        <section id="staffTab-messages" class="stab-panel hidden bg-white rounded-2xl border overflow-hidden">
-                            <div class="grid lg:grid-cols-[320px_1fr] min-h-[520px]"><div id="staffConvList" class="border-r overflow-y-auto max-h-[640px]"></div><div id="staffThread" class="flex flex-col"></div></div>
-                        </section>
-
-                        <!-- ============ TIMETABLE ============ -->
-                        <section id="staffTab-schedule" class="stab-panel hidden bg-white rounded-2xl border p-5 space-y-4">
-                            <h3 class="font-bold text-slate-900 text-lg">Weekly timetable</h3>
-                            <div class="overflow-x-auto"><table class="w-full text-sm border-separate border-spacing-2" id="staffTimetable"></table></div>
-                        </section>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
     </main>
 
@@ -538,6 +354,8 @@
                     <li><a href="#catalog" onclick="return go('catalog')" class="hover:text-gold">All programs</a></li>
                     <li><a href="verify.html" class="hover:text-gold">Verify a certificate</a></li>
                     <li><a href="#organisations" onclick="return go('home', 'organisations')" class="hover:text-gold">For organisations</a></li>
+                    <li><a href="/staff/apply" class="hover:text-gold">Teach at Tech Oasis</a></li>
+                    <li><a href="/staff/login" class="hover:text-gold">Staff sign in</a></li>
                 </ul></div>
                 <div><h3 class="text-white font-semibold text-sm mb-4">Contact</h3><ul class="space-y-3 text-sm">
                     <li><span class="block text-white/40 text-xs">General &amp; admissions</span><a data-email="school" class="hover:text-gold"><span data-email-text></span></a></li>
@@ -569,54 +387,25 @@
                     </button>
                     <button onclick="chooseRole('staff')" class="w-full text-left border border-slate-200 rounded-2xl p-4 flex items-center gap-4 hover:border-forest hover:bg-forest-50/50 transition">
                         <span class="w-11 h-11 rounded-xl bg-gold-100 text-gold-700 flex items-center justify-center text-lg"><i class="fa-solid fa-chalkboard-user"></i></span>
-                        <span class="flex-1"><span class="block font-semibold text-ink">I'm Staff / Instructor</span><span class="block text-xs text-slate-500">Manage your students and classes.</span></span>
+                        <span class="flex-1"><span class="block font-semibold text-ink">I'm Staff / Instructor</span><span class="block text-xs text-slate-500">Approved teaching staff sign in here.</span></span>
                         <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
                     </button>
                 </div>
-            </div>
-            <div id="authStepForm" class="hidden">
-                <button onclick="backToRole()" class="text-xs font-semibold text-slate-500 hover:text-ink mb-4"><i class="fa-solid fa-arrow-left mr-1"></i> Change role</button>
-                <span id="authRoleBadge" class="pill mb-2"></span>
-                <h3 id="authTitle" class="font-display text-2xl text-ink">Log in</h3>
-                <div id="authModeTabs" class="grid grid-cols-2 gap-1 bg-slate-100 p-1 rounded-xl my-4 text-sm font-semibold">
-                    <button type="button" id="tabLogin" onclick="setAuthMode('login')" class="py-2 rounded-lg">Log in</button>
-                    <button type="button" id="tabRegister" onclick="setAuthMode('register')" class="py-2 rounded-lg">Join for free</button>
-                </div>
-                <form onsubmit="handleAuthSubmit(event)" class="space-y-4 mt-4">
-                    <div id="authNameWrap" class="hidden"><label class="field-label" for="authNameInput">Full name</label><input type="text" id="authNameInput" class="field" autocomplete="name"></div>
-                    <div><label class="field-label" for="authEmailInput">Email</label><input type="email" id="authEmailInput" required class="field" placeholder="name@email.com" autocomplete="email"></div>
-                    <div><label class="field-label" for="authPassInput">Password</label><input type="password" id="authPassInput" required minlength="6" class="field" placeholder="At least 6 characters" autocomplete="current-password"></div>
-                    <p id="authError" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-100 rounded-lg px-3 py-2" role="alert"></p>
-                    <button type="submit" id="authSubmitBtn" class="btn btn-forest w-full h-12">Log in</button>
-                </form>
-                <p id="authStaffNote" class="hidden mt-4 text-[11px] text-slate-500 bg-slate-50 border rounded-lg p-3">Staff accounts are created by an administrator. Demo staff login: <code class="font-bold text-slate-700">instructor@techoasis.com</code> / <code class="font-bold text-slate-700">staff123</code></p>
-                <p class="mt-5 text-[11px] text-slate-500">By continuing you accept our <a href="#" class="underline">Terms of Use</a> and <a href="#" class="underline">Privacy Notice</a>.</p>
+                <p class="mt-6 text-sm text-slate-600">Want to teach with us? <a href="/staff/apply" class="font-semibold text-forest underline">Apply to teach</a></p>
             </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Staff quick-action modal (form is built per action) -->
-    <div id="staffActionModal" class="fixed inset-0 bg-ink/60 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-lift relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeModal('staffActionModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-            <h3 id="staffActionTitle" class="text-xl font-bold text-slate-900 mb-1"></h3>
-            <p id="staffActionHint" class="text-xs text-slate-500 mb-4"></p>
-            <form onsubmit="submitStaffAction(event)" class="space-y-4">
-                <div id="staffActionFields" class="space-y-4"></div>
-                <p id="staffActionError" class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2"></p>
-                <button id="staffActionBtn" class="w-full bg-forest text-white font-bold py-2.5 rounded-xl"></button>
-            </form>
         </div>
     </div>
 
     <script src="assets/js/core/ui.js"></script>
+    <script src="assets/js/core/crypto.js"></script>
     <script src="assets/js/core/db.js"></script>
     <script src="assets/js/core/seed.js"></script>
     <script src="assets/js/core/lms.js"></script>
     <script src="assets/js/core/video.js"></script>
     <script src="assets/js/core/auth.js"></script>
     <script src="assets/js/core/engage.js"></script>
+    <script src="assets/js/core/staff.js"></script>
     <script src="assets/js/pages/home.js"></script>
     <script src="assets/js/pages/portal.js"></script>
 </body>

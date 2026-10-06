@@ -13,7 +13,9 @@
         'enrollments', 'lesson_progress', 'certificates', 'reviews', 'orders', 'order_items', 'payments',
         'coupons', 'discussions', 'announcements', 'subscribers',
         // Student portal
-        'notifications', 'announcement_reads', 'conversations', 'messages', 'calendar_events', 'lesson_notes', 'support_tickets'
+        'notifications', 'announcement_reads', 'conversations', 'messages', 'calendar_events', 'lesson_notes', 'support_tickets',
+        // Staff: application -> account -> permissions
+        'staff_applications', 'staff_audit', 'password_resets', 'email_outbox'
     ];
 
     // child table -> [{ fk, parent, onDelete }]
@@ -49,7 +51,11 @@
         messages: [{ fk: 'conversationId', parent: 'conversations', onDelete: 'cascade' }, { fk: 'senderId', parent: 'users', onDelete: 'setNull' }],
         calendar_events: [{ fk: 'courseId', parent: 'courses', onDelete: 'cascade' }],
         lesson_notes: [{ fk: 'userId', parent: 'users', onDelete: 'cascade' }, { fk: 'lessonId', parent: 'lessons', onDelete: 'cascade' }],
-        support_tickets: [{ fk: 'userId', parent: 'users', onDelete: 'cascade' }]
+        support_tickets: [{ fk: 'userId', parent: 'users', onDelete: 'cascade' }],
+        // The application stays linked to the staff account it produced (StaffApplication -> Staff)
+        staff_applications: [{ fk: 'staffUserId', parent: 'users', onDelete: 'setNull' }],
+        staff_audit: [{ fk: 'userId', parent: 'users', onDelete: 'setNull' }, { fk: 'applicationId', parent: 'staff_applications', onDelete: 'setNull' }],
+        password_resets: [{ fk: 'userId', parent: 'users', onDelete: 'cascade' }]
     };
 
     const ID_PREFIX = {
@@ -57,14 +63,15 @@
         contents: 'cnt', quizzes: 'qz', quiz_questions: 'qq', quiz_attempts: 'qa', assignments: 'asg', submissions: 'sub', resources: 'res',
         enrollments: 'enr', lesson_progress: 'prg', certificates: 'cert', reviews: 'rev', orders: 'ord', order_items: 'oit', payments: 'pay',
         coupons: 'cpn', discussions: 'dsc', announcements: 'ann', subscribers: 'nws',
-        notifications: 'ntf', announcement_reads: 'anr', conversations: 'cnv', messages: 'msg', calendar_events: 'evt', lesson_notes: 'nte', support_tickets: 'tkt'
+        notifications: 'ntf', announcement_reads: 'anr', conversations: 'cnv', messages: 'msg', calendar_events: 'evt', lesson_notes: 'nte', support_tickets: 'tkt',
+        staff_applications: 'app', staff_audit: 'aud', password_resets: 'pwr', email_outbox: 'eml'
     };
 
     const DEFAULT_SETTINGS = {
         school: {
             name: 'Tech Oasis School', tagline: 'Where Innovation Meets Expertise',
             email: 'school@techoasisltd.com', studentEmail: 'students@techoasisltd.com',
-            adminEmail: 'school@techoasisltd.com', adminPasscode: 'admin123'
+            adminEmail: 'school@techoasisltd.com'
         },
         courses: { defaultLanguage: 'English', discussionsEnabled: true, sequentialByDefault: false, videoCompleteAt: 90, levels: ['Beginner', 'Intermediate', 'Advanced'] },
         certificates: {

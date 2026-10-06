@@ -24,7 +24,7 @@
                 <button id="reseed" class="btn btn-outline btn-sm"><i class="fa-solid fa-rotate"></i>Reset to sample content</button>
                 <button id="fresh" class="btn btn-sm text-rose-700 hover:bg-rose-50"><i class="fa-solid fa-broom"></i>Start fresh (remove all sample data)</button></div>
                 <p class="field-hint mt-3">Storage used: ${ui.fmtBytes(db.exportJSON().length)} of about 5 MB.</p>`)}`);
-        bind('school', d => { if (d.newPass) d.adminPasscode = d.newPass; delete d.newPass; });
+        bind('school', d => { if (d.newPass) TOS.auth.setAdminPasscode(d.newPass); delete d.newPass; });
         document.getElementById('exp').onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([db.exportJSON()], { type: 'application/json' })); a.download = 'tech-oasis-data-' + new Date().toISOString().slice(0, 10) + '.json'; a.click(); };
         document.getElementById('imp').onchange = async e => {
             const f = e.target.files[0]; if (!f) return;

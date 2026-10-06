@@ -32,7 +32,17 @@ create table users (
   email         text not null unique,
   -- student record (editable only by admins unless noted)
   student_id    text unique,                 -- e.g. TOS20260001, assigned on creation
-  status        text not null default 'active' check (status in ('active', 'suspended')),
+  status        text not null default 'active'
+                check (status in ('active', 'suspended', 'banned', 'archived', 'deleted')),  -- deleted = soft delete, row kept
+  password_hash text,                        -- pbkdf2-sha256$iter$salt$hash (or Supabase Auth); NEVER plain text, never readable by admins
+  must_change_password boolean not null default false,  -- set by "Force password reset"
+  -- staff account (role = 'staff'); role and permissions are written ONLY by admins, never by the staff member
+  staff_role    text check (staff_role in ('instructor', 'teaching_assistant', 'content_editor', 'coordinator')),
+  permissions   text[] not null default '{}',   -- view_courses, manage_lessons, create_assignments, create_quizzes, grade_students,
+                                                -- view_students, message_students, manage_schedule, post_announcements
+  department    text,
+  title         text,                        -- public title shown on course pages
+  application_id uuid,                       -- the staff_applications row this account was approved from
   program       text,
   class_name    text,
   phone         text,                        -- student-editable
@@ -47,6 +57,7 @@ create table users (
 create table instructors (                      -- public profile; optional login via user_id
   id         uuid primary key default gen_random_uuid(),
   user_id    uuid references users(id) on delete set null,
+  active     boolean not null default true,       -- false while the linked staff account is not active (hidden on course pages)
   name       text not null,
   title      text,
   bio        text,
@@ -54,6 +65,85 @@ create table instructors (                      -- public profile; optional logi
   email      text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
+);
+
+-- ---------------------------------------------------------------- staff applications & accounts
+-- Application, account and permissions are three separate things:
+--   staff_applications             = someone asking to teach (public, no login)
+--   users (role 'staff')           = the account, created only when an admin approves an application
+--   users.staff_role / permissions = what that account may do, decided only by an admin
+create table staff_applications (
+  id               uuid primary key default gen_random_uuid(),
+  status           text not null default 'pending'
+                   check (status in ('pending', 'under_review', 'approved', 'rejected', 'withdrawn')),
+  first_name       text not null,
+  last_name        text not null,
+  email            text not null,             -- lower-cased; one open/approved application per email (see index)
+  phone            text,
+  location         text,
+  date_of_birth    date,
+  photo_url        text,
+  expertise        text,
+  experience_years int,
+  qualifications   text,
+  education        text,
+  teaching_history text,
+  bio              text,
+  subjects         text[] not null default '{}',   -- what they would like to teach (the admin decides the actual role)
+  courses_interest text[] not null default '{}',
+  preferred_level  text,
+  preferred_method text,
+  availability     text,
+  documents        jsonb not null default '[]',    -- [{kind, name, url}] in object storage
+  cv_url           text,
+  password_hash    text,                       -- chosen at apply time; moved to users.password_hash on approval, then cleared
+  email_verified_at timestamptz,
+  info_requested   boolean not null default false,
+  messages         jsonb not null default '[]',    -- applicant <-> school thread shown on the status page
+  admin_notes      jsonb not null default '[]',    -- INTERNAL: never returned to the applicant
+  rejection_reason text,                       -- optional, shown to the applicant
+  staff_user_id    uuid references users(id) on delete set null,
+  reviewed_by      text,
+  decided_at       timestamptz,
+  submitted_at     timestamptz not null default now(),
+  updated_at       timestamptz not null default now()
+);
+create unique index staff_applications_open_email on staff_applications (email)
+  where status in ('pending', 'under_review', 'approved');
+alter table users add constraint users_application_fk
+  foreign key (application_id) references staff_applications(id) on delete set null;
+
+-- Append-only history of every application decision and account action (approve, suspend, ban, delete, ...)
+create table staff_audit (
+  id             uuid primary key default gen_random_uuid(),
+  action         text not null,
+  user_id        uuid references users(id) on delete set null,
+  application_id uuid references staff_applications(id) on delete set null,
+  by_name        text,
+  detail         jsonb not null default '{}',
+  created_at     timestamptz not null default now()
+);
+
+-- Email verification and password reset links. Only the SHA-256 of the token is stored.
+create table password_resets (
+  id         uuid primary key default gen_random_uuid(),
+  user_id    uuid not null references users(id) on delete cascade,
+  token_hash text not null unique,
+  purpose    text not null default 'reset',
+  expires_at timestamptz not null,
+  used_at    timestamptz,
+  created_at timestamptz not null default now()
+);
+
+-- Stand-in for the email provider (Resend, Postmark, SES...): a worker sends queued rows.
+create table email_outbox (
+  id         uuid primary key default gen_random_uuid(),
+  "to"       text not null,
+  subject    text not null,
+  body       text not null,                   -- never contains a password
+  kind       text,
+  status     text not null default 'queued' check (status in ('queued', 'sent', 'failed')),
+  created_at timestamptz not null default now()
 );
 
 -- ---------------------------------------------------------------- catalog
@@ -397,7 +487,7 @@ create table notifications (
   id         uuid primary key default gen_random_uuid(),
   user_id    uuid not null references users(id) on delete cascade,
   type       text not null,          -- enrollment | lesson | assignment_due | assignment_graded | quiz_available | quiz_result |
-                                     -- course_completed | certificate | message | announcement | schedule | support | system
+                                     -- course_completed | certificate | message | announcement | schedule | support | system | submission
   title      text not null,
   body       text,
   link       text,                   -- portal route, e.g. /student/learn/<lesson id>
@@ -510,3 +600,11 @@ create table settings (                          -- one row per group: school, c
 --   * certificates: readable by code for public verification.
 --   * Everything else (writes to catalog, grading, payments, settings): admin/staff role only.
 --   * orders.status = 'paid' is set ONLY by the payment provider webhook, never by the browser.
+--   * Staff portal (/staff/*): a staff user reads/writes only courses linked to them through course_instructors, and
+--     every write checks the matching permission in users.permissions server-side (RPC / edge function).
+--     Staff may update only phone, bio, avatar_url, title and prefs on their own row; never role, staff_role,
+--     permissions, department or status. Any account whose status <> 'active' is denied by every policy.
+--   * staff_applications: insert-only for the public, through an edge function that hashes the password and rate-limits.
+--     The applicant reads their own row through an RPC that strips admin_notes and password_hash. Admins read/write all.
+--   * password_hash columns, staff_audit, password_resets, email_outbox: never selectable from the browser.
+--   * A banned email cannot open a new application until an admin lifts the ban (checked in the apply function).

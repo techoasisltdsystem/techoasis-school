@@ -1,9 +1,10 @@
-// Tech Oasis Student Portal: application shell, router, guards and shared components.
-// Pages register themselves with S.route(pattern, { title, nav, layout, live, render }).
+// Tech Oasis portal shell, shared by the Student Portal (/student/*) and the Staff Portal (/staff/*).
+// Each app registers a config in S.APPS (base path, role, API, navigation, sidebar card) and its pages with
+// S.route(pattern, { title, nav, layout, live, render }). The shell, router, guards and components are shared.
 const { api, ui, auth, db } = TOS;
 const esc = ui.esc;
 
-const S = window.S = { routes: [], me: null, counts: { notifications: 0, messages: 0, announcements: 0 }, current: null, renderToken: 0 };
+const S = window.S = { routes: [], APPS: {}, me: null, counts: { notifications: 0, messages: 0, announcements: 0 }, current: null, renderToken: 0 };
 
 S.route = (pattern, def) => {
     const keys = [];
@@ -11,17 +12,32 @@ S.route = (pattern, def) => {
     S.routes.push(Object.assign({ pattern, re, keys, layout: 'app' }, def));
 };
 
-S.NAV = [
-    { title: 'Main', items: [['dashboard', 'Dashboard', 'fa-house'], ['my-courses', 'My Courses', 'fa-book-open'], ['browse', 'Browse Courses', 'fa-compass'], ['progress', 'Learning Progress', 'fa-chart-line'], ['assignments', 'Assignments', 'fa-file-pen'], ['quizzes', 'Quizzes', 'fa-circle-question'], ['certificates', 'Certificates', 'fa-award']] },
-    { title: 'Communication', items: [['messages', 'Messages', 'fa-envelope', 'messages'], ['announcements', 'Announcements', 'fa-bullhorn', 'announcements'], ['notifications', 'Notifications', 'fa-bell', 'notifications']] },
-    { title: 'Academic', items: [['calendar', 'Calendar', 'fa-calendar-days'], ['schedule', 'My Schedule', 'fa-clock'], ['resources', 'Resources', 'fa-folder-open']] },
-    { title: 'Account', items: [['profile', 'Profile', 'fa-user'], ['settings', 'Settings', 'fa-gear'], ['help', 'Help & Support', 'fa-life-ring']] }
-];
+// ---------------- Student app config ----------------
+S.APPS.student = {
+    base: '/student', role: 'student', label: 'Student', name: 'Student Portal', api: TOS.api,
+    searchPlaceholder: 'Search courses, lessons, assignments',
+    nav: [
+        { title: 'Main', items: [['dashboard', 'Dashboard', 'fa-house'], ['my-courses', 'My Courses', 'fa-book-open'], ['browse', 'Browse Courses', 'fa-compass'], ['progress', 'Learning Progress', 'fa-chart-line'], ['assignments', 'Assignments', 'fa-file-pen'], ['quizzes', 'Quizzes', 'fa-circle-question'], ['certificates', 'Certificates', 'fa-award']] },
+        { title: 'Communication', items: [['messages', 'Messages', 'fa-envelope', 'messages'], ['announcements', 'Announcements', 'fa-bullhorn', 'announcements'], ['notifications', 'Notifications', 'fa-bell', 'notifications']] },
+        { title: 'Academic', items: [['calendar', 'Calendar', 'fa-calendar-days'], ['schedule', 'My Schedule', 'fa-clock'], ['resources', 'Resources', 'fa-folder-open']] },
+        { title: 'Account', items: [['profile', 'Profile', 'fa-user'], ['settings', 'Settings', 'fa-gear'], ['help', 'Help & Support', 'fa-life-ring']] }
+    ],
+    bottom: [['dashboard', 'Home', 'fa-house'], ['my-courses', 'Courses', 'fa-book-open'], ['continue', 'Learn', 'fa-circle-play', 'primary'], ['notifications', 'Alerts', 'fa-bell'], ['profile', 'Profile', 'fa-user']],
+    card: me => `<div class="text-[11px] s-muted font-mono">${esc(me.studentId || '')}</div>${me.program ? `<div class="text-[11px] text-forest-600 truncate">${esc(me.program)}</div>` : ''}`,
+    menu: [['profile', 'My Profile', 'fa-regular fa-user'], ['settings', 'Settings', 'fa-solid fa-gear'], ['help', 'Help', 'fa-regular fa-circle-question']]
+};
+S.app = S.APPS.student;
+S.appFor = path => Object.values(S.APPS).find(a => path === a.base || path.startsWith(a.base + '/')) || S.APPS.student;
+S.url = p => S.app.base + '/' + p;
 
 // ---------------- Navigation ----------------
 S.path = () => {
     let p = location.pathname.replace(/\/index\.html$/, '').replace(/\/+$/, '');
-    if (p === '/student' || p === '') p = '/student/dashboard';
+    // /admin/... is the CMS: hand over to admin.html with the same route
+    if (p === '/admin' || p.startsWith('/admin/')) { location.replace('/admin.html#/' + p.slice(7)); return null; }
+    if (p === '' || p === '/portal.html') p = '/student';
+    const app = S.appFor(p);
+    if (p === app.base) p = app.base + '/dashboard';
     return p;
 };
 S.go = (path, opts) => {
@@ -32,7 +48,7 @@ document.addEventListener('click', e => {
     const a = e.target.closest('a[href]');
     if (!a || a.target === '_blank' || a.hasAttribute('download') || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
     const href = a.getAttribute('href');
-    if (!href.startsWith('/student')) return;
+    if (!Object.values(S.APPS).some(app => href === app.base || href.startsWith(app.base + '/') || href.startsWith(app.base + '?'))) return;
     e.preventDefault();
     S.closeOverlays();
     if (href === location.pathname + location.search) return S.dispatch();
@@ -60,10 +76,13 @@ S.statusChip = st => ({
     upcoming: '<span class="s-chip bg-sky-50 text-sky-700"><i class="fa-regular fa-clock"></i>Upcoming</span>',
     overdue: '<span class="s-chip bg-rose-50 text-rose-700"><i class="fa-solid fa-triangle-exclamation"></i>Overdue</span>',
     submitted: '<span class="s-chip bg-amber-50 text-amber-700"><i class="fa-solid fa-paper-plane"></i>Submitted</span>',
+    late: '<span class="s-chip bg-amber-50 text-amber-700"><i class="fa-solid fa-clock"></i>Submitted late</span>',
     graded: '<span class="s-chip bg-emerald-50 text-emerald-700"><i class="fa-solid fa-circle-check"></i>Graded</span>',
     available: '<span class="s-chip bg-sky-50 text-sky-700"><i class="fa-solid fa-play"></i>Available</span>',
     pending: '<span class="s-chip bg-amber-50 text-amber-700"><i class="fa-solid fa-rotate"></i>Retake available</span>',
-    failed: '<span class="s-chip bg-rose-50 text-rose-700"><i class="fa-solid fa-xmark"></i>No attempts left</span>'
+    failed: '<span class="s-chip bg-rose-50 text-rose-700"><i class="fa-solid fa-xmark"></i>No attempts left</span>',
+    published: '<span class="s-chip bg-emerald-50 text-emerald-700">Published</span>',
+    draft: '<span class="s-chip bg-amber-50 text-amber-700">Draft</span>'
 }[st] || `<span class="s-chip">${esc(st)}</span>`);
 S.empty = (icon, title, text, action) => `<div class="s-card px-6 py-14 text-center fade-in"><span class="w-14 h-14 mx-auto rounded-2xl bg-forest-50 text-forest flex items-center justify-center text-xl"><i class="fa-solid ${icon}"></i></span>
     <h3 class="font-semibold text-slate-900 mt-4">${title}</h3>${text ? `<p class="text-sm s-muted mt-1 max-w-sm mx-auto">${text}</p>` : ''}${action ? `<div class="mt-5">${action}</div>` : ''}</div>`;
@@ -90,10 +109,11 @@ S.skeleton = kind => {
 };
 // Error states with a retry, mapped from API error codes
 S.errorView = (err, retry) => {
+    const home = S.url('dashboard');
     const map = {
-        NO_ACCESS: ['fa-lock', "You don't have access to this course", err.message + ' Enroll to unlock it, or contact support if this is unexpected.', '<a href="/student/browse" class="btn btn-forest btn-sm">Browse courses</a> <a href="/student/help" class="btn btn-outline btn-sm">Get help</a>'],
-        NOT_FOUND: ['fa-compass', 'We couldn\'t find that', err.message, '<a href="/student/dashboard" class="btn btn-forest btn-sm">Back to dashboard</a>'],
-        FORBIDDEN: ['fa-ban', 'Access denied', err.message, '<a href="/" class="btn btn-forest btn-sm">Go to website</a>']
+        NO_ACCESS: ['fa-lock', "You don't have access to this", err.message + (S.app.role === 'student' ? ' Enroll to unlock it, or contact support if this is unexpected.' : ''), S.app.role === 'student' ? '<a href="/student/browse" class="btn btn-forest btn-sm">Browse courses</a> <a href="/student/help" class="btn btn-outline btn-sm">Get help</a>' : `<a href="${home}" class="btn btn-forest btn-sm">Back to dashboard</a>`],
+        NOT_FOUND: ['fa-compass', 'We couldn\'t find that', err.message, `<a href="${home}" class="btn btn-forest btn-sm">Back to dashboard</a>`],
+        FORBIDDEN: ['fa-ban', 'Not permitted', err.message, `<a href="${home}" class="btn btn-forest btn-sm">Back to dashboard</a>`]
     }[err.code] || ['fa-plug-circle-exclamation', 'Something went wrong', (err.message || 'A connection problem stopped this page from loading.') + ' Please try again.', '<button data-retry class="btn btn-forest btn-sm"><i class="fa-solid fa-rotate-right"></i>Try again</button>'];
     const html = S.empty(map[0], map[1], esc(map[2]), map[3]);
     setTimeout(() => { const b = document.querySelector('[data-retry]'); if (b && retry) b.onclick = retry; });
@@ -101,49 +121,49 @@ S.errorView = (err, retry) => {
 };
 
 // ---------------- Shell ----------------
-function sidebarHtml(path) {
-    const me = S.me;
+function sidebarHtml() {
+    const me = S.me, app = S.app;
     const active = (S.current && S.current.nav) || '';
-    return `<div class="h-16 px-5 flex items-center border-b border-[#E6E8EC] shrink-0"><a href="/student/dashboard" aria-label="Student portal home">${ui.brandLogo(false, 34)}</a><span class="ml-auto text-[10px] font-bold uppercase tracking-[0.15em] text-gold-600 bg-gold-50 px-2 py-1 rounded-md">Student</span></div>
-        <a href="/student/profile" class="mx-3 mt-4 p-3 rounded-xl bg-[#F7F8FA] border border-[#EEF0F3] flex items-center gap-3 hover:border-forest-200">
-            ${S.avatar(me, 42)}<div class="min-w-0"><div class="text-sm font-semibold text-slate-900 truncate">${esc(me.name)}</div><div class="text-[11px] s-muted font-mono">${esc(me.studentId || '')}</div>${me.program ? `<div class="text-[11px] text-forest-600 truncate">${esc(me.program)}</div>` : ''}</div></a>
-        <nav class="flex-1 overflow-y-auto thin-scroll pb-4" aria-label="Student portal">${S.NAV.map(g => `<div class="s-nav-group">${g.title}</div>${g.items.map(([k, l, ic, badge]) => {
-            const n = badge ? S.counts[badge] : 0;
-            return `<a href="/student/${k}" class="s-nav-link ${active === k ? 'active' : ''}" ${active === k ? 'aria-current="page"' : ''}><i class="fa-solid ${ic}"></i><span class="flex-1">${l}</span>${n ? `<span class="s-badge" data-badge="${badge}">${n > 99 ? '99+' : n}</span>` : `<span data-badge="${badge || ''}"></span>`}</a>`;
-        }).join('')}`).join('')}</nav>
+    return `<div class="h-16 px-5 flex items-center border-b border-[#E6E8EC] shrink-0"><a href="${S.url('dashboard')}" aria-label="${app.name} home">${ui.brandLogo(false, 34)}</a><span class="ml-auto text-[10px] font-bold uppercase tracking-[0.15em] text-gold-600 bg-gold-50 px-2 py-1 rounded-md">${app.label}</span></div>
+        <a href="${S.url('profile')}" class="mx-3 mt-4 p-3 rounded-xl bg-[#F7F8FA] border border-[#EEF0F3] flex items-center gap-3 hover:border-forest-200">
+            ${S.avatar(me, 42)}<div class="min-w-0"><div class="text-sm font-semibold text-slate-900 truncate">${esc(me.name)}</div>${app.card(me)}</div></a>
+        <nav class="flex-1 overflow-y-auto thin-scroll pb-4" aria-label="${app.name}">${app.nav.map(g => {
+            const items = g.items.filter(it => !it[4] || it[4](me));
+            return items.length ? `<div class="s-nav-group">${g.title}</div>${items.map(([k, l, ic, badge]) => {
+                const n = badge ? S.counts[badge] : 0;
+                return `<a href="${S.url(k)}" class="s-nav-link ${active === k ? 'active' : ''}" ${active === k ? 'aria-current="page"' : ''}><i class="fa-solid ${ic}"></i><span class="flex-1">${l}</span>${n ? `<span class="s-badge" data-badge="${badge}">${n > 99 ? '99+' : n}</span>` : `<span data-badge="${badge || ''}"></span>`}</a>`;
+            }).join('')}` : '';
+        }).join('')}</nav>
         <div class="p-3 border-t border-[#E6E8EC] shrink-0"><button data-logout class="s-nav-link w-[calc(100%-1rem)] text-left text-rose-700 hover:bg-rose-50"><i class="fa-solid fa-right-from-bracket !text-rose-400"></i>Log out</button></div>`;
 }
 function headerHtml(route) {
-    const me = S.me, focus = route.layout === 'focus';
+    const me = S.me, focus = route.layout === 'focus', app = S.app;
     const badge = (n, key) => `<span data-badge="${key}" class="${n ? '' : 'hidden'} absolute -top-0.5 -right-0.5 s-badge">${n > 99 ? '99+' : n}</span>`;
     return `<header class="s-header sticky top-0 z-30 px-3 sm:px-6 flex items-center gap-2 sm:gap-4">
         <button data-open-nav class="${focus ? '' : 'lg:hidden'} w-10 h-10 rounded-xl hover:bg-slate-100 text-slate-600" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
-        ${focus ? `<a href="/student/dashboard" class="hidden sm:block">${ui.logoMark(28)}</a>` : ''}
+        ${focus ? `<a href="${S.url('dashboard')}" class="hidden sm:block">${ui.logoMark(28)}</a>` : ''}
         <h1 id="pageTitle" class="text-[15px] sm:text-base font-semibold text-slate-900 truncate min-w-0">${esc(route.title || '')}</h1>
         <div class="relative ml-auto hidden md:block w-full max-w-xs" id="searchBox">
             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-            <input id="portalSearch" type="search" autocomplete="off" placeholder="Search courses, lessons, assignments" aria-label="Search" class="w-full h-10 rounded-xl bg-[#F4F5F7] border border-transparent pl-9 pr-3 text-sm focus:outline-none focus:bg-white focus:border-forest-200 focus:ring-4 focus:ring-forest-600/10">
+            <input id="portalSearch" type="search" autocomplete="off" placeholder="${esc(app.searchPlaceholder)}" aria-label="Search" class="w-full h-10 rounded-xl bg-[#F4F5F7] border border-transparent pl-9 pr-3 text-sm focus:outline-none focus:bg-white focus:border-forest-200 focus:ring-4 focus:ring-forest-600/10">
             <div id="searchResults" class="hidden absolute left-0 right-0 top-12 bg-white rounded-xl shadow-lift border border-[#E6E8EC] py-1.5 max-h-96 overflow-y-auto thin-scroll"></div>
         </div>
         <div class="flex items-center gap-1 sm:gap-2 ml-auto md:ml-0">
-            <a href="/student/messages" class="relative w-10 h-10 rounded-xl hover:bg-slate-100 text-slate-600 flex items-center justify-center" aria-label="Messages"><i class="fa-regular fa-envelope text-[17px]"></i>${badge(S.counts.messages, 'messages')}</a>
+            <a href="${S.url('messages')}" class="relative w-10 h-10 rounded-xl hover:bg-slate-100 text-slate-600 flex items-center justify-center" aria-label="Messages"><i class="fa-regular fa-envelope text-[17px]"></i>${badge(S.counts.messages, 'messages')}</a>
             <div class="relative"><button data-bell class="relative w-10 h-10 rounded-xl hover:bg-slate-100 text-slate-600" aria-label="Notifications" aria-haspopup="true"><i class="fa-regular fa-bell text-[17px]"></i>${badge(S.counts.notifications, 'notifications')}</button>
                 <div id="bellPanel" class="hidden absolute right-0 mt-2 w-[min(360px,calc(100vw-1.5rem))] bg-white rounded-2xl shadow-lift border border-[#E6E8EC] overflow-hidden z-40"></div></div>
             <div class="relative"><button data-profile class="flex items-center gap-2.5 pl-1 pr-1 sm:pr-3 h-10 rounded-xl hover:bg-slate-100" aria-label="Account menu" aria-haspopup="true">${S.avatar(me, 32)}<span class="hidden sm:block text-sm font-medium text-slate-800 max-w-[140px] truncate">${esc(me.name.split(' ')[0])}</span><i class="hidden sm:block fa-solid fa-chevron-down text-[10px] text-slate-400"></i></button>
                 <div id="profileMenu" class="hidden absolute right-0 mt-2 w-60 bg-white rounded-2xl shadow-lift border border-[#E6E8EC] py-2 z-40 text-sm">
                     <div class="px-4 py-2 border-b border-[#EEF0F3] mb-1"><div class="font-semibold text-slate-900 truncate">${esc(me.name)}</div><div class="text-xs s-muted truncate">${esc(me.email)}</div></div>
-                    <a href="/student/profile" class="flex items-center gap-3 px-4 py-2 hover:bg-slate-50"><i class="fa-regular fa-user w-4 text-slate-400"></i>My Profile</a>
-                    <a href="/student/settings" class="flex items-center gap-3 px-4 py-2 hover:bg-slate-50"><i class="fa-solid fa-gear w-4 text-slate-400"></i>Settings</a>
-                    <a href="/student/help" class="flex items-center gap-3 px-4 py-2 hover:bg-slate-50"><i class="fa-regular fa-circle-question w-4 text-slate-400"></i>Help</a>
+                    ${app.menu.map(([k, l, ic]) => `<a href="${S.url(k)}" class="flex items-center gap-3 px-4 py-2 hover:bg-slate-50"><i class="${ic} w-4 text-slate-400"></i>${l}</a>`).join('')}
                     <a href="/" class="flex items-center gap-3 px-4 py-2 hover:bg-slate-50"><i class="fa-solid fa-globe w-4 text-slate-400"></i>School website</a>
                     <button data-logout class="w-full flex items-center gap-3 px-4 py-2 hover:bg-rose-50 text-rose-700 border-t border-[#EEF0F3] mt-1"><i class="fa-solid fa-right-from-bracket w-4"></i>Log out</button></div></div>
         </div></header>`;
 }
 function bottomNavHtml() {
     const active = (S.current && S.current.nav) || '';
-    const items = [['dashboard', 'Home', 'fa-house'], ['my-courses', 'Courses', 'fa-book-open'], ['continue', 'Learn', 'fa-circle-play'], ['notifications', 'Alerts', 'fa-bell'], ['profile', 'Profile', 'fa-user']];
-    return `<nav class="s-bottom-nav lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-[#E6E8EC] grid grid-cols-5" aria-label="Quick navigation">${items.map(([k, l, ic]) => `<a href="/student/${k}" class="relative flex flex-col items-center justify-center gap-0.5 h-16 text-[11px] font-medium text-slate-500 ${active === k || (k === 'continue' && active === 'learn') ? 'active' : ''}">
-        ${k === 'continue' ? `<span class="w-11 h-11 -mt-5 rounded-full bg-forest text-gold flex items-center justify-center shadow-lift"><i class="fa-solid ${ic}"></i></span>` : `<i class="fa-solid ${ic} text-lg"></i>`}<span>${l}</span>
+    return `<nav class="s-bottom-nav lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-[#E6E8EC] grid grid-cols-5" aria-label="Quick navigation">${S.app.bottom.map(([k, l, ic, primary]) => `<a href="${S.url(k)}" class="relative flex flex-col items-center justify-center gap-0.5 h-16 text-[11px] font-medium text-slate-500 ${active === k || (k === 'continue' && active === 'learn') ? 'active' : ''}">
+        ${primary ? `<span class="w-11 h-11 -mt-5 rounded-full bg-forest text-gold flex items-center justify-center shadow-lift"><i class="fa-solid ${ic}"></i></span>` : `<i class="fa-solid ${ic} text-lg"></i>`}<span>${l}</span>
         ${k === 'notifications' ? `<span data-badge="notifications" class="${S.counts.notifications ? '' : 'hidden'} absolute top-2 left-1/2 ml-1 s-badge">${S.counts.notifications}</span>` : ''}</a>`).join('')}</nav>`;
 }
 function renderShell(route) {
@@ -155,7 +175,7 @@ function renderShell(route) {
             ${headerHtml(route)}
             <main id="main" class="flex-1 min-w-0 ${focus ? '' : 'px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pb-28 lg:pb-10 max-w-[1400px] w-full mx-auto'}" tabindex="-1"></main>
         </div></div>${focus ? '' : bottomNavHtml()}`;
-    S.shellLayout = route.layout;
+    S.shellKey = S.app.base + ':' + route.layout;
     bindShell();
 }
 function bindShell() {
@@ -171,24 +191,25 @@ function bindShell() {
     const input = document.getElementById('portalSearch'), results = document.getElementById('searchResults');
     let t; input.oninput = () => { clearTimeout(t); t = setTimeout(async () => {
         const q = input.value.trim(); if (q.length < 2) return results.classList.add('hidden');
-        const res = await api.search(q).catch(() => []);
+        const res = await S.app.api.search(q).catch(() => []);
         results.innerHTML = res.length ? res.map(r => `<a href="${r.link}" class="flex items-center gap-3 px-3.5 py-2.5 hover:bg-slate-50"><span class="s-chip">${esc(r.kind)}</span><span class="min-w-0"><span class="block text-sm text-slate-900 truncate">${esc(r.title)}</span>${r.sub ? `<span class="block text-xs s-muted truncate">${esc(r.sub)}</span>` : ''}</span></a>`).join('') : `<p class="px-4 py-3 text-sm s-muted">No results for "${esc(q)}"</p>`;
         results.classList.remove('hidden');
     }, 180); };
     input.onkeydown = e => { if (e.key === 'Escape') { results.classList.add('hidden'); input.blur(); } };
 }
 async function renderBellPanel(panel) {
+    const A = S.app.api;
     panel.innerHTML = `<div class="p-4 space-y-3">${[1, 2, 3].map(() => '<div class="sk h-10"></div>').join('')}</div>`;
-    const list = (await api.notifications().catch(() => [])).slice(0, 6);
+    const list = (await A.notifications().catch(() => [])).slice(0, 6);
     panel.innerHTML = `<div class="flex items-center justify-between px-4 py-3 border-b border-[#EEF0F3]"><span class="font-semibold text-sm text-slate-900">Notifications</span>${list.some(n => !n.readAt) ? '<button data-readall class="text-xs font-semibold text-forest-600">Mark all as read</button>' : ''}</div>
         ${list.length ? `<div class="max-h-[380px] overflow-y-auto thin-scroll divide-y divide-[#F1F3F5]">${list.map(n => S.notificationRow(n, true)).join('')}</div>` : '<p class="px-4 py-8 text-center text-sm s-muted">You\'re all caught up.</p>'}
-        <a href="/student/notifications" class="block text-center text-sm font-semibold text-forest-600 py-3 border-t border-[#EEF0F3] hover:bg-slate-50">View all notifications</a>`;
-    const ra = panel.querySelector('[data-readall]'); if (ra) ra.onclick = async e => { e.stopPropagation(); await api.markAllNotifications(); S.refreshCounts(); renderBellPanel(panel); };
-    panel.querySelectorAll('[data-notif-link]').forEach(a => a.addEventListener('click', () => api.markNotification(a.dataset.notifLink).then(S.refreshCounts)));
+        <a href="${S.url('notifications')}" class="block text-center text-sm font-semibold text-forest-600 py-3 border-t border-[#EEF0F3] hover:bg-slate-50">View all notifications</a>`;
+    const ra = panel.querySelector('[data-readall]'); if (ra) ra.onclick = async e => { e.stopPropagation(); await A.markAllNotifications(); S.refreshCounts(); renderBellPanel(panel); };
+    panel.querySelectorAll('[data-notif-link]').forEach(a => a.addEventListener('click', () => A.markNotification(a.dataset.notifLink).then(S.refreshCounts)));
 }
 S.notificationRow = (n, compact) => {
     const T = TOS.engage.TYPES[n.type] || TOS.engage.TYPES.system;
-    return `<a href="${esc(n.link || '/student/notifications')}" data-notif-link="${n.id}" class="flex gap-3 ${compact ? 'px-4 py-3' : 'p-4'} hover:bg-slate-50 ${n.readAt ? '' : 'bg-forest-50/40'}">
+    return `<a href="${esc(n.link || S.url('notifications'))}" data-notif-link="${n.id}" class="flex gap-3 ${compact ? 'px-4 py-3' : 'p-4'} hover:bg-slate-50 ${n.readAt ? '' : 'bg-forest-50/40'}">
         <span class="w-9 h-9 rounded-xl ${n.readAt ? 'bg-slate-100 text-slate-500' : 'bg-forest text-gold'} flex items-center justify-center text-sm shrink-0"><i class="fa-solid ${T.icon}"></i></span>
         <span class="min-w-0 flex-1"><span class="block text-sm ${n.readAt ? 'text-slate-700' : 'font-semibold text-slate-900'}">${esc(n.title)}</span>${n.body ? `<span class="block text-xs s-muted mt-0.5 ${compact ? 'line-clamp-2' : ''}">${esc(n.body)}</span>` : ''}<span class="block text-[11px] text-slate-400 mt-1">${T.label} · ${ui.timeAgo(n.createdAt)}</span></span>
         ${n.readAt ? '' : '<span class="w-2 h-2 rounded-full bg-gold mt-1.5 shrink-0" aria-label="Unread"></span>'}</a>`;
@@ -202,64 +223,72 @@ document.addEventListener('click', e => { if (!e.target.closest('#bellPanel,[dat
 document.addEventListener('keydown', e => { if (e.key === 'Escape') S.closeOverlays(); });
 
 S.refreshCounts = async () => {
-    try { S.counts = await api.counts(); } catch (e) { return; }
+    try { S.counts = await S.app.api.counts(); } catch (e) { return; }
     document.querySelectorAll('[data-badge]').forEach(el => {
         const k = el.dataset.badge; if (!k) return; const n = S.counts[k] || 0;
         el.textContent = n > 99 ? '99+' : n; el.classList.toggle('hidden', !n); if (n) el.classList.add('s-badge');
     });
-    document.title = (S.counts.notifications ? `(${S.counts.notifications}) ` : '') + (S.titleText || 'Student Portal') + ' | Tech Oasis School';
+    document.title = (S.counts.notifications ? `(${S.counts.notifications}) ` : '') + (S.titleText || S.app.name) + ' | Tech Oasis School';
 };
 S.setTitle = t => { S.titleText = t; const h = document.getElementById('pageTitle'); if (h) h.textContent = t; document.title = (S.counts.notifications ? '(' + S.counts.notifications + ') ' : '') + t + ' | Tech Oasis School'; };
-S.refreshMe = async () => { S.me = await api.me(); const side = document.getElementById('sideNav'); if (side) { side.innerHTML = sidebarHtml(); bindShell(); } };
+S.refreshMe = async () => { S.me = await S.app.api.me(); const side = document.getElementById('sideNav'); if (side) { side.innerHTML = sidebarHtml(); bindShell(); } };
 
-S.logout = () => { auth.logout(); S.me = null; S.go('/student/login?signedout=1', { replace: true }); };
+S.logout = () => { auth.logout(); S.me = null; S.go(S.url('login?signedout=1'), { replace: true }); };
 S.applyPrefs = () => {
     const p = (S.me && S.me.prefs && S.me.prefs.appearance) || {};
     document.body.classList.toggle('text-lg-pref', p.textSize === 'large');
     document.body.classList.toggle('reduce-motion', !!p.reduceMotion);
 };
+const roleHome = role => role === 'staff' ? '/staff/dashboard' : role === 'student' ? '/student/dashboard' : '/';
 
 // ---------------- Router ----------------
 S.dispatch = async function () {
-    const path = S.path();
+    const path = S.path(); if (!path) return;
     if (path !== location.pathname) history.replaceState({}, '', path + location.search);
+    S.app = S.appFor(path);
     let route = null, params = {};
     for (const r of S.routes) { const m = path.match(r.re); if (m) { route = r; r.keys.forEach((k, i) => params[k] = decodeURIComponent(m[i + 1])); break; } }
-    if (!route) route = S.routes.find(r => r.pattern === '/student/404');
+    if (!route) route = S.routes.find(r => r.pattern === S.app.base + '/404');
 
-    // Public (sign-in) pages
+    // Public pages (sign in, apply, verify…)
     if (route.layout === 'auth') {
-        if (auth.current() && auth.current().role === 'student' && !route.allowSignedIn) return S.go('/student/dashboard', { replace: true });
-        S.current = route; S.shellLayout = 'auth';
+        const cur = auth.current();
+        if (cur && cur.role === S.app.role && !route.allowSignedIn && !cur.mustChangePassword) return S.go(S.url('dashboard'), { replace: true });
+        S.current = route; S.shellKey = 'auth';
         document.title = route.title + ' | Tech Oasis School';
         const root = document.getElementById('root'); root.innerHTML = '';
         return route.render(root, params);
     }
 
-    // Guard: authenticated student only
+    // Guard: authenticated, correct role, active account
     const s = auth.current();
     if (!s) {
         const problem = auth.sessionProblem();
-        if (problem === 'suspended') return S.go('/student/login?suspended=1', { replace: true });
+        if (problem && problem !== 'none' && problem !== 'deleted') { auth.logout(); return S.go(S.url('login?state=' + problem), { replace: true }); }
         const expired = !!S.me;
         S.me = null;
-        return S.go('/student/login?next=' + encodeURIComponent(path + location.search) + (expired ? '&expired=1' : ''), { replace: true });
+        return S.go(S.url('login?next=' + encodeURIComponent(path + location.search) + (expired ? '&expired=1' : '')), { replace: true });
     }
-    if (s.role !== 'student') {
-        document.getElementById('root').innerHTML = `<div class="min-h-screen flex items-center justify-center p-6"><div class="max-w-md w-full">${S.empty('fa-ban', 'Access denied', 'The student portal is only for student accounts. You are signed in as ' + esc(s.role === 'staff' ? 'an instructor' : s.role) + '.', `<a href="/index.html#my-learning" class="btn btn-forest btn-sm">Go to Instructor Hub</a> <button onclick="TOS.auth.logout();location.href='/student/login'" class="btn btn-outline btn-sm">Sign in as a student</button>`)}</div></div>`;
+    if (s.role !== S.app.role) {
+        const other = s.role === 'staff' ? 'the Staff Portal' : s.role === 'student' ? 'the Student Portal' : 'the website';
+        document.title = 'Access denied | ' + S.app.name;
+        document.getElementById('root').innerHTML = `<div class="min-h-screen flex items-center justify-center p-6"><div class="max-w-md w-full">${S.empty('fa-ban', 'Access denied', `The ${esc(S.app.name)} is only for ${S.app.role} accounts. You are signed in to ${other}.`, `<a href="${roleHome(s.role)}" class="btn btn-forest btn-sm">Go to ${other}</a> <button data-switch class="btn btn-outline btn-sm">Sign out</button>`)}</div></div>`;
+        document.querySelector('[data-switch]').onclick = () => { auth.logout(); S.go(S.url('login'), { replace: true }); };
+        S.shellKey = 'denied';
         return;
     }
+    if (s.mustChangePassword && S.app.forcePasswordRoute) return S.go(S.app.forcePasswordRoute, { replace: true });
 
     const token = ++S.renderToken;
     S.current = route;
-    try { if (!S.me || S.me.id !== s.id) { S.me = await api.me(); S.counts = await api.counts(); } } catch (e) { return S.go('/student/login?expired=1', { replace: true }); }
+    try { if (!S.me || S.me.id !== s.id || S.meApp !== S.app.base) { S.me = await S.app.api.me(); S.meApp = S.app.base; S.counts = await S.app.api.counts(); } } catch (e) { return S.go(S.url('login?expired=1'), { replace: true }); }
     S.applyPrefs();
-    if (S.shellLayout !== route.layout || !document.getElementById('main')) renderShell(route);
+    if (S.shellKey !== S.app.base + ':' + route.layout || !document.getElementById('main')) renderShell(route);
     else {
         document.getElementById('sideNav').innerHTML = sidebarHtml(); bindShell();
         const bn = document.querySelector('.s-bottom-nav'); if (bn) bn.outerHTML = bottomNavHtml();
     }
-    S.setTitle(route.title || 'Student Portal');
+    S.setTitle(route.title || S.app.name);
     const main = document.getElementById('main');
     main.innerHTML = route.layout === 'focus' ? `<div class="p-4 sm:p-6">${S.skeleton(route.skeleton)}</div>` : S.skeleton(route.skeleton);
     window.scrollTo(0, 0);
@@ -270,13 +299,13 @@ S.dispatch = async function () {
     } catch (err) {
         if (token !== S.renderToken) return;
         if (!err.code || err.code === 'ERROR') console.error(err);   // expected API outcomes (not found, no access) are shown, not logged
-        if (err.code === 'UNAUTHENTICATED') return S.go('/student/login?expired=1&next=' + encodeURIComponent(path), { replace: true });
-        if (err.code === 'SUSPENDED') { auth.logout(); return S.go('/student/login?suspended=1', { replace: true }); }
+        if (err.code === 'UNAUTHENTICATED') return S.go(S.url('login?expired=1&next=' + encodeURIComponent(path)), { replace: true });
+        if (err.code === 'SUSPENDED' || /^ACCOUNT_/.test(err.code)) { const st = err.code === 'SUSPENDED' ? 'suspended' : err.code.slice(8).toLowerCase(); auth.logout(); return S.go(S.url('login?state=' + st), { replace: true }); }
         main.innerHTML = `<div class="${route.layout === 'focus' ? 'p-6 max-w-xl mx-auto' : 'max-w-xl mx-auto'}">${S.errorView(err, () => S.dispatch())}</div>`;
     }
     S.refreshCounts();
 };
-// Re-render live pages without disturbing anything the student is typing or watching
+// Re-render live pages without disturbing anything the user is typing or watching
 S.softRefresh = () => {
     if (!S.current || S.current.layout === 'auth') return;
     // Signed out, suspended or deleted elsewhere (e.g. by an admin): leave the portal immediately
@@ -287,7 +316,7 @@ S.softRefresh = () => {
 };
 S.dispatchQuiet = async () => {
     const main = document.getElementById('main'); if (!main) return;
-    const path = S.path(), r = S.current, m = path.match(r.re); if (!m) return;
+    const path = S.path(), r = S.current, m = path && path.match(r.re); if (!m) return;
     const params = {}; r.keys.forEach((k, i) => params[k] = decodeURIComponent(m[i + 1]));
     const y = window.scrollY, token = ++S.renderToken;
     try { await r.render(main, params, token); window.scrollTo(0, y); } catch (e) { /* keep current view on background refresh errors */ }
@@ -301,11 +330,12 @@ window.addEventListener('storage', e => {
 document.addEventListener('visibilitychange', () => { if (!document.hidden) S.softRefresh(); });
 
 S.start = () => {
-    document.getElementById('splashLogo').innerHTML = ui.brandLogo(false, 44);
+    const splash = document.getElementById('splashLogo');
+    if (splash) splash.innerHTML = ui.brandLogo(false, 44);
     S.dispatch();
 };
 
-// 404
+// 404s
 S.route('/student/404', { title: 'Page not found', nav: '', render: el => { el.innerHTML = `<div class="max-w-xl mx-auto">${S.empty('fa-compass', 'Page not found', 'That page does not exist in the student portal.', '<a href="/student/dashboard" class="btn btn-forest btn-sm">Go to dashboard</a>')}</div>`; } });
 // Shortcut used by the mobile "Learn" button: jump straight back into the last lesson
 S.route('/student/continue', { title: 'Continue learning', nav: 'continue', render: async () => {

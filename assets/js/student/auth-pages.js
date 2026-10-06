@@ -32,7 +32,7 @@
     S.route('/student/login', { title: 'Student sign in', layout: 'auth', render: el => {
         const q = S.q;
         const msg = q('expired') ? notice('warn', '<i class="fa-solid fa-clock mr-1"></i>Your session has expired. Please sign in again.')
-            : q('suspended') ? notice('error', `<i class="fa-solid fa-ban mr-1"></i>This account is suspended. Contact <a class="underline" href="mailto:${esc(db.settings().school.studentEmail)}">${esc(db.settings().school.studentEmail)}</a>.`)
+            : (q('suspended') || q('state')) ? notice('error', `<i class="fa-solid fa-ban mr-1"></i>This account is suspended. Contact <a class="underline" href="mailto:${esc(db.settings().school.studentEmail)}">${esc(db.settings().school.studentEmail)}</a>.`)
             : q('signedout') ? notice('ok', '<i class="fa-solid fa-circle-check mr-1"></i>You have been signed out.')
             : q('reset') ? notice('ok', '<i class="fa-solid fa-circle-check mr-1"></i>Request received. The school will contact you with a new password.') : '';
         const allowReg = db.settings().portal.allowSelfRegistration !== false;
@@ -46,7 +46,7 @@
             </form>
             <div class="mt-8 pt-6 border-t border-slate-100 text-sm text-slate-600 space-y-2">
                 <p>Don't have an account? ${allowReg ? '<a href="/student/register" class="font-semibold text-forest-600 hover:underline">Create one</a> or ' : ''}contact the school at <a href="mailto:${esc(db.settings().school.email)}" class="font-semibold text-forest-600 hover:underline">${esc(db.settings().school.email)}</a>.</p>
-                <p class="text-xs s-muted">Staff or instructor? <a href="/index.html?login=staff" class="underline">Sign in to the Instructor Hub</a> · <a href="/" class="underline">Back to website</a></p>
+                <p class="text-xs s-muted">Staff or instructor? <a href="/staff/login" class="underline">Sign in to the Staff Portal</a> · <a href="/staff/apply" class="underline">Apply to teach</a> · <a href="/" class="underline">Back to website</a></p>
             </div>`);
         bindEyes();
         document.getElementById('who').focus();
@@ -56,7 +56,7 @@
             if (!who || !pw) { err.textContent = 'Enter your email or student ID and your password.'; return err.classList.remove('hidden'); }
             const r = auth.login(who, pw, null, document.getElementById('remember').checked);
             if (r.error) { err.textContent = r.error; return err.classList.remove('hidden'); }
-            if (r.user.role !== 'student') { auth.logout(); err.innerHTML = r.user.role === 'staff' ? 'This is a staff account. Use the <a class="underline" href="/index.html?login=staff">Instructor Hub sign-in</a>.' : 'This account cannot sign in to the student portal.'; return err.classList.remove('hidden'); }
+            if (r.user.role !== 'student') { auth.logout(); err.innerHTML = r.user.role === 'staff' ? 'This is a staff account. Use the <a class="underline" href="/staff/login">Staff Portal sign-in</a>.' : 'This account cannot sign in to the student portal.'; return err.classList.remove('hidden'); }
             S.me = null;
             const next = safeNext(q('next'));
             if (next.startsWith('/student')) S.go(next, { replace: true }); else location.href = next;

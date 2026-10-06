@@ -13,24 +13,22 @@ function go(page, anchor, opts) {
 }
 function showPage(pageId) {
     const me = auth.current();
-    if (pageId === 'staffDash' && !(me && me.role === 'staff')) return me ? goToPortal() : openCourseraAuthModal('staff');
     ui.$$('.page-view').forEach(p => p.classList.add('hidden'));
     document.getElementById('page-' + pageId).classList.remove('hidden');
     window.scrollTo(0, 0);
-    const shell = pageId === 'staffDash';
+    const shell = false;
     document.getElementById('siteHeader').classList.toggle('hidden', shell);
     document.getElementById('siteFooter').classList.toggle('hidden', shell);
     if (pageId === 'catalog') renderCatalog();
     if (pageId === 'about') renderAbout();
-    if (pageId === 'staffDash') { staffTab('overview'); renderStaffDashboard(); }
     renderAuthArea();
     ui.initReveal();
 }
 function goToPortal() {
     const me = auth.current();
     if (!me) { location.href = '/student/login'; return false; }
-    if (me.role === 'student') { location.href = '/student/dashboard'; return false; }
-    showPage('staffDash');
+    location.href = me.role === 'staff' ? '/staff/dashboard' : '/student/dashboard';
+    return false;
     history.replaceState(null, '', '#my-learning');
     return false;
 }
@@ -45,13 +43,13 @@ function renderAuthArea() {
             <a href="/student/register" class="btn btn-outline border-forest text-forest h-11">Join for Free</a>`;
         return;
     }
-    el.innerHTML = `<button onclick="goToPortal()" class="hidden sm:inline-flex text-sm font-semibold text-forest hover:text-forest-600 px-2">${me.role === 'staff' ? 'Instructor Hub' : 'My Learning'}</button>
+    el.innerHTML = `<button onclick="goToPortal()" class="hidden sm:inline-flex text-sm font-semibold text-forest hover:text-forest-600 px-2">${me.role === 'staff' ? 'Staff Portal' : 'My Learning'}</button>
         <div class="relative">
             <button onclick="document.getElementById('userMenu').classList.toggle('hidden')" class="flex items-center gap-2 rounded-full pl-1 pr-3 h-11 border border-slate-200 hover:border-forest" aria-label="Account menu">
                 <span class="w-9 h-9 rounded-full bg-forest text-gold text-xs font-bold flex items-center justify-center">${esc(ui.initials(me.name))}</span><i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i></button>
             <div id="userMenu" class="hidden absolute right-0 mt-2 w-60 bg-white rounded-2xl shadow-lift border border-slate-100 py-2 text-sm z-50">
                 <div class="px-4 py-2 border-b mb-1"><div class="font-semibold text-ink truncate">${esc(me.name)}</div><div class="text-xs text-slate-500 truncate">${esc(me.email)}</div></div>
-                <button onclick="goToPortal()" class="w-full text-left px-4 py-2 hover:bg-ivory"><i class="fa-solid fa-graduation-cap w-5 text-slate-400"></i>${me.role === 'staff' ? 'Instructor Hub' : 'My Learning'}</button>
+                <button onclick="goToPortal()" class="w-full text-left px-4 py-2 hover:bg-ivory"><i class="fa-solid fa-graduation-cap w-5 text-slate-400"></i>${me.role === 'staff' ? 'Staff Portal' : 'My Learning'}</button>
                 <a href="verify.html" class="block px-4 py-2 hover:bg-ivory"><i class="fa-solid fa-award w-5 text-slate-400"></i>Certificates</a>
                 <button onclick="logoutUser()" class="w-full text-left px-4 py-2 hover:bg-ivory text-rose-700"><i class="fa-solid fa-right-from-bracket w-5"></i>Log out</button>
             </div>
@@ -351,7 +349,7 @@ document.addEventListener('DOMContentLoaded', function route() {
     ui.applyBrandLogos(); applyEmails(); renderHome();
     const h = location.hash.slice(1), p = ui.qs('login');
     if (p === 'student') { location.replace('/student/' + (ui.qs('mode') === 'register' ? 'register' : 'login') + (ui.qs('next') ? '?next=' + encodeURIComponent('/' + ui.qs('next').replace(/^\/+/, '')) : '')); return; }
-    if (p) { openCourseraAuthModal('staff'); return showPage('home'); }
+    if (p === 'staff') { location.replace('/staff/login'); return; }
     if (PUBLIC_PAGES.includes(h)) return showPage(h);
     if (h === 'my-learning' || h === 'portal') return auth.current() ? goToPortal() : showPage('home');
     showPage('home');

@@ -215,7 +215,7 @@ A.showLogin = () => {
     // Role-based access: a signed-in student (or instructor) is told plainly that the CMS is off-limits
     const s = auth.current(), form = document.getElementById('loginForm');
     if (s && s.role !== 'admin' && !document.getElementById('roleDenied')) {
-        form.insertAdjacentHTML('afterbegin', `<div id="roleDenied" class="rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm p-4" role="alert"><b>Access denied.</b> You are signed in as a ${s.role === 'student' ? 'student' : 'staff member'}, and ${s.role === 'student' ? 'student accounts' : 'staff accounts'} cannot access the admin CMS. <a href="${s.role === 'student' ? '/student/dashboard' : 'index.html#my-learning'}" class="underline font-semibold">Go to your ${s.role === 'student' ? 'student portal' : 'Instructor Hub'}</a></div>`);
+        form.insertAdjacentHTML('afterbegin', `<div id="roleDenied" class="rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm p-4" role="alert"><b>Access denied.</b> You are signed in as a ${s.role === 'student' ? 'student' : 'staff member'}, and ${s.role === 'student' ? 'student accounts' : 'staff accounts'} cannot access the admin CMS. <a href="${s.role === 'student' ? '/student/dashboard' : '/staff/dashboard'}" class="underline font-semibold">Go to your ${s.role === 'student' ? 'student portal' : 'Staff Portal'}</a></div>`);
     }
     setTimeout(() => document.getElementById('adminId').focus(), 30);
 };

@@ -20,6 +20,7 @@
         announcement: { label: 'Announcement', icon: 'fa-bullhorn' },
         schedule: { label: 'Schedule change', icon: 'fa-calendar-days' },
         support: { label: 'Support', icon: 'fa-life-ring' },
+        submission: { label: 'New submission', icon: 'fa-inbox' },
         system: { label: 'Account', icon: 'fa-user-shield' }
     };
     let muted = 0;
@@ -29,7 +30,7 @@
     function notify(userId, type, title, body, link, opts) {
         if (muted || !userId) return null;
         const u = db.get('users', userId);
-        if (!u || u.role !== 'student') return null;
+        if (!u || !['student', 'staff'].includes(u.role) || (u.status && u.status !== 'active')) return null;
         const prefs = (u.prefs && u.prefs.notify) || {};
         if (prefs[type] === false) return null;                // student switched this type off
         opts = opts || {};
@@ -64,6 +65,11 @@
         enrolledStudents(ctx.course.id).forEach(uid => notify(uid, isQuiz ? 'quiz_available' : 'lesson', (isQuiz ? 'New quiz: ' : 'New lesson: ') + row.title, ctx.course.title + ' · ' + ctx.section.title, '/student/learn/' + row.id, { key: 'les:' + row.id + ':' + uid }));
     });
     db.on('submissions', (evt, row, prev) => {
+        // Tell the course's grading staff about new work
+        if ((evt === 'insert' || (evt === 'update' && prev && prev.submittedAt !== row.submittedAt)) && row.status !== 'graded') {
+            const a = db.get('assignments', row.assignmentId), ctx = a && lms.lessonContext(a.lessonId), st = db.get('users', row.userId);
+            if (ctx && ctx.course) lms.courseInstructors(ctx.course.id).forEach(i => { const iu = i.userId && db.get('users', i.userId); if (iu && (iu.permissions || []).includes('grade_students')) notify(iu.id, 'submission', 'New submission: ' + a.title, (st ? st.name : 'A student') + ' · ' + ctx.course.title, '/staff/grading?s=' + row.id); });
+        }
         if (evt !== 'update' || row.status !== 'graded' || (prev && prev.status === 'graded' && prev.score === row.score)) return;
         const a = db.get('assignments', row.assignmentId); if (!a) return;
         notify(row.userId, 'assignment_graded', 'Graded: ' + a.title, `You scored ${row.score}/${a.maxScore}.${row.feedback ? ' Your instructor left feedback.' : ''}`, '/student/assignments/' + a.id, { at: row.gradedAt });
@@ -82,6 +88,7 @@
         const cv = db.get('conversations', row.conversationId); if (!cv) return;
         db.update('conversations', cv.id, { lastMessageAt: row.createdAt });
         if (row.senderId !== cv.studentId) notify(cv.studentId, 'message', 'New message from ' + (row.senderName || 'Tech Oasis'), String(row.body).slice(0, 120), '/student/messages/' + cv.id);
+        else if (cv.recipientUserId) notify(cv.recipientUserId, 'message', 'New message from ' + (row.senderName || 'a student'), String(row.body).slice(0, 120), '/staff/messages/' + cv.id);
     });
     db.on('announcements', (evt, row) => {
         if (evt !== 'insert') return;
@@ -129,7 +136,8 @@
             const seen = new Set();
             db.where('enrollments', e => e.userId === studentId && e.status !== 'cancelled').forEach(e => {
                 lms.courseInstructors(e.courseId).forEach(i => {
-                    if (!i.userId || seen.has(i.userId) || !db.get('users', i.userId)) return;
+                    const iu = i.userId && db.get('users', i.userId);
+                    if (!iu || seen.has(i.userId) || (iu.status && iu.status !== 'active') || !(iu.permissions || []).includes('message_students')) return;
                     seen.add(i.userId);
                     out.push({ key: 'ins:' + i.userId, type: 'instructor', userId: i.userId, label: i.name, sub: 'Instructor · ' + (db.get('courses', e.courseId) || {}).title, courseId: e.courseId });
                 });

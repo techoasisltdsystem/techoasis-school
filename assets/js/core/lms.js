@@ -19,7 +19,8 @@
     const courseBySlug = slug => db.first('courses', c => c.slug === slug || c.id === slug);
 
     function courseInstructors(courseId) {
-        return db.where('course_instructors', { courseId }).sort(byOrder).map(ci => db.get('instructors', ci.instructorId)).filter(Boolean);
+        // Instructors whose staff account was archived/deleted (active === false) no longer show on courses
+        return db.where('course_instructors', { courseId }).sort(byOrder).map(ci => db.get('instructors', ci.instructorId)).filter(i => i && i.active !== false);
     }
     const primaryInstructor = courseId => courseInstructors(courseId)[0] || null;
     function setPrimaryInstructor(courseId, instructorId) {
