@@ -4,3 +4,4 @@
 *.lnk
 node_modules/
 .vercel
+.env*
