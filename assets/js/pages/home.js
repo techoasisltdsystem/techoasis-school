@@ -118,10 +118,12 @@ function submitSearch(mobile) {
 // ---------------- Shared course card ----------------
 function popularCourses() { return lms.listedCourses().sort((a, b) => db.count('enrollments', { courseId: b.id }) - db.count('enrollments', { courseId: a.id }) || lms.rating(b.id).avg - lms.rating(a.id).avg); }
 function priceLabel(c) { return lms.priceOf(c) ? ui.money(lms.priceOf(c)) : 'Free'; }
+// Card images are shown ~320px wide, so ask the CDN for 640px (2x) instead of the 900px stored with the course
+const cardImg = c => String(c.thumbnail).replace(/([?&]w=)\d+/, '$1640');
 function courseCard(c, dark) {
     const ins = lms.primaryInstructor(c.id), r = lms.rating(c.id), meta = lms.courseMeta(c.id);
     return `<a href="${courseUrl(c)}" class="group flex flex-col rounded-2xl overflow-hidden ${dark ? 'bg-white text-ink' : 'bg-white border border-slate-200/70'} shadow-luxe hover:shadow-lift hover:-translate-y-1 transition duration-300">
-        <div class="relative aspect-[16/9] overflow-hidden bg-slate-100"><img src="${esc(c.thumbnail)}" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+        <div class="relative aspect-[16/9] overflow-hidden bg-slate-100"><img src="${esc(cardImg(c))}" alt="" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
             <span class="absolute top-3 left-3 pill ${lms.priceOf(c) ? 'bg-white/95 text-ink' : 'bg-gold text-ink'}">${priceLabel(c)}</span></div>
         <div class="p-4 flex-1 flex flex-col">
             <div class="flex items-center gap-2 text-xs text-slate-500"><span class="w-5 h-5 rounded bg-forest text-gold flex items-center justify-center text-[9px]"><i class="fa-solid ${esc((lms.category(c.categoryId) || {}).icon || 'fa-book')}"></i></span><span class="truncate">${esc(ins ? ins.name : 'Tech Oasis Faculty')}</span></div>
@@ -288,11 +290,20 @@ function renderPaths() {
     if (on) tabs.scrollTo({ left: on.offsetLeft - (tabs.clientWidth - on.offsetWidth) / 2, behavior: 'smooth' });
     const list = PATHS[pathIdx][1].map(s => lms.courseBySlug(s)).filter(c => c && c.status === 'published');
     const cards = document.getElementById('pathCards');
-    cards.innerHTML = list.map(c => courseCard(c, true)).join('');
+    cards.innerHTML = list.map(c => courseCard(c, true)).join('').replace(/loading="lazy"/g, 'loading="eager" decoding="async"');
     // Each switch brings the cards in with the next style (swipe, window, curtain, flip, drop), staggered left to right
     cards.className = cards.className.replace(/\bpt-\w+/g, '').trim() + ' pt-' + PATH_FX[pathFx++ % PATH_FX.length];
     [...cards.children].forEach((el, i) => el.style.setProperty('--i', i));
 }
+// Warm the browser cache with every path's course images (next path first) so a switch never waits on the network
+function preloadPaths() {
+    const seen = new Set();
+    for (let k = 1; k <= PATHS.length; k++) PATHS[(pathIdx + k) % PATHS.length][1].forEach(slug => {
+        const c = lms.courseBySlug(slug);
+        if (c && c.status === 'published' && !seen.has(c.id)) { seen.add(c.id); new Image().src = cardImg(c); }
+    });
+}
+(window.requestIdleCallback || setTimeout)(preloadPaths);
 // Hold the rotation while the section is off screen
 new IntersectionObserver(([e]) => document.getElementById('pathBox').classList.toggle('path-offscreen', !e.isIntersecting)).observe(document.getElementById('pathBox'));
 const GOALS = [['fa-rocket', 'Start my career', c => c.level === 'Beginner'], ['fa-shuffle', 'Change my career', c => c.level !== 'Advanced'], ['fa-arrow-trend-up', 'Grow in my current role', c => c.level !== 'Beginner'], ['fa-binoculars', 'Explore new topics', () => true]];
