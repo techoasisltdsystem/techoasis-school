@@ -222,7 +222,9 @@ function renderPromo() {
 }
 const TOOLS = [['fa-brands fa-html5', 'HTML & CSS', 'web'], ['fa-brands fa-js', 'JavaScript', 'javascript'], ['fa-brands fa-python', 'Python', 'python'], ['fa-brands fa-react', 'React', 'react'], ['fa-brands fa-figma', 'Figma', 'figma'], ['fa-brands fa-aws', 'AWS', 'aws'], ['fa-brands fa-docker', 'Docker', 'devops'], ['fa-solid fa-database', 'SQL', 'sql'], ['fa-brands fa-git-alt', 'Git', 'coding'], ['fa-brands fa-ethereum', 'Solidity', 'solidity'], ['fa-solid fa-brain', 'Machine Learning', 'machine learning'], ['fa-brands fa-google', 'SEO', 'seo']];
 function renderTools() {
-    document.getElementById('toolStrip').innerHTML = TOOLS.map(([ic, name, q]) => `<button onclick="go('catalog', null, {q:'${q}', cat:''})" class="shrink-0 flex items-center gap-3 rounded-full bg-white border border-slate-200 px-5 h-14 hover:border-forest hover:shadow-luxe transition"><i class="${ic} text-lg text-forest"></i><span class="text-sm font-semibold text-ink whitespace-nowrap">${name}</span></button>`).join('');
+    // Two identical copies side by side; the track slides by exactly one copy (-50%) for a seamless loop.
+    const items = (hidden) => TOOLS.map(([ic, name, q]) => `<button onclick="go('catalog', null, {q:'${q}', cat:''})" ${hidden ? 'aria-hidden="true" tabindex="-1"' : ''} class="shrink-0 flex items-center gap-3 rounded-full bg-white border border-slate-200 px-5 h-14 mr-3 hover:border-forest hover:shadow-luxe transition"><i class="${ic} text-lg text-forest"></i><span class="text-sm font-semibold text-ink whitespace-nowrap">${name}</span></button>`).join('');
+    document.getElementById('toolStrip').innerHTML = `<div class="tool-marquee-track">${items(false)}${items(true)}</div>`;
 }
 const PATHS = [
     ['Web Developer', ['web-development', 'web-design', 'coding', 'app-development']],

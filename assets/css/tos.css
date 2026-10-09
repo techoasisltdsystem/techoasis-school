@@ -112,6 +112,12 @@ textarea.field { resize: vertical; min-height: 5rem; line-height: 1.5; }
 @keyframes lm-glow { 0%,100% { opacity: .25; transform: scale(.85); } 50% { opacity: .85; transform: scale(1.15); } }
 @keyframes lm-sheen { 0% { transform: translateX(-320px); } 40%,100% { transform: translateX(760px); } }
 
+/* Tools strip: endless marquee, paused while the pointer is over it */
+.tool-marquee { overflow: hidden; padding: 4px 0 8px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.tool-marquee-track { display: flex; width: max-content; animation: tool-scroll 40s linear infinite; }
+.tool-marquee:hover .tool-marquee-track { animation-play-state: paused; }
+@keyframes tool-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
 /* Entrance reveal on scroll */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
 .reveal.in { opacity: 1; transform: none; }
@@ -122,6 +128,8 @@ textarea.field { resize: vertical; min-height: 5rem; line-height: 1.5; }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
     .reveal { opacity: 1; transform: none; }
+    .tool-marquee { overflow-x: auto; }
+    .tool-marquee-track { animation: none !important; }
 }
 
 @media print {
