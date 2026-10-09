@@ -135,7 +135,7 @@ function courseCard(c, dark) {
 }
 function courseRow(c) {
     const ins = lms.primaryInstructor(c.id), r = lms.rating(c.id);
-    return `<a href="${courseUrl(c)}" class="flex gap-4 p-3 rounded-2xl bg-white hover:shadow-luxe transition group">
+    return `<a href="${courseUrl(c)}" data-peek="${esc(c.id)}" class="flex gap-4 p-3 rounded-2xl bg-white hover:shadow-luxe transition group">
         <img src="${esc(c.thumbnail)}" alt="" loading="lazy" class="w-24 h-24 rounded-xl object-cover bg-slate-100 shrink-0">
         <div class="min-w-0 py-1">
             <div class="flex items-center gap-2 text-xs text-slate-500"><span class="w-5 h-5 rounded border border-slate-200 flex items-center justify-center text-[9px] text-forest"><i class="fa-solid ${esc((lms.category(c.categoryId) || {}).icon || 'fa-book')}"></i></span><span class="truncate">${esc(ins ? ins.name : 'Tech Oasis Faculty')}</span></div>
@@ -143,6 +143,45 @@ function courseRow(c) {
             <div class="text-xs text-slate-500 mt-1.5">${lms.priceOf(c) ? 'Career Program' : 'Free Course'}${r.count ? ` · <i class="fa-solid fa-star text-gold"></i> <b class="text-slate-700">${r.avg.toFixed(1)}</b>` : ''}</div>
         </div></a>`;
 }
+
+// Hover preview: a short, motivating intro shown beside a course row (pointer devices only)
+const coursePeek = (() => {
+    const box = document.createElement('div');
+    box.className = 'fixed z-[60] w-[320px] rounded-2xl bg-white border border-slate-200 shadow-lift p-5 hidden';
+    box.setAttribute('role', 'tooltip');
+    document.body.appendChild(box);
+    let hideTimer = null, current = null;
+    const hide = () => { clearTimeout(hideTimer); hideTimer = setTimeout(() => { box.classList.add('hidden'); current = null; }, 120); };
+    const keep = () => clearTimeout(hideTimer);
+    const show = a => {
+        keep();
+        const c = lms.courseBySlug(a.dataset.peek); if (!c) return;
+        if (current !== a) {
+            const meta = lms.courseMeta(c.id), outs = (c.outcomes || []).slice(0, 3);
+            box.innerHTML = `<div class="text-[11px] font-bold uppercase tracking-[0.18em] text-gold-600">${esc(c.level)} · ${meta.hours}h · ${ui.plural(meta.lessons, 'lesson')}</div>
+                <div class="font-display text-xl text-ink mt-1.5 leading-snug">${esc(c.title)}</div>
+                <p class="text-sm text-slate-600 mt-2">${esc(c.shortDescription)}</p>
+                ${outs.length ? `<div class="text-xs font-semibold text-ink mt-4">What you'll walk away with</div>
+                <ul class="mt-2 space-y-1.5">${outs.map(o => `<li class="flex gap-2 text-xs text-slate-600"><i class="fa-solid fa-circle-check text-forest mt-0.5"></i><span>${esc(o)}</span></li>`).join('')}</ul>` : ''}
+                <a href="${courseUrl(c)}" class="btn btn-forest w-full mt-5">${lms.priceOf(c) ? 'Start learning' : 'Start free'} <i class="fa-solid fa-arrow-right text-xs"></i></a>`;
+            current = a;
+        }
+        box.classList.remove('hidden');
+        const r = a.getBoundingClientRect(), w = box.offsetWidth, h = box.offsetHeight, gap = 12;
+        const left = r.right + gap + w <= innerWidth ? r.right + gap : Math.max(8, r.left - gap - w);
+        box.style.left = left + 'px';
+        box.style.top = Math.max(8, Math.min(r.top + r.height / 2 - h / 2, innerHeight - h - 8)) + 'px';
+    };
+    const hoverable = matchMedia('(hover: hover)');
+    document.addEventListener('mouseover', e => { const a = hoverable.matches && e.target.closest('[data-peek]'); if (a) show(a); });
+    document.addEventListener('mouseout', e => { if (e.target.closest('[data-peek]')) hide(); });
+    document.addEventListener('focusin', e => { const a = e.target.closest('[data-peek]'); if (a) show(a); });
+    document.addEventListener('focusout', e => { if (e.target.closest('[data-peek]')) hide(); });
+    box.addEventListener('mouseenter', keep);
+    box.addEventListener('mouseleave', hide);
+    addEventListener('scroll', () => { clearTimeout(hideTimer); box.classList.add('hidden'); current = null; }, { passive: true });
+    return { hide };
+})();
 
 // ---------------- Hero carousel ----------------
 let heroIdx = 0, heroTimer = null, heroPaused = false;
