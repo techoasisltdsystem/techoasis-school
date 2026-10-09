@@ -118,14 +118,12 @@ textarea.field { resize: vertical; min-height: 5rem; line-height: 1.5; }
 .tool-marquee:hover .tool-marquee-track { animation-play-state: paused; }
 @keyframes tool-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-/* Promo pair: sliding photo background (organisations card) and drifting gradient (AI card) */
+/* Promo pair: sliding photo background (both cards; the AI card is offset by half a cycle) */
 .org-slider { overflow: hidden; }
 .org-slider-track { display: flex; width: 400%; height: 100%; animation: org-slide 20s ease-in-out infinite; }
 .org-slider-track img { width: 25%; height: 100%; object-fit: cover; flex: none; }
-.org-card:hover .org-slider-track { animation-play-state: paused; }
+.slider-card:hover .org-slider-track { animation-play-state: paused; }
 @keyframes org-slide { 0%, 21% { transform: translateX(0); } 25%, 46% { transform: translateX(-25%); } 50%, 71% { transform: translateX(-50%); } 75%, 100% { transform: translateX(-75%); } }
-.promo-drift { background-size: 240% 240%; animation: promo-drift 16s ease-in-out infinite alternate; }
-@keyframes promo-drift { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
 
 /* Entrance reveal on scroll */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
@@ -138,7 +136,7 @@ textarea.field { resize: vertical; min-height: 5rem; line-height: 1.5; }
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
     .reveal { opacity: 1; transform: none; }
     .tool-marquee { overflow-x: auto; }
-    .tool-marquee-track, .org-slider-track, .promo-drift { animation: none !important; }
+    .tool-marquee-track, .org-slider-track { animation: none !important; }
 }
 
 @media print {

@@ -253,6 +253,8 @@ function renderPopular() {
 function renderPromo() {
     const c = lms.courseBySlug('artificial-intelligence-ai') || popularCourses()[0]; if (!c) return;
     document.getElementById('promoAi').innerHTML = `
+        <div class="org-slider absolute inset-0 opacity-30" aria-hidden="true"><div class="org-slider-track" style="animation-delay:-10s"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy"></div></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/30"></div>
         <div class="absolute right-0 bottom-0 w-[42%] h-full hidden sm:block"><img src="${esc(c.thumbnail)}" alt="" class="absolute right-6 bottom-6 w-[85%] max-w-[220px] aspect-[4/3] object-cover rounded-2xl shadow-lift rotate-2"><span class="absolute left-0 top-10 w-14 h-14 rounded-full bg-forest text-gold flex items-center justify-center shadow-lift text-xl"><i class="fa-solid fa-wand-magic-sparkles"></i></span></div>
         <div class="relative sm:max-w-[55%]"><div class="flex items-center gap-2 text-sm font-semibold text-slate-600">${ui.logoMark(22)} Tech Oasis AI</div>
             <h3 class="font-display text-3xl sm:text-[34px] leading-tight text-ink mt-4">From prompt to production with applied AI</h3>
