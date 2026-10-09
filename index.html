@@ -133,9 +133,15 @@
 
             <!-- Promo pair -->
             <section id="organisations" class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-14 grid lg:grid-cols-2 gap-5 reveal scroll-mt-32">
-                <div id="promoAi" class="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-forest-50 via-white to-gold-50 border border-forest-100 p-8 sm:p-10 min-h-[300px] flex flex-col justify-between"></div>
-                <div class="relative overflow-hidden rounded-[28px] bg-ink text-white p-8 sm:p-10 min-h-[300px] grain">
-                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=70" alt="" class="absolute inset-0 w-full h-full object-cover opacity-25">
+                <div id="promoAi" class="promo-drift relative overflow-hidden rounded-[28px] bg-gradient-to-br from-forest-50 via-white to-gold-50 border border-forest-100 p-8 sm:p-10 min-h-[300px] flex flex-col justify-between"></div>
+                <div class="org-card relative overflow-hidden rounded-[28px] bg-ink text-white p-8 sm:p-10 min-h-[300px] grain">
+                    <!-- Sliding background: 3 photos + a repeat of the first so the loop is seamless -->
+                    <div class="org-slider absolute inset-0 opacity-25" aria-hidden="true"><div class="org-slider-track">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy">
+                    </div></div>
                     <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/90 to-ink/40"></div>
                     <div class="relative max-w-md">
                         <div class="text-sm font-semibold"><span class="font-extrabold tracking-[0.08em]">TECH <span class="gold-text">OASIS</span></span> <span class="text-white/70">for Organisations</span></div>
