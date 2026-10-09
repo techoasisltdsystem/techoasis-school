@@ -125,6 +125,13 @@ textarea.field { resize: vertical; min-height: 5rem; line-height: 1.5; }
 .slider-card:hover .org-slider-track { animation-play-state: paused; }
 @keyframes org-slide { 0%, 21% { transform: translateX(0); } 25%, 46% { transform: translateX(-25%); } 50%, 71% { transform: translateX(-50%); } 75%, 100% { transform: translateX(-75%); } }
 
+/* Career-path tabs: auto-rotate progress bar (pauses on hover or while off screen) */
+.path-progress { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--gold); transform-origin: left; animation: path-progress 6s linear forwards; }
+.path-box:hover .path-progress, .path-box.path-offscreen .path-progress { animation-play-state: paused; }
+@keyframes path-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.path-fade { animation: path-fade .5s ease-out; }
+@keyframes path-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
 /* Entrance reveal on scroll */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
 .reveal.in { opacity: 1; transform: none; }
@@ -136,6 +143,7 @@ textarea.field { resize: vertical; min-height: 5rem; line-height: 1.5; }
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
     .reveal { opacity: 1; transform: none; }
     .tool-marquee { overflow-x: auto; }
+    .path-progress { display: none; }
     .tool-marquee-track, .org-slider-track { animation: none !important; }
 }
 

@@ -276,11 +276,22 @@ const PATHS = [
     ['Digital Marketer', ['digital-marketing', 'web-design', 'data-science', 'ui-ux-design']]
 ];
 let pathIdx = 0;
+// Career-path tabs rotate on their own (each tab's progress bar drives the next step) until the student picks one.
+let pathAuto = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+function pathPick(i) { pathAuto = false; pathIdx = i; renderPaths(); }
+function pathNext() { pathIdx = (pathIdx + 1) % PATHS.length; renderPaths(); }
 function renderPaths() {
-    document.getElementById('pathTabs').innerHTML = PATHS.map(([t], i) => `<button role="tab" aria-selected="${i === pathIdx}" onclick="pathIdx=${i}; renderPaths()" class="shrink-0 h-10 px-5 rounded-full text-sm font-semibold transition ${i === pathIdx ? 'bg-white text-ink' : 'bg-white/10 text-white hover:bg-white/20 border border-white/15'}">${t}</button>`).join('');
+    const tabs = document.getElementById('pathTabs');
+    tabs.innerHTML = PATHS.map(([t], i) => `<button role="tab" aria-selected="${i === pathIdx}" onclick="pathPick(${i})" class="relative overflow-hidden shrink-0 h-10 px-5 rounded-full text-sm font-semibold transition ${i === pathIdx ? 'bg-white text-ink' : 'bg-white/10 text-white hover:bg-white/20 border border-white/15'}">${t}${pathAuto && i === pathIdx ? '<span class="path-progress" onanimationend="pathNext()"></span>' : ''}</button>`).join('');
+    const on = tabs.children[pathIdx];
+    if (on) tabs.scrollTo({ left: on.offsetLeft - (tabs.clientWidth - on.offsetWidth) / 2, behavior: 'smooth' });
     const list = PATHS[pathIdx][1].map(s => lms.courseBySlug(s)).filter(c => c && c.status === 'published');
-    document.getElementById('pathCards').innerHTML = list.map(c => courseCard(c, true)).join('');
+    const cards = document.getElementById('pathCards');
+    cards.innerHTML = list.map(c => courseCard(c, true)).join('');
+    cards.classList.remove('path-fade'); void cards.offsetWidth; cards.classList.add('path-fade');
 }
+// Hold the rotation while the section is off screen
+new IntersectionObserver(([e]) => document.getElementById('pathBox').classList.toggle('path-offscreen', !e.isIntersecting)).observe(document.getElementById('pathBox'));
 const GOALS = [['fa-rocket', 'Start my career', c => c.level === 'Beginner'], ['fa-shuffle', 'Change my career', c => c.level !== 'Advanced'], ['fa-arrow-trend-up', 'Grow in my current role', c => c.level !== 'Beginner'], ['fa-binoculars', 'Explore new topics', () => true]];
 let goalIdx = 0;
 function renderGoals() {
