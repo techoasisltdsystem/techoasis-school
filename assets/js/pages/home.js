@@ -275,7 +275,8 @@ const PATHS = [
     ['Cloud & Security', ['cloud-computing', 'cybersecurity', 'blockchain', 'coding']],
     ['Digital Marketer', ['digital-marketing', 'web-design', 'data-science', 'ui-ux-design']]
 ];
-let pathIdx = 0;
+let pathIdx = 0, pathFx = 0;
+const PATH_FX = ['swipe', 'window', 'curtain', 'flip', 'drop'];
 // Career-path tabs rotate on their own (each tab's progress bar drives the next step) until the student picks one.
 let pathAuto = !matchMedia('(prefers-reduced-motion: reduce)').matches;
 function pathPick(i) { pathAuto = false; pathIdx = i; renderPaths(); }
@@ -288,7 +289,9 @@ function renderPaths() {
     const list = PATHS[pathIdx][1].map(s => lms.courseBySlug(s)).filter(c => c && c.status === 'published');
     const cards = document.getElementById('pathCards');
     cards.innerHTML = list.map(c => courseCard(c, true)).join('');
-    cards.classList.remove('path-fade'); void cards.offsetWidth; cards.classList.add('path-fade');
+    // Each switch brings the cards in with the next style (swipe, window, curtain, flip, drop), staggered left to right
+    cards.className = cards.className.replace(/\bpt-\w+/g, '').trim() + ' pt-' + PATH_FX[pathFx++ % PATH_FX.length];
+    [...cards.children].forEach((el, i) => el.style.setProperty('--i', i));
 }
 // Hold the rotation while the section is off screen
 new IntersectionObserver(([e]) => document.getElementById('pathBox').classList.toggle('path-offscreen', !e.isIntersecting)).observe(document.getElementById('pathBox'));
