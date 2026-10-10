@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Check a Tech Oasis School certificate ID.">
     <title>Verify a Certificate | Tech Oasis School</title>
     <meta name="theme-color" content="#0C3B2E">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='16 12 496 606'%3E%3Cpolygon points='255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160' fill='%23225A50'/%3E%3Cpolygon points='125,225 213,176 213,238 179,258 179,583 125,551' fill='%23225A50'/%3E%3Cpolygon points='352,78 405,106 405,386 228,493 228,383 268,404 352,350' fill='%23225A50'/%3E%3Cpolygon points='452,140 505,166 505,446 232,612 232,545 452,410' fill='%23225A50'/%3E%3Cpolygon points='207,272 270,236 335,272 270,308' fill='%23DEC45B'/%3E%3Cpolygon points='207,272 270,308 270,372 207,338' fill='%23AC903F'/%3E%3Cpolygon points='270,308 335,272 335,338 270,372' fill='%23937733'/%3E%3C/svg%3E">
@@ -44,11 +45,12 @@
         const lookup = (msg) => `<div class="max-w-xl mx-auto text-center">
             <span class="w-16 h-16 mx-auto rounded-2xl bg-forest text-gold flex items-center justify-center text-2xl"><i class="fa-solid fa-shield-halved"></i></span>
             <h1 class="font-display text-4xl text-ink mt-6">Verify a certificate</h1>
-            <p class="text-slate-600 mt-3">Enter the certificate ID printed on a Tech Oasis School certificate to confirm it is genuine.</p>
+            <p class="text-slate-600 mt-3">Enter the certificate ID printed on a Tech Oasis School certificate.</p>
+            ${TOS.config.serverConnected ? '' : `<div class="mt-5 rounded-lg border border-amber-200 bg-amber-50 text-amber-900 text-sm p-4 text-left" role="note"><b>Verification is not online yet.</b> This page can only look up certificates stored in this browser, so it cannot confirm a certificate issued to someone else. To confirm one, email <a class="underline font-semibold" href="mailto:${esc(db.settings().school.email)}">${esc(db.settings().school.email)}</a> with the certificate ID.</div>`}
             ${msg || ''}
             <form class="mt-8 flex gap-2" onsubmit="event.preventDefault(); location.search = '?code=' + encodeURIComponent(this.code.value.trim())">
                 <label for="codeIn" class="sr-only">Certificate ID</label>
-                <input id="codeIn" name="code" required class="field h-12 font-mono uppercase" placeholder="TOS-2026-XXXXXX" value="${esc(code)}" autocomplete="off">
+                <input id="codeIn" name="code" required class="field h-12 font-mono uppercase" placeholder="Certificate ID" value="${esc(code)}" autocomplete="off">
                 <button class="btn btn-forest h-12 px-6">Verify</button></form></div>`;
 
         if (!code) { app.innerHTML = lookup(); return; }
@@ -58,11 +60,11 @@
         const st = db.settings(), accent = st.certificates.accent || '#C4A649', vurl = lms.verifyUrl(cert.code);
         document.title = (cert.revoked ? 'Revoked certificate' : cert.studentName + ' — ' + cert.courseTitle) + ' | Tech Oasis School';
         app.innerHTML = `
-            ${ui.qs('new') === '1' && !cert.revoked ? `<div class="no-print mb-8 rounded-3xl bg-gradient-to-r from-forest to-ink text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center gap-5"><span class="w-14 h-14 rounded-full bg-gold text-ink flex items-center justify-center text-2xl shrink-0"><i class="fa-solid fa-champagne-glasses"></i></span><div><h1 class="font-display text-3xl">Congratulations, ${esc(cert.studentName.split(' ')[0])}!</h1><p class="text-white/75 text-sm mt-1">Your certificate is ready. Download it, add it to LinkedIn and share your achievement.</p></div></div>` : ''}
+            ${ui.qs('new') === '1' && !cert.revoked ? `<div class="no-print mb-8 rounded-xl bg-gradient-to-r from-forest to-ink text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center gap-5"><span class="w-14 h-14 rounded-full bg-gold text-ink flex items-center justify-center text-2xl shrink-0"><i class="fa-solid fa-champagne-glasses"></i></span><div><h1 class="font-display text-3xl">Congratulations, ${esc(cert.studentName.split(' ')[0])}!</h1><p class="text-white/75 text-sm mt-1">Your certificate is ready. Download it, add it to LinkedIn and share your achievement.</p></div></div>` : ''}
             <div class="no-print flex flex-wrap items-center justify-between gap-4 mb-6">
                 <div class="flex items-center gap-3">${cert.revoked
                     ? '<span class="pill pill-revoked text-sm px-3 py-1.5"><i class="fa-solid fa-ban"></i>Revoked</span><span class="text-sm text-slate-600">This certificate is no longer valid.' + (cert.revokedReason ? ' Reason: ' + esc(cert.revokedReason) : '') + '</span>'
-                    : '<span class="pill pill-valid text-sm px-3 py-1.5"><i class="fa-solid fa-circle-check"></i>Verified</span><span class="text-sm text-slate-600">Issued by ' + esc(cert.schoolName) + '</span>'}</div>
+                    : (TOS.config.serverConnected ? '<span class="pill pill-valid text-sm px-3 py-1.5"><i class="fa-solid fa-circle-check"></i>Verified</span><span class="text-sm text-slate-600">Issued by ' + esc(cert.schoolName) + '</span>' : '<span class="pill text-sm px-3 py-1.5 bg-amber-100 text-amber-900"><i class="fa-solid fa-circle-info"></i>Found in this browser</span><span class="text-sm text-slate-600">Not independently verified: this record is stored in this browser, not on a school server. Confirm it with ' + esc(db.settings().school.email) + '.</span>')}</div>
                 <div class="flex flex-wrap gap-2">
                     <button onclick="window.print()" class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i>Download PDF</button>
                     <button id="copyLink" class="btn btn-outline btn-sm"><i class="fa-solid fa-link"></i>Copy link</button>
@@ -70,7 +72,7 @@
                 </div>
             </div>
 
-            <div id="certificate" class="relative bg-white rounded-[24px] shadow-lift overflow-hidden ${cert.revoked ? 'grayscale opacity-70' : ''}" style="aspect-ratio: 1.414/1">
+            <div id="certificate" class="relative bg-white rounded-2xl shadow-lift overflow-hidden ${cert.revoked ? 'grayscale opacity-70' : ''}" style="aspect-ratio: 1.414/1">
                 <div class="absolute inset-3 sm:inset-5 border-2 rounded-[16px]" style="border-color:${esc(accent)}"></div>
                 <div class="absolute inset-5 sm:inset-8 border rounded-[12px]" style="border-color:${esc(accent)}55"></div>
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,#FBF7EA,transparent_55%)]"></div>
@@ -82,7 +84,7 @@
                         <div class="text-[clamp(10px,1.4vw,14px)] text-slate-500">This is to certify that</div>
                         <div class="font-display italic text-ink text-[clamp(26px,5vw,56px)] leading-tight mt-1">${esc(cert.studentName)}</div>
                         <div class="h-px w-1/2 mx-auto my-[2%]" style="background:linear-gradient(90deg,transparent,${esc(accent)},transparent)"></div>
-                        <div class="text-[clamp(10px,1.4vw,14px)] text-slate-500">has successfully completed the program</div>
+                        <div class="text-[clamp(10px,1.4vw,14px)] text-slate-500">has successfully completed the programme</div>
                         <div class="font-display text-forest text-[clamp(18px,3vw,34px)] mt-1">${esc(cert.courseTitle)}</div>
                         <div class="text-[clamp(9px,1.2vw,12px)] text-slate-500 mt-1">${cert.hours ? esc(ui.plural(+cert.hours, 'hour')) + ' of study · ' : ''}Completed ${ui.fmtDate(cert.issuedAt, { day: 'numeric', month: 'long', year: 'numeric' })}</div>
                     </div>
@@ -96,7 +98,7 @@
             </div>
 
             <div class="no-print mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-                ${[['Student', cert.studentName], ['Program', cert.courseTitle], ['Issued', ui.fmtDate(cert.issuedAt)], ['Certificate ID', cert.code]].map(([k, v]) => `<div class="rounded-2xl bg-white border border-slate-200/70 p-4"><div class="text-xs text-slate-500">${k}</div><div class="font-semibold text-ink mt-1 break-words ${k === 'Certificate ID' ? 'font-mono' : ''}">${esc(v)}</div></div>`).join('')}
+                ${[['Student', cert.studentName], ['Programme', cert.courseTitle], ['Issued', ui.fmtDate(cert.issuedAt)], ['Certificate ID', cert.code]].map(([k, v]) => `<div class="rounded-2xl bg-white border border-slate-200/70 p-4"><div class="text-xs text-slate-500">${k}</div><div class="font-semibold text-ink mt-1 break-words ${k === 'Certificate ID' ? 'font-mono' : ''}">${esc(v)}</div></div>`).join('')}
             </div>
             <p class="no-print text-center text-xs text-slate-400 mt-6">Questions about this certificate? Contact <a class="underline" href="mailto:${esc(st.school.email)}">${esc(st.school.email)}</a></p>`;
         if (ui.qs('print') === '1') setTimeout(() => window.print(), 600);

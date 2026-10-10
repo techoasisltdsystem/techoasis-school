@@ -360,6 +360,10 @@
         const discount = coupon ? Math.min(subtotal, coupon.type === 'percent' ? subtotal * coupon.value / 100 : +coupon.value) : 0;
         return { subtotal, discount: Math.round(discount * 100) / 100, total: Math.max(0, Math.round((subtotal - discount) * 100) / 100), coupon, error };
     }
+    // No payment gateway is integrated yet. Until a provider plus a server-side webhook exist, nothing may be shown as "paid" by the
+    // browser. Admins can still record a payment received outside the site (Admin → Orders → Mark paid).
+    const onlinePayments = () => false;
+
     // Creates the order and the enrollment. Paid courses start as a trial until the order is paid.
     function checkout(userId, courseId, couponCode) {
         return db.tx(() => {
@@ -458,7 +462,7 @@
         attemptsOf, bestAttempt, attemptsLeft, gradeQuiz, submitQuiz,
         submissionOf, assignmentDue, submitAssignment, gradeSubmission,
         eligibility, certificateOf, issueCertificate, certificateByCode, verifyUrl,
-        priceOf, quote, checkout, markOrderPaid, refundOrder, paymentState, findCoupon,
+        priceOf, quote, checkout, onlinePayments, markOrderPaid, refundOrder, paymentState, findCoupon,
         courseAnalytics, legacyCourses, legacyStudents
     };
 })();
