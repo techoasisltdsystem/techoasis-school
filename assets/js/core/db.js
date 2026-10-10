@@ -72,7 +72,9 @@
             name: 'Tech Oasis School', tagline: 'Where Innovation Meets Expertise',
             website: 'https://techoasisschool.com',
             email: 'school@techoasisschool.com', studentEmail: 'students@techoasisschool.com',
-            adminEmail: 'school@techoasisschool.com'
+            adminEmail: 'school@techoasisschool.com',
+            // Optional public contact details. Left empty until the school supplies verified ones; the site only shows what is filled in.
+            phone: '', socialLinkedin: '', socialX: '', socialInstagram: '', socialYoutube: '', socialFacebook: ''
         },
         courses: { defaultLanguage: 'English', discussionsEnabled: true, sequentialByDefault: false, videoCompleteAt: 90, levels: ['Beginner', 'Intermediate', 'Advanced'] },
         certificates: {

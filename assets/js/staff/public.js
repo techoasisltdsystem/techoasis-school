@@ -21,6 +21,7 @@
                 <a href="/" class="lg:hidden inline-block mb-8">${ui.brandLogo(false, 40)}</a>
                 ${title ? `<h1 class="text-[28px] font-bold text-slate-900 tracking-tight">${title}</h1>` : ''}
                 ${sub ? `<p class="text-sm s-muted mt-1.5">${sub}</p>` : ''}
+                ${ui.demoNotice()}
                 <div class="mt-8">${body}</div>
             </div>
         </section></div>`;
@@ -154,12 +155,11 @@
         const email = sessionStorage.getItem('tos_applied') || 'your email address';
         el.innerHTML = layout('', '', `<div class="text-center">
             <span class="w-20 h-20 mx-auto rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-3xl"><i class="fa-solid fa-circle-check"></i></span>
-            <h1 class="text-2xl font-bold text-slate-900 mt-6">Your teaching application has been submitted successfully.</h1>
-            <p class="text-slate-600 mt-3">Your application is currently under review. You will receive an email when an administrator makes a decision.</p>
+            <h1 class="text-2xl font-bold text-slate-900 mt-6">${TOS.config.serverConnected ? 'Your teaching application has been submitted successfully.' : 'Your application was saved on this device.'}</h1>
+            <p class="text-slate-600 mt-3">${TOS.config.serverConnected ? 'Your application is currently under review. You will receive an email when an administrator makes a decision.' : 'Your application was saved in this browser. The school can only review it once this website is connected to a server, and no email has been sent.'}</p>
             <div class="mt-6 rounded-2xl bg-[#F7F8FA] border border-[#EEF0F3] p-5 text-left text-sm space-y-3">
-                <div class="flex gap-3"><i class="fa-regular fa-envelope text-forest-600 mt-0.5"></i><span>We've sent a verification link to <b>${esc(email)}</b>. Please confirm your email address.</span></div>
+                ${TOS.config.serverConnected ? `<div class="flex gap-3"><i class="fa-regular fa-envelope text-forest-600 mt-0.5"></i><span>We've sent a verification link to <b>${esc(email)}</b>. Please confirm your email address.</span></div>` : `<div class="flex gap-3"><i class="fa-regular fa-envelope text-forest-600 mt-0.5"></i><span>To make sure the school sees your application, email <b>${esc(school().email)}</b> with your details and CV.</span></div>`}
                 <div class="flex gap-3"><i class="fa-solid fa-lock text-forest-600 mt-0.5"></i><span>You can't sign in to the Staff Portal until your application is approved.</span></div>
-                <div class="flex gap-3"><i class="fa-solid fa-magnifying-glass text-forest-600 mt-0.5"></i><span>Check progress any time with your email and password.</span></div>
             </div>
             <div class="flex flex-wrap justify-center gap-3 mt-8"><a href="/staff/application" class="btn btn-forest">Check application status</a><a href="/" class="btn btn-outline">Back to website</a></div></div>`);
     } });

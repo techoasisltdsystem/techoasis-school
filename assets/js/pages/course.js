@@ -223,9 +223,10 @@
             ${!enr && st.trialDays ? `<p class="text-xs text-slate-500 mt-4 bg-ivory rounded-xl p-3"><i class="fa-solid fa-gift text-gold-600 mr-1"></i>Start with a <b>${st.trialDays}-day free trial</b>, with full access and nothing to pay today. Pay any time before the trial ends to keep learning.</p>` : ''}
             <div class="mt-5 space-y-2">
                 ${!enr && st.trialDays ? `<button data-act="trial" class="btn btn-forest w-full h-12">Start free trial</button>` : ''}
-                <button data-act="pay" class="btn ${!enr && st.trialDays ? 'btn-outline' : 'btn-gold'} w-full h-12"><i class="fa-solid fa-lock text-xs"></i> Pay <span data-total></span> now</button>
-            </div>
-            ${st.provider === 'manual' ? `<p class="text-[11px] text-slate-400 mt-4 text-center">Online card payments are not connected yet, so this demo records the payment without charging a card. Questions? ${esc(db.settings().school.studentEmail)}</p>` : ''}` });
+                ${lms.onlinePayments()
+                    ? `<button data-act="pay" class="btn ${!enr && st.trialDays ? 'btn-outline' : 'btn-gold'} w-full h-12"><i class="fa-solid fa-lock text-xs"></i> Pay <span data-total></span> now</button>`
+                    : `<div class="rounded-xl border border-slate-200 bg-ivory p-4 text-sm text-slate-700"><div class="font-semibold text-ink"><i class="fa-regular fa-credit-card mr-1.5 text-slate-500"></i>Online payment is not available yet</div><p class="mt-1">To pay <b data-total></b> for this programme, email <a class="font-semibold text-forest underline" href="mailto:${esc(db.settings().school.studentEmail)}?subject=${encodeURIComponent('Payment for ' + course.title)}">${esc(db.settings().school.studentEmail)}</a>. The school confirms your payment and keeps your access open.</p></div>`}
+            </div>` });
         let coupon = '';
         const paint = () => {
             m.el.querySelector('#quoteBox').innerHTML = `<div class="flex justify-between"><dt class="text-slate-500">Tuition</dt><dd>${ui.money(q.subtotal)}</dd></div>
@@ -246,7 +247,7 @@
         m.el.querySelectorAll('[data-act]').forEach(b => b.onclick = () => {
             let res = enr ? { order, enrollment: enr } : lms.checkout(me.id, course.id, coupon);
             if (res.error) return ui.toast(res.error, 'error');
-            if (b.dataset.act === 'pay' && res.order.status !== 'paid') lms.markOrderPaid(res.order.id, st.provider, 'demo-' + Date.now());
+            if (b.dataset.act === 'pay') { if (!lms.onlinePayments()) return ui.toast('Online payment is not available yet.', 'error'); if (res.order.status !== 'paid') lms.markOrderPaid(res.order.id, st.provider, 'demo-' + Date.now()); }
             m.close();
             ui.toast(b.dataset.act === 'trial' ? 'Your free trial has started. Welcome!' : 'Payment received. Welcome to the program!');
             setTimeout(() => location.href = '/student/course/' + course.id, 600);

@@ -21,6 +21,7 @@
                 <a href="/" class="lg:hidden inline-block mb-10">${ui.brandLogo(false, 40)}</a>
                 <h1 class="text-[28px] font-bold text-slate-900 tracking-tight">${title}</h1>
                 <p class="text-sm s-muted mt-1.5">${sub}</p>
+                ${ui.demoNotice()}
                 <div class="mt-8">${body}</div>
             </div>
         </section></div>`;
@@ -34,7 +35,7 @@
         const msg = q('expired') ? notice('warn', '<i class="fa-solid fa-clock mr-1"></i>Your session has expired. Please sign in again.')
             : (q('suspended') || q('state')) ? notice('error', `<i class="fa-solid fa-ban mr-1"></i>This account is suspended. Contact <a class="underline" href="mailto:${esc(db.settings().school.studentEmail)}">${esc(db.settings().school.studentEmail)}</a>.`)
             : q('signedout') ? notice('ok', '<i class="fa-solid fa-circle-check mr-1"></i>You have been signed out.')
-            : q('reset') ? notice('ok', '<i class="fa-solid fa-circle-check mr-1"></i>Request received. The school will contact you with a new password.') : '';
+            : q('reset') ? notice('ok', '<i class="fa-solid fa-circle-check mr-1"></i>Your request was saved on this device. The school only sees it when it is connected to a server, so please also email ' + esc(db.settings().school.studentEmail) + ' to get your password reset.') : '';
         const allowReg = db.settings().portal.allowSelfRegistration !== false;
         el.innerHTML = layout('Welcome back', 'Sign in to your Tech Oasis student account.', `${msg}
             <form id="loginForm" class="space-y-5" novalidate>
@@ -87,7 +88,7 @@
     } });
 
     S.route('/student/forgot-password', { title: 'Reset password', layout: 'auth', render: el => {
-        el.innerHTML = layout('Reset your password', 'Tell us your email or student ID. The school will verify your identity and send you a new password.', `<form id="fpForm" class="space-y-5">
+        el.innerHTML = layout('Reset your password', 'Enter your email or student ID to request a new password. If you need it urgently, email the school directly.', `<form id="fpForm" class="space-y-5">
             <div><label class="field-label" for="who">Email or student ID</label><input id="who" required class="field h-12"></div>
             <div><label class="field-label" for="note">Anything we should know? <span class="font-normal s-muted">(optional)</span></label><textarea id="note" rows="3" class="field" placeholder="e.g. best phone number to reach you"></textarea></div>
             <button class="btn btn-forest w-full h-12">Request password reset</button></form>

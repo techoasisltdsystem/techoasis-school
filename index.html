@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Oasis School | Where Innovation Meets Expertise</title>
-    <meta name="description" content="Tech Oasis School: career-ready programs in software, AI, data, design and cloud, with structured lessons, real projects and verified certificates.">
+    <title>Tech Oasis School | Practical technology courses</title>
+    <meta name="description" content="Tech Oasis School offers technology courses in software development, AI and data, design, security and cloud, and digital marketing, with structured lessons, instructor-graded projects and certificates of completion.">
     <meta name="theme-color" content="#0C3B2E">
     <link rel="canonical" href="https://techoasisschool.com/">
     <meta property="og:site_name" content="Tech Oasis School">
-    <meta property="og:title" content="Tech Oasis School | Where Innovation Meets Expertise">
+    <meta property="og:title" content="Tech Oasis School | Practical technology courses">
+    <meta property="og:description" content="Structured technology courses with instructor-graded projects and certificates of completion.">
     <meta property="og:url" content="https://techoasisschool.com/">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="en">
+    <meta name="twitter:card" content="summary">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"EducationalOrganization","name":"Tech Oasis School","url":"https://techoasisschool.com/","email":"school@techoasisschool.com"}</script>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='16 12 496 606'%3E%3Cpolygon points='255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160' fill='%23225A50'/%3E%3Cpolygon points='125,225 213,176 213,238 179,258 179,583 125,551' fill='%23225A50'/%3E%3Cpolygon points='352,78 405,106 405,386 228,493 228,383 268,404 352,350' fill='%23225A50'/%3E%3Cpolygon points='452,140 505,166 505,446 232,612 232,545 452,410' fill='%23225A50'/%3E%3Cpolygon points='207,272 270,236 335,272 270,308' fill='%23DEC45B'/%3E%3Cpolygon points='207,272 270,308 270,372 207,338' fill='%23AC903F'/%3E%3Cpolygon points='270,308 335,272 335,338 270,372' fill='%23937733'/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://images.unsplash.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -51,56 +55,40 @@
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] btn btn-gold btn-sm">Skip to content</a>
 
     <!-- ================= HEADER ================= -->
-    <header id="siteHeader" class="sticky top-0 z-40">
-        <!-- Audience bar -->
-        <div class="bg-ink text-white/80 text-[13px]">
-            <div class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-between gap-4">
-                <nav class="flex items-center gap-1 overflow-x-auto no-scrollbar" aria-label="Audience">
-                    <a href="#" onclick="return go('home')" class="px-3 h-10 flex items-center font-semibold text-white border-b-2 border-gold whitespace-nowrap">For Individuals</a>
-                    <a href="#organisations" onclick="return go('home', 'organisations')" class="px-3 h-10 flex items-center hover:text-white whitespace-nowrap">For Organisations</a>
-                    <a href="#organisations" onclick="return go('home', 'organisations')" class="px-3 h-10 hidden sm:flex items-center hover:text-white whitespace-nowrap">For Schools</a>
-                    <a href="verify.html" class="px-3 h-10 hidden sm:flex items-center hover:text-white whitespace-nowrap">Verify a Certificate</a>
-                </nav>
-                <a data-email="students" class="hidden md:flex items-center gap-2 hover:text-gold whitespace-nowrap"><i class="fa-regular fa-envelope text-gold"></i><span data-email-text></span></a>
-            </div>
-        </div>
-        <!-- Main bar -->
-        <div class="bg-white/95 backdrop-blur border-b border-slate-200/70">
-            <div class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center gap-4 lg:gap-6">
-                <button class="lg:hidden w-10 h-10 -ml-2 rounded-full hover:bg-slate-100" onclick="toggleDrawer(true)" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
-                <a href="#" onclick="return go('home')" class="brand-logo shrink-0" data-size="40" aria-label="Tech Oasis School home"></a>
-
-                <div class="relative hidden lg:block" id="exploreWrap">
-                    <button onclick="toggleExplore()" id="exploreBtn" aria-expanded="false" class="flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-forest px-2 py-2">Explore <i class="fa-solid fa-chevron-down text-[10px] transition-transform" id="exploreChevron"></i></button>
-                    <div id="exploreMenu" class="hidden absolute left-0 top-full mt-3 w-[760px] bg-white rounded-2xl shadow-lift border border-slate-100 p-6 grid grid-cols-3 gap-6"></div>
-                </div>
-                <a href="#catalog" onclick="return go('catalog')" class="hidden lg:block text-sm font-semibold text-slate-700 hover:text-forest">Programs</a>
-
-                <div class="relative flex-1 max-w-xl hidden md:block" id="searchWrap">
-                    <input id="searchInput" type="search" autocomplete="off" placeholder="What do you want to learn?" aria-label="Search programs"
-                        class="w-full h-12 rounded-full border border-slate-200 bg-ivory/60 pl-5 pr-14 text-sm focus:outline-none focus:border-forest-600 focus:bg-white focus:ring-4 focus:ring-forest-600/10 transition">
-                    <button onclick="submitSearch()" class="absolute right-1.5 top-1.5 w-9 h-9 rounded-full bg-forest text-white hover:bg-forest-600" aria-label="Search"><i class="fa-solid fa-magnifying-glass text-sm"></i></button>
-                    <div id="searchSuggest" class="hidden absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-lift border border-slate-100 py-2 max-h-[420px] overflow-y-auto thin-scroll"></div>
-                </div>
-
-                <div class="ml-auto flex items-center gap-2 sm:gap-3" id="authArea"></div>
-            </div>
+    <header id="siteHeader" class="sticky top-0 z-40 bg-white border-b border-slate-200">
+        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-3 xl:gap-8">
+            <button id="menuBtn" class="xl:hidden w-11 h-11 -ml-2 rounded-lg hover:bg-slate-100" onclick="toggleDrawer(true)" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
+            <a href="#" onclick="return go('home')" class="brand-logo shrink-0" data-size="36" aria-label="Tech Oasis School home"></a>
+            <nav class="hidden xl:flex items-center gap-1 text-sm font-semibold text-slate-700" aria-label="Main">
+                <a href="#" data-nav="home" onclick="return go('home')" class="nav-link">Home</a>
+                <a href="#catalog" data-nav="catalog" onclick="return go('catalog')" class="nav-link">Courses</a>
+                <a href="#how-it-works" onclick="return go('home', 'how-it-works')" class="nav-link">For Individuals</a>
+                <a href="#organisations" onclick="return go('home', 'organisations')" class="nav-link">For Organisations</a>
+                <a href="#about" data-nav="about" onclick="return go('about')" class="nav-link">About</a>
+                <a href="#contact" data-nav="contact" onclick="return go('contact')" class="nav-link">Contact</a>
+            </nav>
+            <a href="#catalog" onclick="return goSearch()" class="hidden xl:inline-flex ml-auto w-10 h-10 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 hover:text-forest" aria-label="Search courses"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></a>
+            <div class="ml-auto xl:ml-0 flex items-center gap-2 sm:gap-3" id="authArea"></div>
         </div>
     </header>
 
     <!-- Mobile drawer -->
-    <div id="drawer" class="fixed inset-0 z-50 hidden">
+    <div id="drawer" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-label="Menu">
         <div class="absolute inset-0 bg-ink/50" onclick="toggleDrawer(false)"></div>
         <aside class="absolute left-0 top-0 bottom-0 w-[86%] max-w-sm bg-white p-5 overflow-y-auto">
-            <div class="flex items-center justify-between mb-6"><span class="brand-logo" data-size="36"></span><button onclick="toggleDrawer(false)" class="w-10 h-10 rounded-full hover:bg-slate-100" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button></div>
-            <div class="relative mb-5"><input id="mSearchInput" type="search" placeholder="What do you want to learn?" class="field rounded-full pl-4 pr-10 h-11"><button onclick="submitSearch(true)" class="absolute right-2 top-1.5 w-8 h-8 rounded-full bg-forest text-white" aria-label="Search"><i class="fa-solid fa-magnifying-glass text-xs"></i></button></div>
-            <nav class="space-y-1 text-sm font-semibold">
-                <a href="#" onclick="toggleDrawer(false); return go('home')" class="block px-3 py-2.5 rounded-xl hover:bg-ivory">Home</a>
-                <a href="#catalog" onclick="toggleDrawer(false); return go('catalog')" class="block px-3 py-2.5 rounded-xl hover:bg-ivory">All programs</a>
-                <a href="#about" onclick="toggleDrawer(false); return go('about')" class="block px-3 py-2.5 rounded-xl hover:bg-ivory">About the school</a>
-                <a href="verify.html" class="block px-3 py-2.5 rounded-xl hover:bg-ivory">Verify a certificate</a>
+            <div class="flex items-center justify-between mb-5"><span class="brand-logo" data-size="34"></span><button id="drawerClose" onclick="toggleDrawer(false)" class="w-11 h-11 rounded-lg hover:bg-slate-100" aria-label="Close menu"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
+            <form class="relative mb-5" role="search" onsubmit="submitSearch(true); return false"><label for="mSearchInput" class="sr-only">Search courses</label><input id="mSearchInput" type="search" placeholder="Search courses" class="field pl-4 pr-11 h-11"><button class="absolute right-1 top-1 w-9 h-9 rounded-md text-slate-500" aria-label="Search"><i class="fa-solid fa-magnifying-glass text-sm" aria-hidden="true"></i></button></form>
+            <nav class="space-y-1 text-sm font-semibold" aria-label="Mobile">
+                <a href="#" data-nav="home" onclick="toggleDrawer(false); return go('home')" class="block px-3 py-3 rounded-lg hover:bg-ivory">Home</a>
+                <a href="#catalog" data-nav="catalog" onclick="toggleDrawer(false); return go('catalog')" class="block px-3 py-3 rounded-lg hover:bg-ivory">Courses</a>
+                <a href="#how-it-works" onclick="toggleDrawer(false); return go('home', 'how-it-works')" class="block px-3 py-3 rounded-lg hover:bg-ivory">For Individuals</a>
+                <a href="#organisations" onclick="toggleDrawer(false); return go('home', 'organisations')" class="block px-3 py-3 rounded-lg hover:bg-ivory">For Organisations</a>
+                <a href="#about" data-nav="about" onclick="toggleDrawer(false); return go('about')" class="block px-3 py-3 rounded-lg hover:bg-ivory">About</a>
+                <a href="#contact" data-nav="contact" onclick="toggleDrawer(false); return go('contact')" class="block px-3 py-3 rounded-lg hover:bg-ivory">Contact</a>
+                <a href="verify.html" class="block px-3 py-3 rounded-lg hover:bg-ivory">Check a certificate</a>
+                <a href="/student/login" class="block px-3 py-3 rounded-lg hover:bg-ivory">Sign in</a>
             </nav>
-            <div class="mt-5 pt-5 border-t"><div class="text-[11px] uppercase tracking-[0.2em] text-slate-400 font-bold mb-2 px-3">Categories</div><div id="drawerCats" class="space-y-1 text-sm"></div></div>
+            <div class="mt-5 pt-5 border-t"><div class="eyebrow mb-2 px-3">Categories</div><div id="drawerCats" class="space-y-1 text-sm"></div></div>
         </aside>
     </div>
 
@@ -110,31 +98,89 @@
         <!-- ================= HOME ================= -->
         <div id="page-home" class="page-view">
 
-            <!-- Hero carousel -->
-            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8" aria-roledescription="carousel" aria-label="Featured">
-                <div class="relative" id="hero" onmouseenter="heroPause(true)" onmouseleave="heroPause(false)" onfocusin="heroPause(true)" onfocusout="heroPause(false)">
-                    <div class="overflow-hidden rounded-[28px]">
-                        <div id="heroTrack" class="flex transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)]"></div>
+            <!-- Hero -->
+            <section class="bg-white border-b border-slate-200" aria-labelledby="heroTitle">
+                <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 grid lg:grid-cols-[1.05fr_.95fr] gap-10 lg:gap-14 items-center">
+                    <div>
+                        <p class="eyebrow">Tech Oasis School</p>
+                        <h1 id="heroTitle" class="font-display text-4xl sm:text-5xl text-ink leading-[1.1] mt-3">Build the tech skills that move your career forward.</h1>
+                        <p class="text-lg text-slate-600 mt-5 max-w-xl">Learn practical technology skills through structured programmes, self-paced lessons and instructor-graded projects, then earn a certificate when you complete a course.</p>
+                        <div class="flex flex-wrap gap-3 mt-8">
+                            <a href="#catalog" onclick="return go('catalog')" class="btn btn-forest h-12 px-6">Explore courses</a>
+                            <a href="#how-it-works" onclick="return go('home', 'how-it-works')" class="btn btn-outline h-12 px-6">How it works</a>
+                        </div>
+                        <p id="heroFacts" class="text-sm text-slate-500 mt-6"></p>
                     </div>
-                    <button onclick="heroGo(-1)" class="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white shadow-luxe items-center justify-center text-ink hover:bg-ivory" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button onclick="heroGo(1)" class="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white shadow-luxe items-center justify-center text-ink hover:bg-ivory" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    <div id="heroFeature"></div>
                 </div>
-                <div id="heroDots" class="flex items-center gap-2 mt-5"></div>
+            </section>
+
+            <!-- Course discovery -->
+            <section id="programmes" class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mt-14 scroll-mt-28">
+                <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+                    <div><p class="eyebrow">Courses</p><h2 class="font-display text-3xl text-ink mt-1">Explore our programmes</h2>
+                    <p class="text-slate-600 mt-2 max-w-xl">Choose a category to see programmes you can start today. Every course page shows the level, duration, instructor and price before you enrol.</p></div>
+                    <a href="#catalog" onclick="return go('catalog')" class="btn btn-outline">View all courses <i class="fa-solid fa-arrow-right text-xs"></i></a>
+                </div>
+                <div id="catTabs" class="flex gap-2 overflow-x-auto no-scrollbar pb-1" role="tablist" aria-label="Course categories"></div>
+                <div id="catCards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-5"></div>
+            </section>
+
+            <!-- Why Tech Oasis -->
+            <section class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+                <div class="max-w-2xl"><p class="eyebrow">Why Tech Oasis School</p><h2 class="font-display text-3xl text-ink mt-1">Learning that is organised, practical and at your pace</h2></div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
+                    <div class="border-t-2 border-forest pt-5"><span class="text-forest text-xl" aria-hidden="true"><i class="fa-solid fa-layer-group"></i></span><h3 class="font-semibold text-ink mt-3">Structured learning</h3><p class="text-sm text-slate-600 mt-1.5">Every course is split into sections and short lessons, so you always know what comes next.</p></div>
+                    <div class="border-t-2 border-forest pt-5"><span class="text-forest text-xl" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><h3 class="font-semibold text-ink mt-3">Practical projects</h3><p class="text-sm text-slate-600 mt-1.5">Assignments and capstone projects are graded by instructors, with written feedback.</p></div>
+                    <div class="border-t-2 border-forest pt-5"><span class="text-forest text-xl" aria-hidden="true"><i class="fa-solid fa-clock"></i></span><h3 class="font-semibold text-ink mt-3">Self-paced access</h3><p class="text-sm text-slate-600 mt-1.5">Study on any device when it suits you. Your progress is saved automatically.</p></div>
+                    <div class="border-t-2 border-forest pt-5"><span class="text-forest text-xl" aria-hidden="true"><i class="fa-solid fa-award"></i></span><h3 class="font-semibold text-ink mt-3">Certificate of completion</h3><p class="text-sm text-slate-600 mt-1.5">Issued when you meet the course requirements, with a unique certificate ID.</p></div>
+                </div>
+            </section>
+
+            <!-- How learning works -->
+            <section id="how-it-works" class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 scroll-mt-28">
+                <div class="max-w-2xl"><p class="eyebrow">For individuals</p><h2 class="font-display text-3xl text-ink mt-1">How learning works</h2></div>
+                <ol class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-8 mt-8">
+                    <li class="flex gap-4"><span class="w-9 h-9 shrink-0 rounded-full bg-forest text-white text-sm font-bold flex items-center justify-center" aria-hidden="true">1</span><div><h3 class="font-semibold text-ink">Explore programmes</h3><p class="text-sm text-slate-600 mt-1">Browse the catalogue by category, level or price.</p></div></li>
+                    <li class="flex gap-4"><span class="w-9 h-9 shrink-0 rounded-full bg-forest text-white text-sm font-bold flex items-center justify-center" aria-hidden="true">2</span><div><h3 class="font-semibold text-ink">Choose a course</h3><p class="text-sm text-slate-600 mt-1">Read the overview, requirements and curriculum on the course page.</p></div></li>
+                    <li class="flex gap-4"><span class="w-9 h-9 shrink-0 rounded-full bg-forest text-white text-sm font-bold flex items-center justify-center" aria-hidden="true">3</span><div><h3 class="font-semibold text-ink">Enrol</h3><p class="text-sm text-slate-600 mt-1">Free courses open at once. Paid programmes start with a free trial.</p></div></li>
+                    <li class="flex gap-4"><span class="w-9 h-9 shrink-0 rounded-full bg-forest text-white text-sm font-bold flex items-center justify-center" aria-hidden="true">4</span><div><h3 class="font-semibold text-ink">Learn at your pace</h3><p class="text-sm text-slate-600 mt-1">Work through lessons, videos and resources in order, on any device.</p></div></li>
+                    <li class="flex gap-4"><span class="w-9 h-9 shrink-0 rounded-full bg-forest text-white text-sm font-bold flex items-center justify-center" aria-hidden="true">5</span><div><h3 class="font-semibold text-ink">Practise and get feedback</h3><p class="text-sm text-slate-600 mt-1">Take quizzes and submit assignments for instructor grading.</p></div></li>
+                    <li class="flex gap-4"><span class="w-9 h-9 shrink-0 rounded-full bg-forest text-white text-sm font-bold flex items-center justify-center" aria-hidden="true">6</span><div><h3 class="font-semibold text-ink">Earn your certificate</h3><p class="text-sm text-slate-600 mt-1">Receive a certificate when you meet the course requirements.</p></div></li>
+                </ol>
             </section>
 
             <!-- New and popular -->
-            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-14 reveal">
+            <section class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mt-14 reveal">
                 <div class="flex items-end justify-between gap-4 mb-6">
-                    <div><p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">Curated for you</p><h2 class="font-display text-3xl sm:text-4xl text-ink mt-1">New and popular</h2></div>
-                    <a href="#catalog" onclick="return go('catalog')" class="hidden sm:inline-flex text-sm font-semibold text-forest hover:text-forest-600">Browse all programs <i class="fa-solid fa-arrow-right ml-2 text-xs"></i></a>
+                    <div><p class="eyebrow">Programmes</p><h2 class="font-display text-3xl text-ink mt-1">Featured, new and AI &amp; Data</h2></div>
+                    <a href="#catalog" onclick="return go('catalog')" class="hidden sm:inline-flex text-sm font-semibold text-forest hover:text-forest-600">View all courses <i class="fa-solid fa-arrow-right ml-2 text-xs"></i></a>
                 </div>
                 <div id="popularCols" class="grid md:grid-cols-3 gap-5"></div>
             </section>
 
+            <!-- Career paths -->
+            <section class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 reveal">
+                <div class="rounded-2xl bg-forest text-white p-6 sm:p-10">
+                    <div id="pathBox" class="path-box relative">
+                        <a href="#catalog" onclick="return go('catalog')" class="font-display text-2xl sm:text-[32px] leading-tight hover:text-gold-200 inline-flex items-center gap-3">Skills for the work you do, and the career you want <i class="fa-solid fa-arrow-right text-lg"></i></a>
+                        <p class="text-white/75 text-sm mt-2">Choose a path to see the programmes that lead there.</p>
+                        <div id="pathTabs" class="flex gap-2 mt-6 overflow-x-auto no-scrollbar pb-1" role="tablist"></div>
+                        <div id="pathCards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tools strip -->
+            <section class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 reveal">
+                <h2 class="font-display text-2xl sm:text-3xl text-ink">Technologies you will meet across our programmes</h2>
+                <div class="mt-5 tool-marquee" id="toolStrip"></div>
+            </section>
+
             <!-- Promo pair -->
-            <section id="organisations" class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-14 grid lg:grid-cols-2 gap-5 reveal scroll-mt-32">
-                <div id="promoAi" class="slider-card relative overflow-hidden rounded-[28px] bg-gradient-to-br from-forest-50 via-white to-gold-50 border border-forest-100 p-8 sm:p-10 min-h-[300px] flex flex-col justify-between"></div>
-                <div class="slider-card relative overflow-hidden rounded-[28px] bg-ink text-white p-8 sm:p-10 min-h-[300px] grain">
+            <section id="organisations" class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mt-14 grid lg:grid-cols-2 gap-5 reveal scroll-mt-32">
+                <div id="promoAi" class="slider-card relative overflow-hidden rounded-2xl bg-gradient-to-br from-forest-50 via-white to-gold-50 border border-forest-100 p-8 sm:p-10 min-h-[300px] flex flex-col justify-between"></div>
+                <div class="slider-card relative overflow-hidden rounded-2xl bg-ink text-white p-8 sm:p-10 min-h-[300px]">
                     <!-- Sliding background: 3 photos + a repeat of the first so the loop is seamless -->
                     <div class="org-slider absolute inset-0 opacity-25" aria-hidden="true"><div class="org-slider-track">
                         <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy">
@@ -152,109 +198,48 @@
                 </div>
             </section>
 
-            <!-- Tools strip -->
-            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 reveal">
-                <h2 class="font-display text-2xl sm:text-3xl text-ink">Master the tools the industry runs on</h2>
-                <div class="mt-5 tool-marquee" id="toolStrip"></div>
-            </section>
-
-            <!-- Career paths -->
-            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 reveal">
-                <div class="rounded-[28px] bg-gradient-to-br from-forest via-forest-600 to-ink text-white p-6 sm:p-10 relative overflow-hidden grain">
-                    <div class="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-gold/20 blur-3xl"></div>
-                    <div id="pathBox" class="path-box relative">
-                        <a href="#catalog" onclick="return go('catalog')" class="font-display text-2xl sm:text-[32px] leading-tight hover:text-gold-200 inline-flex items-center gap-3">Skills for the work you do, and the career you want <i class="fa-solid fa-arrow-right text-lg"></i></a>
-                        <p class="text-white/75 text-sm mt-2">Choose a path. We'll show you the programs that lead there.</p>
-                        <div id="pathTabs" class="flex gap-2 mt-6 overflow-x-auto no-scrollbar pb-1" role="tablist"></div>
-                        <div id="pathCards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- What brings you here -->
-            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 reveal">
-                <div class="rounded-[28px] bg-white border border-slate-200/70 p-6 sm:p-8 shadow-luxe">
-                    <div class="flex flex-col lg:flex-row lg:items-center gap-5">
-                        <h2 class="font-display text-2xl text-ink lg:w-72 shrink-0">What brings you to Tech Oasis today?</h2>
-                        <div id="goalChips" class="flex flex-wrap gap-3"></div>
-                    </div>
-                    <div id="goalCards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-7"></div>
-                </div>
-            </section>
-
-            <!-- Job-ready by category -->
-            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 reveal">
-                <div class="grid lg:grid-cols-[320px_1fr] gap-6 rounded-[28px] bg-ivory-100 border border-ivory-200 p-6 sm:p-8">
-                    <div class="flex flex-col justify-between">
-                        <div><p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">Career programs</p>
-                        <h2 class="font-display text-3xl text-ink mt-2 leading-tight">Get job-ready for an in-demand career</h2>
-                        <p class="text-sm text-slate-600 mt-3">No prior experience needed. Learn at your own pace, practise on real projects and earn a certificate.</p></div>
-                        <a href="#catalog" onclick="return go('catalog')" class="btn btn-forest mt-6 self-start">Explore programs <i class="fa-solid fa-arrow-right text-xs"></i></a>
-                    </div>
-                    <div class="min-w-0">
-                        <div id="catTabs" class="flex gap-2 overflow-x-auto no-scrollbar pb-1" role="tablist"></div>
-                        <div id="catCards" class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-5"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- How it works -->
-            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-20 reveal">
-                <div class="text-center max-w-2xl mx-auto">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">The Tech Oasis method</p>
-                    <h2 class="font-display text-3xl sm:text-4xl text-ink mt-2">A learning journey designed like a great school</h2>
-                    <p class="text-slate-600 mt-3">Every program is built course by course, section by section, so you always know what comes next and how far you've come.</p>
-                </div>
-                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-10">
-                    <div class="bg-white rounded-3xl p-6 border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-compass"></i></span><div class="text-[11px] font-bold text-gold-600 tracking-[0.2em] mt-5">STEP 01</div><h3 class="font-display text-xl text-ink mt-1">Choose a program</h3><p class="text-sm text-slate-600 mt-2">Start with a free preview lesson and a 7-day free trial.</p></div>
-                    <div class="bg-white rounded-3xl p-6 border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-layer-group"></i></span><div class="text-[11px] font-bold text-gold-600 tracking-[0.2em] mt-5">STEP 02</div><h3 class="font-display text-xl text-ink mt-1">Learn section by section</h3><p class="text-sm text-slate-600 mt-2">Short videos, readings and resources in a clear sequence.</p></div>
-                    <div class="bg-white rounded-3xl p-6 border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-list-check"></i></span><div class="text-[11px] font-bold text-gold-600 tracking-[0.2em] mt-5">STEP 03</div><h3 class="font-display text-xl text-ink mt-1">Practise and get feedback</h3><p class="text-sm text-slate-600 mt-2">Quizzes check understanding; instructors grade your projects.</p></div>
-                    <div class="bg-white rounded-3xl p-6 border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-award"></i></span><div class="text-[11px] font-bold text-gold-600 tracking-[0.2em] mt-5">STEP 04</div><h3 class="font-display text-xl text-ink mt-1">Earn your certificate</h3><p class="text-sm text-slate-600 mt-2">A verifiable certificate with a unique ID employers can check.</p></div>
-                </div>
-            </section>
-
-            <!-- Certificate showcase + promise -->
-            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-20 reveal">
+            <!-- Certificate (sample) -->
+            <section class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mt-16">
                 <div class="grid lg:grid-cols-2 gap-10 items-center">
-                    <div class="relative">
-                        <div class="absolute -inset-6 bg-gradient-to-br from-gold/20 to-forest/10 rounded-[36px] blur-2xl"></div>
-                        <div class="relative bg-white rounded-[24px] shadow-lift p-2">
-                            <div class="rounded-[18px] border-2 border-gold/50 p-8 sm:p-10 text-center bg-[radial-gradient(circle_at_top,#FBF7EA,white_60%)]">
+                    <figure>
+                        <div class="relative bg-white rounded-xl border border-slate-200 shadow-luxe p-2">
+                            <span class="absolute -top-3 left-5 bg-ink text-white text-[10px] font-bold uppercase tracking-[0.18em] px-3 py-1 rounded">Sample certificate</span>
+                            <div class="rounded-lg border-2 border-gold/50 p-8 sm:p-10 text-center bg-ivory">
                                 <div class="flex justify-center" id="certLogo"></div>
-                                <div class="text-[10px] tracking-[0.4em] uppercase text-gold-600 font-bold mt-5">Certificate of Completion</div>
+                                <div class="text-[10px] tracking-[0.35em] uppercase text-slate-500 font-bold mt-5">Certificate of Completion</div>
                                 <div class="text-xs text-slate-500 mt-5">This certifies that</div>
-                                <div class="font-display text-3xl text-ink mt-1 italic">Your Name</div>
+                                <div class="font-display text-3xl text-ink mt-1 italic">Sample Learner</div>
                                 <div class="hairline-gold w-40 mx-auto my-4"></div>
-                                <div class="text-xs text-slate-500">has successfully completed</div>
-                                <div class="font-display text-xl text-forest mt-1">Web Development</div>
+                                <div class="text-xs text-slate-500">has completed</div>
+                                <div class="font-display text-xl text-forest mt-1">Course name</div>
                                 <div class="flex justify-between items-end mt-8 text-left text-[10px] text-slate-500">
-                                    <div><div class="font-semibold text-slate-700">Clifford Mensah</div>Instructor</div>
-                                    <span class="w-14 h-14 rounded-full bg-gradient-to-br from-gold-300 to-gold-600 text-white flex items-center justify-center shadow"><i class="fa-solid fa-award text-xl"></i></span>
-                                    <div class="text-right"><div class="font-semibold text-slate-700 font-mono">TOS-2026-XXXXXX</div>Verify online</div>
+                                    <div><div class="font-semibold text-slate-700">Office of the Registrar</div>Tech Oasis School</div>
+                                    <div class="text-right"><div class="font-semibold text-slate-700 font-mono">TOS-DEMO-000000</div>Certificate ID</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <figcaption class="text-xs text-slate-500 mt-3">An illustration only. It is not an issued credential, and the name and ID are placeholders.</figcaption>
+                    </figure>
                     <div>
-                        <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">Recognised achievement</p>
-                        <h2 class="font-display text-3xl sm:text-4xl text-ink mt-2 leading-tight">A certificate that means something</h2>
-                        <p class="text-slate-600 mt-4">Certificates are issued only when you complete the lessons, pass the quizzes and have your projects graded. Each one carries a unique ID and a public verification page, so employers can confirm it in seconds.</p>
-                        <ul class="mt-6 space-y-3 text-sm text-slate-700">
-                            <li class="flex gap-3"><i class="fa-solid fa-circle-check text-forest-400 mt-0.5"></i>Earned through real, graded work, not attendance</li>
-                            <li class="flex gap-3"><i class="fa-solid fa-circle-check text-forest-400 mt-0.5"></i>Instantly verifiable at a permanent link</li>
-                            <li class="flex gap-3"><i class="fa-solid fa-circle-check text-forest-400 mt-0.5"></i>Shareable on LinkedIn and your CV</li>
+                        <p class="eyebrow">Certificates</p>
+                        <h2 class="font-display text-3xl text-ink mt-1 leading-tight">A certificate you earn by finishing the work</h2>
+                        <p id="certRules" class="text-slate-600 mt-4"></p>
+                        <ul class="mt-5 space-y-2.5 text-sm text-slate-700">
+                            <li class="flex gap-3"><i class="fa-solid fa-circle-check text-forest mt-0.5" aria-hidden="true"></i>Issued for completed, graded work, not attendance</li>
+                            <li class="flex gap-3"><i class="fa-solid fa-circle-check text-forest mt-0.5" aria-hidden="true"></i>Every certificate has a unique ID and a verification page</li>
+                            <li class="flex gap-3"><i class="fa-solid fa-circle-check text-forest mt-0.5" aria-hidden="true"></i>No separate certificate fee</li>
                         </ul>
-                        <a href="verify.html" class="btn btn-outline mt-7"><i class="fa-solid fa-shield-halved"></i> Verify a certificate</a>
+                        <p class="text-sm text-slate-600 mt-5">To confirm a certificate, email the school with its ID at <a data-email="school" class="font-semibold text-forest underline"><span data-email-text></span></a>.</p>
+                        <a href="verify.html" class="btn btn-outline mt-6"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Check a certificate ID</a>
                     </div>
                 </div>
             </section>
 
             <!-- Testimonials (from published reviews) -->
-            <section id="reviewsSection" class="mt-20 bg-ink text-white py-16 sm:py-20 relative overflow-hidden grain reveal">
-                <div class="absolute left-1/2 -translate-x-1/2 -top-32 w-[600px] h-[300px] rounded-full bg-gold/10 blur-3xl"></div>
-                <div class="relative max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
+            <section id="reviewsSection" class="mt-20 bg-ink text-white py-16 sm:py-20 reveal">
+                <div class="relative max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-wrap items-end justify-between gap-4">
-                        <div><p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold">Learner stories</p><h2 class="font-display text-3xl sm:text-4xl mt-2">In their words</h2></div>
+                        <div><p class="eyebrow">Learner reviews</p><h2 class="font-display text-3xl sm:text-4xl mt-2">In their words</h2></div>
                         <div id="reviewSummary" class="text-sm text-white/70"></div>
                     </div>
                     <div id="reviewCards" class="grid md:grid-cols-3 gap-5 mt-10"></div>
@@ -262,39 +247,36 @@
             </section>
 
             <!-- Pricing -->
-            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-20 reveal">
-                <div class="text-center max-w-2xl mx-auto"><p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">Simple pricing</p><h2 class="font-display text-3xl sm:text-4xl text-ink mt-2">World-class learning, honestly priced</h2></div>
-                <div class="grid md:grid-cols-3 gap-5 mt-10 max-w-5xl mx-auto">
-                    <div class="bg-white rounded-3xl border border-slate-200/70 p-7 shadow-luxe flex flex-col"><h3 class="font-display text-xl text-ink">Free courses</h3><p class="text-sm text-slate-500 mt-1">Start learning today</p><div class="font-display text-4xl text-ink mt-5">Free</div><ul class="text-sm text-slate-600 space-y-2 mt-5 flex-1"><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Selected full courses</li><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Preview lessons in every program</li><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Progress tracking</li></ul><a href="#catalog" onclick="return go('catalog', null, {price:'free'})" class="btn btn-outline mt-6">Browse free courses</a></div>
-                    <div class="relative bg-forest text-white rounded-3xl p-7 shadow-lift flex flex-col ring-2 ring-gold"><span class="absolute -top-3 left-7 bg-gold text-ink text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full">Most popular</span><h3 class="font-display text-xl">Per program</h3><p class="text-sm text-white/70 mt-1">Everything in one career program</p><div class="font-display text-4xl mt-5"><span id="priceFlat">$5</span> <span class="text-sm font-sans text-white/60">one-time</span></div><ul class="text-sm text-white/85 space-y-2 mt-5 flex-1"><li><i class="fa-solid fa-check text-gold mr-2"></i><span id="trialLine">7-day free trial</span></li><li><i class="fa-solid fa-check text-gold mr-2"></i>All lessons, quizzes and projects</li><li><i class="fa-solid fa-check text-gold mr-2"></i>Instructor-graded assignments</li><li><i class="fa-solid fa-check text-gold mr-2"></i>Verified certificate</li></ul><a href="#catalog" onclick="return go('catalog')" class="btn btn-gold mt-6">Choose a program</a></div>
-                    <div class="bg-white rounded-3xl border border-slate-200/70 p-7 shadow-luxe flex flex-col"><h3 class="font-display text-xl text-ink">Organisations</h3><p class="text-sm text-slate-500 mt-1">Teams, schools and government</p><div class="font-display text-4xl text-ink mt-5">Custom</div><ul class="text-sm text-slate-600 space-y-2 mt-5 flex-1"><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Group enrollment</li><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Progress reports</li><li><i class="fa-solid fa-check text-forest-400 mr-2"></i>Dedicated support</li></ul><a data-email="school" data-subject="Organisation enquiry" class="btn btn-outline mt-6">Contact us</a></div>
+            <section id="pricing" class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 scroll-mt-28">
+                <div class="max-w-2xl"><p class="eyebrow">Pricing</p><h2 class="font-display text-3xl text-ink mt-1">Pricing and free trial</h2>
+                <p class="text-slate-600 mt-2">The price of every course is shown on its page before you enrol. Prices are in <span id="priceCurrency">USD</span>.</p></div>
+                <div class="grid md:grid-cols-3 gap-5 mt-8">
+                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex flex-col"><h3 class="font-display text-xl text-ink">Free courses</h3><div class="font-display text-3xl text-ink mt-4">Free</div><ul class="text-sm text-slate-600 space-y-2 mt-5 flex-1"><li class="flex gap-2"><i class="fa-solid fa-check text-forest mt-1" aria-hidden="true"></i>Selected full courses</li><li class="flex gap-2"><i class="fa-solid fa-check text-forest mt-1" aria-hidden="true"></i>Preview lessons in every programme</li><li class="flex gap-2"><i class="fa-solid fa-check text-forest mt-1" aria-hidden="true"></i>Progress tracking</li></ul><a href="#catalog" onclick="return go('catalog', null, {price:'free'})" class="btn btn-outline mt-6">Browse free courses</a></div>
+                    <div class="bg-white rounded-xl border-2 border-forest p-6 flex flex-col"><h3 class="font-display text-xl text-ink">Paid programmes</h3><div class="font-display text-3xl text-ink mt-4"><span id="priceFlat">$5</span> <span class="text-sm font-sans text-slate-500">one-time, per programme</span></div><ul class="text-sm text-slate-600 space-y-2 mt-5 flex-1"><li class="flex gap-2"><i class="fa-solid fa-check text-forest mt-1" aria-hidden="true"></i><span id="trialLine">Free trial</span></li><li class="flex gap-2"><i class="fa-solid fa-check text-forest mt-1" aria-hidden="true"></i>Not a subscription; nothing renews automatically</li><li class="flex gap-2"><i class="fa-solid fa-check text-forest mt-1" aria-hidden="true"></i>All lessons, quizzes and instructor-graded assignments</li><li class="flex gap-2"><i class="fa-solid fa-check text-forest mt-1" aria-hidden="true"></i>Certificate on completion, no extra fee</li><li class="flex gap-2"><i class="fa-solid fa-circle-info text-slate-400 mt-1" aria-hidden="true"></i><span id="payLine"></span></li></ul><a href="#catalog" onclick="return go('catalog', null, {price:'paid'})" class="btn btn-forest mt-6">View paid programmes</a></div>
+                    <div class="bg-white rounded-xl border border-slate-200 p-6 flex flex-col"><h3 class="font-display text-xl text-ink">Organisations</h3><div class="font-display text-3xl text-ink mt-4">Custom</div><ul class="text-sm text-slate-600 space-y-2 mt-5 flex-1"><li class="flex gap-2"><i class="fa-solid fa-check text-forest mt-1" aria-hidden="true"></i>Group enrolment for teams, schools and departments</li><li class="flex gap-2"><i class="fa-solid fa-check text-forest mt-1" aria-hidden="true"></i>Progress reporting</li></ul><a href="#contact" onclick="return go('contact')" class="btn btn-outline mt-6">Contact us</a></div>
                 </div>
             </section>
 
             <!-- FAQ -->
-            <section class="max-w-3xl mx-auto px-4 sm:px-6 mt-20 reveal">
-                <h2 class="font-display text-3xl sm:text-4xl text-ink text-center">Frequently asked questions</h2>
-                <div id="faq" class="mt-8 divide-y divide-slate-200 border-y border-slate-200"></div>
+            <section id="faqs" class="max-w-3xl mx-auto px-4 sm:px-6 mt-16 scroll-mt-28">
+                <h2 class="font-display text-3xl text-ink">Frequently asked questions</h2>
+                <div id="faq" class="mt-6 divide-y divide-slate-200 border-y border-slate-200"></div>
             </section>
 
             <!-- Closing CTA -->
-            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 mt-20 reveal">
-                <div class="rounded-[28px] bg-gradient-to-r from-gold-100 via-ivory to-forest-50 border border-gold-200 p-8 sm:p-12 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                    <div class="max-w-xl"><h2 class="font-display text-3xl sm:text-4xl text-ink leading-tight">Your next chapter starts with one lesson.</h2><p class="text-slate-600 mt-3">Join free, explore any program, and learn from instructors who build technology for a living.</p></div>
-                    <form onsubmit="subscribe(event)" class="w-full lg:w-auto">
-                        <label for="newsEmail" class="text-xs font-semibold text-slate-600">Get new programs and scholarships by email</label>
-                        <div class="flex gap-2 mt-2"><input id="newsEmail" type="email" required placeholder="you@email.com" class="field h-12 lg:w-72"><button class="btn btn-forest h-12">Subscribe</button></div>
-                    </form>
+            <section class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+                <div class="rounded-2xl bg-white border border-slate-200 p-8 sm:p-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div class="max-w-xl"><h2 class="font-display text-3xl text-ink leading-tight">Not sure where to start?</h2><p class="text-slate-600 mt-2">Browse the courses, or tell us what you want to learn and we will point you to a programme.</p></div>
+                    <div class="flex flex-wrap gap-3"><a href="#catalog" onclick="return go('catalog')" class="btn btn-forest h-12 px-6">Explore courses</a><a href="#contact" onclick="return go('contact')" class="btn btn-outline h-12 px-6">Contact us</a></div>
                 </div>
             </section>
         </div>
 
         <!-- ================= CATALOG ================= -->
         <div id="page-catalog" class="page-view hidden">
-            <section class="bg-ink text-white relative overflow-hidden grain">
-                <div class="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-gold/10 blur-3xl"></div>
+            <section class="bg-ink text-white relative overflow-hidden">
                 <div class="relative max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold">Catalog</p>
+                    <p class="eyebrow">Catalog</p>
                     <h1 class="font-display text-4xl sm:text-5xl mt-2">Explore every program</h1>
                     <p class="text-white/70 mt-3 max-w-xl" id="catalogLead"></p>
                 </div>
@@ -317,21 +299,21 @@
         <!-- ================= ABOUT ================= -->
         <div id="page-about" class="page-view hidden">
             <section class="max-w-5xl mx-auto px-4 py-16 sm:py-20 text-center">
-                <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600">About Tech Oasis School</p>
+                <p class="eyebrow">About Tech Oasis School</p>
                 <h1 class="font-display text-4xl sm:text-5xl text-ink mt-3">Where Innovation Meets Expertise</h1>
                 <p class="text-slate-600 mt-5 max-w-2xl mx-auto text-lg">We equip aspiring technologists across Africa and beyond with world-class, affordable education in software, design, artificial intelligence and cloud systems.</p>
             </section>
             <section class="max-w-[1100px] mx-auto px-4 grid md:grid-cols-3 gap-5 pb-8">
-                <div class="bg-white p-7 rounded-3xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-graduation-cap"></i></span><h3 class="font-display text-xl text-ink mt-5">Affordable excellence</h3><p class="text-slate-600 text-sm mt-2">Career programs at a flat, honest price with a free trial, so talent, not budget, decides who learns.</p></div>
-                <div class="bg-white p-7 rounded-3xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-laptop-code"></i></span><h3 class="font-display text-xl text-ink mt-5">Practical by design</h3><p class="text-slate-600 text-sm mt-2">Every program ends in a real project, graded by working professionals.</p></div>
-                <div class="bg-white p-7 rounded-3xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-globe-africa"></i></span><h3 class="font-display text-xl text-ink mt-5">A global community</h3><p class="text-slate-600 text-sm mt-2">Learn alongside peers across Africa and beyond, with discussions on every lesson.</p></div>
+                <div class="bg-white p-7 rounded-xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-graduation-cap"></i></span><h3 class="font-display text-xl text-ink mt-5">Affordable excellence</h3><p class="text-slate-600 text-sm mt-2">Career programs at a flat, honest price with a free trial, so talent, not budget, decides who learns.</p></div>
+                <div class="bg-white p-7 rounded-xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-laptop-code"></i></span><h3 class="font-display text-xl text-ink mt-5">Practical by design</h3><p class="text-slate-600 text-sm mt-2">Every program ends in a real project, graded by working professionals.</p></div>
+                <div class="bg-white p-7 rounded-xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-globe-africa"></i></span><h3 class="font-display text-xl text-ink mt-5">A global community</h3><p class="text-slate-600 text-sm mt-2">Learn alongside peers across Africa and beyond, with discussions on every lesson.</p></div>
             </section>
             <section class="max-w-[1100px] mx-auto px-4 py-12">
                 <h2 class="font-display text-3xl text-ink">Meet our instructors</h2>
                 <div id="aboutInstructors" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-6"></div>
             </section>
             <section class="max-w-[1100px] mx-auto px-4 pb-8">
-                <div class="rounded-3xl bg-forest text-white p-8 sm:p-10 grid md:grid-cols-2 gap-6">
+                <div class="rounded-xl bg-forest text-white p-8 sm:p-10 grid md:grid-cols-2 gap-6">
                     <div><h2 class="font-display text-3xl">Get in touch</h2><p class="text-white/70 text-sm mt-2">We usually reply within one working day.</p></div>
                     <div class="space-y-3 text-sm">
                         <a data-email="school" class="flex items-center gap-3 hover:text-gold"><span class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center"><i class="fa-regular fa-envelope text-gold"></i></span><span><span class="block text-white/60 text-xs">General &amp; admissions</span><span data-email-text></span></span></a>
@@ -341,72 +323,73 @@
             </section>
         </div>
 
+        <!-- ================= CONTACT ================= -->
+        <div id="page-contact" class="page-view hidden">
+            <section class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <p class="eyebrow">Contact</p>
+                <h1 class="font-display text-4xl text-ink mt-2">Contact Tech Oasis School</h1>
+                <p class="text-slate-600 mt-3 max-w-2xl">Questions about a course, enrolment, payment or training for your organisation? Send us a message and we will reply by email.</p>
+                <div class="grid lg:grid-cols-[1.3fr_.7fr] gap-10 mt-8">
+                    <form id="contactForm" novalidate class="bg-white rounded-xl border border-slate-200 p-6 sm:p-8 space-y-5" aria-describedby="contactNote">
+                        <div id="contactErrors" class="hidden rounded-lg border border-rose-300 bg-rose-50 text-rose-800 text-sm p-4" role="alert" tabindex="-1"></div>
+                        <div class="grid sm:grid-cols-2 gap-5">
+                            <div><label class="field-label" for="cName">Your name</label><input id="cName" name="name" autocomplete="name" required class="field" aria-describedby="cName-err"><p id="cName-err" class="field-err hidden"></p></div>
+                            <div><label class="field-label" for="cEmail">Your email</label><input id="cEmail" name="email" type="email" autocomplete="email" required class="field" aria-describedby="cEmail-err"><p id="cEmail-err" class="field-err hidden"></p></div>
+                        </div>
+                        <div><label class="field-label" for="cTopic">What is your message about?</label>
+                            <select id="cTopic" name="topic" class="field"><option value="general">General question or admissions</option><option value="students">Help with a course, payment or my account</option><option value="org">Training for my organisation or school</option></select></div>
+                        <div><label class="field-label" for="cMsg">Message</label><textarea id="cMsg" name="message" rows="6" required minlength="10" class="field" aria-describedby="cMsg-err"></textarea><p id="cMsg-err" class="field-err hidden"></p></div>
+                        <div><button class="btn btn-forest h-12 px-6">Open email with my message</button>
+                        <p id="contactNote" class="text-xs text-slate-500 mt-3">This form opens your email app with the message filled in. The school has not received anything until you press Send there.</p></div>
+                        <div id="contactStatus" class="hidden rounded-lg border border-forest-200 bg-forest-50 text-forest-700 text-sm p-4" role="status"></div>
+                    </form>
+                    <aside class="space-y-6 text-sm">
+                        <div><h2 class="font-semibold text-ink">General and admissions</h2><a data-email="school" class="text-forest underline break-all"><span data-email-text></span></a></div>
+                        <div><h2 class="font-semibold text-ink">Student support</h2><a data-email="students" class="text-forest underline break-all"><span data-email-text></span></a></div>
+                        <div id="contactPhone" class="hidden"><h2 class="font-semibold text-ink">Phone or WhatsApp</h2><p id="contactPhoneText" class="text-slate-700"></p></div>
+                        <div><h2 class="font-semibold text-ink">Organisations and schools</h2><p class="text-slate-600">Choose "Training for my organisation or school" in the form, or email the general address above.</p></div>
+                        <div><h2 class="font-semibold text-ink">Want to teach with us?</h2><a href="/staff/apply" class="text-forest underline">Apply to teach</a></div>
+                    </aside>
+                </div>
+            </section>
+        </div>
+
     </div>
     </main>
 
     <!-- ================= FOOTER ================= -->
-    <footer id="siteFooter" class="bg-ink text-white/70 mt-24 relative overflow-hidden">
-        <div class="hairline-gold"></div>
-        <div class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
-            <div class="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <footer id="siteFooter" class="bg-ink text-white/75 mt-20">
+        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8">
+            <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1.2fr]">
                 <div>
-                    <span class="brand-logo" data-theme="dark" data-size="44"></span>
+                    <span class="brand-logo" data-theme="dark" data-size="40"></span>
                     <p class="text-sm mt-5 max-w-xs">Where Innovation Meets Expertise. Career-ready technology education for learners across Africa and beyond.</p>
-                    <div class="flex gap-2 mt-6">
-                        <a href="#" aria-label="LinkedIn" class="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="#" aria-label="X" class="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold"><i class="fa-brands fa-x-twitter"></i></a>
-                        <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" aria-label="YouTube" class="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold"><i class="fa-brands fa-youtube"></i></a>
-                    </div>
+                    <div id="footerSocial" class="flex gap-2 mt-6"></div>
                 </div>
-                <div><h3 class="text-white font-semibold text-sm mb-4">Programs</h3><ul id="footerCats" class="space-y-2.5 text-sm"></ul></div>
-                <div><h3 class="text-white font-semibold text-sm mb-4">School</h3><ul class="space-y-2.5 text-sm">
-                    <li><a href="#about" onclick="return go('about')" class="hover:text-gold">About us</a></li>
-                    <li><a href="#catalog" onclick="return go('catalog')" class="hover:text-gold">All programs</a></li>
-                    <li><a href="verify.html" class="hover:text-gold">Verify a certificate</a></li>
+                <div><h2 class="text-white font-semibold text-sm mb-4">Courses</h2><ul id="footerCats" class="space-y-2.5 text-sm"></ul></div>
+                <div><h2 class="text-white font-semibold text-sm mb-4">School</h2><ul class="space-y-2.5 text-sm">
+                    <li><a href="#about" onclick="return go('about')" class="hover:text-gold">About</a></li>
+                    <li><a href="#catalog" onclick="return go('catalog')" class="hover:text-gold">All courses</a></li>
                     <li><a href="#organisations" onclick="return go('home', 'organisations')" class="hover:text-gold">For organisations</a></li>
-                    <li><a href="/staff/apply" class="hover:text-gold">Teach at Tech Oasis</a></li>
-                    <li><a href="/staff/login" class="hover:text-gold">Staff sign in</a></li>
+                    <li><a href="#contact" onclick="return go('contact')" class="hover:text-gold">Contact</a></li>
+                    <li><a href="verify.html" class="hover:text-gold">Check a certificate</a></li>
                 </ul></div>
-                <div><h3 class="text-white font-semibold text-sm mb-4">Contact</h3><ul class="space-y-3 text-sm">
-                    <li><span class="block text-white/40 text-xs">General &amp; admissions</span><a data-email="school" class="hover:text-gold"><span data-email-text></span></a></li>
-                    <li><span class="block text-white/40 text-xs">Student support</span><a data-email="students" class="hover:text-gold"><span data-email-text></span></a></li>
+                <div><h2 class="text-white font-semibold text-sm mb-4">Sign in</h2><ul class="space-y-2.5 text-sm">
+                    <li><a href="/student/login" class="hover:text-gold">Student sign in</a></li>
+                    <li><a href="/student/register" class="hover:text-gold">Create a student account</a></li>
+                    <li><a href="/staff/login" class="hover:text-gold">Instructor and staff sign in</a></li>
+                    <li><a href="/staff/apply" class="hover:text-gold">Teach at Tech Oasis</a></li>
+                </ul></div>
+                <div><h2 class="text-white font-semibold text-sm mb-4">Contact</h2><ul class="space-y-3 text-sm">
+                    <li><span class="block text-white/50 text-xs">General &amp; admissions</span><a data-email="school" class="hover:text-gold break-all"><span data-email-text></span></a></li>
+                    <li><span class="block text-white/50 text-xs">Student support</span><a data-email="students" class="hover:text-gold break-all"><span data-email-text></span></a></li>
                 </ul></div>
             </div>
-            <div class="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/40">
+            <div class="mt-12 pt-6 border-t border-white/10 text-xs text-white/50">
                 <p>&copy; <span id="year"></span> Tech Oasis School. All rights reserved.</p>
-                <div class="flex items-center gap-5"><a href="#" class="hover:text-white">Terms</a><a href="#" class="hover:text-white">Privacy</a></div>
             </div>
         </div>
     </footer>
-
-    <!-- Student & Staff Login Modal (role first, then credentials) -->
-    <div id="courseraAuthModal" class="fixed inset-0 bg-ink/60 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-[24px] max-w-md w-full shadow-lift relative max-h-[92vh] overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-            <div class="h-1.5 bg-gradient-to-r from-forest via-gold to-forest rounded-t-[24px]"></div>
-            <div class="p-8">
-            <button onclick="closeModal('courseraAuthModal')" class="absolute top-5 right-5 w-9 h-9 rounded-full hover:bg-slate-100 text-slate-500" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-            <div id="authStepRole">
-                <span class="brand-logo" data-size="34"></span>
-                <h3 class="font-display text-2xl text-ink mt-6">Welcome to Tech Oasis</h3>
-                <p class="text-sm text-slate-500 mt-1 mb-6">Tell us who you are so we can take you to the right place.</p>
-                <div class="space-y-3">
-                    <button onclick="chooseRole('student')" class="w-full text-left border border-slate-200 rounded-2xl p-4 flex items-center gap-4 hover:border-forest hover:bg-forest-50/50 transition">
-                        <span class="w-11 h-11 rounded-xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-user-graduate"></i></span>
-                        <span class="flex-1"><span class="block font-semibold text-ink">I'm a Student</span><span class="block text-xs text-slate-500">Enroll, learn and earn certificates.</span></span>
-                        <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
-                    </button>
-                    <button onclick="chooseRole('staff')" class="w-full text-left border border-slate-200 rounded-2xl p-4 flex items-center gap-4 hover:border-forest hover:bg-forest-50/50 transition">
-                        <span class="w-11 h-11 rounded-xl bg-gold-100 text-gold-700 flex items-center justify-center text-lg"><i class="fa-solid fa-chalkboard-user"></i></span>
-                        <span class="flex-1"><span class="block font-semibold text-ink">I'm Staff / Instructor</span><span class="block text-xs text-slate-500">Approved teaching staff sign in here.</span></span>
-                        <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
-                    </button>
-                </div>
-                <p class="mt-6 text-sm text-slate-600">Want to teach with us? <a href="/staff/apply" class="font-semibold text-forest underline">Apply to teach</a></p>
-            </div>
-            </div>
-        </div>
-    </div>
 
     <script src="assets/js/core/ui.js"></script>
     <script src="assets/js/core/crypto.js"></script>
