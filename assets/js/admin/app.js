@@ -30,9 +30,13 @@ function badgeFor(key) {
 }
 A.renderNav = function (path) {
     const active = A.NAV.flatMap(g => g.items).map(i => i[0]).filter(k => path === k || path.startsWith(k + '/')).sort((a, b) => b.length - a.length)[0];
-    document.getElementById('navList').innerHTML = A.NAV.map(g => `<div class="mb-5">${g.title ? `<div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/35">${g.title}</div>` : ''}
+    const navEl = document.getElementById('navList'), navTop = navEl.scrollTop;   // rebuilt on every page change, so keep the scroll position
+    navEl.innerHTML = A.NAV.map(g => `<div class="mb-5">${g.title ? `<div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/35">${g.title}</div>` : ''}
         ${g.items.map(([k, label, ic]) => { const n = badgeFor(k), on = k === active; return `<a href="#/${k}" class="flex items-center gap-3 px-3 py-2 rounded-lg mb-0.5 ${on ? 'bg-gold text-ink font-semibold' : 'hover:bg-white/5'}" ${on ? 'aria-current="page"' : ''}>
             <i class="fa-solid ${ic} w-4 ${on ? '' : 'text-white/40'}"></i><span class="flex-1">${label}</span>${n ? `<span class="min-w-[20px] h-5 px-1.5 rounded-full ${on ? 'bg-ink text-white' : 'bg-rose-600 text-white'} text-[10px] font-bold flex items-center justify-center">${n}</span>` : ''}</a>`; }).join('')}</div>`).join('');
+    navEl.scrollTop = navTop;
+    const cur = navEl.querySelector('[aria-current="page"]');   // keep the active item in view without jumping the menu
+    if (cur) { const nr = navEl.getBoundingClientRect(), cr = cur.getBoundingClientRect(); if (cr.bottom > nr.bottom - 8) navEl.scrollTop += cr.bottom - nr.bottom + 8; else if (cr.top < nr.top + 8) navEl.scrollTop -= nr.top + 8 - cr.top; }
     const pending = badgeFor('assignments') + badgeFor('payments') + badgeFor('messages') + badgeFor('support'), bell = document.getElementById('bell');
     bell.textContent = pending; bell.classList.toggle('hidden', !pending);
 };
