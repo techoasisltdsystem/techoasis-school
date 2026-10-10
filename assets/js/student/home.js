@@ -22,62 +22,64 @@
     };
 
     S.route('/student/dashboard', { title: 'Dashboard', nav: 'dashboard', live: true, render: async el => {
-        const d = await api.dashboard(), me = S.me, first = me.name.split(' ')[0];
-        const c = d.continue;
-        const stat = (icon, tone, label, value, sub, href) => `<a href="${href}" class="s-card s-card-hover p-5"><div class="flex items-center justify-between"><span class="text-sm s-muted">${label}</span><span class="w-9 h-9 rounded-xl ${tone} flex items-center justify-center text-sm"><i class="fa-solid ${icon}"></i></span></div><div class="text-3xl font-bold text-slate-900 mt-2">${value}</div>${sub ? `<div class="text-xs s-muted mt-1">${sub}</div>` : ''}</a>`;
+        const d = await api.dashboard(), me = S.me, first = me.name.split(' ')[0], c = d.continue, enrolled = d.stats.enrolled > 0;
+        // New learners get a few places to start (free courses first) instead of an empty page
+        const start = enrolled ? [] : (await api.catalog()).filter(x => !x.enrolled).sort((a, b) => (a.price ? 1 : 0) - (b.price ? 1 : 0)).slice(0, 3);
+        const stat = (label, value, sub, href) => `<a href="${href}" class="block bg-white px-5 py-4 hover:bg-slate-50 transition"><div class="text-xs font-medium s-muted">${label}</div><div class="text-2xl font-semibold text-slate-900 mt-1 tabular-nums">${value}</div>${sub ? `<div class="text-xs s-muted mt-0.5">${sub}</div>` : ''}</a>`;
+        const side = (id, title, link, body) => `<section class="s-card p-5" aria-labelledby="${id}"><div class="flex items-center justify-between gap-3"><h2 id="${id}" class="s-h2">${title}</h2>${link ? `<a href="${link[0]}" class="text-xs font-semibold text-forest-600 hover:underline">${link[1]}</a>` : ''}</div>${body}</section>`;
+        const step = (n, t, x) => `<li class="flex gap-3"><span class="w-7 h-7 shrink-0 rounded-full bg-forest text-white text-xs font-bold flex items-center justify-center" aria-hidden="true">${n}</span><div><div class="text-sm font-semibold text-slate-900">${t}</div><div class="text-sm s-muted">${x}</div></div></li>`;
+        const hero = c && c.current
+            ? `<section class="s-card overflow-hidden grid sm:grid-cols-[240px_minmax(0,1fr)]" aria-labelledby="clh">
+                <div class="relative bg-slate-100 min-h-[150px]">${c.thumbnail ? `<img src="${esc(c.thumbnail)}" alt="" class="absolute inset-0 w-full h-full object-cover">` : ''}</div>
+                <div class="p-6">
+                    <h2 id="clh" class="eyebrow">Continue learning</h2>
+                    <div class="text-xl font-semibold text-slate-900 mt-1.5 leading-snug">${esc(c.title)}</div>
+                    <div class="mt-3 space-y-1 text-sm s-muted"><div><i class="fa-solid fa-layer-group w-5" aria-hidden="true"></i>Section ${c.current.sectionIndex} · ${esc(c.current.sectionTitle)}</div><div><i class="fa-solid ${S.LESSON_ICON(c.current.type)} w-5" aria-hidden="true"></i>Lesson ${c.current.index} · ${esc(c.current.title)}</div></div>
+                    <div class="mt-4"><div class="flex justify-between text-xs mb-1.5 s-muted"><span>Course progress</span><b class="text-slate-900">${c.pct}%</b></div>${S.bar(c.pct)}</div>
+                    <a href="/student/learn/${c.current.id}" class="btn btn-forest h-11 px-5 mt-5"><i class="fa-solid fa-play text-xs" aria-hidden="true"></i>${c.done ? 'Continue learning' : 'Start learning'}</a>
+                </div></section>`
+            : `<section class="s-card p-6 sm:p-8" aria-labelledby="gsh">
+                <h2 id="gsh" class="text-xl font-semibold text-slate-900">Start your first course</h2>
+                <p class="s-muted mt-1">Your progress, assignments and certificates will appear here as you learn.</p>
+                <ol class="grid sm:grid-cols-3 gap-5 mt-6">${step(1, 'Choose a course', 'Browse by category, level or price.')}${step(2, 'Enrol', 'Free courses open at once. Paid programmes start with a free trial.')}${step(3, 'Learn and earn', 'Finish the work to earn a certificate.')}</ol>
+                ${start.length ? `<div class="mt-7 pt-6 border-t border-[#E6E8EC]"><h3 class="text-sm font-semibold text-slate-900">Good places to start</h3>
+                    <div class="grid sm:grid-cols-3 gap-4 mt-4">${start.map(x => `<a href="/student/course/${x.id}" class="group block rounded-xl border border-[#E6E8EC] overflow-hidden hover:border-forest transition"><div class="aspect-[16/9] bg-slate-100">${x.thumbnail ? `<img src="${esc(x.thumbnail)}" alt="" loading="lazy" class="w-full h-full object-cover">` : ''}</div><div class="p-3"><div class="text-sm font-semibold text-slate-900 leading-snug group-hover:underline">${esc(x.title)}</div><div class="text-xs s-muted mt-1">${esc(x.level)} · ${x.hours}h · ${x.price ? ui.money(x.price) : 'Free'}</div></div></a>`).join('')}</div></div>` : ''}
+                <a href="/student/browse" class="btn btn-forest h-11 px-5 mt-6">Browse all courses <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i></a>
+            </section>`;
         el.innerHTML = `
-            <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+            <header class="flex flex-wrap items-start justify-between gap-4">
                 <div><p class="text-sm s-muted">${new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-                    <h1 class="font-display text-[28px] sm:text-[34px] text-slate-900 leading-tight mt-1">${greeting()}, ${esc(first)} <span aria-hidden="true">👋</span></h1>
-                    <p class="s-muted mt-1">${d.stats.enrolled ? 'Continue your learning journey.' : 'Welcome to your student portal. Let\'s find your first course.'}</p></div>
-                <div class="flex items-center gap-2"><span class="s-chip bg-gold-50 text-gold-700 !text-xs !py-1.5 !px-3"><i class="fa-solid fa-fire"></i>${ui.plural(d.streak, 'day')} streak</span>${d.assignmentsDueCount ? `<a href="/student/assignments" class="s-chip bg-rose-50 text-rose-700 !text-xs !py-1.5 !px-3"><i class="fa-solid fa-hourglass-half"></i>${d.assignmentsDueCount} due</a>` : ''}</div>
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-slate-900 leading-tight mt-1">${greeting()}, ${esc(first)}</h1>
+                    <p class="s-muted mt-1">${enrolled ? 'Pick up where you left off.' : 'Start with a free course or a free trial.'}</p></div>
+                <div class="flex flex-wrap items-center gap-2">${d.streak ? `<span class="s-chip bg-gold-50 text-gold-700 !text-xs !py-1.5 !px-3"><i class="fa-solid fa-fire" aria-hidden="true"></i>${ui.plural(d.streak, 'day')} streak</span>` : ''}${d.assignmentsDueCount ? `<a href="/student/assignments" class="s-chip bg-rose-50 text-rose-700 !text-xs !py-1.5 !px-3"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i>${d.assignmentsDueCount} due</a>` : ''}${enrolled ? '<a href="/student/browse" class="btn btn-outline btn-sm">Browse courses</a>' : ''}</div>
+            </header>
+
+            <div class="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-px rounded-xl overflow-hidden border border-[#E6E8EC] bg-[#E6E8EC]">
+                ${stat('Courses enrolled', d.stats.enrolled, d.lessonsTotal ? `${d.lessonsDone} of ${d.lessonsTotal} lessons done` : '', '/student/my-courses')}
+                ${stat('In progress', d.stats.inProgress, '', '/student/my-courses?filter=in_progress')}
+                ${stat('Completed', d.stats.completed, '', '/student/my-courses?filter=completed')}
+                ${stat('Certificates', d.stats.certificates, '', '/student/certificates')}
             </div>
 
-            <div class="grid grid-cols-2 xl:grid-cols-4 gap-4">
-                ${stat('fa-book-open', 'bg-forest-50 text-forest', 'Courses enrolled', d.stats.enrolled, d.lessonsTotal ? `${d.lessonsDone}/${d.lessonsTotal} lessons done` : '', '/student/my-courses')}
-                ${stat('fa-spinner', 'bg-sky-50 text-sky-700', 'In progress', d.stats.inProgress, '', '/student/my-courses?filter=in_progress')}
-                ${stat('fa-flag-checkered', 'bg-emerald-50 text-emerald-700', 'Completed', d.stats.completed, '', '/student/my-courses?filter=completed')}
-                ${stat('fa-award', 'bg-gold-50 text-gold-700', 'Certificates earned', d.stats.certificates, '', '/student/certificates')}
-            </div>
-
-            <div class="grid xl:grid-cols-3 gap-5 mt-5">
-                <section class="xl:col-span-2" aria-labelledby="clh">
-                    ${c && c.current ? `<div class="relative overflow-hidden rounded-2xl bg-ink text-white">
-                        <div class="absolute inset-0 opacity-25">${c.thumbnail ? `<img src="${esc(c.thumbnail)}" alt="" class="w-full h-full object-cover">` : ''}</div>
-                        <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/90 to-ink/40"></div>
-                        <div class="relative p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center gap-6">
-                            <div class="flex-1 min-w-0">
-                                <h2 id="clh" class="text-[11px] font-bold uppercase tracking-[0.2em] text-gold-200">Continue learning</h2>
-                                <div class="text-2xl font-semibold mt-2 leading-snug">${esc(c.title)}</div>
-                                <div class="mt-3 space-y-1 text-sm text-white/75"><div><i class="fa-solid fa-layer-group w-5 text-gold-200"></i>Section ${c.current.sectionIndex} · ${esc(c.current.sectionTitle)}</div><div><i class="fa-solid ${S.LESSON_ICON(c.current.type)} w-5 text-gold-200"></i>Lesson ${c.current.index} · ${esc(c.current.title)}</div></div>
-                                <div class="mt-5 max-w-md"><div class="flex justify-between text-xs mb-1.5 text-white/70"><span>Progress</span><b class="text-white">${c.pct}%</b></div><div class="h-2 rounded-full bg-white/15"><div class="h-2 rounded-full bg-gold" style="width:${c.pct}%"></div></div></div>
-                            </div>
-                            <a href="/student/learn/${c.current.id}" class="btn btn-gold h-12 px-6 self-start sm:self-center"><i class="fa-solid fa-play text-xs"></i>${c.done ? 'Continue learning' : 'Start learning'}</a>
-                        </div></div>`
-                    : S.empty('fa-rocket', 'No courses yet', 'Enroll in a program to start learning. Your progress, assignments and certificates will appear here.', '<a href="/student/browse" class="btn btn-forest btn-sm">Browse courses</a>')}
-                </section>
-                <section class="s-card p-5 flex flex-col" aria-labelledby="oph">
-                    <h2 id="oph" class="s-h2">Overall learning progress</h2>
-                    <div class="flex items-center gap-5 mt-4">${S.ring(d.overall, 96, 9)}<div class="text-sm space-y-1.5"><div><b class="text-slate-900">${d.lessonsDone}</b> <span class="s-muted">of ${d.lessonsTotal} lessons</span></div><div><b class="text-slate-900">${d.stats.completed}</b> <span class="s-muted">courses completed</span></div><div><b class="text-slate-900">${d.streak}</b> <span class="s-muted">day study streak</span></div></div></div>
-                    <a href="/student/progress" class="mt-auto pt-4 text-sm font-semibold text-forest-600 hover:underline">View learning analytics <i class="fa-solid fa-arrow-right text-xs"></i></a>
-                </section>
-            </div>
-
-            <div class="grid xl:grid-cols-3 gap-5 mt-5">
-                <section class="s-card p-5" aria-labelledby="adh"><div class="flex items-center justify-between"><h2 id="adh" class="s-h2">Assignments due</h2><a href="/student/assignments" class="text-xs font-semibold text-forest-600">View all</a></div>
-                    ${d.assignmentsDue.length ? `<div class="divide-y divide-[#F1F3F5] mt-2">${d.assignmentsDue.map(a => `<a href="/student/assignments/${a.id}" class="flex items-center gap-3 py-3 group"><span class="w-9 h-9 rounded-xl ${a.status === 'overdue' ? 'bg-rose-50 text-rose-700' : 'bg-gold-50 text-gold-700'} flex items-center justify-center text-sm shrink-0"><i class="fa-solid fa-file-pen"></i></span><div class="min-w-0 flex-1"><div class="text-sm font-medium text-slate-900 truncate group-hover:underline">${esc(a.title)}</div><div class="text-xs ${a.status === 'overdue' ? 'text-rose-700' : 's-muted'} truncate">${a.due ? (a.status === 'overdue' ? 'Overdue · ' : 'Due ') + S.relDate(a.due) : 'No due date'} · ${esc(a.course)}</div></div></a>`).join('')}</div>`
-                    : `<p class="text-sm s-muted mt-4"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>No assignments due. You're on top of it.</p>`}</section>
-                <section class="s-card p-5" aria-labelledby="uch"><div class="flex items-center justify-between"><h2 id="uch" class="s-h2">Upcoming classes & events</h2><a href="/student/calendar" class="text-xs font-semibold text-forest-600">Calendar</a></div>
-                    ${d.upcoming.length ? `<div class="divide-y divide-[#F1F3F5] mt-1">${d.upcoming.slice(0, 4).map(S.eventRow).join('')}</div>` : '<p class="text-sm s-muted mt-4">No upcoming events.</p>'}</section>
-                <section class="s-card p-5" aria-labelledby="anh"><div class="flex items-center justify-between"><h2 id="anh" class="s-h2">Announcements</h2><a href="/student/announcements" class="text-xs font-semibold text-forest-600">View all</a></div>
-                    ${d.announcements.length ? `<div class="divide-y divide-[#F1F3F5] mt-1">${d.announcements.map(a => `<a href="/student/announcements#${a.id}" class="block py-3 group"><div class="flex items-center gap-2">${a.read ? '' : '<span class="w-2 h-2 rounded-full bg-gold shrink-0" aria-label="Unread"></span>'}<span class="text-sm ${a.read ? 'text-slate-700' : 'font-semibold text-slate-900'} truncate group-hover:underline">${esc(a.title)}</span></div><div class="text-xs s-muted line-clamp-2 mt-0.5">${esc(a.body)}</div><div class="text-[11px] text-slate-400 mt-1">${ui.timeAgo(a.createdAt)}</div></a>`).join('')}</div>` : '<p class="text-sm s-muted mt-4">No announcements yet.</p>'}</section>
-            </div>
-
-            ${d.courses.length ? `<section class="mt-8" aria-labelledby="mch"><div class="flex items-center justify-between mb-4"><h2 id="mch" class="text-lg font-semibold text-slate-900">My courses</h2><a href="/student/my-courses" class="text-sm font-semibold text-forest-600">View all</a></div>
-                <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-5">${d.courses.map(S.courseCard).join('')}</div></section>` : ''}
-
-            <section class="s-card mt-8 overflow-hidden" aria-labelledby="rnh"><div class="flex items-center justify-between px-5 pt-5 pb-3"><h2 id="rnh" class="s-h2">Recent notifications</h2><a href="/student/notifications" class="text-xs font-semibold text-forest-600">View all</a></div>
-                ${d.notifications.length ? `<div class="divide-y divide-[#F1F3F5]">${d.notifications.map(n => S.notificationRow(n, true)).join('')}</div>` : '<p class="px-5 pb-5 text-sm s-muted">No notifications yet.</p>'}</section>`;
+            <div class="mt-6 grid xl:grid-cols-[minmax(0,1fr)_340px] gap-6 items-start">
+                <div class="space-y-6 min-w-0">
+                    ${hero}
+                    ${d.courses.length ? `<section aria-labelledby="mch"><div class="flex items-center justify-between mb-3"><h2 id="mch" class="s-h2">My courses</h2><a href="/student/my-courses" class="text-xs font-semibold text-forest-600 hover:underline">View all</a></div>
+                        <div class="grid sm:grid-cols-2 gap-5">${d.courses.map(S.courseCard).join('')}</div></section>` : ''}
+                    <section class="s-card overflow-hidden" aria-labelledby="rnh"><div class="flex items-center justify-between px-5 pt-5 pb-3"><h2 id="rnh" class="s-h2">Recent notifications</h2><a href="/student/notifications" class="text-xs font-semibold text-forest-600 hover:underline">View all</a></div>
+                        ${d.notifications.length ? `<div class="divide-y divide-[#F1F3F5]">${d.notifications.map(n => S.notificationRow(n, true)).join('')}</div>` : '<p class="px-5 pb-5 text-sm s-muted">No notifications yet.</p>'}</section>
+                </div>
+                <aside class="space-y-5 min-w-0" aria-label="Your schedule and updates">
+                    ${enrolled ? side('oph', 'Learning progress', ['/student/progress', 'Details'], `<div class="flex items-center gap-5 mt-4">${S.ring(d.overall, 84, 8)}<div class="text-sm space-y-1.5"><div><b class="text-slate-900">${d.lessonsDone}</b> <span class="s-muted">of ${d.lessonsTotal} lessons</span></div><div><b class="text-slate-900">${d.stats.completed}</b> <span class="s-muted">courses completed</span></div></div></div>`) : ''}
+                    ${side('adh', 'Assignments due', ['/student/assignments', 'View all'], d.assignmentsDue.length
+                        ? `<div class="divide-y divide-[#F1F3F5] mt-2">${d.assignmentsDue.map(a => `<a href="/student/assignments/${a.id}" class="flex items-center gap-3 py-3 group"><span class="w-9 h-9 rounded-lg ${a.status === 'overdue' ? 'bg-rose-50 text-rose-700' : 'bg-gold-50 text-gold-700'} flex items-center justify-center text-sm shrink-0"><i class="fa-solid fa-file-pen" aria-hidden="true"></i></span><div class="min-w-0 flex-1"><div class="text-sm font-medium text-slate-900 truncate group-hover:underline">${esc(a.title)}</div><div class="text-xs ${a.status === 'overdue' ? 'text-rose-700' : 's-muted'} truncate">${a.due ? (a.status === 'overdue' ? 'Overdue · ' : 'Due ') + S.relDate(a.due) : 'No due date'} · ${esc(a.course)}</div></div></a>`).join('')}</div>`
+                        : `<p class="text-sm s-muted mt-3">${enrolled ? 'Nothing due. You are up to date.' : 'Assignments from your courses will show here.'}</p>`)}
+                    ${side('uch', 'Upcoming classes & events', ['/student/calendar', 'Calendar'], d.upcoming.length ? `<div class="divide-y divide-[#F1F3F5] mt-1">${d.upcoming.slice(0, 4).map(S.eventRow).join('')}</div>` : '<p class="text-sm s-muted mt-3">No upcoming events.</p>')}
+                    ${side('anh', 'Announcements', ['/student/announcements', 'View all'], d.announcements.length
+                        ? `<div class="divide-y divide-[#F1F3F5] mt-1">${d.announcements.map(a => `<a href="/student/announcements#${a.id}" class="block py-3 group"><div class="flex items-center gap-2">${a.read ? '' : '<span class="w-2 h-2 rounded-full bg-gold shrink-0" aria-label="Unread"></span>'}<span class="text-sm ${a.read ? 'text-slate-700' : 'font-semibold text-slate-900'} truncate group-hover:underline">${esc(a.title)}</span></div><div class="text-xs s-muted line-clamp-2 mt-0.5">${esc(a.body)}</div><div class="text-[11px] s-muted mt-1">${ui.timeAgo(a.createdAt)}</div></a>`).join('')}</div>`
+                        : '<p class="text-sm s-muted mt-3">No announcements yet.</p>')}
+                </aside>
+            </div>`;
         el.querySelectorAll('[data-notif-link]').forEach(a => a.addEventListener('click', () => api.markNotification(a.dataset.notifLink)));
     } });
 })();

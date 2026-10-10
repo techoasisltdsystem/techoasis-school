@@ -48,7 +48,12 @@ function openCourseDetail(slugOrId) { const c = lms.courseBySlug(slugOrId); if (
 function renderAuthArea() {
     const me = auth.current(), el = document.getElementById('authArea');
     if (!me) {
-        el.innerHTML = `<a href="/student/login" class="hidden sm:inline-flex whitespace-nowrap text-sm font-semibold text-forest hover:text-forest-600 px-2">Sign in</a>
+        el.innerHTML = `<div class="relative hidden sm:block" id="signinWrap">
+                <button type="button" id="signinBtn" onclick="toggleSignin()" class="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-forest hover:text-forest-600 px-2 h-10" aria-haspopup="true" aria-expanded="false" aria-controls="signinMenu">Sign in <i class="fa-solid fa-chevron-down text-[10px]" aria-hidden="true"></i></button>
+                <div id="signinMenu" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-lift border border-slate-200 py-2 z-50">
+                    <a href="/student/login" class="block px-4 py-2.5 hover:bg-ivory"><span class="block text-sm font-semibold text-ink">Student sign in</span><span class="block text-xs text-slate-500">Your courses, progress and certificates</span></a>
+                    <a href="/staff/login" class="block px-4 py-2.5 hover:bg-ivory"><span class="block text-sm font-semibold text-ink">Staff dashboard sign in</span><span class="block text-xs text-slate-500">For approved instructors and staff</span></a>
+                </div></div>
             <span class="hidden sm:inline-flex"><a href="#catalog" onclick="return go('catalog')" class="btn btn-forest h-10 whitespace-nowrap">Explore courses</a></span>`;
         return;
     }
@@ -64,7 +69,14 @@ function renderAuthArea() {
             </div>
         </div>`;
 }
+function toggleSignin(force) {
+    const m = document.getElementById('signinMenu'), b = document.getElementById('signinBtn'); if (!m) return;
+    const open = force === undefined ? m.classList.contains('hidden') : force;
+    m.classList.toggle('hidden', !open); b.setAttribute('aria-expanded', open);
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { const m = document.getElementById('signinMenu'); if (m && !m.classList.contains('hidden')) { toggleSignin(false); document.getElementById('signinBtn').focus(); } } });
 document.addEventListener('click', e => {
+    if (!e.target.closest('#signinWrap')) toggleSignin(false);
     const m = document.getElementById('userMenu'); if (m && !e.target.closest('#authArea')) m.classList.add('hidden');
 });
 
@@ -186,12 +198,14 @@ const coursePeek = (() => {
 // ---------------- Hero ----------------
 // Photos slide sideways behind the headline and the featured card follows, cycling through programmes from different categories.
 let heroSlides = [], heroIdx = 0, heroTimer = null, heroHeld = false, heroUserPaused = false;
-const heroImg = c => String(c.thumbnail).replace(/([?&]w=)\d+/, '$11200');
+// Background photos supplied by the school (assets/img). Slide i shows photo i next to programme i.
+const HERO_PHOTOS = [['learners', '35% 40%'], ['laptop-city', 'center'], ['study-desk', 'center'], ['laptop-blue', 'center']];
+const heroPhoto = i => HERO_PHOTOS[i % HERO_PHOTOS.length];
 function heroCourses() {
     const out = [], first = lms.courseBySlug('web-development');   // the flagship programme leads, then one per other category
     if (first) out.push(first);
     topCategories().forEach(cat => { const c = lms.listedCourses().find(x => x.categoryId === cat.id); if (c && !out.some(o => o.categoryId === c.categoryId)) out.push(c); });
-    return out.slice(0, 5);
+    return out.slice(0, HERO_PHOTOS.length);
 }
 function heroCard(c) {
     const ins = lms.primaryInstructor(c.id), meta = lms.courseMeta(c.id);
@@ -214,7 +228,7 @@ function renderHero() {
     heroSlides = heroCourses();
     const track = document.getElementById('heroBgTrack');
     if (!heroSlides.length) { track.innerHTML = ''; document.getElementById('heroFeature').innerHTML = ''; document.getElementById('heroDots').innerHTML = ''; return; }
-    track.innerHTML = heroSlides.concat(heroSlides[0]).map((c, i) => `<div class="hero-bg-slide"><img src="${esc(heroImg(c))}" alt="" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}></div>`).join('');
+    track.innerHTML = heroSlides.concat(heroSlides[0]).map((c, i) => { const [f, pos] = heroPhoto(i % heroSlides.length); return `<div class="hero-bg-slide"><img src="assets/img/${f}.webp" alt="" style="object-position:${pos}" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}></div>`; }).join('');
     document.getElementById('heroDots').innerHTML = heroSlides.map((c, i) => `<button type="button" onclick="heroShow(${i}, true)" class="hero-dot h-2.5 rounded-full transition-all" aria-label="Show ${esc(c.title)}"></button>`).join('');
     heroIdx = 0; heroPaint(false);
     document.getElementById('heroToggle').classList.toggle('hidden', heroSlides.length < 2);
@@ -266,7 +280,7 @@ function renderPopular() {
 function renderPromo() {
     const c = lms.courseBySlug('artificial-intelligence-ai') || popularCourses()[0]; if (!c) return;
     document.getElementById('promoAi').innerHTML = `
-        <div class="org-slider absolute inset-0 opacity-30" aria-hidden="true"><div class="org-slider-track" style="animation-delay:-10s"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=70" alt="" loading="lazy"></div></div>
+        <div class="org-slider absolute inset-0 opacity-30" aria-hidden="true"><div class="org-slider-track" style="animation-delay:-10s"><img src="assets/img/study-desk.webp" alt="" loading="lazy"><img src="assets/img/laptop-city.webp" alt="" loading="lazy"><img src="assets/img/laptop-blue.webp" alt="" loading="lazy"><img src="assets/img/study-desk.webp" alt="" loading="lazy"></div></div>
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/30"></div>
         <div class="absolute right-0 bottom-0 w-[42%] h-full hidden sm:block"><img src="${esc(c.thumbnail)}" alt="" class="absolute right-6 bottom-6 w-[85%] max-w-[220px] aspect-[4/3] object-cover rounded-2xl shadow-lift rotate-2"><span class="absolute left-0 top-10 w-14 h-14 rounded-full bg-forest text-gold flex items-center justify-center shadow-lift text-xl"><i class="fa-solid fa-wand-magic-sparkles"></i></span></div>
         <div class="relative sm:max-w-[55%]"><div class="flex items-center gap-2 text-sm font-semibold text-slate-600">${ui.logoMark(22)} Tech Oasis AI</div>

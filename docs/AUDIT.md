@@ -72,6 +72,11 @@ Homepage order: Navigation → Hero (outcome headline, two CTAs, sliding program
 
 Navigation: Home, Courses, For Individuals (how it works), For Organisations, About, Contact, Sign in, Explore courses. Hamburger menu below 1280 px with focus handling and Escape. The header search box was replaced by a search icon that opens the catalogue's live search (the box did not fit beside six links); the mobile menu keeps its search field.
 
+Follow-up changes after review:
+- **Photos.** The stock thumbnails behind the hero and the two promo cards were replaced by the four photos supplied by the school (`assets/img/*.webp`, resized and compressed: 20 to 72 KB each). The hero slides through the four photos with four programmes from different categories. `study-desk.webp` is only 768 px wide, so it looks soft when shown full width; supply a larger original if you can.
+- **Staff sign in.** "Sign in" in the header (and on the course, verify and mobile menus) now opens a small menu with **Student sign in** and **Staff dashboard sign in** (`/staff/login`). It is keyboard accessible (Escape closes it, focus returns).
+- **Student dashboard.** Restructured: smaller greeting (no emoji), one compact stat strip instead of four large cards, a "Continue learning" panel (or, for new learners, "Start your first course" with three steps and three suggested courses, free ones first), and a right-hand column for progress, assignments, events and announcements. Empty states are one line each. Streak and due chips only show when relevant.
+
 Not built because no genuine content exists (do not invent it): student projects showcase, testimonials, instructor profiles on the homepage, a Ghana cedi price display (needs a reliable rate source or an agreed fixed rate; checkout currency is shown as `Prices are in USD`).
 
 ## 5. Backend and security: what is required

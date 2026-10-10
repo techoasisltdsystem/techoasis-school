@@ -7,7 +7,10 @@
         const me = auth.current(), here = encodeURIComponent('/' + location.pathname.split('/').pop() + location.search);
         const cta = me
             ? `<a href="${me.role === 'student' ? '/student/dashboard' : '/staff/dashboard'}" class="btn btn-outline btn-sm"><span class="w-6 h-6 -ml-1 rounded-full bg-forest text-gold text-[10px] font-bold flex items-center justify-center">${esc(ui.initials(me.name))}</span>${me.role === 'staff' ? 'Staff Portal' : 'My Learning'}</a>`
-            : `<a href="/student/login?next=${here}" class="hidden sm:inline-flex whitespace-nowrap text-sm font-semibold text-forest px-2">Sign in</a><span class="hidden sm:inline-flex"><a href="index.html#catalog" class="btn btn-forest h-10 whitespace-nowrap">Explore courses</a></span>`;
+            : `<div class="relative hidden sm:block" id="signinWrap"><button type="button" id="signinBtn" class="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-forest px-2 h-10" aria-haspopup="true" aria-expanded="false" aria-controls="signinMenu">Sign in <i class="fa-solid fa-chevron-down text-[10px]" aria-hidden="true"></i></button>
+                <div id="signinMenu" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-lift border border-slate-200 py-2 z-50">
+                    <a href="/student/login?next=${here}" class="block px-4 py-2.5 hover:bg-ivory"><span class="block text-sm font-semibold text-ink">Student sign in</span><span class="block text-xs text-slate-500">Your courses, progress and certificates</span></a>
+                    <a href="/staff/login" class="block px-4 py-2.5 hover:bg-ivory"><span class="block text-sm font-semibold text-ink">Staff dashboard sign in</span><span class="block text-xs text-slate-500">For approved instructors and staff</span></a></div></div><span class="hidden sm:inline-flex"><a href="index.html#catalog" class="btn btn-forest h-10 whitespace-nowrap">Explore courses</a></span>`;
         return `<header id="siteHeader" class="sticky top-0 z-40 bg-white border-b border-slate-200 no-print">
             <div class="${W} h-16 flex items-center gap-3 xl:gap-8">
                 <button id="chromeMenuBtn" class="xl:hidden w-11 h-11 -ml-2 rounded-lg hover:bg-slate-100" aria-label="Open menu" aria-expanded="false" aria-controls="chromeMenu"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
@@ -15,7 +18,7 @@
                 <nav class="hidden xl:flex items-center gap-1 text-sm font-semibold text-slate-700" aria-label="Main">${LINKS.map(([t, h]) => `<a href="${h}" class="nav-link">${t}</a>`).join('')}</nav>
                 <div class="ml-auto flex items-center gap-2 sm:gap-3">${cta}</div>
             </div>
-            <nav id="chromeMenu" class="hidden xl:hidden border-t border-slate-200 bg-white px-4 py-2 text-sm font-semibold" aria-label="Mobile">${LINKS.concat([['Check a certificate', 'verify.html'], ['Sign in', '/student/login']]).map(([t, h]) => `<a href="${h}" class="block px-3 py-3 rounded-lg hover:bg-ivory">${t}</a>`).join('')}</nav>
+            <nav id="chromeMenu" class="hidden xl:hidden border-t border-slate-200 bg-white px-4 py-2 text-sm font-semibold" aria-label="Mobile">${LINKS.concat([['Check a certificate', 'verify.html'], ['Student sign in', '/student/login'], ['Staff dashboard sign in', '/staff/login']]).map(([t, h]) => `<a href="${h}" class="block px-3 py-3 rounded-lg hover:bg-ivory">${t}</a>`).join('')}</nav>
         </header>`;
     }
     function footer() {
@@ -37,6 +40,9 @@
         if (h) h.outerHTML = header(); if (f) f.outerHTML = footer();
         const btn = document.getElementById('chromeMenuBtn'), menu = document.getElementById('chromeMenu');
         if (btn) btn.onclick = () => { const open = menu.classList.toggle('hidden') === false; btn.setAttribute('aria-expanded', open); };
+        const sb = document.getElementById('signinBtn'), sm = document.getElementById('signinMenu');
+        const setSignin = open => { if (!sm) return; sm.classList.toggle('hidden', !open); sb.setAttribute('aria-expanded', open); };
+        if (sb) { sb.onclick = () => setSignin(sm.classList.contains('hidden')); document.addEventListener('click', e => { if (!e.target.closest('#signinWrap')) setSignin(false); }); document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sm.classList.contains('hidden')) { setSignin(false); sb.focus(); } }); }
         document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu && !menu.classList.contains('hidden')) { menu.classList.add('hidden'); btn.setAttribute('aria-expanded', 'false'); btn.focus(); } });
     } };
 })();
