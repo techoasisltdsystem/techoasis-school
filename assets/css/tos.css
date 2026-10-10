@@ -166,6 +166,18 @@ textarea.field { resize: vertical; min-height: 5rem; line-height: 1.5; }
 .hero-card-in { animation: hero-card-in .6s ease-out; }
 @keyframes hero-card-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
+/* Sign in / Create account card: the forest panel slides over whichever form is not in use (768 px and up) */
+.auth-panel { position: absolute; top: 0; bottom: 0; left: 0; width: 50%; z-index: 2; transition: transform .7s cubic-bezier(.65, 0, .35, 1); }
+.auth-card[data-mode="login"] .auth-panel { transform: translateX(100%); }
+.auth-card .auth-form { opacity: 1; visibility: visible; transition: opacity .45s .25s, visibility 0s 0s; }
+@media (min-width: 768px) {
+    .auth-card .auth-login { grid-column: 1; grid-row: 1; }
+    .auth-card .auth-reg { grid-column: 2; grid-row: 1; }
+    .auth-card[data-mode="login"] .auth-reg, .auth-card[data-mode="register"] .auth-login { opacity: 0; visibility: hidden; transition: opacity .25s, visibility 0s .7s; }
+}
+@media (max-width: 767px) { .auth-card[data-mode="login"] .auth-reg, .auth-card[data-mode="register"] .auth-login { display: none; } }
+.auth-panel :focus-visible { outline-color: var(--gold-300); }
+
 /* Entrance reveal on scroll */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
 .reveal.in { opacity: 1; transform: none; }
