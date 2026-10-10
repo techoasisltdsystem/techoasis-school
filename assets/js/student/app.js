@@ -231,7 +231,21 @@ S.refreshCounts = async () => {
     document.title = (S.counts.notifications ? `(${S.counts.notifications}) ` : '') + (S.titleText || S.app.name) + ' | Tech Oasis School';
 };
 S.setTitle = t => { S.titleText = t; const h = document.getElementById('pageTitle'); if (h) h.textContent = t; document.title = (S.counts.notifications ? '(' + S.counts.notifications + ') ' : '') + t + ' | Tech Oasis School'; };
-S.refreshMe = async () => { S.me = await S.app.api.me(); const side = document.getElementById('sideNav'); if (side) { side.innerHTML = sidebarHtml(); bindShell(); } };
+// Keeps the active menu link inside the visible part of the (scrollable) sidebar, scrolling the menu only as far as needed.
+S.revealActive = () => {
+    const nav = document.querySelector('#sideNav nav'), a = nav && nav.querySelector('[aria-current="page"]'); if (!a) return;
+    const nr = nav.getBoundingClientRect(), ar = a.getBoundingClientRect();
+    if (ar.bottom > nr.bottom - 8) nav.scrollTop += ar.bottom - nr.bottom + 8; else if (ar.top < nr.top + 8) nav.scrollTop -= nr.top + 8 - ar.top;
+};
+// Redraws the sidebar (active link, badges, account card) without losing the student's place in a long menu:
+// the scrollable <nav> is rebuilt each time, so its scroll position is saved and restored.
+S.repaintSidebar = () => {
+    const side = document.getElementById('sideNav'); if (!side) return;
+    const before = side.querySelector('nav'), top = before ? before.scrollTop : 0;
+    side.innerHTML = sidebarHtml(); bindShell();
+    const nav = side.querySelector('nav'); if (nav) { nav.scrollTop = top; S.revealActive(); }
+};
+S.refreshMe = async () => { S.me = await S.app.api.me(); S.repaintSidebar(); };
 
 S.logout = () => { auth.logout(); S.me = null; S.go(S.url('login?signedout=1'), { replace: true }); };
 S.applyPrefs = () => {
@@ -283,9 +297,9 @@ S.dispatch = async function () {
     S.current = route;
     try { if (!S.me || S.me.id !== s.id || S.meApp !== S.app.base) { S.me = await S.app.api.me(); S.meApp = S.app.base; S.counts = await S.app.api.counts(); } } catch (e) { return S.go(S.url('login?expired=1'), { replace: true }); }
     S.applyPrefs();
-    if (S.shellKey !== S.app.base + ':' + route.layout || !document.getElementById('main')) renderShell(route);
+    if (S.shellKey !== S.app.base + ':' + route.layout || !document.getElementById('main')) { renderShell(route); S.revealActive(); }
     else {
-        document.getElementById('sideNav').innerHTML = sidebarHtml(); bindShell();
+        S.repaintSidebar();
         const bn = document.querySelector('.s-bottom-nav'); if (bn) bn.outerHTML = bottomNavHtml();
     }
     S.setTitle(route.title || S.app.name);
