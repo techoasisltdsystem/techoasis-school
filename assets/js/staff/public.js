@@ -215,14 +215,13 @@
             <div class="hidden md:block absolute -left-24 -bottom-24 w-72 h-72 rounded-full bg-forest-600" aria-hidden="true"></div>
             <div class="hidden md:block absolute left-24 bottom-10 w-44 h-44 rounded-full" style="background: radial-gradient(circle at 35% 30%, #3A8D7C, #14584A 70%)" aria-hidden="true"></div>
             <div class="hidden md:block absolute -left-10 -top-10 w-40 h-40 rounded-full bg-forest-500/60" aria-hidden="true"></div>
-            <div class="hidden md:block absolute top-1/2 -translate-y-1/2 left-[46%] w-[90%] aspect-square rounded-full bg-white" aria-hidden="true"></div>
             <div class="relative grid md:grid-cols-2 md:min-h-[560px]">
                 <div class="hidden md:flex flex-col items-center justify-center text-center px-8 pb-24">
                     ${ui.animatedLogo(150, 'login')}
                     <div class="text-white text-xl font-extrabold tracking-[0.2em] mt-5">TECH <span class="gold-text">OASIS</span></div>
                     <p class="text-[10px] text-forest-200 mt-2 uppercase tracking-[0.4em]">Where Innovation Meets Expertise</p>
                 </div>
-                <div class="light-surface bg-white md:bg-transparent p-7 sm:p-10 md:py-14 md:pl-24 md:pr-10 flex flex-col justify-center">
+                <div class="light-surface staff-form-col bg-white p-7 sm:p-10 md:py-14 md:pl-24 md:pr-10 flex flex-col justify-center">
                     <a href="/" class="md:hidden self-start mb-6" aria-label="Tech Oasis School website">${ui.brandLogo(false, 36)}</a>
                     <h1 class="text-[30px] font-extrabold text-ink tracking-tight">Sign in</h1>
                     <p class="text-sm text-slate-500 mt-1">Staff dashboard for approved Tech Oasis teaching and support staff.</p>

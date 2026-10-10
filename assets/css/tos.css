@@ -178,6 +178,18 @@ textarea.field { resize: vertical; min-height: 5rem; line-height: 1.5; }
 @media (max-width: 767px) { .auth-card[data-mode="login"] .auth-reg, .auth-card[data-mode="register"] .auth-login { display: none; } }
 .auth-panel :focus-visible { outline-color: var(--gold-300); }
 
+/* Staff sign-in: the white form panel has an elliptical left edge whose size follows the card's height,
+   so the curve never cuts into the text however many notices are shown above the form */
+@media (min-width: 768px) { .staff-form-col { border-top-left-radius: 32% 50%; border-bottom-left-radius: 32% 50%; } }
+
+/* Horizontal chip rows: edge fades and arrow buttons show when there is more to scroll to */
+.scroll-hint { position: relative; --hint-bg: #FBF8F1; }
+.scroll-hint-btn { position: absolute; top: 0; bottom: 4px; width: 3.25rem; display: none; align-items: center; border: 0; padding: 0; cursor: pointer; z-index: 2; }
+.scroll-hint-prev { left: 0; justify-content: flex-start; background: linear-gradient(to right, var(--hint-bg) 45%, transparent); }
+.scroll-hint-next { right: 0; justify-content: flex-end; background: linear-gradient(to left, var(--hint-bg) 45%, transparent); }
+.scroll-hint-btn span { width: 2rem; height: 2rem; border-radius: 999px; background: #fff; color: var(--forest); border: 1px solid #CBD5E1; box-shadow: 0 2px 6px rgba(10,31,26,.15); display: flex; align-items: center; justify-content: center; font-size: .7rem; }
+.scroll-hint.can-prev .scroll-hint-prev, .scroll-hint.can-next .scroll-hint-next { display: flex; }
+
 /* Entrance reveal on scroll */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
 .reveal.in { opacity: 1; transform: none; }

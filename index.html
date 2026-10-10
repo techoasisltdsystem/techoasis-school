@@ -131,7 +131,11 @@
                     <p class="text-slate-600 mt-2 max-w-xl">Choose a category to see programmes you can start today. Every course page shows the level, duration, instructor and price before you enrol.</p></div>
                     <a href="#catalog" onclick="return go('catalog')" class="btn btn-outline">View all courses <i class="fa-solid fa-arrow-right text-xs"></i></a>
                 </div>
-                <div id="catTabs" class="flex gap-2 overflow-x-auto no-scrollbar pb-1" role="tablist" aria-label="Course categories"></div>
+                <div class="scroll-hint" data-scroll-hint data-autoscroll>
+                    <button type="button" class="scroll-hint-btn scroll-hint-prev" data-dir="-1" aria-hidden="true" tabindex="-1"><span><i class="fa-solid fa-chevron-left"></i></span></button>
+                    <div id="catTabs" class="flex gap-2 overflow-x-auto no-scrollbar pb-1" role="tablist" aria-label="Course categories"></div>
+                    <button type="button" class="scroll-hint-btn scroll-hint-next" data-dir="1" aria-hidden="true" tabindex="-1"><span><i class="fa-solid fa-chevron-right"></i></span></button>
+                </div>
                 <div id="catCards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-5"></div>
             </section>
 
@@ -174,7 +178,11 @@
                     <div id="pathBox" class="path-box relative">
                         <a href="#catalog" onclick="return go('catalog')" class="font-display text-2xl sm:text-[32px] leading-tight hover:text-gold-200 inline-flex items-center gap-3">Skills for the work you do, and the career you want <i class="fa-solid fa-arrow-right text-lg"></i></a>
                         <p class="text-white/75 text-sm mt-2">Choose a path to see the programmes that lead there.</p>
-                        <div id="pathTabs" class="flex gap-2 mt-6 overflow-x-auto no-scrollbar pb-1" role="tablist"></div>
+                        <div class="scroll-hint mt-6" data-scroll-hint style="--hint-bg:#0C3B2E">
+                            <button type="button" class="scroll-hint-btn scroll-hint-prev" data-dir="-1" aria-hidden="true" tabindex="-1"><span><i class="fa-solid fa-chevron-left"></i></span></button>
+                            <div id="pathTabs" class="flex gap-2 overflow-x-auto no-scrollbar pb-1" role="tablist"></div>
+                            <button type="button" class="scroll-hint-btn scroll-hint-next" data-dir="1" aria-hidden="true" tabindex="-1"><span><i class="fa-solid fa-chevron-right"></i></span></button>
+                        </div>
                         <div id="pathCards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6"></div>
                     </div>
                 </div>

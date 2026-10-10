@@ -263,6 +263,40 @@ function heroSyncToggle() {
 }
 function heroToggle() { heroUserPaused = !heroUserPaused; heroSyncToggle(); heroSchedule(); }
 
+// ---------------- Scroll hints ----------------
+// Rows of chips that scroll sideways show a fade and an arrow on the side that has more. Rows marked data-autoscroll also pan slowly
+// back and forth by themselves so students can see there are more; the panning stops for good once the student touches, clicks, scrolls or tabs into the row.
+function initScrollHints() {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    ui.$$('[data-scroll-hint]').forEach(wrap => {
+        const sc = wrap.querySelector('.overflow-x-auto');
+        const update = () => { wrap.classList.toggle('can-prev', sc.scrollLeft > 4); wrap.classList.toggle('can-next', sc.scrollLeft + sc.clientWidth < sc.scrollWidth - 4); };
+        sc.addEventListener('scroll', update, { passive: true }); addEventListener('resize', update);
+        new MutationObserver(update).observe(sc, { childList: true }); new ResizeObserver(update).observe(sc);
+        wrap.querySelectorAll('[data-dir]').forEach(b => b.addEventListener('click', () => sc.scrollBy({ left: +b.dataset.dir * Math.max(160, sc.clientWidth * 0.7), behavior: 'smooth' })));
+        update();
+        if (!wrap.hasAttribute('data-autoscroll') || reduce) return;
+        const SPEED = 32, HOLD = 1400;                        // pixels per second; pause at each end in ms
+        let pos = 0, dir = 1, last = 0, holdUntil = performance.now() + 1800, visible = false, hovering = false, stopped = false;
+        const stop = () => { stopped = true; };
+        ['pointerdown', 'touchstart', 'wheel', 'keydown', 'focusin'].forEach(ev => wrap.addEventListener(ev, stop, { passive: true }));
+        wrap.addEventListener('mouseenter', () => { hovering = true; }); wrap.addEventListener('mouseleave', () => { hovering = false; });
+        new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.6 }).observe(sc);
+        const tick = t => {
+            if (stopped) return;
+            const dt = Math.min((t - (last || t)) / 1000, 0.05); last = t;
+            const max = sc.scrollWidth - sc.clientWidth;
+            if (visible && !hovering && max > 8 && t >= holdUntil && !document.hidden) {
+                pos = Math.max(0, Math.min(max, pos + dir * SPEED * dt));
+                sc.scrollLeft = pos;
+                if (pos >= max && dir > 0) { dir = -1; holdUntil = t + HOLD; } else if (pos <= 0 && dir < 0) { dir = 1; holdUntil = t + HOLD; }
+            } else if (!visible || max <= 8) pos = sc.scrollLeft;
+            requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+    });
+}
+
 // ---------------- Homepage sections ----------------
 function renderPopular() {
     const all = lms.listedCourses();
@@ -484,7 +518,7 @@ sessionStorage.setItem('tos_seen', '1');
 document.getElementById('year').textContent = new Date().getFullYear();
 // Boot after every script (including portal.js, which defines the sign-in modal) has loaded
 document.addEventListener('DOMContentLoaded', function route() {
-    ui.applyBrandLogos(); applyEmails(); renderHome();
+    ui.applyBrandLogos(); applyEmails(); renderHome(); initScrollHints();
     const h = location.hash.slice(1), p = ui.qs('login');
     if (p === 'student') { location.replace('/student/' + (ui.qs('mode') === 'register' ? 'register' : 'login') + (ui.qs('next') ? '?next=' + encodeURIComponent('/' + ui.qs('next').replace(/^\/+/, '')) : '')); return; }
     if (p === 'staff') { location.replace('/staff/login'); return; }
