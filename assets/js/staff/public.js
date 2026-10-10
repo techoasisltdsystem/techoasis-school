@@ -209,21 +209,53 @@
     } });
 
     // ---------------- Staff login ----------------
+    // Sign-in screen: brand-gradient page, one card. Left: the animated Tech Oasis mark on forest green. Right: the form.
+    const loginShell = (msg, form) => `<main class="relative min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 bg-gradient-to-br from-forest-600 via-forest to-ink overflow-hidden">
+        <div class="relative w-full max-w-[940px] rounded-2xl overflow-hidden bg-forest shadow-lift md:min-h-[560px]">
+            <div class="hidden md:block absolute -left-24 -bottom-24 w-72 h-72 rounded-full bg-forest-600" aria-hidden="true"></div>
+            <div class="hidden md:block absolute left-24 bottom-10 w-44 h-44 rounded-full" style="background: radial-gradient(circle at 35% 30%, #3A8D7C, #14584A 70%)" aria-hidden="true"></div>
+            <div class="hidden md:block absolute -left-10 -top-10 w-40 h-40 rounded-full bg-forest-500/60" aria-hidden="true"></div>
+            <div class="hidden md:block absolute top-1/2 -translate-y-1/2 left-[46%] w-[90%] aspect-square rounded-full bg-white" aria-hidden="true"></div>
+            <div class="relative grid md:grid-cols-2 md:min-h-[560px]">
+                <div class="hidden md:flex flex-col items-center justify-center text-center px-8 pb-24">
+                    ${ui.animatedLogo(150, 'login')}
+                    <div class="text-white text-xl font-extrabold tracking-[0.2em] mt-5">TECH <span class="gold-text">OASIS</span></div>
+                    <p class="text-[10px] text-forest-200 mt-2 uppercase tracking-[0.4em]">Where Innovation Meets Expertise</p>
+                </div>
+                <div class="light-surface bg-white md:bg-transparent p-7 sm:p-10 md:py-14 md:pl-24 md:pr-10 flex flex-col justify-center">
+                    <a href="/" class="md:hidden self-start mb-6" aria-label="Tech Oasis School website">${ui.brandLogo(false, 36)}</a>
+                    <h1 class="text-[30px] font-extrabold text-ink tracking-tight">Sign in</h1>
+                    <p class="text-sm text-slate-500 mt-1">Staff dashboard for approved Tech Oasis teaching and support staff.</p>
+                    ${ui.demoNotice()}
+                    <div class="mt-6">${msg}${form}</div>
+                </div>
+            </div>
+        </div>
+        <p class="relative text-xs text-white/60 mt-5">&copy; ${new Date().getFullYear()} Tech Oasis School · <a href="mailto:${esc(school().email)}" class="underline">${esc(school().email)}</a></p>
+    </main>`;
+    const fillField = (id, type, auto, placeholder, icon, label, extra) => `<div class="relative"><label for="${id}" class="sr-only">${label}</label>
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-ink" aria-hidden="true"><i class="fa-solid ${icon}"></i></span>
+        <input id="${id}" type="${type}" required autocomplete="${auto}" placeholder="${placeholder}" class="w-full h-12 rounded-lg bg-slate-100 border border-transparent pl-11 ${extra ? 'pr-16' : 'pr-4'} text-sm text-slate-900 placeholder:text-slate-500 focus:outline-none focus:bg-white focus:border-forest-600 focus:ring-2 focus:ring-forest-600/20 transition">
+        ${extra || ''}</div>`;
     S.route('/staff/login', { title: 'Staff sign in', layout: 'auth', render: el => {
         const q = S.q, state = q('state');
-        const STATE_MSG = { suspended: 'Your staff account is currently suspended. Please contact administration.', banned: 'Your staff account has been disabled. Please contact administration.', archived: 'This account is no longer active. Please contact administration.', deleted: 'This account is no longer active. Please contact administration.' };
+        const STATE_MSG = { suspended: 'Your staff account is currently suspended. Please contact administration.', banned: 'Your staff account has been disabled. Please contact administration.', archived: 'This account is no longer active. Please contact administration.' };
         const msg = state && STATE_MSG[state] ? notice('error', esc(STATE_MSG[state])) : q('expired') ? notice('warn', 'Your session has expired. Please sign in again.')
             : q('signedout') ? notice('ok', 'You have been signed out.') : q('reset') ? notice('ok', 'Your password has been updated. Sign in with your new password.') : '';
-        el.innerHTML = layout('Staff sign in', 'For approved Tech Oasis teaching and support staff.', `${msg}
-            <form id="lf" class="space-y-5" novalidate>
-                <div><label class="field-label" for="em">Email</label><input id="em" type="email" required autocomplete="username" class="field h-12"></div>
-                ${pw('pw', 'Password', 'current-password', '<a href="/staff/forgot-password" class="text-xs font-semibold text-forest-600 hover:underline">Forgot password?</a>')}
-                <label class="flex items-center gap-2.5 text-sm text-slate-600 cursor-pointer"><input id="rm" type="checkbox" checked class="w-4 h-4 rounded accent-[#0C3B2E]">Remember me on this device</label>
-                ${errBox}<button class="btn btn-forest w-full h-12 text-[15px]">Sign in</button></form>
-            <div class="mt-8 pt-6 border-t border-slate-100 text-sm text-slate-600 space-y-2">
-                <p>Want to teach with us? <a href="/staff/apply" class="font-semibold text-forest-600 hover:underline">Apply to teach</a> · <a href="/staff/application" class="font-semibold text-forest-600 hover:underline">Application status</a></p>
-                <p class="text-xs s-muted">Student? <a href="/student/login" class="underline">Student sign in</a> · <a href="/" class="underline">Back to website</a></p></div>`);
-        bindEyes(el);
+        el.innerHTML = loginShell(msg, `<form id="lf" class="space-y-4" novalidate>
+                ${fillField('em', 'email', 'username', 'Email', 'fa-user', 'Email')}
+                ${fillField('pw', 'password', 'current-password', 'Password', 'fa-lock', 'Password', '<button type="button" id="showPw" class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold tracking-wider text-forest-600 hover:underline px-1" aria-label="Show password" aria-pressed="false">SHOW</button>')}
+                <div class="flex items-center justify-between gap-3 text-xs">
+                    <label class="flex items-center gap-2 text-slate-600 cursor-pointer"><input id="rm" type="checkbox" checked class="w-4 h-4 rounded accent-[#0C3B2E]">Remember me</label>
+                    <a href="/staff/forgot-password" class="font-semibold text-forest-600 hover:underline">Forgot password?</a></div>
+                ${errBox}
+                <button class="btn btn-forest w-full h-12 text-[15px]">Sign in</button></form>
+            <div class="flex items-center gap-3 my-4 text-xs text-slate-400" aria-hidden="true"><span class="flex-1 h-px bg-slate-200"></span>or<span class="flex-1 h-px bg-slate-200"></span></div>
+            <a href="/student/login" class="btn btn-outline w-full h-12 text-[15px] !border-forest !text-forest">Student sign in</a>
+            <div class="mt-6 text-center text-xs text-slate-500 space-y-1.5">
+                <p>Don't have an account? <a href="/staff/apply" class="font-semibold text-forest-600 hover:underline">Apply to teach</a> · <a href="/staff/application" class="font-semibold text-forest-600 hover:underline">Application status</a></p>
+                <p><a href="/" class="underline">Back to website</a></p></div>`);
+        el.querySelector('#showPw').onclick = e => { const i = el.querySelector('#pw'), show = i.type === 'password'; i.type = show ? 'text' : 'password'; e.currentTarget.textContent = show ? 'HIDE' : 'SHOW'; e.currentTarget.setAttribute('aria-pressed', show); e.currentTarget.setAttribute('aria-label', show ? 'Hide password' : 'Show password'); };
         el.querySelector('#em').focus();
         el.querySelector('#lf').onsubmit = e => {
             e.preventDefault();

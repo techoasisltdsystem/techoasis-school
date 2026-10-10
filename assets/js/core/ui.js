@@ -124,6 +124,22 @@
             <polygon points="452,140 505,166 505,446 232,612 232,545 452,410" fill="${main}"/>
             <polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B"/><polygon points="207,272 270,308 270,372 207,338" fill="#AC903F"/><polygon points="270,308 335,272 335,338 270,372" fill="#937733"/></svg>`;
     }
+    // Animated mark for dark green surfaces: draws the outline, assembles the pieces, drops the cube, then floats and glows.
+    // The keyframes live in tos.css (.lm-anim). uid keeps SVG ids unique if the mark appears more than once on a page.
+    function animatedLogo(size, uid) {
+        const id = s => `${s}-${uid || 'a'}`;
+        const P = ['255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160', '125,225 213,176 213,238 179,258 179,583 125,551', '352,78 405,106 405,386 228,493 228,383 268,404 352,350', '452,140 505,166 505,446 232,612 232,545 452,410'];
+        const D = [['-70px', '-40px'], ['-60px', '50px'], ['60px', '-50px'], ['70px', '45px']];
+        return `<svg class="lm-anim" viewBox="16 12 496 606" width="${size * .81}" height="${size}" role="img" aria-label="Tech Oasis School">
+            <defs><radialGradient id="${id('glow')}"><stop offset="0%" stop-color="#E7CF6A" stop-opacity="0.9"/><stop offset="100%" stop-color="#E7CF6A" stop-opacity="0"/></radialGradient>
+                <linearGradient id="${id('sheen')}" x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stop-color="#fff" stop-opacity="0"/><stop offset="50%" stop-color="#fff" stop-opacity="0.35"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient>
+                <clipPath id="${id('clip')}">${P.map(pts => `<polygon points="${pts}"/>`).join('')}</clipPath></defs>
+            <circle class="lm-glow" cx="270" cy="304" r="150" fill="url(#${id('glow')})"/>
+            ${P.map((pts, i) => `<polygon class="lm-piece" style="--dx:${D[i][0]}; --dy:${D[i][1]}; --i:${i}" points="${pts}" fill="#3A8D7C"/>`).join('')}
+            <g clip-path="url(#${id('clip')})"><rect class="lm-sheen" x="0" y="-100" width="260" height="900" fill="url(#${id('sheen')})" transform="skewX(-20)"/></g>
+            ${P.map(pts => `<polygon class="lm-outline" pathLength="1" points="${pts}"/>`).join('')}
+            <g class="lm-cube"><polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B"/><polygon points="207,272 270,308 270,372 207,338" fill="#AC903F"/><polygon points="270,308 335,272 335,338 270,372" fill="#937733"/></g></svg>`;
+    }
     function brandLogo(dark, size) {
         return `<span class="inline-flex items-center gap-3">${logoMark(size || 38, dark)}
             <span class="leading-none"><span class="block text-[15px] font-extrabold tracking-[0.08em] ${dark ? 'text-white' : 'text-ink'}">TECH <span class="gold-text">OASIS</span></span>
@@ -155,5 +171,5 @@
     // Until then every page that collects or promises something says plainly that it is stored in this browser only.
     TOS.config = Object.assign({ serverConnected: false }, TOS.config);
     const demoNotice = () => TOS.config.serverConnected ? '' : '<div class="mt-5 rounded-lg border border-amber-200 bg-amber-50 text-amber-900 text-xs p-3" role="note"><b>Before you continue:</b> this website is not connected to a server yet. Accounts, progress and requests made here are saved in this browser only, and the school does not receive them. For anything urgent, email the school directly.</div>';
-    TOS.ui = { demoNotice, esc, initials, qs, $, $$, fmtDuration, fmtSecs, fmtDate, fmtDateTime, fmtBytes, timeAgo, money, stars, plural, md, toast, modal, confirmBox, logoMark, brandLogo, applyBrandLogos, initReveal, readFile, chartTip, LESSON_TYPES };
+    TOS.ui = { demoNotice, animatedLogo, esc, initials, qs, $, $$, fmtDuration, fmtSecs, fmtDate, fmtDateTime, fmtBytes, timeAgo, money, stars, plural, md, toast, modal, confirmBox, logoMark, brandLogo, applyBrandLogos, initReveal, readFile, chartTip, LESSON_TYPES };
 })();
