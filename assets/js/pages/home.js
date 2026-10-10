@@ -197,7 +197,7 @@ const coursePeek = (() => {
 
 // ---------------- Hero ----------------
 // Photos slide sideways behind the headline and the featured card follows, cycling through programmes from different categories.
-let heroSlides = [], heroIdx = 0, heroTimer = null, heroHeld = false, heroUserPaused = false;
+let heroSlides = [], heroIdx = 0, heroTimer = null, heroUserPaused = false;
 // Background photos supplied by the school (assets/img). Slide i shows photo i next to programme i.
 const HERO_PHOTOS = [['learners', '35% 40%'], ['laptop-city', 'center'], ['study-desk', 'center'], ['laptop-blue', 'center']];
 const heroPhoto = i => HERO_PHOTOS[i % HERO_PHOTOS.length];
@@ -229,25 +229,27 @@ function renderHero() {
     const track = document.getElementById('heroBgTrack');
     if (!heroSlides.length) { track.innerHTML = ''; document.getElementById('heroFeature').innerHTML = ''; document.getElementById('heroDots').innerHTML = ''; return; }
     track.innerHTML = heroSlides.concat(heroSlides[0]).map((c, i) => { const [f, pos] = heroPhoto(i % heroSlides.length); return `<div class="hero-bg-slide"><img src="assets/img/${f}.webp" alt="" style="object-position:${pos}" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}></div>`; }).join('');
-    document.getElementById('heroDots').innerHTML = heroSlides.map((c, i) => `<button type="button" onclick="heroShow(${i}, true)" class="hero-dot h-2.5 rounded-full transition-all" aria-label="Show ${esc(c.title)}"></button>`).join('');
+    document.getElementById('heroDots').innerHTML = heroSlides.map((c, i) => `<button type="button" onclick="heroShow(${i})" class="hero-dot h-2.5 rounded-full transition-all" aria-label="Show ${esc(c.title)}"></button>`).join('');
     heroIdx = 0; heroPaint(false);
     document.getElementById('heroToggle').classList.toggle('hidden', heroSlides.length < 2);
-    clearInterval(heroTimer);
-    if (heroSlides.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) heroTimer = setInterval(() => { if (!heroHeld && !heroUserPaused && !document.hidden) heroShow(heroIdx + 1); }, 6000);
-    else heroUserPaused = true, heroSyncToggle();
+    heroUserPaused = false; heroSyncToggle(); heroSchedule();
+}
+// Advances on its own every 6 s. Only the Pause button stops it (hovering or clicking a dot does not), and picking a slide restarts the timer.
+// Visitors who ask their system for reduced motion still get the automatic change, but without the sliding animation (see tos.css).
+function heroSchedule() {
+    clearTimeout(heroTimer);
+    if (heroSlides.length < 2 || heroUserPaused) return;
+    heroTimer = setTimeout(() => heroShow(document.hidden ? heroIdx : heroIdx + 1), 6000);
 }
 // idx may equal heroSlides.length: that is the repeated first slide, after which the track snaps back to the start without animating
-function heroShow(idx, user) {
-    if (user) { heroUserPaused = true; heroSyncToggle(); }
+function heroShow(idx) {
     const track = document.getElementById('heroBgTrack'), n = heroSlides.length;
     if (idx < 0) idx = n - 1;
     heroIdx = idx;
     track.style.transform = `translateX(-${idx * 100}%)`;
-    if (idx === n) {
-        const snap = () => { track.removeEventListener('transitionend', snap); if (heroIdx !== n) return; track.style.transition = 'none'; heroIdx = 0; track.style.transform = 'translateX(0)'; void track.offsetWidth; track.style.transition = ''; };
-        track.addEventListener('transitionend', snap);
-    }
+    if (idx === n) setTimeout(() => { if (heroIdx !== n) return; track.style.transition = 'none'; heroIdx = 0; track.style.transform = 'translateX(0)'; void track.offsetWidth; track.style.transition = ''; }, 1000);
     heroPaint(true);
+    heroSchedule();
 }
 function heroPaint(animate) {
     const i = heroIdx % heroSlides.length, c = heroSlides[i];
@@ -259,8 +261,7 @@ function heroSyncToggle() {
     const b = document.getElementById('heroToggle'); b.setAttribute('aria-label', heroUserPaused ? 'Play slideshow' : 'Pause slideshow');
     b.innerHTML = `<i class="fa-solid ${heroUserPaused ? 'fa-play' : 'fa-pause'} text-xs" aria-hidden="true"></i>`;
 }
-function heroToggle() { heroUserPaused = !heroUserPaused; heroSyncToggle(); }
-const heroPause = p => { heroHeld = p; };
+function heroToggle() { heroUserPaused = !heroUserPaused; heroSyncToggle(); heroSchedule(); }
 
 // ---------------- Homepage sections ----------------
 function renderPopular() {

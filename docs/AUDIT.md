@@ -113,7 +113,7 @@ Client-side items already in good shape: HTML is escaped on output (`ui.esc`), s
 - Tailwind runs in the browser from the CDN (`cdn.tailwindcss.com`). It is the largest avoidable cost (it compiles styles in the browser on every visit) and the reason no CSP is possible. Recommended: compile once with the Tailwind CLI (`tw.js` is the config) and ship a static CSS file. Not done here because the project has no build step and the brief says to preserve the deployment setup.
 - Card images are requested at 640 px instead of 900 px; below-the-fold images are lazy; the hero image is `fetchpriority="high"`; career-path images are preloaded when idle.
 - Splash screen shortened.
-- The old three-slide hero carousel was replaced by a hero whose background photo slides through programmes from different categories (autoplay every 6 s, pauses on hover/focus, has a visible Pause button and dots, and is off under reduced motion). Only the first photo loads eagerly; the rest are lazy.
+- The old three-slide hero carousel was replaced by a hero whose background photo slides through programmes from different categories (automatic every 6 s; only the visible Pause button stops it, and choosing a dot restarts the timer. Visitors with reduced motion still get the automatic change but without the sliding animation). Only the first photo loads eagerly; the rest are lazy.
 
 ## 8. Tests actually run
 
