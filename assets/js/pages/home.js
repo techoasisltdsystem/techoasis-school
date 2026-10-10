@@ -184,27 +184,69 @@ const coursePeek = (() => {
 })();
 
 // ---------------- Hero ----------------
+// Photos slide sideways behind the headline and the featured card follows, cycling through programmes from different categories.
+let heroSlides = [], heroIdx = 0, heroTimer = null, heroHeld = false, heroUserPaused = false;
+const heroImg = c => String(c.thumbnail).replace(/([?&]w=)\d+/, '$11200');
+function heroCourses() {
+    const out = [], first = lms.courseBySlug('web-development');   // the flagship programme leads, then one per other category
+    if (first) out.push(first);
+    topCategories().forEach(cat => { const c = lms.listedCourses().find(x => x.categoryId === cat.id); if (c && !out.some(o => o.categoryId === c.categoryId)) out.push(c); });
+    return out.slice(0, 5);
+}
+function heroCard(c) {
+    const ins = lms.primaryInstructor(c.id), meta = lms.courseMeta(c.id);
+    return `<a href="${courseUrl(c)}" class="group block rounded-xl bg-white border border-slate-200 overflow-hidden shadow-luxe hover:border-forest transition hero-card-in">
+        <div class="aspect-[16/9] bg-slate-100 overflow-hidden"><img src="${esc(cardImg(c))}" alt="${esc(c.title)} course preview" width="640" height="360" class="w-full h-full object-cover"></div>
+        <div class="p-5">
+            <p class="eyebrow">${esc(lms.categoryName(c.categoryId))}</p>
+            <h2 class="font-display text-2xl text-ink mt-1.5 group-hover:text-forest-600">${esc(c.title)}</h2>
+            <p class="text-sm text-slate-600 mt-2 line-clamp-2">${esc(c.shortDescription)}</p>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4 text-xs text-slate-500">
+                <span>${esc(c.level)}</span><span>${meta.hours}h</span><span>${meta.lessons} ${meta.lessons === 1 ? 'lesson' : 'lessons'}</span>${ins ? `<span>${esc(ins.name)}</span>` : ''}<span class="font-semibold text-ink">${priceLabel(c)}</span>
+            </div>
+            <span class="btn btn-forest mt-5">View course <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i></span>
+        </div></a>`;
+}
 function renderHero() {
     const all = lms.listedCourses(), cats = topCategories().filter(c => coursesInCategory(c.id).length), free = all.filter(c => !lms.priceOf(c)).length;
     const n = (k, one, many) => k + ' ' + (k === 1 ? one : many);
     document.getElementById('heroFacts').textContent = n(all.length, 'programme', 'programmes') + ' across ' + n(cats.length, 'category', 'categories') + (free ? ' · ' + free + ' free' : '');
-    const c = lms.courseBySlug('web-development') || all.find(x => x.featured) || all[0];
-    if (!c) { document.getElementById('heroFeature').innerHTML = ''; return; }
-    const ins = lms.primaryInstructor(c.id), meta = lms.courseMeta(c.id);
-    document.getElementById('heroFeature').innerHTML = `
-        <a href="${courseUrl(c)}" class="group block rounded-xl bg-white border border-slate-200 overflow-hidden shadow-luxe hover:border-forest transition">
-            <div class="aspect-[16/9] bg-slate-100 overflow-hidden"><img src="${esc(cardImg(c))}" alt="${esc(c.title)} course preview" fetchpriority="high" width="640" height="360" class="w-full h-full object-cover"></div>
-            <div class="p-5">
-                <p class="eyebrow">Featured programme</p>
-                <h2 class="font-display text-2xl text-ink mt-1.5 group-hover:text-forest-600">${esc(c.title)}</h2>
-                <p class="text-sm text-slate-600 mt-2">${esc(c.shortDescription)}</p>
-                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4 text-xs text-slate-500">
-                    <span>${esc(c.level)}</span><span>${meta.hours}h</span><span>${meta.lessons} ${meta.lessons === 1 ? 'lesson' : 'lessons'}</span>${ins ? `<span>${esc(ins.name)}</span>` : ''}<span class="font-semibold text-ink">${priceLabel(c)}</span>
-                </div>
-                <span class="btn btn-forest mt-5">View course <i class="fa-solid fa-arrow-right text-xs"></i></span>
-            </div>
-        </a>`;
+    heroSlides = heroCourses();
+    const track = document.getElementById('heroBgTrack');
+    if (!heroSlides.length) { track.innerHTML = ''; document.getElementById('heroFeature').innerHTML = ''; document.getElementById('heroDots').innerHTML = ''; return; }
+    track.innerHTML = heroSlides.concat(heroSlides[0]).map((c, i) => `<div class="hero-bg-slide"><img src="${esc(heroImg(c))}" alt="" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}></div>`).join('');
+    document.getElementById('heroDots').innerHTML = heroSlides.map((c, i) => `<button type="button" onclick="heroShow(${i}, true)" class="hero-dot h-2.5 rounded-full transition-all" aria-label="Show ${esc(c.title)}"></button>`).join('');
+    heroIdx = 0; heroPaint(false);
+    document.getElementById('heroToggle').classList.toggle('hidden', heroSlides.length < 2);
+    clearInterval(heroTimer);
+    if (heroSlides.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) heroTimer = setInterval(() => { if (!heroHeld && !heroUserPaused && !document.hidden) heroShow(heroIdx + 1); }, 6000);
+    else heroUserPaused = true, heroSyncToggle();
 }
+// idx may equal heroSlides.length: that is the repeated first slide, after which the track snaps back to the start without animating
+function heroShow(idx, user) {
+    if (user) { heroUserPaused = true; heroSyncToggle(); }
+    const track = document.getElementById('heroBgTrack'), n = heroSlides.length;
+    if (idx < 0) idx = n - 1;
+    heroIdx = idx;
+    track.style.transform = `translateX(-${idx * 100}%)`;
+    if (idx === n) {
+        const snap = () => { track.removeEventListener('transitionend', snap); if (heroIdx !== n) return; track.style.transition = 'none'; heroIdx = 0; track.style.transform = 'translateX(0)'; void track.offsetWidth; track.style.transition = ''; };
+        track.addEventListener('transitionend', snap);
+    }
+    heroPaint(true);
+}
+function heroPaint(animate) {
+    const i = heroIdx % heroSlides.length, c = heroSlides[i];
+    const box = document.getElementById('heroFeature');
+    box.innerHTML = heroCard(c); if (!animate) box.firstElementChild.classList.remove('hero-card-in');
+    ui.$$('.hero-dot').forEach((d, k) => { d.className = 'hero-dot h-2.5 rounded-full transition-all ' + (k === i ? 'w-8 bg-forest' : 'w-2.5 bg-slate-300 hover:bg-slate-400'); if (k === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+}
+function heroSyncToggle() {
+    const b = document.getElementById('heroToggle'); b.setAttribute('aria-label', heroUserPaused ? 'Play slideshow' : 'Pause slideshow');
+    b.innerHTML = `<i class="fa-solid ${heroUserPaused ? 'fa-play' : 'fa-pause'} text-xs" aria-hidden="true"></i>`;
+}
+function heroToggle() { heroUserPaused = !heroUserPaused; heroSyncToggle(); }
+const heroPause = p => { heroHeld = p; };
 
 // ---------------- Homepage sections ----------------
 function renderPopular() {

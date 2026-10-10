@@ -68,7 +68,7 @@ What changed:
 - A single section label style (`.eyebrow`), a single main-navigation style (`.nav-link`) with `aria-current` active state, visible focus rings (forest on light, gold on dark).
 - Course cards now show category, title, description, level, hours, lessons, instructor, price, certificate note, "View course".
 
-Homepage order: Navigation → Hero (outcome headline, two CTAs, featured course) → Explore our programmes (category tabs, real course data, "View all courses") → Why Tech Oasis School → How learning works (6 steps) → Featured/new/AI & Data (with the hover previews) → Career paths (auto-rotating tabs) → Technologies strip → Organisations / AI promo → Certificate (sample) → Reviews (only if real) → Pricing and free trial → FAQ → Contact call to action → Footer.
+Homepage order: Navigation → Hero (outcome headline, two CTAs, sliding programme photos with a matching featured-course card) → Explore our programmes (category tabs, real course data, "View all courses") → Why Tech Oasis School → How learning works (6 steps) → Featured/new/AI & Data (with the hover previews) → Career paths (auto-rotating tabs) → Technologies strip → Organisations / AI promo → Certificate (sample) → Reviews (only if real) → Pricing and free trial → FAQ → Contact call to action → Footer.
 
 Navigation: Home, Courses, For Individuals (how it works), For Organisations, About, Contact, Sign in, Explore courses. Hamburger menu below 1280 px with focus handling and Escape. The header search box was replaced by a search icon that opens the catalogue's live search (the box did not fit beside six links); the mobile menu keeps its search field.
 
@@ -108,7 +108,7 @@ Client-side items already in good shape: HTML is escaped on output (`ui.esc`), s
 - Tailwind runs in the browser from the CDN (`cdn.tailwindcss.com`). It is the largest avoidable cost (it compiles styles in the browser on every visit) and the reason no CSP is possible. Recommended: compile once with the Tailwind CLI (`tw.js` is the config) and ship a static CSS file. Not done here because the project has no build step and the brief says to preserve the deployment setup.
 - Card images are requested at 640 px instead of 900 px; below-the-fold images are lazy; the hero image is `fetchpriority="high"`; career-path images are preloaded when idle.
 - Splash screen shortened.
-- Hero carousel (autoplaying) replaced by a static hero.
+- The old three-slide hero carousel was replaced by a hero whose background photo slides through programmes from different categories (autoplay every 6 s, pauses on hover/focus, has a visible Pause button and dots, and is off under reduced motion). Only the first photo loads eagerly; the rest are lazy.
 
 ## 8. Tests actually run
 

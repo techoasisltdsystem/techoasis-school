@@ -98,20 +98,28 @@
         <!-- ================= HOME ================= -->
         <div id="page-home" class="page-view">
 
-            <!-- Hero -->
-            <section class="bg-white border-b border-slate-200" aria-labelledby="heroTitle">
-                <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 grid lg:grid-cols-[1.05fr_.95fr] gap-10 lg:gap-14 items-center">
+            <!-- Hero: sliding programme photos behind the headline; the featured card follows the slide -->
+            <section id="hero" class="relative overflow-hidden bg-white border-b border-slate-200" aria-labelledby="heroTitle" onmouseenter="heroPause(true)" onmouseleave="heroPause(false)" onfocusin="heroPause(true)" onfocusout="heroPause(false)">
+                <div class="absolute inset-0" aria-hidden="true"><div id="heroBgTrack" class="hero-bg-track"></div></div>
+                <div class="absolute inset-0 bg-white/85 lg:bg-transparent lg:bg-gradient-to-r lg:from-white lg:via-white/85 lg:to-white/10" aria-hidden="true"></div>
+                <div class="relative max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 grid lg:grid-cols-[1.05fr_.95fr] gap-10 lg:gap-14 items-center">
                     <div>
                         <p class="eyebrow">Tech Oasis School</p>
                         <h1 id="heroTitle" class="font-display text-4xl sm:text-5xl text-ink leading-[1.1] mt-3">Build the tech skills that move your career forward.</h1>
-                        <p class="text-lg text-slate-600 mt-5 max-w-xl">Learn practical technology skills through structured programmes, self-paced lessons and instructor-graded projects, then earn a certificate when you complete a course.</p>
+                        <p class="text-lg text-slate-700 mt-5 max-w-xl">Learn practical technology skills through structured programmes, self-paced lessons and instructor-graded projects, then earn a certificate when you complete a course.</p>
                         <div class="flex flex-wrap gap-3 mt-8">
                             <a href="#catalog" onclick="return go('catalog')" class="btn btn-forest h-12 px-6">Explore courses</a>
                             <a href="#how-it-works" onclick="return go('home', 'how-it-works')" class="btn btn-outline h-12 px-6">How it works</a>
                         </div>
-                        <p id="heroFacts" class="text-sm text-slate-500 mt-6"></p>
+                        <p id="heroFacts" class="text-sm text-slate-600 mt-6"></p>
                     </div>
-                    <div id="heroFeature"></div>
+                    <div role="group" aria-roledescription="carousel" aria-label="Featured programmes">
+                        <div id="heroFeature" aria-live="off"></div>
+                        <div class="inline-flex items-center gap-3 mt-4 rounded-full bg-white/90 border border-slate-200 p-1.5 pr-4">
+                            <button id="heroToggle" type="button" onclick="heroToggle()" class="w-9 h-9 rounded-full bg-white border border-slate-300 text-slate-700 hover:border-forest hover:text-forest flex items-center justify-center" aria-label="Pause slideshow"><i class="fa-solid fa-pause text-xs" aria-hidden="true"></i></button>
+                            <div id="heroDots" class="flex items-center gap-2"></div>
+                        </div>
+                    </div>
                 </div>
             </section>
 

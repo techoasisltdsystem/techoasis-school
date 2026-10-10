@@ -158,6 +158,13 @@ textarea.field { resize: vertical; min-height: 5rem; line-height: 1.5; }
 @keyframes pt-flip { from { opacity: 0; transform: rotateY(-80deg); transform-origin: left center; } to { opacity: 1; transform: none; } }
 @keyframes pt-drop { from { opacity: 0; transform: translateY(-60px); } to { opacity: 1; transform: none; } }
 
+/* Hero: sliding photo background (one slide per featured programme, plus a repeat of the first for a seamless loop) */
+.hero-bg-track { display: flex; height: 100%; transition: transform .9s cubic-bezier(.22,1,.36,1); }
+.hero-bg-slide { flex: 0 0 100%; height: 100%; background: #EEF2F6; }
+.hero-bg-slide img { width: 100%; height: 100%; object-fit: cover; }
+.hero-card-in { animation: hero-card-in .6s ease-out; }
+@keyframes hero-card-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
 /* Entrance reveal on scroll */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
 .reveal.in { opacity: 1; transform: none; }
