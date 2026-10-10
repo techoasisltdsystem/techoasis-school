@@ -286,25 +286,54 @@
 
         <!-- ================= CATALOG ================= -->
         <div id="page-catalog" class="page-view hidden">
-            <section class="bg-ink text-white relative overflow-hidden">
-                <div class="relative max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <p class="eyebrow">Catalog</p>
-                    <h1 class="font-display text-4xl sm:text-5xl mt-2">Explore every programme</h1>
-                    <p class="text-white/70 mt-3 max-w-xl" id="catalogLead"></p>
+            <!-- Banner with search -->
+            <section class="relative overflow-hidden bg-forest text-white" aria-labelledby="catTitle">
+                <div class="absolute inset-y-0 right-0 w-full md:w-3/5" aria-hidden="true"><img src="assets/img/laptop-blue.webp" alt="" class="w-full h-full object-cover mix-blend-luminosity opacity-60" style="object-position:70% center"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-forest via-forest/90 to-forest/10" aria-hidden="true"></div>
+                <div class="relative max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
+                    <p class="eyebrow">Courses</p>
+                    <h1 id="catTitle" class="font-display text-4xl sm:text-5xl mt-2">Explore our programmes</h1>
+                    <p class="text-white/80 mt-3 max-w-xl" id="catalogLead"></p>
+                    <form role="search" onsubmit="return false" class="mt-6 flex max-w-xl rounded-lg bg-white p-1 shadow-lift">
+                        <label for="catSearch" class="sr-only">Search courses</label>
+                        <input id="catSearch" type="search" autocomplete="off" placeholder="Search by course, skill or instructor" class="flex-1 min-w-0 h-11 rounded-md px-4 text-sm text-slate-900 placeholder:text-slate-500 focus:outline-none">
+                        <button class="shrink-0 w-11 h-11 rounded-md bg-gold text-ink hover:bg-gold-300" aria-label="Search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
+                    </form>
                 </div>
             </section>
-            <section class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8 grid lg:grid-cols-[260px_1fr] gap-8">
-                <aside class="space-y-6">
-                    <div><label class="field-label" for="catSearch">Search</label><input id="catSearch" type="search" class="field" placeholder="Course, skill or instructor"></div>
-                    <div><div class="field-label">Category</div><div id="filterCats" class="space-y-1"></div></div>
-                    <div><div class="field-label">Level</div><div id="filterLevels" class="flex flex-wrap gap-2"></div></div>
-                    <div><div class="field-label">Price</div><div id="filterPrice" class="flex flex-wrap gap-2"></div></div>
-                </aside>
+
+            <section class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8 grid lg:grid-cols-[260px_minmax(0,1fr)] gap-8 items-start">
+                <!-- Filters -->
                 <div>
-                    <div class="flex items-center justify-between gap-3 mb-5"><p id="catalogCount" class="text-sm text-slate-600"></p>
-                        <label for="catSort" class="sr-only">Sort courses</label><select id="catSort" class="field w-auto"><option value="popular">Most popular</option><option value="newest">Newest</option><option value="rating">Highest rated</option><option value="az">A–Z</option></select></div>
+                    <div class="lg:hidden"><button id="filtersToggle" type="button" class="btn btn-outline w-full justify-between" aria-expanded="false" aria-controls="catFilters"><span><i class="fa-solid fa-sliders mr-2" aria-hidden="true"></i>Filters <span id="filterCount"></span></span><i class="fa-solid fa-chevron-down text-xs" aria-hidden="true"></i></button></div>
+                    <aside id="catFilters" class="hidden lg:block mt-3 lg:mt-0 rounded-xl border border-slate-200 bg-white p-5 lg:sticky lg:top-20" aria-label="Filters">
+                        <section><h2 class="flex items-center gap-2 text-sm font-semibold text-ink"><i class="fa-solid fa-layer-group text-forest" aria-hidden="true"></i>Categories</h2><div id="filterCats" class="mt-3 space-y-0.5"></div></section>
+                        <section class="mt-6 pt-5 border-t border-slate-100"><h2 class="flex items-center gap-2 text-sm font-semibold text-ink"><i class="fa-solid fa-chart-simple text-forest" aria-hidden="true"></i>Level</h2><div id="filterLevels" class="mt-3 space-y-0.5"></div></section>
+                        <section class="mt-6 pt-5 border-t border-slate-100"><h2 class="flex items-center gap-2 text-sm font-semibold text-ink"><i class="fa-solid fa-tag text-forest" aria-hidden="true"></i>Price</h2><div id="filterPrice" class="mt-3 space-y-0.5"></div><div id="priceRange" class="mt-4"></div></section>
+                        <button id="clearFilters" type="button" class="mt-6 pt-5 border-t border-slate-100 w-full flex items-center gap-2 text-sm font-semibold text-forest hover:underline"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i>Clear filters</button>
+                    </aside>
+                </div>
+                <!-- Results -->
+                <div class="min-w-0">
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+                        <p id="catalogCount" class="text-sm text-slate-600" role="status"></p>
+                        <div class="flex items-center gap-3">
+                            <label for="catSort" class="text-sm text-slate-600 hidden sm:block">Sort by</label>
+                            <select id="catSort" class="field w-auto"><option value="popular">Featured</option><option value="newest">Newest</option><option value="rating">Highest rated</option><option value="az">A to Z</option></select>
+                            <div class="flex rounded-lg border border-slate-300 overflow-hidden bg-white" role="group" aria-label="Layout">
+                                <button type="button" data-view="grid" class="w-10 h-10 flex items-center justify-center" aria-label="Grid view"><i class="fa-solid fa-table-cells-large" aria-hidden="true"></i></button>
+                                <button type="button" data-view="list" class="w-10 h-10 flex items-center justify-center border-l border-slate-300" aria-label="List view"><i class="fa-solid fa-list" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>
                     <h2 class="sr-only">Course results</h2>
-                    <div id="catalogGrid" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+                    <div id="catalogGrid"></div>
+                    <nav id="catalogPages" class="flex items-center justify-center gap-2 mt-8" aria-label="Pagination"></nav>
+                    <div class="mt-10 rounded-xl border border-forest-100 bg-forest-50 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-start gap-4"><span class="w-11 h-11 shrink-0 rounded-lg bg-forest text-gold flex items-center justify-center" aria-hidden="true"><i class="fa-solid fa-lightbulb"></i></span>
+                            <div><h2 class="font-semibold text-ink">Can't find what you're looking for?</h2><p class="text-sm text-slate-600 mt-0.5">Tell us what you want to learn and we will point you to a programme.</p></div></div>
+                        <a href="#contact" onclick="return go('contact')" class="btn btn-outline shrink-0 !border-forest !text-forest">Contact us</a>
+                    </div>
                 </div>
             </section>
         </div>

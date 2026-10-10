@@ -11,7 +11,7 @@ const PAGE_TITLES = {
     contact: 'Contact | Tech Oasis School'
 };
 function go(page, anchor, opts) {
-    if (page === 'catalog' && opts) Object.assign(catalogState, opts);
+    if (page === 'catalog' && opts) Object.assign(catalogState, opts, { page: 1 });
     showPage(page);
     history.replaceState(null, '', page === 'home' ? (anchor ? '#' + anchor : location.pathname + location.search) : '#' + page);
     if (anchor) setTimeout(() => { const el = document.getElementById(anchor); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 60);
@@ -420,33 +420,94 @@ document.addEventListener('click', e => {
     b.querySelector('.faq-icon').style.transform = open ? 'rotate(45deg)' : '';
 });
 
-// ---------------- Catalog ----------------
-const catalogState = { q: '', cat: '', level: '', price: '', sort: 'popular' };
+// ---------------- Catalogue ----------------
+// cat, level and price may be a single value (older callers, e.g. go('catalog', null, {price:'free'})) or a list; min/max are price limits.
+const catalogState = { q: '', cat: '', level: '', price: '', min: null, max: null, sort: 'popular', view: 'grid', page: 1 };
+const CATALOG_PAGE_SIZE = 9;
+const asList = v => Array.isArray(v) ? v : v ? [v] : [];
+function catalogMaxPrice() { return Math.max(0, ...lms.listedCourses().map(c => lms.priceOf(c))); }
+function catalogFiltered() {
+    const s = catalogState, cats = asList(s.cat), levels = asList(s.level), prices = asList(s.price);
+    let list = s.q ? searchCourses(s.q) : lms.listedCourses();
+    if (cats.length) list = list.filter(c => cats.includes(c.categoryId) || cats.includes(c.subcategoryId));
+    if (levels.length) list = list.filter(c => levels.includes(c.level));
+    if (prices.length === 1) list = list.filter(c => (prices[0] === 'free') === !lms.priceOf(c));
+    if (s.min != null) list = list.filter(c => lms.priceOf(c) >= s.min);
+    if (s.max != null) list = list.filter(c => lms.priceOf(c) <= s.max);
+    const enr = id => db.count('enrollments', { courseId: id });
+    if (s.sort === 'popular' && !s.q) list = list.slice().sort((a, b) => enr(b.id) - enr(a.id));
+    if (s.sort === 'newest') list = list.slice().sort((a, b) => new Date(b.publishedAt || b.createdAt) - new Date(a.publishedAt || a.createdAt));
+    if (s.sort === 'rating') list = list.slice().sort((a, b) => lms.rating(b.id).avg - lms.rating(a.id).avg);
+    if (s.sort === 'az') list = list.slice().sort((a, b) => a.title.localeCompare(b.title));
+    return list;
+}
+function catalogCard(c, view) {
+    const ins = lms.primaryInstructor(c.id), r = lms.rating(c.id), meta = lms.courseMeta(c.id), cert = db.settings().certificates.enabled, list = view === 'list';
+    const avatar = ins && ins.avatar ? `<img src="${esc(ins.avatar)}" alt="" class="w-7 h-7 rounded-full object-cover">` : `<span class="w-7 h-7 rounded-full bg-forest text-gold text-[10px] font-bold flex items-center justify-center" aria-hidden="true">${esc(ui.initials(ins ? ins.name : 'TO'))}</span>`;
+    return `<a href="${courseUrl(c)}" class="group flex ${list ? 'flex-col sm:flex-row' : 'flex-col'} rounded-xl overflow-hidden bg-white border border-slate-200 hover:border-forest hover:shadow-luxe transition">
+        <div class="relative ${list ? 'sm:w-64 sm:shrink-0 aspect-[16/9] sm:aspect-auto' : 'aspect-[16/9]'} overflow-hidden bg-slate-100"><img src="${esc(cardImg(c))}" alt="" loading="lazy" width="640" height="360" class="w-full h-full object-cover">
+            ${lms.priceOf(c) ? '' : '<span class="absolute top-3 left-3 pill bg-gold text-ink">Free</span>'}</div>
+        <div class="p-4 flex-1 flex flex-col min-w-0">
+            <span class="self-start rounded-md bg-forest-50 text-forest-600 text-[11px] font-semibold px-2 py-0.5">${esc(lms.categoryName(c.categoryId))}</span>
+            <h3 class="font-semibold text-ink mt-2 leading-snug">${esc(c.title)}</h3>
+            <p class="text-sm text-slate-600 mt-1.5 line-clamp-3">${esc(c.shortDescription)}</p>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-xs text-slate-600"><span><i class="fa-solid fa-chart-simple mr-1.5 text-slate-400" aria-hidden="true"></i>${esc(c.level)}</span><span><i class="fa-regular fa-clock mr-1.5 text-slate-400" aria-hidden="true"></i>${meta.hours}h</span><span><i class="fa-regular fa-file-lines mr-1.5 text-slate-400" aria-hidden="true"></i>${ui.plural(meta.lessons, 'lesson')}</span></div>
+            <div class="flex items-center gap-2 mt-3 text-xs text-slate-600">${avatar}<span class="truncate">${esc(ins ? ins.name : 'Tech Oasis Faculty')}</span>${r.count ? `<span class="ml-auto shrink-0"><i class="fa-solid fa-star text-gold" aria-hidden="true"></i> <b class="text-slate-700">${r.avg.toFixed(1)}</b></span>` : ''}</div>
+            <div class="flex items-center justify-between gap-3 mt-4 pt-3 border-t border-slate-100"><span class="text-lg font-semibold text-ink">${priceLabel(c)}</span>${cert ? '<span class="text-xs text-slate-600"><i class="fa-solid fa-award mr-1 text-forest" aria-hidden="true"></i>Certificate on completion</span>' : ''}</div>
+            <span class="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-lg border border-forest text-forest group-hover:bg-forest group-hover:text-white text-sm font-semibold h-10 transition">View course <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i></span>
+        </div></a>`;
+}
 function renderCatalog() {
-    const s = catalogState, cats = topCategories();
+    const s = catalogState, cats = topCategories(), all = lms.listedCourses(), maxP = catalogMaxPrice();
+    const selCats = asList(s.cat), selLevels = asList(s.level), selPrices = asList(s.price);
     document.getElementById('catSearch').value = s.q || '';
     document.getElementById('catSort').value = s.sort;
-    const chip = (on, label, act) => `<button onclick="${act}" aria-pressed="${on}" class="h-9 px-3.5 rounded-full text-xs font-semibold border transition ${on ? 'bg-forest text-white border-forest' : 'bg-white border-slate-200 hover:border-forest'}">${label}</button>`;
-    document.getElementById('filterCats').innerHTML = [['', 'All categories', 'fa-border-all']].concat(cats.map(c => [c.id, c.name, c.icon])).map(([id, n, ic]) =>
-        `<button onclick="catalogState.cat='${id}'; renderCatalog()" aria-pressed="${s.cat === id}" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-left ${s.cat === id ? 'bg-forest-50 text-forest font-semibold' : 'hover:bg-white text-slate-700'}"><i class="fa-solid ${esc(ic)} w-4 text-forest-400"></i><span class="flex-1">${esc(n)}</span><span class="text-xs text-slate-400">${id ? coursesInCategory(id).length : lms.listedCourses().length}</span></button>`).join('');
-    document.getElementById('filterLevels').innerHTML = ['', ...db.settings().courses.levels].map(l => chip(s.level === l, l || 'Any', `catalogState.level='${l}'; renderCatalog()`)).join('');
-    document.getElementById('filterPrice').innerHTML = [['', 'Any'], ['free', 'Free'], ['paid', 'Paid']].map(([v, l]) => chip(s.price === v, l, `catalogState.price='${v}'; renderCatalog()`)).join('');
-
-    let list = s.q ? searchCourses(s.q) : lms.listedCourses();
-    if (s.cat) list = list.filter(c => c.categoryId === s.cat || c.subcategoryId === s.cat);
-    if (s.level) list = list.filter(c => c.level === s.level);
-    if (s.price) list = list.filter(c => (s.price === 'free') === !lms.priceOf(c));
-    const enr = id => db.count('enrollments', { courseId: id });
-    if (s.sort === 'popular' && !s.q) list.sort((a, b) => enr(b.id) - enr(a.id));
-    if (s.sort === 'newest') list.sort((a, b) => new Date(b.publishedAt || b.createdAt) - new Date(a.publishedAt || a.createdAt));
-    if (s.sort === 'rating') list.sort((a, b) => lms.rating(b.id).avg - lms.rating(a.id).avg);
-    if (s.sort === 'az') list.sort((a, b) => a.title.localeCompare(b.title));
-    document.getElementById('catalogLead').textContent = `${lms.listedCourses().length} programmes across ${cats.length} categories, each built section by section with projects and certificates.`;
-    document.getElementById('catalogCount').innerHTML = `<b class="text-ink">${list.length}</b> ${list.length === 1 ? 'result' : 'results'}${s.q ? ` for "<b class="text-ink">${esc(s.q)}</b>"` : ''}`;
-    document.getElementById('catalogGrid').innerHTML = list.map(c => courseCard(c)).join('') || `<div class="sm:col-span-2 xl:col-span-3 text-center py-16 bg-white rounded-xl border border-dashed"><i class="fa-solid fa-magnifying-glass text-3xl text-slate-300"></i><p class="font-semibold text-ink mt-3">No programmes match these filters</p><button onclick="Object.assign(catalogState,{q:'',cat:'',level:'',price:''}); renderCatalog()" class="btn btn-outline btn-sm mt-4">Clear filters</button></div>`;
+    const box = (group, value, label, count, on) => `<label class="flex items-center gap-3 px-2 py-1.5 rounded-lg text-sm cursor-pointer hover:bg-slate-50 ${on ? 'bg-forest-50 font-semibold text-forest' : 'text-slate-700'}"><input type="checkbox" data-f="${group}" value="${esc(value)}" ${on ? 'checked' : ''} class="w-4 h-4 rounded accent-[#0C3B2E]"><span class="flex-1">${esc(label)}</span><span class="text-xs text-slate-500">${count}</span></label>`;
+    document.getElementById('filterCats').innerHTML = box('cat', '', 'All categories', all.length, !selCats.length) + cats.map(c => box('cat', c.id, c.name, coursesInCategory(c.id).length, selCats.includes(c.id))).join('');
+    document.getElementById('filterLevels').innerHTML = db.settings().courses.levels.map(l => box('level', l, l, all.filter(c => c.level === l).length, selLevels.includes(l))).join('');
+    document.getElementById('filterPrice').innerHTML = box('price', 'free', 'Free', all.filter(c => !lms.priceOf(c)).length, selPrices.includes('free')) + box('price', 'paid', 'Paid', all.filter(c => lms.priceOf(c)).length, selPrices.includes('paid'));
+    // Price range (only worth showing when courses have different prices)
+    const lo = s.min == null ? 0 : s.min, hi = s.max == null ? maxP : s.max, cur = db.settings().payments.currency, sym = cur === 'USD' ? '$' : cur + ' ';
+    document.getElementById('priceRange').innerHTML = maxP > 0 ? `<div class="flex items-center gap-2 text-xs"><label class="flex-1"><span class="sr-only">Minimum price</span><span class="flex items-center rounded-lg border border-slate-300 bg-white h-9 px-2 text-slate-500">${sym}<input id="priceMin" type="number" min="0" max="${maxP}" step="1" value="${lo}" class="w-full min-w-0 pl-1 text-slate-900 focus:outline-none bg-transparent"></span></label><span class="text-slate-400">to</span>
+        <label class="flex-1"><span class="sr-only">Maximum price</span><span class="flex items-center rounded-lg border border-slate-300 bg-white h-9 px-2 text-slate-500">${sym}<input id="priceMax" type="number" min="0" max="${maxP}" step="1" value="${hi}" class="w-full min-w-0 pl-1 text-slate-900 focus:outline-none bg-transparent"></span></label></div>
+        <div class="range-dual mt-3"><div class="range-track"></div><div class="range-fill" style="left:${lo / maxP * 100}%;right:${100 - hi / maxP * 100}%"></div><input id="rangeMin" type="range" min="0" max="${maxP}" step="1" value="${lo}" aria-label="Minimum price"><input id="rangeMax" type="range" min="0" max="${maxP}" step="1" value="${hi}" aria-label="Maximum price"></div>` : '';
+    const list = catalogFiltered(), pages = Math.max(1, Math.ceil(list.length / CATALOG_PAGE_SIZE));
+    s.page = Math.min(Math.max(1, s.page || 1), pages);
+    const view = s.view === 'list' ? 'list' : 'grid', shown = list.slice((s.page - 1) * CATALOG_PAGE_SIZE, s.page * CATALOG_PAGE_SIZE);
+    ui.$$('[data-view]').forEach(b => { const on = b.dataset.view === view; b.setAttribute('aria-pressed', on); b.className = 'w-10 h-10 flex items-center justify-center ' + (b.dataset.view === 'list' ? 'border-l border-slate-300 ' : '') + (on ? 'bg-forest text-white' : 'text-slate-600 hover:bg-slate-50'); });
+    const active = selCats.length + selLevels.length + (selPrices.length ? 1 : 0) + (s.min != null || s.max != null ? 1 : 0);
+    document.getElementById('filterCount').textContent = active ? '(' + active + ')' : '';
+    document.getElementById('catalogLead').textContent = `${all.length} programmes across ${cats.length} categories, each built section by section with projects and certificates.`;
+    document.getElementById('catalogCount').innerHTML = `<b class="text-ink">${list.length}</b> ${list.length === 1 ? 'course' : 'courses'} found${s.q ? ` for "<b class="text-ink">${esc(s.q)}</b>"` : ''}`;
+    document.getElementById('catalogGrid').className = view === 'list' ? 'space-y-4' : 'grid sm:grid-cols-2 xl:grid-cols-3 gap-5';
+    document.getElementById('catalogGrid').innerHTML = shown.map(c => catalogCard(c, view)).join('') || `<div class="col-span-full text-center py-16 bg-white rounded-xl border border-dashed border-slate-300"><i class="fa-solid fa-magnifying-glass text-3xl text-slate-300" aria-hidden="true"></i><p class="font-semibold text-ink mt-3">No programmes match these filters</p><button onclick="clearCatalogFilters()" class="btn btn-outline btn-sm mt-4">Clear filters</button></div>`;
+    const btn = (label, page, extra, aria) => `<button type="button" data-page="${page}" ${aria || ''} class="min-w-9 h-9 px-2 rounded-lg border text-sm font-semibold ${extra}">${label}</button>`;
+    document.getElementById('catalogPages').innerHTML = pages > 1
+        ? btn('<i class="fa-solid fa-arrow-left text-xs" aria-hidden="true"></i>', s.page - 1, 'border-slate-300 bg-white text-slate-700 hover:border-forest ' + (s.page === 1 ? 'opacity-40 pointer-events-none' : ''), 'aria-label="Previous page"')
+            + Array.from({ length: pages }, (_, i) => btn(i + 1, i + 1, i + 1 === s.page ? 'border-forest bg-forest text-white' : 'border-slate-300 bg-white text-slate-700 hover:border-forest', `aria-label="Page ${i + 1}" ${i + 1 === s.page ? 'aria-current="page"' : ''}`)).join('')
+            + btn('<i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>', s.page + 1, 'border-slate-300 bg-white text-slate-700 hover:border-forest ' + (s.page === pages ? 'opacity-40 pointer-events-none' : ''), 'aria-label="Next page"')
+        : '';
 }
-document.getElementById('catSearch').addEventListener('input', e => { catalogState.q = e.target.value; renderCatalog(); document.getElementById('catSearch').focus(); });
-document.getElementById('catSort').addEventListener('change', e => { catalogState.sort = e.target.value; renderCatalog(); });
+function clearCatalogFilters() { Object.assign(catalogState, { q: '', cat: '', level: '', price: '', min: null, max: null, page: 1 }); renderCatalog(); }
+document.getElementById('catSearch').addEventListener('input', e => { catalogState.q = e.target.value; catalogState.page = 1; renderCatalog(); document.getElementById('catSearch').focus(); });
+document.getElementById('catSort').addEventListener('change', e => { catalogState.sort = e.target.value; catalogState.page = 1; renderCatalog(); });
+document.getElementById('clearFilters').addEventListener('click', clearCatalogFilters);
+document.getElementById('filtersToggle').addEventListener('click', e => { const f = document.getElementById('catFilters'), open = f.classList.toggle('hidden') === false; e.currentTarget.setAttribute('aria-expanded', open); });
+document.getElementById('page-catalog').addEventListener('change', e => {
+    const t = e.target, f = t.dataset && t.dataset.f, S = catalogState;
+    if (f) { S[f] = t.value === '' ? '' : [...document.querySelectorAll(`#catFilters [data-f="${f}"]`)].filter(i => i.checked && i.value !== '').map(i => i.value); S.page = 1; renderCatalog(); const again = [...document.querySelectorAll(`#catFilters [data-f="${f}"]`)].find(i => i.value === t.value); if (again) again.focus(); return; }
+    if (t.id === 'priceMin' || t.id === 'priceMax' || t.id === 'rangeMin' || t.id === 'rangeMax') {
+        const maxP = catalogMaxPrice(), isMin = t.id.endsWith('Min'), v = Math.min(maxP, Math.max(0, +t.value || 0));
+        let lo = S.min == null ? 0 : S.min, hi = S.max == null ? maxP : S.max;
+        if (isMin) lo = Math.min(v, hi); else hi = Math.max(v, lo);
+        S.min = lo <= 0 ? null : lo; S.max = hi >= maxP ? null : hi; S.page = 1; renderCatalog(); const again = document.getElementById(t.id); if (again) again.focus();
+    }
+});
+document.getElementById('page-catalog').addEventListener('input', e => { const t = e.target; if (t.id === 'rangeMin' || t.id === 'rangeMax') t.dispatchEvent(new Event('change', { bubbles: true })); });
+document.getElementById('page-catalog').addEventListener('click', e => {
+    const v = e.target.closest('[data-view]'); if (v) { catalogState.view = v.dataset.view; return renderCatalog(); }
+    const pg = e.target.closest('[data-page]'); if (pg) { catalogState.page = +pg.dataset.page; renderCatalog(); document.getElementById('catTitle').scrollIntoView({ behavior: 'smooth' }); }
+});
 
 function renderAbout() {
     document.getElementById('aboutInstructors').innerHTML = db.all('instructors').filter(i => db.count('course_instructors', { instructorId: i.id })).map(i => `
