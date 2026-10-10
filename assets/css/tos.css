@@ -65,6 +65,7 @@ body { font-feature-settings: "cv11", "ss01"; }
 /* Form controls */
 .field { width: 100%; border: 1px solid #CBD5E1; background: #fff; border-radius: .5rem; padding: .6rem .8rem; font-size: .875rem; color: #0f172a; transition: border-color .15s, box-shadow .15s; }
 .field:focus { outline: none; border-color: var(--forest-600); box-shadow: 0 0 0 3px rgba(20,88,74,.12); }
+.field.w-auto { width: auto; }
 .field-label { display: block; font-size: .75rem; font-weight: 600; color: #334155; margin-bottom: .35rem; }
 .field-hint { font-size: .7rem; color: #64748b; margin-top: .3rem; }
 /* Inline validation */

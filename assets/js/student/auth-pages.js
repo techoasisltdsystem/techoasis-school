@@ -1,7 +1,7 @@
 // Student sign-in pages: /student/login, /student/register, /student/forgot-password
 (function () {
     const safeNext = n => n && n.startsWith('/') && !n.startsWith('//') ? n : '/student/dashboard';
-    const layout = (title, sub, body) => `<div class="min-h-screen grid lg:grid-cols-[1.05fr_1fr] bg-white">
+    const layout = (title, sub, body) => `<main class="min-h-screen grid lg:grid-cols-[1.05fr_1fr] bg-white">
         <section class="hidden lg:flex relative overflow-hidden bg-gradient-to-br from-forest via-forest-600 to-ink text-white p-12 flex-col justify-between grain">
             <div class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-gold/15 blur-3xl"></div><div class="absolute -left-24 bottom-0 w-80 h-80 rounded-full bg-forest-400/20 blur-3xl"></div>
             <a href="/" class="relative" aria-label="Tech Oasis School website">${ui.brandLogo(true, 44)}</a>
@@ -24,7 +24,7 @@
                 ${ui.demoNotice()}
                 <div class="mt-8">${body}</div>
             </div>
-        </section></div>`;
+        </section></main>`;
     const notice = (kind, html) => `<div class="mb-5 rounded-xl px-4 py-3 text-sm ${kind === 'error' ? 'bg-rose-50 text-rose-800 border border-rose-100' : kind === 'warn' ? 'bg-amber-50 text-amber-800 border border-amber-100' : 'bg-emerald-50 text-emerald-800 border border-emerald-100'}" role="${kind === 'error' ? 'alert' : 'status'}">${html}</div>`;
     const pwField = (id, label, auto) => `<div><div class="flex items-center justify-between"><label class="field-label" for="${id}">${label}</label>${id === 'pw' ? '<a href="/student/forgot-password" class="text-xs font-semibold text-forest-600 hover:underline">Forgot password?</a>' : ''}</div>
         <div class="relative"><input id="${id}" type="password" required minlength="${id === 'pw' ? 1 : 8}" autocomplete="${auto}" class="field h-12 pr-11"><button type="button" data-eye="${id}" class="absolute right-1 top-1 w-10 h-10 rounded-lg text-slate-400 hover:text-slate-700" aria-label="Show password"><i class="fa-regular fa-eye"></i></button></div></div>`;

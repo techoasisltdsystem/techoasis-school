@@ -140,7 +140,7 @@ function courseRow(c) {
         <div class="min-w-0 py-1">
             <div class="flex items-center gap-2 text-xs text-slate-500"><span class="w-5 h-5 rounded border border-slate-200 flex items-center justify-center text-[9px] text-forest"><i class="fa-solid ${esc((lms.category(c.categoryId) || {}).icon || 'fa-book')}"></i></span><span class="truncate">${esc(ins ? ins.name : 'Tech Oasis Faculty')}</span></div>
             <div class="font-semibold text-ink mt-1.5 leading-snug group-hover:text-forest-600 line-clamp-2">${esc(c.title)}</div>
-            <div class="text-xs text-slate-500 mt-1.5">${lms.priceOf(c) ? 'Career Program' : 'Free Course'}${r.count ? ` · <i class="fa-solid fa-star text-gold"></i> <b class="text-slate-700">${r.avg.toFixed(1)}</b>` : ''}</div>
+            <div class="text-xs text-slate-500 mt-1.5">${lms.priceOf(c) ? 'Career Programme' : 'Free Course'}${r.count ? ` · <i class="fa-solid fa-star text-gold"></i> <b class="text-slate-700">${r.avg.toFixed(1)}</b>` : ''}</div>
         </div></a>`;
 }
 
@@ -335,9 +335,9 @@ function renderCatalog() {
     const s = catalogState, cats = topCategories();
     document.getElementById('catSearch').value = s.q || '';
     document.getElementById('catSort').value = s.sort;
-    const chip = (on, label, act) => `<button onclick="${act}" class="h-9 px-3.5 rounded-full text-xs font-semibold border transition ${on ? 'bg-forest text-white border-forest' : 'bg-white border-slate-200 hover:border-forest'}">${label}</button>`;
+    const chip = (on, label, act) => `<button onclick="${act}" aria-pressed="${on}" class="h-9 px-3.5 rounded-full text-xs font-semibold border transition ${on ? 'bg-forest text-white border-forest' : 'bg-white border-slate-200 hover:border-forest'}">${label}</button>`;
     document.getElementById('filterCats').innerHTML = [['', 'All categories', 'fa-border-all']].concat(cats.map(c => [c.id, c.name, c.icon])).map(([id, n, ic]) =>
-        `<button onclick="catalogState.cat='${id}'; renderCatalog()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-left ${s.cat === id ? 'bg-forest-50 text-forest font-semibold' : 'hover:bg-white text-slate-700'}"><i class="fa-solid ${esc(ic)} w-4 text-forest-400"></i><span class="flex-1">${esc(n)}</span><span class="text-xs text-slate-400">${id ? coursesInCategory(id).length : lms.listedCourses().length}</span></button>`).join('');
+        `<button onclick="catalogState.cat='${id}'; renderCatalog()" aria-pressed="${s.cat === id}" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-left ${s.cat === id ? 'bg-forest-50 text-forest font-semibold' : 'hover:bg-white text-slate-700'}"><i class="fa-solid ${esc(ic)} w-4 text-forest-400"></i><span class="flex-1">${esc(n)}</span><span class="text-xs text-slate-400">${id ? coursesInCategory(id).length : lms.listedCourses().length}</span></button>`).join('');
     document.getElementById('filterLevels').innerHTML = ['', ...db.settings().courses.levels].map(l => chip(s.level === l, l || 'Any', `catalogState.level='${l}'; renderCatalog()`)).join('');
     document.getElementById('filterPrice').innerHTML = [['', 'Any'], ['free', 'Free'], ['paid', 'Paid']].map(([v, l]) => chip(s.price === v, l, `catalogState.price='${v}'; renderCatalog()`)).join('');
 
@@ -350,9 +350,9 @@ function renderCatalog() {
     if (s.sort === 'newest') list.sort((a, b) => new Date(b.publishedAt || b.createdAt) - new Date(a.publishedAt || a.createdAt));
     if (s.sort === 'rating') list.sort((a, b) => lms.rating(b.id).avg - lms.rating(a.id).avg);
     if (s.sort === 'az') list.sort((a, b) => a.title.localeCompare(b.title));
-    document.getElementById('catalogLead').textContent = `${lms.listedCourses().length} programs across ${cats.length} categories, each built section by section with projects and certificates.`;
+    document.getElementById('catalogLead').textContent = `${lms.listedCourses().length} programmes across ${cats.length} categories, each built section by section with projects and certificates.`;
     document.getElementById('catalogCount').innerHTML = `<b class="text-ink">${list.length}</b> ${list.length === 1 ? 'result' : 'results'}${s.q ? ` for "<b class="text-ink">${esc(s.q)}</b>"` : ''}`;
-    document.getElementById('catalogGrid').innerHTML = list.map(c => courseCard(c)).join('') || `<div class="sm:col-span-2 xl:col-span-3 text-center py-16 bg-white rounded-xl border border-dashed"><i class="fa-solid fa-magnifying-glass text-3xl text-slate-300"></i><p class="font-semibold text-ink mt-3">No programs match these filters</p><button onclick="Object.assign(catalogState,{q:'',cat:'',level:'',price:''}); renderCatalog()" class="btn btn-outline btn-sm mt-4">Clear filters</button></div>`;
+    document.getElementById('catalogGrid').innerHTML = list.map(c => courseCard(c)).join('') || `<div class="sm:col-span-2 xl:col-span-3 text-center py-16 bg-white rounded-xl border border-dashed"><i class="fa-solid fa-magnifying-glass text-3xl text-slate-300"></i><p class="font-semibold text-ink mt-3">No programmes match these filters</p><button onclick="Object.assign(catalogState,{q:'',cat:'',level:'',price:''}); renderCatalog()" class="btn btn-outline btn-sm mt-4">Clear filters</button></div>`;
 }
 document.getElementById('catSearch').addEventListener('input', e => { catalogState.q = e.target.value; renderCatalog(); document.getElementById('catSearch').focus(); });
 document.getElementById('catSort').addEventListener('change', e => { catalogState.sort = e.target.value; renderCatalog(); });
@@ -363,7 +363,7 @@ function renderAbout() {
             <div class="flex items-center gap-4">${i.avatar ? `<img src="${esc(i.avatar)}" alt="" class="w-16 h-16 rounded-2xl object-cover">` : `<span class="w-16 h-16 rounded-2xl bg-forest text-gold flex items-center justify-center font-bold">${esc(ui.initials(i.name))}</span>`}
             <div><div class="font-display text-lg text-ink">${esc(i.name)}</div><div class="text-xs text-forest-600 font-semibold">${esc(i.title)}</div></div></div>
             <p class="text-sm text-slate-600 mt-4">${esc(i.bio)}</p>
-            <p class="text-xs text-slate-400 mt-3">${ui.plural(db.count('course_instructors', { instructorId: i.id }), 'program')}</p></div>`).join('');
+            <p class="text-xs text-slate-400 mt-3">${ui.plural(db.count('course_instructors', { instructorId: i.id }), 'programme')}</p></div>`).join('');
 }
 
 // Contact details come from School Settings. Social accounts and phone only appear once the school has filled them in.
@@ -422,7 +422,7 @@ function renderHome() {
 }
 
 // ---------------- Boot ----------------
-window.addEventListener('load', () => setTimeout(() => { const p = document.getElementById('preloader'); p.style.opacity = '0'; setTimeout(() => p.remove(), 700); }, sessionStorage.getItem('tos_seen') ? 300 : 1600));
+window.addEventListener('load', () => setTimeout(() => { const p = document.getElementById('preloader'); p.style.opacity = '0'; setTimeout(() => p.remove(), 700); }, sessionStorage.getItem('tos_seen') ? 150 : 600));
 sessionStorage.setItem('tos_seen', '1');
 document.getElementById('year').textContent = new Date().getFullYear();
 // Boot after every script (including portal.js, which defines the sign-in modal) has loaded

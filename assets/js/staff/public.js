@@ -3,7 +3,7 @@
     const MAX_FILE = 1048576;
     const safeNext = n => n && n.startsWith('/staff/') && !n.startsWith('//') ? n : '/staff/dashboard';
     const school = () => db.settings().school;
-    const layout = (title, sub, body, wide) => `<div class="min-h-screen grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] bg-white">
+    const layout = (title, sub, body, wide) => `<main class="min-h-screen grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] bg-white">
         <section class="hidden lg:flex relative overflow-hidden bg-gradient-to-br from-ink via-forest to-forest-600 text-white p-12 flex-col justify-between grain">
             <div class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-gold/15 blur-3xl"></div>
             <a href="/" class="relative" aria-label="Tech Oasis School website">${ui.brandLogo(true, 44)}</a>
@@ -24,7 +24,7 @@
                 ${ui.demoNotice()}
                 <div class="mt-8">${body}</div>
             </div>
-        </section></div>`;
+        </section></main>`;
     const notice = (kind, html) => `<div class="mb-5 rounded-xl px-4 py-3 text-sm ${kind === 'error' ? 'bg-rose-50 text-rose-800 border border-rose-100' : kind === 'warn' ? 'bg-amber-50 text-amber-800 border border-amber-100' : 'bg-emerald-50 text-emerald-800 border border-emerald-100'}" role="${kind === 'error' ? 'alert' : 'status'}">${html}</div>`;
     const errBox = '<p id="err" class="hidden text-sm font-medium text-rose-700 bg-rose-50 border border-rose-100 rounded-xl px-4 py-3" role="alert"></p>';
     const showErr = (el, msg) => { const e = el.querySelector('#err'); e.textContent = msg; e.classList.remove('hidden'); e.scrollIntoView({ block: 'center', behavior: 'smooth' }); };

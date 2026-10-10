@@ -58,9 +58,9 @@
     <header id="siteHeader" class="sticky top-0 z-40 bg-white border-b border-slate-200">
         <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-3 xl:gap-8">
             <button id="menuBtn" class="xl:hidden w-11 h-11 -ml-2 rounded-lg hover:bg-slate-100" onclick="toggleDrawer(true)" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
-            <a href="#" onclick="return go('home')" class="brand-logo shrink-0" data-size="36" aria-label="Tech Oasis School home"></a>
+            <a href="./" onclick="return go('home')" class="brand-logo shrink-0" data-size="36" aria-label="Tech Oasis School home"></a>
             <nav class="hidden xl:flex items-center gap-1 text-sm font-semibold text-slate-700" aria-label="Main">
-                <a href="#" data-nav="home" onclick="return go('home')" class="nav-link">Home</a>
+                <a href="./" data-nav="home" onclick="return go('home')" class="nav-link">Home</a>
                 <a href="#catalog" data-nav="catalog" onclick="return go('catalog')" class="nav-link">Courses</a>
                 <a href="#how-it-works" onclick="return go('home', 'how-it-works')" class="nav-link">For Individuals</a>
                 <a href="#organisations" onclick="return go('home', 'organisations')" class="nav-link">For Organisations</a>
@@ -79,7 +79,7 @@
             <div class="flex items-center justify-between mb-5"><span class="brand-logo" data-size="34"></span><button id="drawerClose" onclick="toggleDrawer(false)" class="w-11 h-11 rounded-lg hover:bg-slate-100" aria-label="Close menu"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
             <form class="relative mb-5" role="search" onsubmit="submitSearch(true); return false"><label for="mSearchInput" class="sr-only">Search courses</label><input id="mSearchInput" type="search" placeholder="Search courses" class="field pl-4 pr-11 h-11"><button class="absolute right-1 top-1 w-9 h-9 rounded-md text-slate-500" aria-label="Search"><i class="fa-solid fa-magnifying-glass text-sm" aria-hidden="true"></i></button></form>
             <nav class="space-y-1 text-sm font-semibold" aria-label="Mobile">
-                <a href="#" data-nav="home" onclick="toggleDrawer(false); return go('home')" class="block px-3 py-3 rounded-lg hover:bg-ivory">Home</a>
+                <a href="./" data-nav="home" onclick="toggleDrawer(false); return go('home')" class="block px-3 py-3 rounded-lg hover:bg-ivory">Home</a>
                 <a href="#catalog" data-nav="catalog" onclick="toggleDrawer(false); return go('catalog')" class="block px-3 py-3 rounded-lg hover:bg-ivory">Courses</a>
                 <a href="#how-it-works" onclick="toggleDrawer(false); return go('home', 'how-it-works')" class="block px-3 py-3 rounded-lg hover:bg-ivory">For Individuals</a>
                 <a href="#organisations" onclick="toggleDrawer(false); return go('home', 'organisations')" class="block px-3 py-3 rounded-lg hover:bg-ivory">For Organisations</a>
@@ -192,7 +192,7 @@
                     <div class="relative max-w-md">
                         <div class="text-sm font-semibold"><span class="font-extrabold tracking-[0.08em]">TECH <span class="gold-text">OASIS</span></span> <span class="text-white/70">for Organisations</span></div>
                         <h3 class="font-display text-3xl sm:text-[34px] leading-tight mt-4">Build a team that is ready for what's next</h3>
-                        <p class="text-white/70 text-sm mt-3">Structured programs, progress reporting and certificates for your staff, schools or government departments.</p>
+                        <p class="text-white/70 text-sm mt-3">Structured programmes, progress reporting and certificates for your staff, schools or government departments.</p>
                         <a data-email="school" data-subject="Tech Oasis for Organisations" class="btn btn-gold mt-6">Talk to our team <i class="fa-solid fa-arrow-right text-xs"></i></a>
                     </div>
                 </div>
@@ -275,13 +275,13 @@
         <!-- ================= CATALOG ================= -->
         <div id="page-catalog" class="page-view hidden">
             <section class="bg-ink text-white relative overflow-hidden">
-                <div class="relative max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="relative max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     <p class="eyebrow">Catalog</p>
-                    <h1 class="font-display text-4xl sm:text-5xl mt-2">Explore every program</h1>
+                    <h1 class="font-display text-4xl sm:text-5xl mt-2">Explore every programme</h1>
                     <p class="text-white/70 mt-3 max-w-xl" id="catalogLead"></p>
                 </div>
             </section>
-            <section class="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-8 grid lg:grid-cols-[260px_1fr] gap-8">
+            <section class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8 grid lg:grid-cols-[260px_1fr] gap-8">
                 <aside class="space-y-6">
                     <div><label class="field-label" for="catSearch">Search</label><input id="catSearch" type="search" class="field" placeholder="Course, skill or instructor"></div>
                     <div><div class="field-label">Category</div><div id="filterCats" class="space-y-1"></div></div>
@@ -290,7 +290,8 @@
                 </aside>
                 <div>
                     <div class="flex items-center justify-between gap-3 mb-5"><p id="catalogCount" class="text-sm text-slate-600"></p>
-                        <select id="catSort" class="field w-auto"><option value="popular">Most popular</option><option value="newest">Newest</option><option value="rating">Highest rated</option><option value="az">A–Z</option></select></div>
+                        <label for="catSort" class="sr-only">Sort courses</label><select id="catSort" class="field w-auto"><option value="popular">Most popular</option><option value="newest">Newest</option><option value="rating">Highest rated</option><option value="az">A–Z</option></select></div>
+                    <h2 class="sr-only">Course results</h2>
                     <div id="catalogGrid" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-5"></div>
                 </div>
             </section>
@@ -301,12 +302,12 @@
             <section class="max-w-5xl mx-auto px-4 py-16 sm:py-20 text-center">
                 <p class="eyebrow">About Tech Oasis School</p>
                 <h1 class="font-display text-4xl sm:text-5xl text-ink mt-3">Where Innovation Meets Expertise</h1>
-                <p class="text-slate-600 mt-5 max-w-2xl mx-auto text-lg">We equip aspiring technologists across Africa and beyond with world-class, affordable education in software, design, artificial intelligence and cloud systems.</p>
+                <p class="text-slate-600 mt-5 max-w-2xl mx-auto text-lg">Tech Oasis School offers technology courses in software development, design, artificial intelligence, data, security and cloud systems for learners across Africa and beyond.</p>
             </section>
             <section class="max-w-[1100px] mx-auto px-4 grid md:grid-cols-3 gap-5 pb-8">
-                <div class="bg-white p-7 rounded-xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-graduation-cap"></i></span><h3 class="font-display text-xl text-ink mt-5">Affordable excellence</h3><p class="text-slate-600 text-sm mt-2">Career programs at a flat, honest price with a free trial, so talent, not budget, decides who learns.</p></div>
-                <div class="bg-white p-7 rounded-xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-laptop-code"></i></span><h3 class="font-display text-xl text-ink mt-5">Practical by design</h3><p class="text-slate-600 text-sm mt-2">Every program ends in a real project, graded by working professionals.</p></div>
-                <div class="bg-white p-7 rounded-xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-globe-africa"></i></span><h3 class="font-display text-xl text-ink mt-5">A global community</h3><p class="text-slate-600 text-sm mt-2">Learn alongside peers across Africa and beyond, with discussions on every lesson.</p></div>
+                <div class="bg-white p-7 rounded-xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-graduation-cap"></i></span><h2 class="font-display text-xl text-ink mt-5">Clear pricing</h2><p class="text-slate-600 text-sm mt-2">Some courses are free, and paid programmes start with a free trial. The price is always shown before you enrol.</p></div>
+                <div class="bg-white p-7 rounded-xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-laptop-code"></i></span><h2 class="font-display text-xl text-ink mt-5">Practical by design</h2><p class="text-slate-600 text-sm mt-2">Courses include quizzes and assignments, and instructors grade your projects and give feedback.</p></div>
+                <div class="bg-white p-7 rounded-xl border border-slate-200/70 shadow-luxe"><span class="w-12 h-12 rounded-2xl bg-forest text-gold flex items-center justify-center text-lg"><i class="fa-solid fa-globe-africa"></i></span><h2 class="font-display text-xl text-ink mt-5">Learn with others</h2><p class="text-slate-600 text-sm mt-2">Discuss each lesson with other learners and your instructors.</p></div>
             </section>
             <section class="max-w-[1100px] mx-auto px-4 py-12">
                 <h2 class="font-display text-3xl text-ink">Meet our instructors</h2>
@@ -314,7 +315,7 @@
             </section>
             <section class="max-w-[1100px] mx-auto px-4 pb-8">
                 <div class="rounded-xl bg-forest text-white p-8 sm:p-10 grid md:grid-cols-2 gap-6">
-                    <div><h2 class="font-display text-3xl">Get in touch</h2><p class="text-white/70 text-sm mt-2">We usually reply within one working day.</p></div>
+                    <div><h2 class="font-display text-3xl">Get in touch</h2><p class="text-white/70 text-sm mt-2">Email us, or <a href="#contact" onclick="return go('contact')" class="underline">use the contact page</a>.</p></div>
                     <div class="space-y-3 text-sm">
                         <a data-email="school" class="flex items-center gap-3 hover:text-gold"><span class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center"><i class="fa-regular fa-envelope text-gold"></i></span><span><span class="block text-white/60 text-xs">General &amp; admissions</span><span data-email-text></span></span></a>
                         <a data-email="students" class="flex items-center gap-3 hover:text-gold"><span class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center"><i class="fa-solid fa-user-graduate text-gold"></i></span><span><span class="block text-white/60 text-xs">Student support</span><span data-email-text></span></span></a>
@@ -363,7 +364,7 @@
             <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1.2fr]">
                 <div>
                     <span class="brand-logo" data-theme="dark" data-size="40"></span>
-                    <p class="text-sm mt-5 max-w-xs">Where Innovation Meets Expertise. Career-ready technology education for learners across Africa and beyond.</p>
+                    <p class="text-sm mt-5 max-w-xs">Where Innovation Meets Expertise. Technology education for learners across Africa and beyond.</p>
                     <div id="footerSocial" class="flex gap-2 mt-6"></div>
                 </div>
                 <div><h2 class="text-white font-semibold text-sm mb-4">Courses</h2><ul id="footerCats" class="space-y-2.5 text-sm"></ul></div>
