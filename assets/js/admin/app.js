@@ -119,13 +119,14 @@ A.bindSearch = fn => { const el = document.getElementById('globalSearch'); el.on
 A.barChart = (data, opts) => {
     opts = opts || {};
     if (!data.length || data.every(d => !d.value)) return `<div class="h-48 flex items-center justify-center text-sm text-slate-400">${opts.empty || 'No data yet'}</div>`;
-    const max = Math.max(...data.map(d => d.value)), h = opts.height || 180;
-    const ticks = [0, .5, 1].map(f => Math.round(max * f));
+    // opts.minMax keeps tiny counts (e.g. one enrollment a day) from filling the whole chart height
+    const max = Math.max(opts.minMax || 0, ...data.map(d => d.value)), h = opts.height || 180;
+    const ticks = [...new Set([0, .5, 1].map(f => Math.round(max * f)))];
     return `<div class="relative" style="height:${h + 28}px">
         ${ticks.map(t => `<div class="absolute left-0 right-0 border-t border-dashed border-slate-200" style="bottom:${28 + (max ? t / max : 0) * h}px"><span class="absolute -top-2 left-0 text-[10px] text-slate-400 bg-white pr-1">${opts.fmt ? opts.fmt(t) : t}</span></div>`).join('')}
-        <div class="absolute left-8 right-0 bottom-0 top-0 flex items-end gap-[2px]">${data.map(d => `<div class="flex-1 h-full flex flex-col justify-end items-center group cursor-default" data-tip="${esc(d.tip || d.label + ': ' + (opts.fmt ? opts.fmt(d.value) : d.value))}">
+        <div class="absolute left-8 right-0 bottom-0 top-0 flex items-end gap-[2px]">${data.map(d => `<div class="flex-1 min-w-0 h-full flex flex-col justify-end items-center group cursor-default" data-tip="${esc(d.tip || d.label + ': ' + (opts.fmt ? opts.fmt(d.value) : d.value))}">
             <div class="w-full max-w-[36px] rounded-t bg-forest-600 group-hover:bg-gold transition-colors" style="height:${Math.max(d.value ? 3 : 0, d.value / max * h)}px"></div>
-            <div class="h-7 pt-1.5 text-[10px] text-slate-500 truncate w-full text-center">${esc(d.short || d.label)}</div></div>`).join('')}</div></div>`;
+            <div class="h-7 pt-1.5 text-[10px] text-slate-500 whitespace-nowrap w-full flex justify-center">${esc(d.short == null ? d.label : d.short)}</div></div>`).join('')}</div></div>`;
 };
 // Line/area over time. data: [{ label, value }]
 A.lineChart = (data, opts) => {
@@ -178,34 +179,77 @@ A.route('dashboard', () => {
     const published = courses.filter(c => c.status === 'published').length;
     const revenue = A.revenueOf(db.all('orders'));
     const completed = enrs.filter(e => e.status === 'completed').length;
-    const toGrade = db.where('submissions', s => s.status !== 'graded');
-    const overdue = enrs.filter(e => lms.paymentState(e) === 'overdue');
     const active7 = new Set(enrs.filter(e => e.lastAccessAt && Date.now() - new Date(e.lastAccessAt) < 7 * 864e5).map(e => e.userId)).size;
     const popular = courses.map(c => ({ c, n: enrs.filter(e => e.courseId === c.id).length })).sort((a, b) => b.n - a.n).slice(0, 5);
     const school = db.settings().school;
+
+    // Enrollment trend: last 30 days against the 30 days before
+    const series = A.daily(enrs, 'enrolledAt', 30).map((d, i, all) => ({ ...d, short: i % 5 === 0 || i === all.length - 1 ? d.label : '' }));
+    const last30 = series.reduce((a, d) => a + d.value, 0);
+    const prev30 = enrs.filter(e => { const age = Date.now() - new Date(e.enrolledAt); return age >= 30 * 864e5 && age < 60 * 864e5; }).length;
+    // Absolute change reads honestly on small numbers (a % jump from 1 to 11 looks dramatic but means little)
+    const delta = last30 - prev30;
+    const trend = `<span class="inline-flex items-center gap-1 whitespace-nowrap text-xs font-semibold px-2 py-0.5 rounded-full ${delta > 0 ? 'bg-emerald-50 text-emerald-700' : delta < 0 ? 'bg-rose-50 text-rose-700' : 'bg-slate-100 text-slate-600'}"><i class="fa-solid ${delta > 0 ? 'fa-arrow-trend-up' : delta < 0 ? 'fa-arrow-trend-down' : 'fa-minus'} text-[10px]"></i>${delta > 0 ? '+' : ''}${delta} vs previous 30 days</span>`;
+
+    // One compact metrics strip instead of six large cards
+    const kpi = (icon, tone, label, value, sub, href) => `<a href="${href}" class="group bg-white p-4 sm:p-5 hover:bg-slate-50 transition-colors min-w-0">
+        <div class="flex items-center gap-2 text-xs font-medium text-slate-500"><span class="w-6 h-6 rounded-md ${tone} flex items-center justify-center text-[11px]"><i class="fa-solid ${icon}"></i></span><span class="truncate">${label}</span></div>
+        <div class="font-display text-[26px] leading-none text-ink mt-3">${value}</div>
+        <div class="text-xs text-slate-500 mt-1.5 truncate">${sub}</div></a>`;
+
+    // Work queue: every item is always listed so the admin sees at a glance what is clear and what is waiting
+    const tasks = [
+        ['#/assignments', 'fa-file-pen', 'bg-gold-50 text-gold-700', 'Submissions to grade', 'Assignments waiting for feedback', badgeFor('assignments')],
+        ['#/staff-applications', 'fa-file-signature', 'bg-violet-50 text-violet-700', 'Staff applications', 'Pending or under review', badgeFor('staff-applications')],
+        ['#/payments', 'fa-hourglass-end', 'bg-rose-50 text-rose-700', 'Unpaid after free trial', 'Students to follow up', badgeFor('payments')],
+        ['#/messages', 'fa-envelope', 'bg-sky-50 text-sky-700', 'Unread messages', 'From students to the school', badgeFor('messages')],
+        ['#/support', 'fa-life-ring', 'bg-emerald-50 text-emerald-700', 'Open support tickets', 'Questions from learners', badgeFor('support')]
+    ];
+    const open = tasks.reduce((a, t) => a + t[5], 0);
+
+    const actions = [['#/courses/new', 'fa-plus', 'New course'], ['#/assignments', 'fa-file-pen', 'Grade work'], ['#/students', 'fa-user-plus', 'Add student'],
+        ['#/staff-applications', 'fa-user-tie', 'Review staff'], ['#/announcements', 'fa-bullhorn', 'Announce'], ['#/coupons', 'fa-ticket', 'New coupon']];
+
     A.view().innerHTML = `
         <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
-            <div><div class="text-[11px] font-bold uppercase tracking-[0.2em] text-gold-600">${new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</div><h1 class="font-display text-3xl text-ink mt-1">Welcome back</h1><p class="text-sm text-slate-500 mt-1">Here's what's happening at ${esc(school.name)}.</p></div>
-            <div class="flex gap-2"><a href="#/courses/new" class="btn btn-forest btn-sm"><i class="fa-solid fa-plus"></i>Create course</a><a href="index.html" target="_blank" class="btn btn-outline btn-sm">View site</a></div>
+            <div class="min-w-0"><div class="text-[11px] font-bold uppercase tracking-[0.2em] text-gold-600">${new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</div><h1 class="font-display text-3xl text-ink mt-1">Welcome back</h1><p class="text-sm text-slate-500 mt-1">Here's what's happening at ${esc(school.name)}.</p></div>
+            <div class="flex gap-2"><a href="index.html" target="_blank" class="btn btn-outline btn-sm"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>View site</a><a href="#/courses/new" class="btn btn-forest btn-sm"><i class="fa-solid fa-plus"></i>Create course</a></div>
         </div>
-        <div class="grid grid-cols-2 xl:grid-cols-6 gap-4">
-            ${A.stat('fa-user-graduate', 'bg-sky-50 text-sky-700', 'Students', students.length, `${active7} active this week`)}
-            ${A.stat('fa-book-open', 'bg-forest-50 text-forest', 'Courses', courses.length, `${published} published · ${courses.filter(c => c.status === 'draft').length} draft`)}
-            ${A.stat('fa-id-card', 'bg-violet-50 text-violet-700', 'Enrollments', enrs.length, `${enrs.filter(e => lms.paymentState(e) === 'trial').length} on free trial`)}
-            ${A.stat('fa-flag-checkered', 'bg-gold-50 text-gold-700', 'Completion rate', (enrs.length ? Math.round(completed / enrs.length * 100) : 0) + '%', `${completed} completed`)}
-            ${A.stat('fa-award', 'bg-amber-50 text-amber-700', 'Certificates', db.count('certificates', c => !c.revoked), 'issued')}
-            ${A.stat('fa-sack-dollar', 'bg-emerald-50 text-emerald-700', 'Revenue', ui.money(revenue), `${db.count('orders', { status: 'pending' })} orders pending`)}
+
+        <section aria-label="Key figures" class="rounded-2xl border border-slate-200/80 overflow-hidden grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-px bg-slate-200/70">
+            ${kpi('fa-user-graduate', 'bg-sky-50 text-sky-700', 'Students', students.length, `${active7} active this week`, '#/students')}
+            ${kpi('fa-book-open', 'bg-forest-50 text-forest', 'Courses', courses.length, `${published} published · ${courses.length - published} draft`, '#/courses')}
+            ${kpi('fa-id-card', 'bg-violet-50 text-violet-700', 'Enrollments', enrs.length, `${enrs.filter(e => lms.paymentState(e) === 'trial').length} on free trial`, '#/enrollments')}
+            ${kpi('fa-flag-checkered', 'bg-gold-50 text-gold-700', 'Completion rate', (enrs.length ? Math.round(completed / enrs.length * 100) : 0) + '%', `${completed} of ${enrs.length} completed`, '#/analytics/courses')}
+            ${kpi('fa-award', 'bg-amber-50 text-amber-700', 'Certificates', db.count('certificates', c => !c.revoked), 'issued to students', '#/certificates')}
+            ${kpi('fa-sack-dollar', 'bg-emerald-50 text-emerald-700', 'Revenue', ui.money(revenue), `${db.count('orders', { status: 'pending' })} orders pending`, '#/payments')}
+        </section>
+
+        <div class="grid lg:grid-cols-5 xl:grid-cols-3 gap-5 mt-5">
+            <section class="lg:col-span-3 xl:col-span-2 bg-white rounded-2xl border border-slate-200/80 p-5 min-w-0">
+                <div class="flex flex-wrap items-start justify-between gap-3 mb-5">
+                    <div><h2 class="font-semibold text-ink">New enrollments</h2><div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1"><span class="font-display text-2xl text-ink">${last30}</span><span class="text-xs text-slate-500 whitespace-nowrap">in the last 30 days</span>${trend}</div></div>
+                    <a href="#/enrollments" class="text-xs font-semibold text-forest hover:underline">View enrollments</a>
+                </div>
+                ${A.barChart(series, { height: 190, minMax: 4, empty: 'No enrollments in the last 30 days' })}
+            </section>
+            <section class="lg:col-span-2 xl:col-span-1 bg-white rounded-2xl border border-slate-200/80 p-5 min-w-0">
+                <div class="flex items-center justify-between gap-3 mb-3"><h2 class="font-semibold text-ink">Needs attention</h2><span class="text-xs font-semibold px-2 py-0.5 rounded-full ${open ? 'bg-rose-50 text-rose-700' : 'bg-emerald-50 text-emerald-700'}">${open ? open + ' open' : 'All clear'}</span></div>
+                <div class="divide-y divide-slate-100">${tasks.map(([href, ic, tone, label, sub, n]) => `<a href="${href}" class="flex items-center gap-3 py-3 group">
+                    <span class="w-9 h-9 rounded-xl ${n ? tone : 'bg-slate-50 text-slate-400'} flex items-center justify-center text-sm shrink-0"><i class="fa-solid ${ic}"></i></span>
+                    <span class="min-w-0 flex-1"><span class="block text-sm font-medium ${n ? 'text-ink' : 'text-slate-500'} truncate group-hover:underline">${label}</span><span class="block text-xs text-slate-500 truncate">${sub}</span></span>
+                    ${n ? `<span class="min-w-[24px] h-6 px-2 rounded-full bg-ink text-white text-xs font-bold flex items-center justify-center">${n}</span>` : '<span class="text-xs text-emerald-700 font-medium flex items-center gap-1"><i class="fa-solid fa-check text-[10px]"></i>Clear</span>'}
+                    <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 group-hover:text-slate-500"></i></a>`).join('')}</div>
+            </section>
         </div>
-        <div class="grid xl:grid-cols-3 gap-5 mt-5">
-            <div class="xl:col-span-2">${A.card(A.cardTitle('New enrollments', '<span class="text-xs text-slate-500">Last 30 days</span>') + A.lineChart(A.daily(enrs, 'enrolledAt', 30), { empty: 'No enrollments in the last 30 days' }))}</div>
-            ${A.card(A.cardTitle('Quick actions') + `<div class="grid grid-cols-2 gap-2 text-sm">${[['#/courses/new', 'fa-plus', 'New course', 'bg-forest-50 text-forest'], ['#/assignments', 'fa-file-pen', 'Grade work', 'bg-gold-50 text-gold-700'], ['#/students', 'fa-user-plus', 'Add student', 'bg-sky-50 text-sky-700'], ['#/instructors', 'fa-chalkboard-user', 'Add instructor', 'bg-violet-50 text-violet-700'], ['#/announcements', 'fa-bullhorn', 'Announce', 'bg-rose-50 text-rose-700'], ['#/coupons', 'fa-ticket', 'New coupon', 'bg-amber-50 text-amber-700']].map(([h, ic, l, t]) => `<a href="${h}" class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-100 hover:border-forest-200 hover:bg-forest-50/40"><span class="w-8 h-8 rounded-lg ${t} flex items-center justify-center text-xs"><i class="fa-solid ${ic}"></i></span>${l}</a>`).join('')}</div>`)}
-        </div>
-        <div class="grid xl:grid-cols-3 gap-5 mt-5">
-            ${A.card(A.cardTitle('Needs attention') + (toGrade.length || overdue.length ? `<div class="space-y-3">
-                ${toGrade.slice(0, 4).map(s => { const a = db.get('assignments', s.assignmentId); return `<a href="#/assignments?grade=${s.id}" class="flex items-center gap-3 group">${A.avatar(A.userName(s.userId), 'bg-gold-50 text-gold-700')}<div class="min-w-0 flex-1"><div class="text-sm font-medium text-ink truncate group-hover:underline">${esc(A.userName(s.userId))} submitted work</div><div class="text-xs text-slate-500 truncate">${esc(a ? a.title : '')} · ${ui.timeAgo(s.submittedAt)}</div></div><span class="pill pill-submitted">Grade</span></a>`; }).join('')}
-                ${overdue.slice(0, 3).map(e => `<a href="#/enrollments?q=${encodeURIComponent(A.userName(e.userId))}" class="flex items-center gap-3 group">${A.avatar(A.userName(e.userId), 'bg-rose-50 text-rose-700')}<div class="min-w-0 flex-1"><div class="text-sm font-medium text-ink truncate group-hover:underline">${esc(A.userName(e.userId))}'s trial ended unpaid</div><div class="text-xs text-slate-500 truncate">${esc(A.courseTitle(e.courseId))}</div></div><span class="pill pill-overdue">Follow up</span></a>`).join('')}</div>` : A.empty('fa-mug-hot', 'All caught up', 'Nothing needs your attention right now.')))}
-            ${A.card(A.cardTitle('Most popular courses', '<a href="#/analytics/courses" class="text-xs font-semibold text-forest">Analytics</a>') + `<div class="space-y-3">${popular.map(({ c, n }) => `<a href="#/courses/${c.id}" class="flex items-center gap-3 group"><img src="${esc(c.thumbnail)}" alt="" class="w-12 h-9 rounded-lg object-cover bg-slate-100"><div class="flex-1 min-w-0"><div class="text-sm font-medium text-ink truncate group-hover:underline">${esc(c.title)}</div><div class="h-1.5 bg-slate-100 rounded-full mt-1.5"><div class="h-1.5 rounded-full bg-forest-600" style="width:${popular[0].n ? n / popular[0].n * 100 : 0}%"></div></div></div><span class="text-sm font-semibold text-ink w-8 text-right">${n}</span></a>`).join('')}</div>`)}
-            ${A.card(A.cardTitle('Recent enrollments', '<a href="#/enrollments" class="text-xs font-semibold text-forest">View all</a>') + `<div class="space-y-3">${enrs.slice().sort((a, b) => new Date(b.enrolledAt) - new Date(a.enrolledAt)).slice(0, 6).map(e => `<div class="flex items-center gap-3">${A.avatar(A.userName(e.userId))}<div class="min-w-0 flex-1"><div class="text-sm font-medium text-ink truncate">${esc(A.userName(e.userId))}</div><div class="text-xs text-slate-500 truncate">${esc(A.courseTitle(e.courseId))}</div></div><span class="text-xs text-slate-400 whitespace-nowrap">${ui.timeAgo(e.enrolledAt)}</span></div>`).join('') || '<p class="text-sm text-slate-500">No enrollments yet.</p>'}</div>`)}
+
+        <section aria-label="Quick actions" class="bg-white rounded-2xl border border-slate-200/80 p-2 mt-5 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-1">
+            ${actions.map(([h, ic, l]) => `<a href="${h}" class="flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-medium text-slate-700 hover:bg-forest-50 hover:text-forest transition-colors"><i class="fa-solid ${ic} text-xs text-slate-400"></i>${l}</a>`).join('')}
+        </section>
+
+        <div class="grid lg:grid-cols-2 gap-5 mt-5">
+            ${A.card(A.cardTitle('Most popular courses', '<a href="#/analytics/courses" class="text-xs font-semibold text-forest hover:underline">Analytics</a>') + (popular.length ? `<div class="space-y-3.5">${popular.map(({ c, n }, i) => `<a href="#/courses/${c.id}" class="flex items-center gap-3 group"><span class="w-5 text-xs font-semibold text-slate-400 text-right">${i + 1}</span><img src="${esc(c.thumbnail)}" alt="" class="w-12 h-9 rounded-lg object-cover bg-slate-100 shrink-0"><div class="flex-1 min-w-0"><div class="text-sm font-medium text-ink truncate group-hover:underline">${esc(c.title)}</div><div class="h-1.5 bg-slate-100 rounded-full mt-1.5"><div class="h-1.5 rounded-full bg-forest-600" style="width:${popular[0].n ? n / popular[0].n * 100 : 0}%"></div></div></div><span class="text-sm font-semibold text-ink w-14 text-right whitespace-nowrap">${n} <span class="text-xs font-normal text-slate-400">${n === 1 ? 'student' : 'students'}</span></span></a>`).join('')}</div>` : '<p class="text-sm text-slate-500">No courses yet.</p>'), 'p-5 min-w-0')}
+            ${A.card(A.cardTitle('Recent enrollments', '<a href="#/enrollments" class="text-xs font-semibold text-forest hover:underline">View all</a>') + `<div class="divide-y divide-slate-100 -my-2">${enrs.slice().sort((a, b) => new Date(b.enrolledAt) - new Date(a.enrolledAt)).slice(0, 5).map(e => `<div class="flex items-center gap-3 py-2.5">${A.avatar(A.userName(e.userId))}<div class="min-w-0 flex-1"><div class="text-sm font-medium text-ink truncate">${esc(A.userName(e.userId))}</div><div class="text-xs text-slate-500 truncate">${esc(A.courseTitle(e.courseId))}</div></div><span class="text-xs text-slate-400 whitespace-nowrap">${ui.timeAgo(e.enrolledAt)}</span></div>`).join('') || '<p class="text-sm text-slate-500 py-2">No enrollments yet.</p>'}</div>`, 'p-5 min-w-0')}
         </div>`;
 });
 
