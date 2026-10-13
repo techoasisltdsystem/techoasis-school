@@ -7,14 +7,14 @@ Static site (no build step): Tailwind via CDN, vanilla JavaScript, deployable as
 
 | Page | Purpose |
 |---|---|
-| `index.html` | Public homepage, catalog, about. **Sign in** asks Student or Staff; the footer links to *Teach at Tech Oasis* |
+| `index.html` | Public homepage, catalogue, about and contact (hash views). **Sign in** goes to `/student/login`; the footer links to staff sign-in and *Teach at Tech Oasis* |
 | `/student/*` (`portal.html`) | **Student Portal**, a separate signed-in app: dashboard, my courses, browse, course curriculum, lesson player, assignments, quizzes, certificates, progress, messages, announcements, notifications, calendar, schedule, resources, profile, settings, help |
 | `/staff/apply` (`portal.html`) | Public teaching application (4 steps). Applications start **Pending**; nobody can sign in until an admin approves. `/staff/application` shows the applicant their status and messages |
 | `/staff/*` (`portal.html`) | **Staff Portal** for approved staff: dashboard, my courses (lessons, assignments, quizzes), students, grading, quiz results, messages, announcements, schedule, notifications, profile, settings. Each menu item and API call is gated by the permissions the admin granted |
 | `course.html?c=<slug>` | Course landing page (curriculum, instructor, reviews, enrollment). `&preview=1` = admin preview incl. drafts |
 | `learn.html?...&preview=1` | Admin lesson preview (students are redirected to `/student/learn/:lessonId`) |
 | `verify.html?code=<id>` | Certificate view, print/PDF, public verification |
-| `admin.html` (`/admin`) | Admin CMS, including **People → Staff Applications** (review, request info, approve with role/permissions/courses, reject) and **People → Staff** (edit, permissions, suspend, ban, unban, archive, soft delete, force password reset). Queued emails: **Settings → Email Outbox**.<br>Admin CMS (sign in: `school@techoasisschool.com` / `admin123`; change it in **Settings → School**) |
+| `admin.html` (`/admin`) | Admin CMS, including **People → Staff Applications** (review, request info, approve with role/permissions/courses, reject) and **People → Staff** (edit, permissions, suspend, ban, unban, archive, soft delete, force password reset). Queued emails: **Settings → Email Outbox**.<br>Admin CMS (sample sign-in: `school@techoasisschool.com` / `admin123`. **Change it in Settings → School before launch**; the passcode is checked in the browser, so real admin security needs the backend below) |
 
 ## Code map
 
@@ -57,6 +57,11 @@ Student sign-in: `/student/login` (sample student: `margaret@gmail.com` / `stude
 
 VS Code Live Server: `.vscode/settings.json` sets `"liveServer.settings.file": "portal.html"`, so unknown paths fall back to the
 portal. **Restart Live Server after changing that setting**, or `/student/login` and `/staff/login` show *Cannot GET*.
+
+## Audit notes
+
+See [`docs/AUDIT.md`](docs/AUDIT.md) for the full website audit: what was wrong, what changed, what still needs a backend or business decision, and the tests that were run.
+`TOS.config.serverConnected` (in `assets/js/core/ui.js`) is `false` until the data lives on a server; while it is `false`, pages that collect or promise something say plainly that it is stored in this browser only. Online payment is switched off in `lms.onlinePayments()` until a gateway exists. Public contact details and social links are filled in at **Admin → Settings → School** and appear on the site only once entered.
 
 ## Before launch (important)
 

@@ -141,10 +141,11 @@
         }),
 
         quote: call((courseId, code) => { me(); return lms.quote(courseId, code); }),
-        // Enroll (free) or check out (paid). payNow records a payment (demo provider until a real one is connected).
+        // Enroll (free) or check out (paid). Paying online is refused until a payment gateway is integrated (lms.onlinePayments).
         enroll: call((courseId, { coupon, payNow } = {}) => {
             const u = me(), c = db.get('courses', courseId);
             if (!c || c.status !== 'published') throw new ApiError('NOT_FOUND', 'This course is not open for enrollment.');
+            if (payNow && !lms.onlinePayments()) throw new ApiError('PAYMENT_UNAVAILABLE', 'Online payment is not available yet. Please email ' + db.settings().school.studentEmail + ' to arrange payment.');
             const ex = lms.enrollmentOf(u.id, courseId);
             if (ex && ex.status !== 'cancelled') {
                 if (payNow && ex.orderId && ['trial', 'overdue', 'pending'].includes(lms.paymentState(ex))) lms.markOrderPaid(ex.orderId, db.settings().payments.provider, 'demo-' + Date.now());

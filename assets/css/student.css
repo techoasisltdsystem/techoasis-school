@@ -19,7 +19,7 @@
 .s-card-hover:hover { box-shadow: 0 10px 30px -14px rgba(15,23,42,.25); border-color: #D7DBE2; transform: translateY(-1px); }
 .s-title { font-size: 1.5rem; line-height: 1.25; font-weight: 700; color: #0F172A; letter-spacing: -.01em; }
 .s-h2 { font-size: 1rem; font-weight: 600; color: #0F172A; }
-.s-muted { color: #64748B; }
+.s-muted { color: #59667A; }
 .s-tab { padding: .55rem .9rem; border-radius: .6rem; font-size: 13px; font-weight: 600; color: #64748B; white-space: nowrap; }
 .s-tab:hover { color: #0F172A; background: #EEF0F3; }
 .s-tab.on { background: #0F172A; color: #fff; }

@@ -191,8 +191,9 @@
         if (kwameSub) L.gradeSubmission(kwameSub.id, { score: 88, feedback: 'Excellent work: clean semantic markup and a genuinely responsive layout. Consider adding a contact form next.' });
         L.issueCertificate(users[1].id, web.id);
 
-        // Reviews (sample)
-        const rv = (u, c, rating, comment, d) => db.insert('reviews', { userId: u.id, courseId: c.id, rating, comment, status: 'published', createdAt: ago(d) });
+        // Reviews (sample). Hidden by default so invented feedback never shows on the public site as real learner reviews.
+        // Admin → Reviews can publish them for demos; real reviews are published as normal.
+        const rv = (u, c, rating, comment, d) => db.insert('reviews', { userId: u.id, courseId: c.id, rating, comment, status: 'hidden', sample: true, createdAt: ago(d) });
         rv(users[1], web, 5, 'The structure made it easy to keep going. I finished with a portfolio site I am proud of.', 3);
         rv(users[0], web, 5, 'Clear lessons, and the quizzes made sure I actually understood each section.', 8);
         rv(users[2], courses['Data Science'], 4, 'Practical and well paced. The Pandas module was my favourite.', 5);
@@ -206,4 +207,14 @@
         const d1 = db.insert('discussions', { courseId: web.id, lessonId: firstWebLesson.id, userId: users[0].id, parentId: null, body: 'Excited to start! Is there a community channel for students?', createdAt: ago(10) });
         db.insert('discussions', { courseId: web.id, lessonId: firstWebLesson.id, userId: users[1].id, parentId: d1.id, body: 'Yes, check the announcements; there is a weekly live Q&A too.', createdAt: ago(9) });
     };
+
+    // Browsers that already hold the earlier seed data: hide sample reviews (written by the sample learners) from the public site
+    const SAMPLE_LEARNERS = ['margaret@gmail.com', 'kwame@gmail.com', 'efua@gmail.com', 'david@gmail.com', 'aisha@gmail.com', 'samuel@gmail.com'];
+    (TOS.migrations = TOS.migrations || []).push(function (db) {
+        db.all('reviews').forEach(r => {
+            if (r.status !== 'published' || r.sample) return;
+            const u = db.get('users', r.userId);
+            if (u && SAMPLE_LEARNERS.includes((u.email || '').toLowerCase())) db.update('reviews', r.id, { status: 'hidden', sample: true });
+        });
+    });
 })();
