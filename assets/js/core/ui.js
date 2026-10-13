@@ -126,7 +126,7 @@
     }
     function brandLogo(dark, size) {
         return `<span class="inline-flex items-center gap-3">${logoMark(size || 38, dark)}
-            <span class="leading-none"><span class="block text-[15px] font-extrabold tracking-[0.08em] ${dark ? 'text-white' : 'text-ink'}">TECH <span class="gold-text">OASIS</span></span>
+            <span class="leading-none rail-fade"><span class="block text-[15px] font-extrabold tracking-[0.08em] ${dark ? 'text-white' : 'text-ink'}">TECH <span class="gold-text">OASIS</span></span>
             <span class="block text-[9px] font-semibold tracking-[0.32em] uppercase mt-1 ${dark ? 'text-forest-200' : 'text-slate-500'}">School</span></span></span>`;
     }
     const applyBrandLogos = () => $$('.brand-logo').forEach(el => { el.innerHTML = brandLogo(el.dataset.theme === 'dark', +el.dataset.size || 38); });

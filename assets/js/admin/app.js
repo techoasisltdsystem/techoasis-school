@@ -30,9 +30,9 @@ function badgeFor(key) {
 }
 A.renderNav = function (path) {
     const active = A.NAV.flatMap(g => g.items).map(i => i[0]).filter(k => path === k || path.startsWith(k + '/')).sort((a, b) => b.length - a.length)[0];
-    document.getElementById('navList').innerHTML = A.NAV.map(g => `<div class="mb-5">${g.title ? `<div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/35">${g.title}</div>` : ''}
-        ${g.items.map(([k, label, ic]) => { const n = badgeFor(k), on = k === active; return `<a href="#/${k}" class="flex items-center gap-3 px-3 py-2 rounded-lg mb-0.5 ${on ? 'bg-gold text-ink font-semibold' : 'hover:bg-white/5'}" ${on ? 'aria-current="page"' : ''}>
-            <i class="fa-solid ${ic} w-4 ${on ? '' : 'text-white/40'}"></i><span class="flex-1">${label}</span>${n ? `<span class="min-w-[20px] h-5 px-1.5 rounded-full ${on ? 'bg-ink text-white' : 'bg-rose-600 text-white'} text-[10px] font-bold flex items-center justify-center">${n}</span>` : ''}</a>`; }).join('')}</div>`).join('');
+    document.getElementById('navList').innerHTML = A.NAV.map(g => `<div class="mb-5">${g.title ? `<div class="rail-group px-3 mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/35" style="--rail-x:6px"><span class="rail-fade">${g.title}</span></div>` : ''}
+        ${g.items.map(([k, label, ic]) => { const n = badgeFor(k), on = k === active; return `<a href="#/${k}" class="relative flex items-center gap-3 px-3 py-2 rounded-lg mb-0.5 ${on ? 'bg-gold text-ink font-semibold' : 'hover:bg-white/5'}" ${on ? 'aria-current="page"' : ''}>
+            <i class="fa-solid ${ic} w-4 ${on ? '' : 'text-white/40'}"></i><span class="flex-1 rail-fade">${label}</span>${n ? `<span class="rail-badge min-w-[20px] h-5 px-1.5 rounded-full ${on ? 'bg-ink text-white' : 'bg-rose-600 text-white'} text-[10px] font-bold flex items-center justify-center">${n}</span>` : ''}</a>`; }).join('')}</div>`).join('');
     const pending = badgeFor('assignments') + badgeFor('payments') + badgeFor('messages') + badgeFor('support'), bell = document.getElementById('bell');
     bell.textContent = pending; bell.classList.toggle('hidden', !pending);
 };

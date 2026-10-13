@@ -124,17 +124,17 @@ S.errorView = (err, retry) => {
 function sidebarHtml() {
     const me = S.me, app = S.app;
     const active = (S.current && S.current.nav) || '';
-    return `<div class="h-16 px-5 flex items-center border-b border-[#E6E8EC] shrink-0"><a href="${S.url('dashboard')}" aria-label="${app.name} home">${ui.brandLogo(false, 34)}</a><span class="ml-auto text-[10px] font-bold uppercase tracking-[0.15em] text-gold-600 bg-gold-50 px-2 py-1 rounded-md">${app.label}</span></div>
-        <a href="${S.url('profile')}" class="mx-3 mt-4 p-3 rounded-xl bg-[#F7F8FA] border border-[#EEF0F3] flex items-center gap-3 hover:border-forest-200">
-            ${S.avatar(me, 42)}<div class="min-w-0"><div class="text-sm font-semibold text-slate-900 truncate">${esc(me.name)}</div>${app.card(me)}</div></a>
+    return `<div class="rail-head h-16 px-5 flex items-center border-b border-[#E6E8EC] shrink-0"><a href="${S.url('dashboard')}" aria-label="${app.name} home">${ui.brandLogo(false, 34)}</a><span class="rail-fade ml-auto text-[10px] font-bold uppercase tracking-[0.15em] text-gold-600 bg-gold-50 px-2 py-1 rounded-md">${app.label}</span></div>
+        <a href="${S.url('profile')}" class="rail-card mx-3 mt-4 p-3 rounded-xl bg-[#F7F8FA] border border-[#EEF0F3] flex items-center gap-3 hover:border-forest-200">
+            ${S.avatar(me, 42)}<div class="min-w-0 rail-fade"><div class="text-sm font-semibold text-slate-900 truncate">${esc(me.name)}</div>${app.card(me)}</div></a>
         <nav class="flex-1 overflow-y-auto thin-scroll pb-4" aria-label="${app.name}">${app.nav.map(g => {
             const items = g.items.filter(it => !it[4] || it[4](me));
-            return items.length ? `<div class="s-nav-group">${g.title}</div>${items.map(([k, l, ic, badge]) => {
+            return items.length ? `<div class="s-nav-group rail-group"><span class="rail-fade">${g.title}</span></div>${items.map(([k, l, ic, badge]) => {
                 const n = badge ? S.counts[badge] : 0;
-                return `<a href="${S.url(k)}" class="s-nav-link ${active === k ? 'active' : ''}" ${active === k ? 'aria-current="page"' : ''}><i class="fa-solid ${ic}"></i><span class="flex-1">${l}</span>${n ? `<span class="s-badge" data-badge="${badge}">${n > 99 ? '99+' : n}</span>` : `<span data-badge="${badge || ''}"></span>`}</a>`;
+                return `<a href="${S.url(k)}" class="s-nav-link ${active === k ? 'active' : ''}" ${active === k ? 'aria-current="page"' : ''}><i class="fa-solid ${ic}"></i><span class="flex-1 rail-fade">${l}</span>${n ? `<span class="s-badge" data-badge="${badge}">${n > 99 ? '99+' : n}</span>` : `<span data-badge="${badge || ''}"></span>`}</a>`;
             }).join('')}` : '';
         }).join('')}</nav>
-        <div class="p-3 border-t border-[#E6E8EC] shrink-0"><button data-logout class="s-nav-link w-[calc(100%-1rem)] text-left text-rose-700 hover:bg-rose-50"><i class="fa-solid fa-right-from-bracket !text-rose-400"></i>Log out</button></div>`;
+        <div class="p-3 border-t border-[#E6E8EC] shrink-0"><button data-logout class="s-nav-link w-[calc(100%-1rem)] text-left text-rose-700 hover:bg-rose-50"><i class="fa-solid fa-right-from-bracket !text-rose-400"></i><span class="rail-fade">Log out</span></button></div>`;
 }
 function headerHtml(route) {
     const me = S.me, focus = route.layout === 'focus', app = S.app;
@@ -169,9 +169,9 @@ function bottomNavHtml() {
 function renderShell(route) {
     const root = document.getElementById('root'), focus = route.layout === 'focus';
     root.innerHTML = `<div class="min-h-screen flex">
-        <aside id="sideNav" class="s-sidebar fixed ${focus ? '' : 'lg:sticky'} top-0 left-0 z-50 h-screen flex flex-col -translate-x-full ${focus ? '' : 'lg:translate-x-0'} transition-transform shrink-0">${sidebarHtml()}</aside>
+        <aside id="sideNav" class="s-sidebar ${focus ? "" : "app-side"} fixed ${focus ? "" : "lg:sticky"} top-0 left-0 z-50 h-screen flex flex-col -translate-x-full ${focus ? '' : 'lg:translate-x-0'} transition-transform shrink-0">${sidebarHtml()}</aside>
         <div id="navScrim" class="hidden fixed inset-0 z-40 bg-slate-900/40 ${focus ? '' : 'lg:hidden'}"></div>
-        <div class="flex-1 min-w-0 flex flex-col">
+        <div class="${focus ? '' : 'app-main '}flex-1 min-w-0 flex flex-col">
             ${headerHtml(route)}
             <main id="main" class="flex-1 min-w-0 ${focus ? '' : 'px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pb-28 lg:pb-10 max-w-[1400px] w-full mx-auto'}" tabindex="-1"></main>
         </div></div>${focus ? '' : bottomNavHtml()}`;

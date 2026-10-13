@@ -23,13 +23,12 @@
             const rows = db.all('staff_applications').filter(a => (filter === 'all' || a.status === filter) && A.matches(fullName(a), a.email, a.expertise, (a.subjects || []).join(' ')))
                 .sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
             document.getElementById('tbl').innerHTML = A.table([
-                { label: 'Applicant', render: a => `<a href="#/staff-applications/${a.id}" class="flex items-center gap-3">${avatar(fullName(a), a.photo)}<span><span class="block font-medium text-ink hover:underline">${esc(fullName(a))}</span>${a.infoRequested ? '<span class="text-[11px] text-sky-700">Waiting for applicant</span>' : a.emailVerified ? '' : '<span class="text-[11px] text-amber-700">Email not verified</span>'}</span></a>` },
-                { label: 'Email', render: a => `<span class="text-xs">${esc(a.email)}</span>` },
-                { label: 'Phone', render: a => `<span class="text-xs whitespace-nowrap">${esc(a.phone)}</span>` },
-                { label: 'Subject', render: a => `<span class="text-xs">${esc((a.subjects || []).slice(0, 2).join(', '))}${(a.subjects || []).length > 2 ? ' +' + (a.subjects.length - 2) : ''}</span>` },
-                { label: 'Expertise', render: a => `<span class="text-xs">${esc(a.expertise)}</span>` },
-                { label: 'Experience', render: a => ui.plural(a.yearsExperience || 0, 'year') },
-                { label: 'Applied', render: a => `<span class="text-xs whitespace-nowrap">${ui.fmtDate(a.submittedAt)}</span>` },
+                // Contact details sit under the name and experience under the expertise, so the table fits without scrolling
+                { label: 'Applicant', cls: 'w-full', render: a => `<a href="#/staff-applications/${a.id}" class="flex items-center gap-3 min-w-0">${avatar(fullName(a), a.photo)}<span class="min-w-0"><span class="block font-medium text-ink hover:underline break-words">${esc(fullName(a))}</span><span class="block text-xs text-slate-500 break-all">${esc(a.email)}</span><span class="block text-xs text-slate-500 xl:hidden">${esc(a.phone)}</span>${a.infoRequested ? '<span class="block text-[11px] text-sky-700">Waiting for applicant</span>' : a.emailVerified ? '' : '<span class="block text-[11px] text-amber-700">Email not verified</span>'}</span></a>` },
+                { label: 'Phone', cls: 'hidden xl:table-cell', render: a => `<span class="text-xs whitespace-nowrap">${esc(a.phone)}</span>` },
+                { label: 'Subject', cls: 'hidden 2xl:table-cell', render: a => `<span class="text-xs">${esc((a.subjects || []).slice(0, 2).join(', '))}${(a.subjects || []).length > 2 ? ' +' + (a.subjects.length - 2) : ''}</span>` },
+                { label: 'Expertise', cls: 'hidden md:table-cell', render: a => `<span class="block text-xs min-w-[9rem]">${esc(a.expertise)}</span><span class="block text-xs text-slate-500 whitespace-nowrap">${ui.plural(a.yearsExperience || 0, 'year')} experience</span>` },
+                { label: 'Applied', cls: 'hidden lg:table-cell', render: a => `<span class="text-xs whitespace-nowrap">${ui.fmtDate(a.submittedAt)}</span>` },
                 { label: 'Status', render: a => appPill(a.status) },
                 { label: '', cls: 'text-right', render: a => `<a href="#/staff-applications/${a.id}" class="btn ${['pending', 'under_review'].includes(a.status) ? 'btn-forest' : 'btn-outline'} btn-sm">${['pending', 'under_review'].includes(a.status) ? 'Review' : 'View'}</a>` }
             ], rows, A.empty('fa-file-signature', 'No applications', 'Applications submitted at /staff/apply appear here for review.'));
@@ -124,14 +123,13 @@
         const draw = () => {
             const rows = db.where('users', u => u.role === 'staff' && (filter === 'all' || (u.status || 'active') === filter) && A.matches(u.name, u.email, u.department, (ST.ROLES[u.staffRole] || {}).label));
             document.getElementById('tbl').innerHTML = A.table([
-                { label: 'Staff', render: u => `<button data-view="${u.id}" class="flex items-center gap-3 text-left">${avatar(u.name, u.avatar)}<span class="font-medium text-ink hover:underline">${esc(u.name)}</span></button>` },
-                { label: 'Email', render: u => `<span class="text-xs">${esc(u.email)}</span>` },
-                { label: 'Role', render: u => esc((ST.ROLES[u.staffRole] || {}).label || '—') },
-                { label: 'Department', render: u => esc(u.department || '—') },
+                // Email sits under the name and department under the role, so the table fits the card without scrolling
+                { label: 'Staff', cls: 'w-full', render: u => `<button data-view="${u.id}" class="flex items-center gap-3 text-left min-w-0">${avatar(u.name, u.avatar)}<span class="min-w-0"><span class="block font-medium text-ink hover:underline break-words">${esc(u.name)}</span><span class="block text-xs text-slate-500 break-all">${esc(u.email)}</span><span class="block text-xs text-slate-500 md:hidden">${esc((ST.ROLES[u.staffRole] || {}).label || '')}</span></span></button>` },
+                { label: 'Role', cls: 'hidden md:table-cell', render: u => `<span class="block whitespace-nowrap">${esc((ST.ROLES[u.staffRole] || {}).label || '—')}</span><span class="block text-xs text-slate-500 whitespace-nowrap">${esc(u.department || 'No department')}</span>` },
                 { label: 'Status', render: u => accPill(u.status) },
-                { label: 'Application', render: u => u.applicationId && db.get('staff_applications', u.applicationId) ? `<a href="#/staff-applications/${u.applicationId}" class="text-xs font-semibold text-forest hover:underline">View application</a>` : '<span class="text-xs text-slate-400">Created by admin</span>' },
-                { label: 'Last login', render: u => `<span class="text-xs whitespace-nowrap">${u.lastLoginAt ? ui.timeAgo(u.lastLoginAt) : 'Never'}</span>` },
-                { label: 'Actions', cls: 'text-right', render: u => `<div class="relative inline-block"><button data-menu="${u.id}" class="btn btn-outline btn-sm" aria-haspopup="true">Actions <i class="fa-solid fa-chevron-down text-[10px]"></i></button></div>` }
+                { label: 'Application', cls: 'hidden 2xl:table-cell', render: u => u.applicationId && db.get('staff_applications', u.applicationId) ? `<a href="#/staff-applications/${u.applicationId}" class="text-xs font-semibold text-forest hover:underline whitespace-nowrap">View application</a>` : '<span class="text-xs text-slate-400 whitespace-nowrap">Created by admin</span>' },
+                { label: 'Last login', cls: 'hidden xl:table-cell', render: u => `<span class="text-xs whitespace-nowrap">${u.lastLoginAt ? ui.timeAgo(u.lastLoginAt) : 'Never'}</span>` },
+                { label: '<span class="sr-only">Actions</span>', cls: 'text-right', render: u => `<button data-menu="${u.id}" class="btn btn-outline btn-sm whitespace-nowrap" aria-haspopup="true" aria-label="Actions for ${esc(u.name)}"><span class="hidden sm:inline">Actions</span><i class="fa-solid fa-ellipsis sm:hidden"></i><i class="fa-solid fa-chevron-down text-[10px] hidden sm:inline"></i></button>` }
             ], rows, A.empty('fa-id-badge', 'No staff in this view', filter === 'active' ? 'Approve a staff application to add someone to the team.' : ''));
             ui.$$('[data-view]').forEach(b => b.onclick = () => staffDrawer(b.dataset.view, draw));
             ui.$$('[data-menu]').forEach(b => b.onclick = e => { e.stopPropagation(); actionMenu(b, db.get('users', b.dataset.menu), draw); });
@@ -148,12 +146,18 @@
         const st = u.status || 'active';
         const allowed = ACTIONS.filter(([k]) => ST.TRANSITIONS[k].from.includes(st));
         const menu = document.createElement('div');
-        menu.className = 'staff-menu absolute right-0 mt-1 w-52 bg-white rounded-xl shadow-lift border py-1 z-30 text-sm text-left';
+        menu.className = 'staff-menu fixed w-56 max-h-[70vh] overflow-y-auto bg-white rounded-xl shadow-lift border py-1 z-50 text-sm text-left';
         menu.innerHTML = [['view', 'View', 'fa-eye'], ['edit', 'Edit', 'fa-pen'], ['permissions', 'Permissions', 'fa-key'], ['message', 'Message', 'fa-envelope']].concat(st === 'deleted' ? [] : [['reset', 'Send password reset', 'fa-unlock-keyhole'], ['force', 'Force password reset', 'fa-key']])
             .map(([k, l, ic]) => `<button data-a="${k}" class="w-full text-left px-4 py-2 hover:bg-slate-50"><i class="fa-solid ${ic} w-5 text-slate-400"></i>${l}</button>`).join('')
             + (allowed.length ? '<div class="border-t my-1"></div>' + allowed.map(([k, l, ic]) => `<button data-a="${k}" class="w-full text-left px-4 py-2 hover:bg-slate-50 ${['ban', 'delete', 'suspend'].includes(k) ? 'text-rose-700' : ''}"><i class="fa-solid ${ic} w-5"></i>${l}</button>`).join('') : '');
-        btn.parentElement.appendChild(menu);
-        setTimeout(() => document.addEventListener('click', () => menu.remove(), { once: true }));
+        // Attached to the page (not the table) so the table's scroll area can never clip it.
+        // Opens below the button, or above it when there is no room, and stays inside the screen.
+        document.body.appendChild(menu);
+        const r = btn.getBoundingClientRect(), h = menu.offsetHeight, w = menu.offsetWidth;
+        menu.style.left = Math.max(8, Math.min(r.right - w, innerWidth - w - 8)) + 'px';
+        menu.style.top = (r.bottom + 4 + h > innerHeight && r.top - 4 - h > 0 ? r.top - 4 - h : Math.max(8, Math.min(r.bottom + 4, innerHeight - h - 8))) + 'px';
+        const close = () => { menu.remove(); document.removeEventListener('click', close); removeEventListener('scroll', close, true); removeEventListener('resize', close); };
+        setTimeout(() => { document.addEventListener('click', close); addEventListener('scroll', close, true); addEventListener('resize', close); });
         menu.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { menu.remove(); doAction(b.dataset.a, u, done); });
     }
     async function doAction(k, u, done) {

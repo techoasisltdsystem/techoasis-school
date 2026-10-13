@@ -131,3 +131,27 @@ textarea.field { resize: vertical; min-height: 5rem; line-height: 1.5; }
 
 /* Grid/flex children must be allowed to shrink below their content width (prevents mobile overflow) */
 #view .grid > *, #builderBody .grid > *, #lesson .grid > * { min-width: 0; }
+
+/* ---------- Sidebar rail (admin + student/staff portals), modelled on the Supabase dashboard ----------
+   On large screens the sidebar is a slim icon rail. Hovering it (or tabbing into it) slides the full menu out
+   over the page instead of pushing the page, so content keeps the full width and nothing has to scroll sideways. */
+@media (min-width: 1024px) {
+    .app-side { position: fixed !important; top: 0; left: 0; width: 64px !important; overflow: hidden; white-space: nowrap; z-index: 60;
+        transition: width .2s cubic-bezier(.4, 0, .2, 1), box-shadow .2s ease; }
+    .app-side:hover, .app-side:focus-within { width: 260px !important; box-shadow: 8px 0 40px -12px rgba(15, 23, 42, .35); transition-delay: .12s; }
+    .app-main { margin-left: 64px; }
+    .app-side nav { overflow-x: hidden; }
+    .app-side:not(:hover):not(:focus-within) nav { scrollbar-width: none; }
+    .app-side:not(:hover):not(:focus-within) nav::-webkit-scrollbar { display: none; }
+    /* Icons, logo mark and avatar all sit on the same centre line (32px) in both states, so nothing jumps on hover */
+    .app-side .rail-head { padding-left: 14px !important; }
+    .app-side .rail-card { margin-left: 6px !important; margin-right: 6px !important; padding: 5px !important; }
+    /* Folded: words fade out, group headings turn into thin dividers, counters become a dot-badge on the icon */
+    .app-side .rail-fade { transition: opacity .15s ease; }
+    .app-side:not(:hover):not(:focus-within) .rail-fade { opacity: 0; }
+    .app-side .rail-group { position: relative; }
+    .app-side .rail-group::before { content: ""; position: absolute; left: var(--rail-x, 18px); width: 28px; top: 50%; border-top: 1px solid currentColor; opacity: 0; transition: opacity .15s ease; }
+    .app-side:not(:hover):not(:focus-within) .rail-group::before { opacity: .35; }
+    .app-side:not(:hover):not(:focus-within) .rail-badge,
+    .app-side:not(:hover):not(:focus-within) .s-nav-link .s-badge { position: absolute; left: 30px; top: 1px; min-width: 15px; height: 15px; padding: 0 3px; font-size: 9px; }
+}
