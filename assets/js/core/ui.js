@@ -140,6 +140,25 @@
             ${P.map(pts => `<polygon class="lm-outline" pathLength="1" points="${pts}"/>`).join('')}
             <g class="lm-cube"><polygon points="207,272 270,236 335,272 270,308" fill="#DEC45B"/><polygon points="207,272 270,308 270,372 207,338" fill="#AC903F"/><polygon points="270,308 335,272 335,338 270,372" fill="#937733"/></g></svg>`;
     }
+    // Admin sign-in emblem ("vault"): a lock dial draws in and turns, a scan beam reveals the mark, the cube faces
+    // unlock and click shut, then the cube pulses like a status light. Deliberately different from the homepage
+    // animatedLogo. Keyframes live in tos.css (.vl); add .armed / .denied / .granted to react to the sign-in form.
+    function vaultLogo(size) {
+        const P = ['255,17 303,46 303,229 250,198 250,100 78,200 78,522 22,490 22,160', '125,225 213,176 213,238 179,258 179,583 125,551', '352,78 405,106 405,386 228,493 228,383 268,404 352,350', '452,140 505,166 505,446 232,612 232,545 452,410'];
+        return `<svg class="vl" viewBox="-150 -150 300 300" width="${size}" height="${size}" role="img" aria-label="Tech Oasis School secure sign-in">
+            <defs><linearGradient id="vl-beam" x1="0" x2="1"><stop offset="0" stop-color="#E7CF6A" stop-opacity="0"/><stop offset=".5" stop-color="#E7CF6A"/><stop offset="1" stop-color="#E7CF6A" stop-opacity="0"/></linearGradient>
+                <radialGradient id="vl-core"><stop offset="0" stop-color="#E7CF6A" stop-opacity=".55"/><stop offset="1" stop-color="#E7CF6A" stop-opacity="0"/></radialGradient></defs>
+            <g class="vl-dial vl-dial-outer"><circle class="vl-ring" r="138" pathLength="1"/><circle class="vl-ticks" r="128"/></g>
+            <g class="vl-dial vl-dial-inner"><circle class="vl-arcs" r="114"/></g>
+            <g class="vl-orbit"><circle r="138" fill="none"/><circle cx="0" cy="-138" r="3.5" class="vl-dot"/></g>
+            <circle class="vl-halo" r="90" fill="url(#vl-core)"/>
+            <g transform="scale(.29) translate(-264,-315)">
+                <g class="vl-mark">${P.map(pts => `<polygon points="${pts}" fill="#3A8D7C"/>`).join('')}
+                    <g class="vl-cube"><polygon class="vl-f1" points="207,272 270,236 335,272 270,308" fill="#DEC45B"/><polygon class="vl-f2" points="207,272 270,308 270,372 207,338" fill="#AC903F"/><polygon class="vl-f3" points="270,308 335,272 335,338 270,372" fill="#937733"/></g></g>
+                <circle class="vl-pulse" cx="270" cy="304" r="60"/>
+            </g>
+            <rect class="vl-beam" x="-95" y="-1.5" width="190" height="3" rx="1.5" fill="url(#vl-beam)"/></svg>`;
+    }
     function brandLogo(dark, size) {
         return `<span class="inline-flex items-center gap-3">${logoMark(size || 38, dark)}
             <span class="leading-none rail-fade"><span class="block text-[15px] font-extrabold tracking-[0.08em] ${dark ? 'text-white' : 'text-ink'}">TECH <span class="gold-text">OASIS</span></span>
@@ -171,5 +190,5 @@
     // Until then every page that collects or promises something says plainly that it is stored in this browser only.
     TOS.config = Object.assign({ serverConnected: false }, TOS.config);
     const demoNotice = () => TOS.config.serverConnected ? '' : '<div class="mt-5 rounded-lg border border-amber-200 bg-amber-50 text-amber-900 text-xs p-3" role="note"><b>Before you continue:</b> this website is not connected to a server yet. Accounts, progress and requests made here are saved in this browser only, and the school does not receive them. For anything urgent, email the school directly.</div>';
-    TOS.ui = { demoNotice, animatedLogo, esc, initials, qs, $, $$, fmtDuration, fmtSecs, fmtDate, fmtDateTime, fmtBytes, timeAgo, money, stars, plural, md, toast, modal, confirmBox, logoMark, brandLogo, applyBrandLogos, initReveal, readFile, chartTip, LESSON_TYPES };
+    TOS.ui = { demoNotice, animatedLogo, vaultLogo, esc, initials, qs, $, $$, fmtDuration, fmtSecs, fmtDate, fmtDateTime, fmtBytes, timeAgo, money, stars, plural, md, toast, modal, confirmBox, logoMark, brandLogo, applyBrandLogos, initReveal, readFile, chartTip, LESSON_TYPES };
 })();

@@ -261,8 +261,12 @@ A.showLogin = () => {
     if (s && s.role !== 'admin' && !document.getElementById('roleDenied')) {
         form.insertAdjacentHTML('afterbegin', `<div id="roleDenied" class="rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm p-4" role="alert"><b>Access denied.</b> You are signed in as a ${s.role === 'student' ? 'student' : 'staff member'}, and ${s.role === 'student' ? 'student accounts' : 'staff accounts'} cannot access the admin CMS. <a href="${s.role === 'student' ? '/student/dashboard' : '/staff/dashboard'}" class="underline font-semibold">Go to your ${s.role === 'student' ? 'student portal' : 'Staff Portal'}</a></div>`);
     }
+    // Re-render the vault emblem so its intro plays every time the sign-in screen is shown
+    const vault = document.getElementById('vault'); if (vault) vault.innerHTML = ui.vaultLogo(240);
     setTimeout(() => document.getElementById('adminId').focus(), 30);
 };
+// Emblem state: armed while the form has focus, red on a failed attempt, green when access is granted
+const vaultState = (cls, on) => { const v = document.querySelector('#vault .vl'); if (v) v.classList.toggle(cls, on); return v; };
 A.start = function () {
     ui.applyBrandLogos();
     let fails = 0, lockUntil = 0;
@@ -272,12 +276,16 @@ A.start = function () {
         if (Date.now() < lockUntil) { err.textContent = `Too many attempts. Try again in ${Math.ceil((lockUntil - Date.now()) / 1000)}s.`; return err.classList.remove('hidden'); }
         if (auth.adminLogin(document.getElementById('adminId').value, document.getElementById('adminPass').value)) {
             fails = 0; err.classList.add('hidden'); document.getElementById('adminPass').value = '';
-            document.getElementById('login').classList.add('hidden'); document.getElementById('shell').classList.remove('hidden');
-            return A.dispatch();
+            const v = vaultState('granted', true), open = () => { vaultState('granted', false); document.getElementById('login').classList.add('hidden'); document.getElementById('shell').classList.remove('hidden'); A.dispatch(); };
+            return v && v.getBoundingClientRect().width ? setTimeout(open, 650) : open();
         }
+        const v = vaultState('denied', false); if (v) { void v.getBoundingClientRect(); vaultState('denied', true); setTimeout(() => vaultState('denied', false), 900); }
         if (++fails >= 5) { lockUntil = Date.now() + 30000; fails = 0; }
         err.textContent = 'Invalid admin email or passcode.'; err.classList.remove('hidden');
     };
+    const lf = document.getElementById('loginForm');
+    lf.addEventListener('focusin', () => vaultState('armed', true));
+    lf.addEventListener('focusout', () => setTimeout(() => vaultState('armed', lf.contains(document.activeElement)), 0));
     document.getElementById('logoutBtn').onclick = () => { auth.adminLogout(); A.showLogin(); };
     document.getElementById('navToggle').onclick = () => { document.getElementById('nav').classList.remove('-translate-x-full'); document.getElementById('navScrim').classList.remove('hidden'); };
     document.getElementById('navScrim').onclick = () => { document.getElementById('nav').classList.add('-translate-x-full'); document.getElementById('navScrim').classList.add('hidden'); };
