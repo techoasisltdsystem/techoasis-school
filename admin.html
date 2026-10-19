@@ -19,26 +19,37 @@
 </head>
 <body class="bg-[#F5F3EE] text-slate-800 font-sans antialiased">
 
-    <!-- Login -->
-    <div id="login" class="hidden min-h-screen grid lg:grid-cols-2">
-        <div class="hidden lg:flex flex-col justify-between p-12 bg-ink text-white relative overflow-hidden grain">
-            <div class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-gold/15 blur-3xl"></div>
-            <a href="index.html" class="relative brand-logo" data-theme="dark" data-size="44"></a>
-            <div class="relative"><div id="vault" class="-ml-6 mb-6 w-[240px] h-[240px]" aria-hidden="true"></div>
-                <span class="pill bg-gold text-ink">Restricted area</span>
-                <h1 class="font-display text-5xl mt-5 leading-tight">School Control Center</h1>
-                <p class="text-white/65 mt-4 max-w-md">Build courses section by section, manage learners and instructors, grade work, issue certificates and track performance.</p></div>
-            <p class="relative text-xs text-white/40">Authorized administrators only. Activity may be monitored.</p>
-        </div>
-        <div class="flex items-center justify-center p-6 bg-white">
-            <form id="loginForm" class="w-full max-w-sm space-y-5">
-                <span class="brand-logo lg:hidden" data-size="40"></span>
-                <div><h2 class="font-display text-3xl text-ink">Administrator sign in</h2><p class="text-sm text-slate-500 mt-1">Students and staff sign in on the <a href="index.html" class="underline">main site</a>.</p></div>
-                <div><label class="field-label" for="adminId">Admin email</label><input id="adminId" required autocomplete="username" class="field h-11" placeholder="school@techoasisltd.com"></div>
-                <div><label class="field-label" for="adminPass">Passcode</label><input id="adminPass" type="password" required autocomplete="current-password" class="field h-11"></div>
-                <p id="loginErr" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-100 rounded-lg px-3 py-2" role="alert"></p>
-                <button class="btn btn-ink w-full h-12">Sign in</button>
-                <a href="index.html" class="block text-center text-xs font-semibold text-slate-500 hover:text-ink">&larr; Back to site</a>
+    <!-- Login: full-screen school photo, deep blue wash, glass panel (reference image 3). Students and staff keep their own sign-in pages. -->
+    <div id="login" class="hidden adm-login">
+        <img src="assets/img/laptop-blue.webp" alt="" class="adm-login-bg" fetchpriority="high" decoding="async">
+        <div class="adm-login-wash" aria-hidden="true"></div>
+        <div class="relative z-10 min-h-screen w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-8 flex flex-col lg:flex-row lg:items-center gap-10">
+            <div class="hidden lg:flex flex-col justify-between self-stretch flex-1 text-white py-4">
+                <a href="index.html" class="brand-logo" data-theme="dark" data-size="44" aria-label="Tech Oasis School home"></a>
+                <div class="max-w-md"><span class="adm-pill"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i>Restricted area</span>
+                    <p class="text-4xl font-semibold leading-tight mt-5 tracking-tight">School Control Center</p>
+                    <p class="text-white/75 mt-4">Manage courses, learners, staff, grading, certificates and payments from one place.</p></div>
+                <p id="adminContact" class="text-xs text-white/70 leading-relaxed"></p>
+            </div>
+            <form id="loginForm" class="adm-panel w-full max-w-[460px] mx-auto lg:mx-0 my-auto" novalidate>
+                <div class="text-center"><span class="brand-logo" data-theme="dark" data-size="46"></span></div>
+                <h1 class="text-[28px] font-semibold text-white mt-8 leading-tight">Administrator sign in</h1>
+                <p class="text-sm text-white/75 mt-1">Sign in to the Tech Oasis School Control Center.</p>
+                <div class="mt-7 space-y-4">
+                    <div><label class="sr-only" for="adminId">Admin email</label>
+                        <div class="adm-field"><i class="fa-regular fa-user" aria-hidden="true"></i><input id="adminId" type="text" inputmode="email" required autocomplete="username" placeholder="Admin email" aria-describedby="loginErr"></div></div>
+                    <div><label class="sr-only" for="adminPass">Passcode</label>
+                        <div class="adm-field"><i class="fa-solid fa-lock" aria-hidden="true"></i><input id="adminPass" type="password" required autocomplete="current-password" placeholder="Passcode" aria-describedby="loginErr">
+                            <button type="button" id="togglePass" class="adm-eye" aria-label="Show passcode" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i></button></div></div>
+                </div>
+                <div class="flex justify-end mt-3"><button type="button" id="forgotBtn" class="text-sm text-white/85 hover:text-white underline-offset-4 hover:underline" aria-expanded="false" aria-controls="forgotHelp">Forgot passcode?</button></div>
+                <div id="forgotHelp" class="hidden mt-3 rounded-lg bg-white/10 border border-white/20 text-white/90 text-xs leading-relaxed p-3" role="region" aria-label="Passcode help">
+                    The admin passcode can be changed in <b>Settings &rarr; School &rarr; Administrator access</b> by an administrator who is signed in. If nobody can sign in, contact Tech Oasis support to reset it. Automatic reset emails start working once the school backend is connected.</div>
+                <p id="loginErr" class="hidden mt-4 text-sm font-medium text-white bg-rose-600/85 border border-rose-300/40 rounded-lg px-3 py-2" role="alert" aria-live="assertive"></p>
+                <div class="h-px bg-white/25 mt-6"></div>
+                <button id="loginBtn" class="adm-submit mt-6"><span data-label>Sign in</span></button>
+                <p class="text-xs text-white/70 text-center mt-5">Not an administrator? <a href="/student/login" class="font-semibold text-white hover:underline">Student sign in</a> &middot; <a href="/staff/login" class="font-semibold text-white hover:underline">Staff sign in</a></p>
+                <a href="index.html" class="block text-center text-xs font-semibold text-white/70 hover:text-white mt-3">&larr; Back to site</a>
             </form>
         </div>
     </div>

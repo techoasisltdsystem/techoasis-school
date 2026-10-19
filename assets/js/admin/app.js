@@ -226,20 +226,42 @@ const vaultState = (cls, on) => { const v = document.querySelector('#vault .vl')
 A.start = function () {
     ui.applyBrandLogos();
     let fails = 0, lockUntil = 0;
-    document.getElementById('loginForm').onsubmit = e => {
-        e.preventDefault();
-        const err = document.getElementById('loginErr');
-        if (Date.now() < lockUntil) { err.textContent = `Too many attempts. Try again in ${Math.ceil((lockUntil - Date.now()) / 1000)}s.`; return err.classList.remove('hidden'); }
-        if (auth.adminLogin(document.getElementById('adminId').value, document.getElementById('adminPass').value)) {
-            fails = 0; err.classList.add('hidden'); document.getElementById('adminPass').value = '';
-            const v = vaultState('granted', true), open = () => { vaultState('granted', false); document.getElementById('login').classList.add('hidden'); document.getElementById('shell').classList.remove('hidden'); A.dispatch(); };
-            return v && v.getBoundingClientRect().width ? setTimeout(open, 650) : open();
-        }
-        const v = vaultState('denied', false); if (v) { void v.getBoundingClientRect(); vaultState('denied', true); setTimeout(() => vaultState('denied', false), 900); }
-        if (++fails >= 5) { lockUntil = Date.now() + 30000; fails = 0; }
-        err.textContent = 'Invalid admin email or passcode.'; err.classList.remove('hidden');
+    const lf = document.getElementById('loginForm'), btn = document.getElementById('loginBtn'), idEl = document.getElementById('adminId'), passEl = document.getElementById('adminPass');
+    const showErr = (msg, field) => {
+        const err = document.getElementById('loginErr'); err.textContent = msg; err.classList.remove('hidden');
+        [idEl, passEl].forEach(f => f.setAttribute('aria-invalid', String(f === field || (!field && msg.startsWith('Invalid')))));
+        if (field) field.focus();
     };
-    const lf = document.getElementById('loginForm');
+    const busy = on => { btn.disabled = on; btn.innerHTML = on ? '<span class="adm-spin" aria-hidden="true"></span><span data-label>Signing in…</span>' : '<span data-label>Sign in</span>'; btn.setAttribute('aria-busy', String(on)); };
+    lf.onsubmit = e => {
+        e.preventDefault();
+        if (btn.disabled) return;
+        const err = document.getElementById('loginErr');
+        if (Date.now() < lockUntil) return showErr(`Too many attempts. Try again in ${Math.ceil((lockUntil - Date.now()) / 1000)}s.`);
+        if (!idEl.value.trim()) return showErr('Enter the admin email.', idEl);
+        if (!passEl.value) return showErr('Enter the passcode.', passEl);
+        busy(true);
+        // Let the spinner paint before the (deliberately slow) passcode hash runs
+        setTimeout(() => {
+            const ok = auth.adminLogin(idEl.value, passEl.value);
+            busy(false);
+            if (ok) {
+                fails = 0; err.classList.add('hidden'); passEl.value = ''; [idEl, passEl].forEach(f => f.removeAttribute('aria-invalid'));
+                const v = vaultState('granted', true), open = () => { vaultState('granted', false); document.getElementById('login').classList.add('hidden'); document.getElementById('shell').classList.remove('hidden'); A.dispatch(); };
+                return v && v.getBoundingClientRect().width ? setTimeout(open, 650) : open();
+            }
+            const v = vaultState('denied', false); if (v) { void v.getBoundingClientRect(); vaultState('denied', true); setTimeout(() => vaultState('denied', false), 900); }
+            if (++fails >= 5) { lockUntil = Date.now() + 30000; fails = 0; }
+            // Same message for a wrong email and a wrong passcode, so the form does not reveal which admin emails exist
+            showErr('Invalid admin email or passcode.');
+        }, 30);
+    };
+    const eye = document.getElementById('togglePass');
+    eye.onclick = () => { const show = passEl.type === 'password'; passEl.type = show ? 'text' : 'password'; eye.setAttribute('aria-pressed', String(show)); eye.setAttribute('aria-label', show ? 'Hide passcode' : 'Show passcode'); eye.innerHTML = `<i class="fa-regular ${show ? 'fa-eye-slash' : 'fa-eye'}" aria-hidden="true"></i>`; passEl.focus(); };
+    const fb = document.getElementById('forgotBtn');
+    fb.onclick = () => { const open = document.getElementById('forgotHelp').classList.toggle('hidden') === false; fb.setAttribute('aria-expanded', String(open)); };
+    const sc = db.settings().school, contact = [sc.email && 'Email: ' + sc.email, sc.phone && 'Phone: ' + sc.phone].filter(Boolean);
+    document.getElementById('adminContact').innerHTML = contact.length ? 'Need help? ' + contact.map(esc).join('<br>') : 'Authorized administrators only. Activity may be monitored.';
     lf.addEventListener('focusin', () => vaultState('armed', true));
     lf.addEventListener('focusout', () => setTimeout(() => vaultState('armed', lf.contains(document.activeElement)), 0));
     document.getElementById('logoutBtn').onclick = () => { auth.adminLogout(); A.showLogin(); };

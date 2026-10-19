@@ -406,3 +406,31 @@ a.k-cal-day:hover { background: #EEF6F2; }
     .k-hover, .k-action, .k-action-go, .k-meter span { transition: none !important; }
     .k-hover:hover, .k-action:hover { transform: none; }
 }
+
+/* ---------- Administrator sign-in (admin.html, reference image 3): school photo, deep blue wash, glass panel ---------- */
+.adm-login { position: relative; min-height: 100vh; overflow: hidden; background: #0A2463; }
+.adm-login-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% center; }
+.adm-login-wash { position: absolute; inset: 0; background: linear-gradient(100deg, rgba(6,24,74,.92) 0%, rgba(10,44,120,.72) 45%, rgba(12,58,150,.35) 100%); }
+.adm-pill { display: inline-flex; align-items: center; gap: .45rem; font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #fff; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); padding: .35rem .7rem; border-radius: 999px; }
+.adm-panel { background: linear-gradient(160deg, rgba(56,132,214,.42), rgba(18,66,160,.38)); border: 1px solid rgba(255,255,255,.22); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    padding: 2.5rem 2.25rem 2rem; box-shadow: 0 30px 80px -30px rgba(2,10,40,.7); animation: admIn .5s cubic-bezier(.22,1,.36,1) both; }
+@keyframes admIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.adm-field { position: relative; display: flex; align-items: center; background: #fff; height: 3.5rem; }
+.adm-field > i { position: absolute; left: 1.15rem; color: #93B4DC; font-size: 1rem; }
+.adm-field input { width: 100%; height: 100%; padding: 0 3rem 0 3.1rem; border: 0; background: transparent; font-size: 1rem; color: #0F172A; letter-spacing: .02em; }
+.adm-field input::placeholder { color: #8AA7CC; }
+.adm-field input:focus { outline: none; }
+.adm-field:focus-within { box-shadow: 0 0 0 3px rgba(125,190,255,.65); }
+.adm-field input[aria-invalid="true"] { box-shadow: inset 3px 0 0 #E11D48; }
+.adm-eye { position: absolute; right: .5rem; width: 2.5rem; height: 2.5rem; border-radius: .4rem; color: #6B8DBA; }
+.adm-eye:hover { background: #EEF4FB; color: #1D4F91; }
+.adm-submit { width: 100%; height: 3.4rem; background: linear-gradient(90deg, #1E88E5, #2196F3); color: #fff; font-size: 1.15rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    display: inline-flex; align-items: center; justify-content: center; gap: .6rem; transition: filter .15s, transform .1s; }
+.adm-submit:hover { filter: brightness(1.08); }
+.adm-submit:active { transform: translateY(1px); }
+.adm-submit:disabled { opacity: .7; cursor: progress; }
+.adm-submit .adm-spin { width: 1.1rem; height: 1.1rem; border: 2px solid rgba(255,255,255,.45); border-top-color: #fff; border-radius: 999px; animation: admSpin .7s linear infinite; }
+@keyframes admSpin { to { transform: rotate(360deg); } }
+.adm-login :focus-visible { outline-color: #9CCBFF; }
+@media (max-width: 640px) { .adm-panel { padding: 2rem 1.25rem 1.5rem; } .adm-login-bg { object-position: 80% center; } }
+@media (prefers-reduced-motion: reduce) { .adm-panel { animation: none; } .adm-submit .adm-spin { animation-duration: 2s; } }
