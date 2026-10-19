@@ -6,8 +6,9 @@ set -euo pipefail
 
 REPO="${REPO:-https://github.com/techoasisltdsystem/techoasis-school.git}"
 DIR="/var/www/techoasis-school"
+AVAIL="/etc/nginx/sites-available/school.techoasisltd.com.conf"   # server-side copy; certbot adds the HTTPS settings here
 SITE="/etc/nginx/sites-enabled/school.techoasisltd.com.conf"
-DOMAINS=(school.techoasisltd.com)
+DOMAINS=(school.techoasisltd.com www.school.techoasisltd.com)
 
 echo "==> Installing nginx, git and certbot (if missing)"
 apt-get update -qq
@@ -23,7 +24,10 @@ chown -R www-data:www-data "$DIR"
 git config --global --add safe.directory "$DIR"
 
 echo "==> Enabling the nginx site"
-ln -sf "$DIR/deploy/nginx/school.techoasisltd.com.conf" "$SITE"
+# A copy, not a link into the git folder: deploys reset that folder to match GitHub, which would erase the HTTPS settings.
+# An existing copy is kept as it is, so re-running this script never removes HTTPS.
+[ -f "$AVAIL" ] || cp "$DIR/deploy/nginx/school.techoasisltd.com.conf" "$AVAIL"
+ln -sf "$AVAIL" "$SITE"
 nginx -t
 systemctl reload nginx
 
@@ -38,7 +42,7 @@ if [ "$ready" = 1 ]; then
 else
     echo "    Skipped: ${DOMAINS[*]} do not point to this server ($IP) yet."
     echo "    Add a DNS A record for ${DOMAINS[*]} -> $IP, wait for them to resolve, then run:"
-    echo "    sudo certbot --nginx --redirect -d school.techoasisltd.com"
+    echo "    sudo certbot --nginx --redirect -d school.techoasisltd.com -d www.school.techoasisltd.com"
 fi
 
 echo "==> Done. Site files: $DIR   Update later with: sudo bash $DIR/deploy/deploy.sh"
