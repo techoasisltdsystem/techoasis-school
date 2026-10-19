@@ -21,7 +21,6 @@
                 <a href="/" class="lg:hidden inline-block mb-8">${ui.brandLogo(false, 40)}</a>
                 ${title ? `<h1 class="text-[28px] font-bold text-slate-900 tracking-tight">${title}</h1>` : ''}
                 ${sub ? `<p class="text-sm s-muted mt-1.5">${sub}</p>` : ''}
-                ${ui.demoNotice()}
                 <div class="mt-8">${body}</div>
             </div>
         </section></main>`;
@@ -225,7 +224,6 @@
                     <a href="/" class="md:hidden self-start mb-6" aria-label="Tech Oasis School website">${ui.brandLogo(false, 36)}</a>
                     <h1 class="text-[30px] font-extrabold text-ink tracking-tight">Sign in</h1>
                     <p class="text-sm text-slate-500 mt-1">Staff dashboard for approved Tech Oasis teaching and support staff.</p>
-                    ${ui.demoNotice()}
                     <div class="mt-6">${msg}${form}</div>
                 </div>
             </div>

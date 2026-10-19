@@ -186,9 +186,8 @@
         tipEl.style.left = e.clientX + 'px'; tipEl.style.top = e.clientY + 'px';
     }
 
-    // Flip serverConnected to true once accounts, orders and certificates live on a real server (see README, "Before launch").
-    // Until then every page that collects or promises something says plainly that it is stored in this browser only.
+    // serverConnected is true when the page is talking to the school server (set by core/remote.js); the few messages that
+    // describe where data was saved read differently without a server.
     TOS.config = Object.assign({ serverConnected: false }, TOS.config);
-    const demoNotice = () => TOS.config.serverConnected ? '' : '<div class="mt-5 rounded-lg border border-amber-200 bg-amber-50 text-amber-900 text-xs p-3" role="note"><b>Before you continue:</b> this website is not connected to a server yet. Accounts, progress and requests made here are saved in this browser only, and the school does not receive them. For anything urgent, email the school directly.</div>';
-    TOS.ui = { demoNotice, animatedLogo, vaultLogo, esc, initials, qs, $, $$, fmtDuration, fmtSecs, fmtDate, fmtDateTime, fmtBytes, timeAgo, money, stars, plural, md, toast, modal, confirmBox, logoMark, brandLogo, applyBrandLogos, initReveal, readFile, chartTip, LESSON_TYPES };
+    TOS.ui = { animatedLogo, vaultLogo, esc, initials, qs, $, $$, fmtDuration, fmtSecs, fmtDate, fmtDateTime, fmtBytes, timeAgo, money, stars, plural, md, toast, modal, confirmBox, logoMark, brandLogo, applyBrandLogos, initReveal, readFile, chartTip, LESSON_TYPES };
 })();

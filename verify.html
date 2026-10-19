@@ -61,7 +61,6 @@
             <span class="w-16 h-16 mx-auto rounded-2xl bg-forest text-gold flex items-center justify-center text-2xl"><i class="fa-solid fa-shield-halved"></i></span>
             <h1 class="font-display text-4xl text-ink mt-6">Verify a certificate</h1>
             <p class="text-slate-600 mt-3">Enter the certificate ID printed on a Tech Oasis School certificate.</p>
-            ${TOS.config.serverConnected ? '' : `<div class="mt-5 rounded-lg border border-amber-200 bg-amber-50 text-amber-900 text-sm p-4 text-left" role="note"><b>Verification is not online yet.</b> This page can only look up certificates stored in this browser, so it cannot confirm a certificate issued to someone else. To confirm one, email <a class="underline font-semibold" href="mailto:${esc(db.settings().school.email)}">${esc(db.settings().school.email)}</a> with the certificate ID.</div>`}
             ${msg || ''}
             <form class="mt-8 flex gap-2" onsubmit="event.preventDefault(); location.search = '?code=' + encodeURIComponent(this.code.value.trim())">
                 <label for="codeIn" class="sr-only">Certificate ID</label>

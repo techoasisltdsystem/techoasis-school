@@ -21,7 +21,6 @@
                 <a href="/" class="lg:hidden inline-block mb-10">${ui.brandLogo(false, 40)}</a>
                 <h1 class="text-[28px] font-bold text-slate-900 tracking-tight">${title}</h1>
                 <p class="text-sm s-muted mt-1.5">${sub}</p>
-                ${ui.demoNotice()}
                 <div class="mt-8">${body}</div>
             </div>
         </section></main>`;
@@ -86,7 +85,6 @@
                     <div id="panelText" class="mt-8" aria-live="polite"></div>
                 </aside>
             </div>
-            <div class="w-full max-w-[900px]">${ui.demoNotice()}</div>
             <p class="text-xs text-white/60 mt-5">&copy; ${new Date().getFullYear()} Tech Oasis School · <a href="mailto:${esc(school.studentEmail)}" class="underline">${esc(school.studentEmail)}</a></p></main>`;
         const card = el.querySelector('#authCard');
         const paint = () => {
