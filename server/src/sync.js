@@ -26,6 +26,7 @@ function badKeys(v, depth) {
     }
     return false;
 }
+const { restore } = require('./blobs');
 const clone = o => JSON.parse(JSON.stringify(o));
 const find = (raw, t, id) => raw.tables[t].find(r => r.id === id);
 
@@ -89,7 +90,7 @@ function applyOps(engine, ops) {
             continue;
         }
         const existing = list.find(r => r.id === o.id);
-        const data = o.op === 'put' ? clone(o.row) : clone(o.set || {});
+        const data = restore(engine, o.op === 'put' ? clone(o.row) : clone(o.set || {}));   // file links the admin screens received become the real files again
         data.id = o.id;
         // Never trust a password hash from a browser. A plain `password` is hashed here with the server's own function.
         delete data.passwordHash;

@@ -7,6 +7,7 @@
 // Quiz answers, assignment briefs, lesson content of paid lessons, other people's accounts and private messages are
 // reachable only through the student/staff API, which checks ownership and permission on every call.
 
+const { externalize } = require('./blobs');
 const clone = o => JSON.parse(JSON.stringify(o));
 const omit = (o, keys) => { const c = Object.assign({}, o); for (const k of keys) delete c[k]; return c; };
 const pick = (o, keys) => { const c = {}; for (const k of keys) if (k in o) c[k] = o[k]; return c; };
@@ -54,7 +55,8 @@ function publicTables(raw, tables) {
     // Popularity counts only: no person is identifiable from these
     out.enrollments = T.enrollments.filter(e => courseIds.has(e.courseId) && e.status !== 'cancelled').map(e => pick(e, ['id', 'courseId']));
     // Reviewers appear by name on course pages
-    out.users = T.users.filter(u => reviewerIds.has(u.id)).map(u => pick(u, ['id', 'name', 'avatar', 'role']));
+    // A reviewer's picture is shown only if it is small (big ones are served by link, and only to the account's owner)
+    out.users = T.users.filter(u => reviewerIds.has(u.id)).map(u => { const s = pick(u, ['id', 'name', 'role']); if (typeof u.avatar === 'string' && u.avatar.length <= 20000) s.avatar = u.avatar; return s; });
     return out;
 }
 
@@ -67,6 +69,7 @@ function snapshot(engine, session) {
         for (const t of tables) out[t] = raw.tables[t].map(clone);
         out.users = raw.tables.users.map(u => ownUser(clone(u)));
         out.staff_applications = raw.tables.staff_applications.map(a => omit(clone(a), ['passwordHash']));
+        for (const t of Object.keys(out)) out[t].forEach(r => externalize(t, r));
         return { tables: out, settings: settingsFor(raw, true) };
     }
 
@@ -87,6 +90,7 @@ function snapshot(engine, session) {
     if (me && (role === 'student' || role === 'staff')) {
         out.users = out.users.filter(u => u.id !== me.id).concat([ownUser(clone(me))]);
     }
+    for (const t of Object.keys(out)) out[t].forEach(r => externalize(t, r));
     return { tables: out, settings: settingsFor(raw, false) };
 }
 

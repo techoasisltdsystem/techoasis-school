@@ -183,11 +183,13 @@
             document.getElementById('reviewRating').value = b.dataset.n;
             ui.$$('#starPick button').forEach(x => x.innerHTML = `<i class="fa-${+x.dataset.n <= +b.dataset.n ? 'solid' : 'regular'} fa-star"></i>`);
         });
-        f.onsubmit = e => {
+        f.onsubmit = async e => {
             e.preventDefault();
             const rating = +document.getElementById('reviewRating').value, comment = document.getElementById('reviewText').value.trim();
             if (!rating) return ui.toast('Choose a star rating first.', 'error');
-            db.upsert('reviews', { userId: me.id, courseId: course.id }, { rating, comment, status: 'published' });
+            if (TOS.remote) {   // with the school server, the server checks the student is enrolled and saves the review
+                try { await TOS.remote.rpc('student', 'postReview', [course.id, { rating, comment }]); await TOS.remote.refresh(); } catch (x) { return ui.toast(x.message, 'error'); }
+            } else db.upsert('reviews', { userId: me.id, courseId: course.id }, { rating, comment, status: 'published' });
             ui.toast('Thanks for your review!'); render();
         };
     }
@@ -199,11 +201,16 @@
         if (me.role !== 'student') { ui.toast('Only student accounts can enroll. Log in with a student account.', 'error'); return null; }
         return me;
     }
-    function enroll() {
+    // The school server creates enrollments and orders (it checks prices and coupons); without it the browser does
+    async function enrollNow(me, course, coupon) {
+        if (!TOS.remote) return lms.checkout(me.id, course.id, coupon);
+        try { await TOS.remote.rpc('student', 'enroll', [course.id, { coupon: coupon || undefined }]); return {}; } catch (x) { return { error: x.message }; }
+    }
+    async function enroll() {
         const me = requireStudent(); if (!me) return;
         const course = lms.courseBySlug(slug);
         if (!lms.priceOf(course)) {
-            const res = lms.checkout(me.id, course.id);
+            const res = await enrollNow(me, course);
             if (res.error) return ui.toast(res.error, 'error');
             ui.toast('You are enrolled. Enjoy the programme!');
             return setTimeout(() => location.href = '/student/course/' + course.id, 500);
@@ -236,16 +243,17 @@
         };
         paint();
         const cf = m.el.querySelector('#couponForm');
-        if (cf) cf.onsubmit = e => {
+        if (cf) cf.onsubmit = async e => {
             e.preventDefault();
-            const code = m.el.querySelector('#couponInput').value.trim(), nq = lms.quote(course.id, code), msg = m.el.querySelector('#couponMsg');
+            const code = m.el.querySelector('#couponInput').value.trim(), msg = m.el.querySelector('#couponMsg');
+            let nq; try { nq = TOS.remote ? await TOS.remote.rpc('student', 'quote', [course.id, code]) : lms.quote(course.id, code); } catch (x) { nq = { error: x.message }; }
             msg.classList.remove('hidden');
             if (nq.error) { msg.className = 'text-xs mt-1.5 text-rose-700'; msg.textContent = nq.error; return; }
             coupon = code; q = nq; paint();
             msg.className = 'text-xs mt-1.5 text-forest-600'; msg.textContent = 'Coupon applied.';
         };
-        m.el.querySelectorAll('[data-act]').forEach(b => b.onclick = () => {
-            let res = enr ? { order, enrollment: enr } : lms.checkout(me.id, course.id, coupon);
+        m.el.querySelectorAll('[data-act]').forEach(b => b.onclick = async () => {
+            let res = enr ? { order, enrollment: enr } : await enrollNow(me, course, coupon);
             if (res.error) return ui.toast(res.error, 'error');
             if (b.dataset.act === 'pay') { if (!lms.onlinePayments()) return ui.toast('Online payment is not available yet.', 'error'); if (res.order.status !== 'paid') lms.markOrderPaid(res.order.id, st.provider, 'demo-' + Date.now()); }
             m.close();

@@ -141,6 +141,17 @@
         }),
 
         quote: call((courseId, code) => { me(); return lms.quote(courseId, code); }),
+        // A student reviews a programme they are enrolled in (one review per student per programme; posting again updates it)
+        postReview: call((courseId, d) => {
+            const u = me(), c = db.get('courses', courseId), x = d && typeof d === 'object' ? d : {};
+            if (!c || c.status !== 'published') throw new ApiError('NOT_FOUND', 'This programme could not be found.');
+            const e = lms.enrollmentOf(u.id, courseId);
+            if (!e || e.status === 'cancelled') throw new ApiError('NO_ACCESS', 'Only students enrolled in a programme can review it.');
+            const rating = Math.round(+x.rating);
+            if (!(rating >= 1 && rating <= 5)) throw new ApiError('INVALID', 'Choose a rating from 1 to 5 stars.');
+            db.upsert('reviews', { userId: u.id, courseId }, { rating, comment: String(x.comment || '').trim().slice(0, 800), status: 'published' });
+            return { ok: true };
+        }),
         // Enroll (free) or check out (paid). Paying online is refused until a payment gateway is integrated (lms.onlinePayments).
         enroll: call((courseId, { coupon, payNow } = {}) => {
             const u = me(), c = db.get('courses', courseId);

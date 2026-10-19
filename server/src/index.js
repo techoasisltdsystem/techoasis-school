@@ -17,10 +17,17 @@ async function createApp(overrides = {}) {
     return { engine, db, server, config, close: async () => { clearInterval(purge); await new Promise(r => server.close(r)); await db.close(); } };
 }
 
-if (require.main === module) {
+if (require.main === module || process.env.TOS_AUTOSTART === '1') {
     (async () => {
         if (!cfg.databaseUrl && cfg.nodeEnv === 'production') { console.error('DATABASE_URL is not set. See server/README.md.'); process.exit(1); }
         const app = await createApp({ seedDemo: process.env.SEED_DEMO === '1' });
+        // Development only: create an administrator from the environment so a throwaway local copy is usable right away
+        if (process.env.DEV_ADMIN_EMAIL && cfg.nodeEnv !== 'production' && !app.engine.raw().tables.users.some(u => u.role === 'admin')) {
+            const T = app.engine.TOS;
+            T.db.insert('users', { role: 'admin', name: 'Administrator', email: process.env.DEV_ADMIN_EMAIL, passwordHash: T.crypto.hashPassword(process.env.DEV_ADMIN_PASSWORD || 'Dev-Admin-Pass-1'), status: 'active' });
+            T.db.updateSettings('school', { adminEmail: process.env.DEV_ADMIN_EMAIL });
+            await app.engine.flush();
+        }
         await new Promise(r => app.server.listen(cfg.port, cfg.host, r));
         console.log(`Tech Oasis School server on http://${cfg.host}:${cfg.port}  (database: ${app.db.kind}, site: ${cfg.siteUrl})`);
         const stop = async sig => { console.log(sig + ': shutting down'); try { await app.engine.flush(); await app.close(); } finally { process.exit(0); } };

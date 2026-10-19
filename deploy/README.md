@@ -67,6 +67,19 @@ database or user is touched. A nightly backup is kept in `/var/backups/techoasis
 curl -fsSL https://raw.githubusercontent.com/techoasisltdsystem/techoasis-school/main/deploy/setup-database.sh | sudo bash
 ```
 
+## 5. Switch the website to the database
+
+The pages use the server automatically on school.techoasisltd.com (they load their data from `/api/` and send changes back).
+Publish the latest code, then create the administrator and, if you want sample content to edit, the sample programmes:
+
+```bash
+bash /var/www/techoasis-school/deploy/deploy.sh      # also restarts the school server
+techoasis-school-cli create-admin
+techoasis-school-cli seed-catalog                     # optional
+```
+
+To try the connected pages on any other address, add `?api=1` to the address (and `?api=0` to turn it off).
+
 ## Notes
 
 - **The nginx site file is a copy** in `/etc/nginx/sites-available/`, not a link into the website folder. Certbot adds the HTTPS

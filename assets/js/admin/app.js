@@ -270,26 +270,28 @@ const vaultState = (cls, on) => { const v = document.querySelector('#vault .vl')
 A.start = function () {
     ui.applyBrandLogos();
     let fails = 0, lockUntil = 0;
-    document.getElementById('loginForm').onsubmit = e => {
+    document.getElementById('loginForm').onsubmit = async e => {
         e.preventDefault();
         const err = document.getElementById('loginErr');
         if (Date.now() < lockUntil) { err.textContent = `Too many attempts. Try again in ${Math.ceil((lockUntil - Date.now()) / 1000)}s.`; return err.classList.remove('hidden'); }
-        if (auth.adminLogin(document.getElementById('adminId').value, document.getElementById('adminPass').value)) {
+        let ok = false, problem = '';
+        try { ok = await auth.adminLogin(document.getElementById('adminId').value, document.getElementById('adminPass').value); } catch (x) { problem = x.message; }   // with the school server, signing in is asynchronous
+        if (ok) {
             fails = 0; err.classList.add('hidden'); document.getElementById('adminPass').value = '';
-            const v = vaultState('granted', true), open = () => { vaultState('granted', false); document.getElementById('login').classList.add('hidden'); document.getElementById('shell').classList.remove('hidden'); A.dispatch(); };
+            const v = vaultState('granted', true), open = () => { vaultState('granted', false); document.getElementById('login').classList.add('hidden'); document.getElementById('shell').classList.remove('hidden'); document.getElementById('adminEmailLabel').textContent = db.settings().school.adminEmail || ''; A.dispatch(); };
             return v && v.getBoundingClientRect().width ? setTimeout(open, 650) : open();
         }
         const v = vaultState('denied', false); if (v) { void v.getBoundingClientRect(); vaultState('denied', true); setTimeout(() => vaultState('denied', false), 900); }
         if (++fails >= 5) { lockUntil = Date.now() + 30000; fails = 0; }
-        err.textContent = 'Invalid admin email or passcode.'; err.classList.remove('hidden');
+        err.textContent = problem || 'Invalid admin email or passcode.'; err.classList.remove('hidden');
     };
     const lf = document.getElementById('loginForm');
     lf.addEventListener('focusin', () => vaultState('armed', true));
     lf.addEventListener('focusout', () => setTimeout(() => vaultState('armed', lf.contains(document.activeElement)), 0));
-    document.getElementById('logoutBtn').onclick = () => { auth.adminLogout(); A.showLogin(); };
+    document.getElementById('logoutBtn').onclick = async () => { await auth.adminLogout(); A.showLogin(); };
     document.getElementById('navToggle').onclick = () => { document.getElementById('nav').classList.remove('-translate-x-full'); document.getElementById('navScrim').classList.remove('hidden'); };
     document.getElementById('navScrim').onclick = () => { document.getElementById('nav').classList.add('-translate-x-full'); document.getElementById('navScrim').classList.add('hidden'); };
-    document.getElementById('adminEmailLabel').textContent = db.settings().school.adminEmail;
+    document.getElementById('adminEmailLabel').textContent = db.settings().school.adminEmail || '';
     window.addEventListener('hashchange', () => A.dispatch());
     if (auth.isAdmin()) { document.getElementById('shell').classList.remove('hidden'); A.dispatch(); } else A.showLogin();
 };

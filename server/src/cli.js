@@ -1,7 +1,8 @@
 'use strict';
 // Server administration commands (run on the VPS):
 //   node src/cli.js create-admin [email]     create the administrator, or reset their password
-//   node src/cli.js seed-demo                load the sample school (only into an EMPTY database; for testing)
+//   node src/cli.js seed-catalog             load the sample programmes (no people), to edit instead of starting blank
+//   node src/cli.js seed-demo                load the whole sample school (only into an EMPTY database; for testing)
 //   node src/cli.js backup <file>            write a JSON copy of all school data
 //   node src/cli.js stats                    row counts
 const readline = require('readline');
@@ -22,8 +23,8 @@ function ask(question, hidden) {
 
 async function main() {
     const [cmd, arg] = process.argv.slice(2);
-    if (!['create-admin', 'seed-demo', 'backup', 'stats'].includes(cmd)) {
-        console.log('Usage: node src/cli.js create-admin [email] | seed-demo | backup <file> | stats'); process.exit(1);
+    if (!['create-admin', 'seed-demo', 'seed-catalog', 'backup', 'stats'].includes(cmd)) {
+        console.log('Usage: node src/cli.js create-admin [email] | seed-catalog | seed-demo | backup <file> | stats'); process.exit(1);
     }
     if (!cfg.databaseUrl && !process.env.PGLITE_DIR) { console.error('Set DATABASE_URL (see server/README.md).'); process.exit(1); }
     const db = await store.open(cfg);
@@ -45,6 +46,21 @@ async function main() {
         else { TOS.db.insert('users', { role: 'admin', name: 'Administrator', email, passwordHash: hash, status: 'active' }); console.log('Created the administrator account: ' + email); }
         TOS.db.updateSettings('school', { adminEmail: email });
         await db.query('delete from sessions where user_id in (select data->>\'id\' from "users" where data->>\'role\' = \'admin\')');
+    }
+    if (cmd === 'seed-catalog') {
+        // Loads the sample programmes (categories, courses, lessons, quizzes, assignments, instructor profiles) so a new school
+        // can edit real content instead of starting blank. No students, orders, reviews or logins are created.
+        if (raw.tables.courses.length) console.log('This school already has programmes, so nothing was loaded.');
+        else {
+            const demoDb = await store.open({});
+            const demo = await Engine.create({ db: demoDb, seedDemo: true, log: { log() { }, error() { } } });
+            const KEEP = ['categories', 'courses', 'instructors', 'course_instructors', 'sections', 'lessons', 'contents', 'quizzes', 'quiz_questions', 'assignments', 'resources'];
+            const clone = o => JSON.parse(JSON.stringify(o));
+            for (const t of KEEP) raw.tables[t] = clone(demo.raw().tables[t]);
+            raw.tables.instructors.forEach(i => { i.userId = null; });     // profiles only: no sign-in accounts
+            await demo.close();
+            console.log(`Loaded ${raw.tables.courses.length} sample programmes in ${raw.tables.categories.length} categories. Edit or delete them in Admin → Courses.`);
+        }
     }
     if (cmd === 'seed-demo') console.log(raw.tables.users.length > 0 ? 'Demo data is loaded (sample students, staff and courses).' : 'Nothing loaded.');
     if (cmd === 'backup') {

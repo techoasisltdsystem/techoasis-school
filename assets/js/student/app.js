@@ -328,6 +328,11 @@ window.addEventListener('storage', e => {
     if (e.key === 'to_current_user' && !auth.current() && S.current && S.current.layout !== 'auth') S.dispatch();   // signed out elsewhere
 });
 document.addEventListener('visibilitychange', () => { if (!document.hidden) S.softRefresh(); });
+// Connected to the school server: changes made by the school or other people arrive through the server, not browser storage
+if (TOS.remote) {
+    TOS.remote.on('data', () => setTimeout(S.softRefresh, 50));
+    TOS.remote.on('session', () => { if (!auth.current() && S.current && S.current.layout !== 'auth') S.dispatch(); });   // signed out elsewhere, or the session ended
+}
 
 S.start = () => {
     const splash = document.getElementById('splashLogo');

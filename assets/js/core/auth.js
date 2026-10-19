@@ -14,6 +14,7 @@
 
     // ---- Password storage ----
     function hashIncomingPassword(row) {
+        if (TOS.remote) return;   // connected to the school server: the server hashes passwords, with a stronger method
         if (!('password' in row)) return;
         const pw = row.password; delete row.password;
         if (pw) { row.passwordHash = C.hashPassword(pw); row.passwordChangedAt = db.now(); }

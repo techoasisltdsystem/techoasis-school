@@ -225,6 +225,37 @@ function client(ip) {
     ok('admin sees the admin email setting', r.json.state.settings.school.adminEmail === 'admin@test.local');
     r = await adm.rpc('student', 'dashboard'); ok('admin is not a student', r.status === 403);
 
+    // ---- large uploaded files are served by link, with access checks ----
+    section('Large files');
+    const bigPdf = 'data:application/pdf;base64,' + Buffer.from('%PDF-1.4 ' + 'x'.repeat(60000)).toString('base64');
+    r = await client('10.0.6.20').rpc('public', 'apply', Object.assign({}, good, { email: 'big.docs@example.com', documents: [{ kind: 'cv', name: 'big.pdf', size: 60000, type: 'application/pdf', url: bigPdf }] }));
+    ok('an application with a large document is accepted', r.status === 200, r.json);
+    const bigApp = raw().tables.staff_applications.find(a => a.email === 'big.docs@example.com');
+    r = await adm.get('/api/bootstrap');
+    const adminApp = r.json.state.tables.staff_applications.find(a => a.id === bigApp.id);
+    ok('the admin data load carries a link, not the file', adminApp.documents[0].url === `/api/blob/staff_applications/${bigApp.id}/documents.0.url`, adminApp.documents[0].url.slice(0, 80));
+    ok('so the admin data load stays small', JSON.stringify(r.json).length < 600000, JSON.stringify(r.json).length);
+    let f = await fetch(base + adminApp.documents[0].url, { headers: { cookie: adm.jar.c, 'x-tos': '1', 'x-real-ip': '10.0.6.1' } });
+    const bytes = Buffer.from(await f.arrayBuffer());
+    ok('the administrator can open the file', f.status === 200 && f.headers.get('content-type') === 'application/pdf' && bytes.toString().startsWith('%PDF-1.4'), f.status);
+    ok('files are served sandboxed and never sniffed', /sandbox/.test(f.headers.get('content-security-policy') || '') && f.headers.get('x-content-type-options') === 'nosniff');
+    f = await fetch(base + adminApp.documents[0].url, { headers: { 'x-real-ip': '10.0.6.21' } }); ok('an anonymous visitor cannot open an application document', f.status === 404, f.status);
+    const stuC = client('10.0.6.22'); await stuC.post('/api/auth/login', { email: 'margaret@gmail.com', password: 'student123', role: 'student' });
+    f = await fetch(base + adminApp.documents[0].url, { headers: { cookie: stuC.jar.c, 'x-real-ip': '10.0.6.22' } }); ok('a student cannot open an application document', f.status === 404, f.status);
+    // saving a record that contains the link must not destroy the real file
+    r = await adm.post('/api/sync', { ops: [{ op: 'patch', table: 'staff_applications', id: bigApp.id, set: { documents: adminApp.documents, expertise: 'Cloud and data' } }] });
+    ok('the admin can save an application that holds a file link', r.status === 200, r.json);
+    ok('and the real file is still stored (not replaced by the link)', raw().tables.staff_applications.find(a => a.id === bigApp.id).documents[0].url === bigPdf);
+    ok('the other change was saved too', raw().tables.staff_applications.find(a => a.id === bigApp.id).expertise === 'Cloud and data');
+    // a picture on a public record is served to everyone; a private one is not
+    const insId = raw().tables.instructors[0].id;
+    raw().tables.instructors[0].avatar = 'data:image/png;base64,' + Buffer.from('PNG' + 'y'.repeat(40000)).toString('base64');
+    r = await anon.get('/api/bootstrap'); const pubIns = r.json.state.tables.instructors.find(i => i.id === insId);
+    ok('an instructor\'s large photo is a link in the public data', /^\/api\/blob\/instructors\//.test(pubIns.avatar), pubIns.avatar.slice(0, 60));
+    f = await fetch(base + pubIns.avatar, { headers: { 'x-real-ip': '10.0.6.23' } }); ok('and anyone can open it', f.status === 200 && f.headers.get('content-type') === 'image/png', f.status);
+    f = await fetch(base + `/api/blob/users/${student().id}/avatar`, { headers: { 'x-real-ip': '10.0.6.24' } }); ok('an account\'s picture is not public', f.status === 404, f.status);
+    f = await fetch(base + `/api/blob/staff_applications/${bigApp.id}/documents.0.name`, { headers: { cookie: adm.jar.c, 'x-real-ip': '10.0.6.1' } }); ok('only data files can be fetched (not other fields)', f.status === 404, f.status);
+
     const courseId = raw().tables.courses[0].id;
     r = await adm.post('/api/sync', { ops: [{ op: 'patch', table: 'courses', id: courseId, set: { title: 'Renamed by admin' } }] });
     ok('admin edits are saved', r.status === 200 && raw().tables.courses.find(c => c.id === courseId).title === 'Renamed by admin', r.json);

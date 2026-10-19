@@ -3,10 +3,12 @@ const sessions = require('./sessions');
 const { snapshot, certificateByCode } = require('./snapshots');
 const { applyOps, SyncError } = require('./sync');
 const { HttpError, readJson, send, parseCookies, cookie, Limiter } = require('./http-util');
+const { recordFor, getAt, decode } = require('./blobs');
 
 const COOKIE = 'tos_session';
 const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/;
 const MIN = 60000, HOUR = 3600000;
+const INTERNAL_ERROR = /(cannot read|cannot set|cannot destructure|is not a function|is not defined|is not iterable|of undefined|of null|reading '|unexpected token|\bundefined\b|\bnull\b|maximum call stack)/i;
 
 // Error codes used by the site's logic -> HTTP status
 const STATUS = { UNAUTHENTICATED: 401, AUTH: 401, FORBIDDEN: 403, NO_ACCESS: 403, SUSPENDED: 403, NOT_FOUND: 404, DUPLICATE: 409, INVALID: 400, TOO_LARGE: 413, RATE_LIMIT: 429 };
@@ -52,7 +54,13 @@ function createHandler({ engine, db, cfg, log = console }) {
             return data === undefined ? null : JSON.parse(JSON.stringify(data));
         } catch (e) {
             const code = e && e.code && e.code !== 'ERROR' ? e.code : 'ERROR';
-            if (code === 'ERROR') { log.error('[logic error]', fnPath, e && e.message); throw new HttpError(500, 'ERROR', 'Something went wrong. Please try again.'); }
+            if (code === 'ERROR') {
+                log.error('[logic error]', fnPath, e && e.message);
+                // The site's own rules reject with plain sentences ("You are not allowed to message this recipient."): show those.
+                // Anything that looks like a program fault stays hidden behind a generic message.
+                const internal = !e || !e.message || INTERNAL_ERROR.test(e.message);
+                throw internal ? new HttpError(500, 'ERROR', 'Something went wrong. Please try again.') : new HttpError(400, 'ERROR', e.message);
+            }
             throw new HttpError(statusFor(code), code, e.message);
         }
     }
@@ -154,13 +162,14 @@ function createHandler({ engine, db, cfg, log = console }) {
             if (!Object.prototype.hasOwnProperty.call(TOS.serverPublic, fn) || typeof TOS.serverPublic[fn] !== 'function') fail('NOT_FOUND', 'Unknown request.');
             const email = String(args[0] && typeof args[0] === 'object' ? args[0].email : args[0] || '').toLowerCase().slice(0, 254);
             if (fn === 'apply' && limiter.blocked(`apply:${ctx.ip}`, 4, HOUR)) tooMany();
+            if (fn === 'applyBlock') { if (limiter.blocked(`block:${ctx.ip}`, 30, 10 * MIN)) tooMany(); limiter.hit(`block:${ctx.ip}`); }   // so it cannot be used to find out which emails have accounts
             if (['status', 'withdraw', 'reply'].includes(fn) && limiter.blocked(`appauth:${ctx.ip}:${email}`, 10, 10 * MIN)) tooMany();
-            if (fn === 'forgot' && limiter.blocked(`forgot:${ctx.ip}`, 6, HOUR)) tooMany();
+            if ((fn === 'forgot' || fn === 'studentForgot') && limiter.blocked(`forgot:${ctx.ip}`, 6, HOUR)) tooMany();
             if (['reset', 'verifyEmail'].includes(fn) && limiter.blocked(`token:${ctx.ip}`, 20, 10 * MIN)) tooMany();
             try {
                 const data = await run(null, `TOS.serverPublic.${fn}`, args);
                 if (fn === 'apply') limiter.hit(`apply:${ctx.ip}`);
-                if (fn === 'forgot') limiter.hit(`forgot:${ctx.ip}`);
+                if ((fn === 'forgot' || fn === 'studentForgot')) limiter.hit(`forgot:${ctx.ip}`);
                 if (fn === 'reset' && data && data.userId) { await sessions.destroyForUser(db, data.userId); delete data.userId; }
                 return done(ctx, { data });
             } catch (e) {
@@ -184,6 +193,25 @@ function createHandler({ engine, db, cfg, log = console }) {
         }
         try { return await done(ctx, { ok: true, applied }); }
         catch (e) { log.error('[sync] save failed:', e.message); await engine.reloadFromDb().catch(() => { }); throw new HttpError(500, 'ERROR', 'The change could not be saved.'); }
+    };
+
+    // A large uploaded file, on request (see blobs.js for who may open what)
+    R['GET /api/blob/:table/:id/:path'] = async ctx => {
+        if (limiter.blocked(`blob:${ctx.ip}`, 600, MIN)) tooMany();
+        limiter.hit(`blob:${ctx.ip}`);
+        const { table, id, path } = ctx.params;
+        const row = recordFor(engine, ctx.session, table, id);
+        const value = row ? getAt(row, path) : null;
+        const file = typeof value === 'string' ? decode(value) : null;
+        if (!file) fail('NOT_FOUND', 'File not found.');
+        return { raw: {
+            status: 200, buffer: file.buffer,
+            headers: {
+                'Content-Type': file.inline ? file.mime : 'application/octet-stream', 'Content-Length': file.buffer.length,
+                'Content-Disposition': file.inline ? 'inline' : 'attachment', 'X-Content-Type-Options': 'nosniff',
+                'Content-Security-Policy': "sandbox; default-src 'none'", 'Cache-Control': 'private, max-age=300'
+            }
+        } };
     };
 
     // Certificate verification (public, by code)
@@ -216,6 +244,7 @@ function createHandler({ engine, db, cfg, log = console }) {
 
     return async function handle(req, res) {
         const t0 = Date.now(); let status = 500;
+        const finish = () => { if (cfg.nodeEnv !== 'test') log.log(`${req.method} ${String(req.url).split('?')[0].slice(0, 80)} ${status} ${Date.now() - t0}ms`); };
         const ctx = { req, res, ip: clientIp(req), body: {}, params: {}, setCookie: null, clearCookie: false };
         try {
             const url = new URL(req.url, 'http://localhost');
@@ -232,6 +261,7 @@ function createHandler({ engine, db, cfg, log = console }) {
             }
             await identify(ctx);
             const out = await m.fn(ctx);
+            if (out.raw) { status = out.raw.status; res.writeHead(status, out.raw.headers); res.end(out.raw.buffer); return finish(); }
             status = out.status || 200;
             const headers = {};
             if (ctx.setCookie) headers['Set-Cookie'] = ctx.setCookie;
@@ -241,7 +271,7 @@ function createHandler({ engine, db, cfg, log = console }) {
             if (e instanceof HttpError) { status = e.status; send(res, status, { error: { code: e.code, message: e.message } }); }
             else { status = 500; log.error('[request error]', req.method, req.url, e); send(res, 500, { error: { code: 'ERROR', message: 'Something went wrong. Please try again.' } }); }
         }
-        if (cfg.nodeEnv !== 'test') log.log(`${req.method} ${String(req.url).split('?')[0]} ${status} ${Date.now() - t0}ms`);
+        finish();
     };
 }
 

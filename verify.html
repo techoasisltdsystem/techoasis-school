@@ -45,14 +45,16 @@
     <script src="assets/js/core/ui.js"></script>
     <script src="assets/js/core/crypto.js"></script>
     <script src="assets/js/core/db.js"></script>
+    <script src="assets/js/core/remote.js"></script>
     <script src="assets/js/core/seed.js"></script>
     <script src="assets/js/core/lms.js"></script>
     <script src="assets/js/core/video.js"></script>
     <script src="assets/js/core/auth.js"></script>
     <script src="assets/js/core/engage.js"></script>
+    <script src="assets/js/core/remote-api.js"></script>
     <script src="assets/js/pages/chrome.js"></script>
     <script>
-    (function () {
+    (async function () {
         const { db, lms, ui } = TOS, esc = ui.esc, app = document.getElementById('app');
         TOS.chrome.mount();
         const code = (ui.qs('code') || '').trim();
@@ -68,6 +70,7 @@
                 <button class="btn btn-forest h-12 px-6">Verify</button></form></div>`;
 
         if (!code) { app.innerHTML = lookup(); return; }
+        if (TOS.remote) { try { await TOS.remote.certificate(code); } catch (e) { /* not found: handled below */ } }   // the school server knows every certificate
         const cert = lms.certificateByCode(code);
         if (!cert) { app.innerHTML = lookup(`<div class="mt-6 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-sm p-4"><i class="fa-solid fa-circle-xmark mr-1"></i>No certificate was found with ID <b class="font-mono">${esc(code)}</b>. Check the ID and try again.</div>`); return; }
 

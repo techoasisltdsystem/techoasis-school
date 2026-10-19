@@ -39,6 +39,7 @@ DATABASE_URL=postgres://user:pass@127.0.0.1:5432/techoasis_school npm start     
 
 ```bash
 sudo techoasis-school-cli create-admin     # create the administrator, or reset their password
+sudo techoasis-school-cli seed-catalog     # load the sample programmes (no people) to edit instead of starting blank
 sudo techoasis-school-cli backup file.json # readable JSON copy of all data
 sudo techoasis-school-cli stats            # row counts
 ```
@@ -57,8 +58,9 @@ on the VPS before the service starts.
 
 ## Known limits (planned)
 
-- Uploaded files (application documents, assignment files, photos) are stored inside their records. Move them to disk
-  or object storage before large numbers of users upload.
+- Uploaded files (application documents, assignment files, photos) are stored inside their records in PostgreSQL. Big ones are
+  sent by link on request (`/api/blob/...`, access-checked) so pages stay light, but move them to disk or object storage before
+  large numbers of users upload.
 - Emails (verification, approval, password reset) are queued in `email_outbox` but not sent until a mail provider is connected.
 - Online payments are off; an administrator records payments received outside the site.
 - One server process. That keeps every change consistent; to scale beyond one process, the in-memory layer needs a lock or a

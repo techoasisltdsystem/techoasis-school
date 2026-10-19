@@ -57,6 +57,13 @@
         },
         withdraw: (email, password) => ST.withdraw(str(email, 254, 'Email', true), str(password, 128, 'Password', true)),
         reply: (email, password, body, documents) => ST.applicantReply(str(email, 254, 'Email', true), str(password, 128, 'Password', true), str(body, 4000, 'Reply'), docs(documents, 6)),
+        // A student asks for a password reset: the school gets a request in the support inbox. Always answers the same.
+        studentForgot(who, note) {
+            who = str(who, 254, 'Email or student ID', true).trim().toLowerCase(); note = str(note, 1000, 'Note');
+            const u = TOS.db.first('users', x => x.role === 'student' && (x.email === who || (x.studentId || '').toLowerCase() === who));
+            if (u) TOS.engage.openTicket(u.id, { category: 'account', subject: 'Password reset request', body: 'Password reset requested from the sign-in page.' + (note ? '\n\nNote: ' + note : '') });
+            return { ok: true };
+        },
         // Always answers the same, whether or not the email belongs to a staff account
         forgot: email => { ST.requestPasswordReset(str(email, 254, 'Email', true)); return { ok: true }; },
         reset(token, password) {

@@ -102,7 +102,7 @@
         };
         const val = n => (form.elements[n] && form.elements[n].value || '').trim();
         const checked = n => [...form.querySelectorAll(`input[name="${n}"]:checked`)].map(i => i.value);
-        const validate = i => {
+        const validate = async i => {
             const need = [['firstName', 'lastName', 'phone', 'location'], ['expertise', 'yearsExperience', 'qualifications', 'education', 'bio'], [], []][i];
             if (need.some(n => !val(n))) return 'Please complete every required field.';
             if (i === 1 && !checked('subjects').length && !val('otherSubject')) return 'Choose at least one subject you want to teach.';
@@ -110,14 +110,14 @@
             if (i === 3) {
                 if (!docs.cv.length && !/^https?:\/\//.test(val('cvLink'))) return 'Attach your CV or paste a link to it.';
                 if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('email'))) return 'Enter a valid email address.';
-                const block = ST.applyBlock(val('email')); if (block) return block;
+                const block = await ST.applyBlock(val('email')); if (block) return block;
                 if (form.elements.password.value.length < 8) return 'Use at least 8 characters for your password.';
                 if (form.elements.password.value !== form.elements.confirmPassword.value) return 'The passwords do not match.';
                 if (!form.elements.consent.checked) return 'Please confirm the declaration to submit.';
             }
             return null;
         };
-        el.querySelector('#next').onclick = () => { const e = validate(step); if (e) return showErr(el, e); step++; paint(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+        el.querySelector('#next').onclick = async () => { const e = await validate(step); if (e) return showErr(el, e); step++; paint(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
         el.querySelector('#back').onclick = () => { step--; paint(); };
         el.querySelector('#photo').onchange = async e => { try { const d = await readFile(e.target.files[0], 'photo'); photo = d.url; el.querySelector('#photoPrev').innerHTML = `<img src="${photo}" alt="" class="w-full h-full object-cover">`; } catch (x) { showErr(el, x.message); } };
         el.querySelectorAll('[data-doc]').forEach(inp => inp.onchange = async () => {
@@ -128,16 +128,16 @@
             box.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { const [k, i] = b.dataset.rm.split(':'); docs[k].splice(+i, 1); inp.dispatchEvent(new Event('change')); });
             inp.value = '';
         });
-        form.onsubmit = e => {
+        form.onsubmit = async e => {
             e.preventDefault();
-            for (let i = 0; i < STEPS.length; i++) { const er = validate(i); if (er) { step = i; paint(); return showErr(el, er); } }
+            for (let i = 0; i < STEPS.length; i++) { const er = await validate(i); if (er) { step = i; paint(); return showErr(el, er); } }
             const subjects = checked('subjects').concat(val('otherSubject') ? [val('otherSubject')] : []);
             const documents = [].concat(docs.cv, docs.certificate, docs.identification, docs.other);
             if (!docs.cv.length) documents.push({ kind: 'cv', name: 'CV (link)', size: 0, type: 'link', url: val('cvLink') });
             const btn = el.querySelector('#submitApp'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>Submitting…';
-            setTimeout(() => {   // let the button state paint before password hashing
+            setTimeout(async () => {   // let the button state paint before the request
                 try {
-                    const r = ST.submitApplication({ firstName: val('firstName'), lastName: val('lastName'), email: val('email'), phone: val('phone'), location: val('location'), dateOfBirth: val('dateOfBirth') || null, photo,
+                    const r = await ST.submitApplication({ firstName: val('firstName'), lastName: val('lastName'), email: val('email'), phone: val('phone'), location: val('location'), dateOfBirth: val('dateOfBirth') || null, photo,
                         expertise: val('expertise'), yearsExperience: val('yearsExperience'), subjects, qualifications: val('qualifications'), education: val('education'), previousTeaching: val('previousTeaching'), bio: val('bio'),
                         courseIds: checked('courseIds'), teachingLevel: val('teachingLevel'), teachingMethod: val('teachingMethod'), teachingExperience: val('teachingExperience'),
                         availability: checked('availabilitySlots').join(', ') + (val('availabilityNotes') ? ' · ' + val('availabilityNotes') : ''), documents,
@@ -163,9 +163,9 @@
             <div class="flex flex-wrap justify-center gap-3 mt-8"><a href="/staff/application" class="btn btn-forest">Check application status</a><a href="/" class="btn btn-outline">Back to website</a></div></div>`);
     } });
 
-    S.route('/staff/verify-email', { title: 'Verify email', layout: 'auth', allowSignedIn: true, render: el => {
+    S.route('/staff/verify-email', { title: 'Verify email', layout: 'auth', allowSignedIn: true, render: async el => {
         let html;
-        try { const r = ST.verifyEmail(S.q('token')); html = notice('ok', `<i class="fa-solid fa-circle-check mr-1"></i><b>${esc(r.email)}</b> is verified. Your application continues to be reviewed.`); }
+        try { const r = await ST.verifyEmail(S.q('token')); html = notice('ok', `<i class="fa-solid fa-circle-check mr-1"></i><b>${esc(r.email)}</b> is verified. Your application continues to be reviewed.`); }
         catch (e) { html = notice('error', esc(e.message)); }
         el.innerHTML = layout('Email verification', '', html + '<a href="/staff/application" class="btn btn-forest w-full h-12">Check application status</a>');
     } });
@@ -188,9 +188,9 @@
                 <a href="/" class="block text-center text-sm font-semibold text-forest-600 mt-4">Back to website</a>`);
             const rf = el.querySelector('#replyForm');
             if (rf) { let files = []; el.querySelector('#rf').onchange = async e => { try { files = []; for (const fl of e.target.files) files.push(await readFile(fl, 'other')); el.querySelector('#rfn').textContent = files.map(x => x.name).join(', '); } catch (x) { showErr(el, x.message); } };
-                rf.onsubmit = e => { e.preventDefault(); try { showStatus(ST.applicantReply(creds.email, creds.password, el.querySelector('#rb').value, files)); ui.toast('Reply sent to the school'); } catch (x) { showErr(el, x.message); } }; }
+                rf.onsubmit = async e => { e.preventDefault(); try { showStatus(await ST.applicantReply(creds.email, creds.password, el.querySelector('#rb').value, files)); ui.toast('Reply sent to the school'); } catch (x) { showErr(el, x.message); } }; }
             const w = el.querySelector('#withdraw');
-            if (w) w.onclick = async () => { if (await ui.confirmBox('Withdraw your application? You can apply again later.', { okText: 'Withdraw', danger: true })) { try { showStatus(ST.withdraw(creds.email, creds.password)); } catch (x) { ui.toast(x.message, 'error'); } } };
+            if (w) w.onclick = async () => { if (await ui.confirmBox('Withdraw your application? You can apply again later.', { okText: 'Withdraw', danger: true })) { try { showStatus(await ST.withdraw(creds.email, creds.password)); } catch (x) { ui.toast(x.message, 'error'); } } };
         };
         el.innerHTML = layout('Check your application', 'Sign in with the email and password you used when you applied.', `<form id="af" class="space-y-5">
             <div><label class="field-label" for="em">Email</label><input id="em" type="email" required autocomplete="email" class="field h-12"></div>
@@ -198,10 +198,10 @@
             <button class="btn btn-forest w-full h-12">View status</button></form>
             <p class="mt-8 pt-6 border-t border-slate-100 text-sm text-slate-600">Haven't applied yet? <a href="/staff/apply" class="font-semibold text-forest-600 hover:underline">Apply to teach</a></p>`);
         bindEyes(el);
-        el.querySelector('#af').onsubmit = e => {
+        el.querySelector('#af').onsubmit = async e => {
             e.preventDefault();
             const email = el.querySelector('#em').value, password = el.querySelector('#pw').value;
-            const a = ST.applicationByCredentials(email, password);
+            let a; try { a = await ST.applicationByCredentials(email, password); } catch (x) { return showErr(el, x.message); }
             if (!a) return showErr(el, 'Incorrect email or password.');
             creds = { email, password }; showStatus(ST.applicantView(a));
         };
@@ -254,11 +254,11 @@
                 <p><a href="/" class="underline">Back to website</a></p></div>`);
         el.querySelector('#showPw').onclick = e => { const i = el.querySelector('#pw'), show = i.type === 'password'; i.type = show ? 'text' : 'password'; e.currentTarget.textContent = show ? 'HIDE' : 'SHOW'; e.currentTarget.setAttribute('aria-pressed', show); e.currentTarget.setAttribute('aria-label', show ? 'Hide password' : 'Show password'); };
         el.querySelector('#em').focus();
-        el.querySelector('#lf').onsubmit = e => {
+        el.querySelector('#lf').onsubmit = async e => {
             e.preventDefault();
             const email = el.querySelector('#em').value.trim(), password = el.querySelector('#pw').value;
             if (!email || !password) return showErr(el, 'Enter your email and password.');
-            const r = ST.staffLogin(email, password, el.querySelector('#rm').checked);
+            let r; try { r = await ST.staffLogin(email, password, el.querySelector('#rm').checked); } catch (x) { r = { error: x.message }; }
             if (r.error) return showErr(el, r.error);
             S.me = null;
             S.go(r.mustChangePassword ? '/staff/change-password' : safeNext(q('next')), { replace: true });
@@ -267,15 +267,15 @@
 
     S.route('/staff/forgot-password', { title: 'Reset password', layout: 'auth', render: el => {
         el.innerHTML = layout('Reset your password', "Enter your staff email. If it belongs to an active staff account, we'll email you a secure link to set a new password.", `<form id="ff" class="space-y-5"><div><label class="field-label" for="em">Staff email</label><input id="em" type="email" required class="field h-12"></div><button class="btn btn-forest w-full h-12">Email me a reset link</button></form><a href="/staff/login" class="block text-center text-sm font-semibold text-forest-600 mt-6">Back to sign in</a>`);
-        el.querySelector('#ff').onsubmit = e => { e.preventDefault(); ST.requestPasswordReset(el.querySelector('#em').value); el.querySelector('#ff').outerHTML = notice('ok', 'If that email belongs to an active staff account, a reset link is on its way. The link expires in 2 hours.'); };
+        el.querySelector('#ff').onsubmit = async e => { e.preventDefault(); try { await ST.requestPasswordReset(el.querySelector('#em').value); } catch (x) { return ui.toast(x.message, 'error'); } el.querySelector('#ff').outerHTML = notice('ok', 'If that email belongs to an active staff account, a reset link is on its way. The link expires in 2 hours.'); };
     } });
     S.route('/staff/reset-password', { title: 'Set a new password', layout: 'auth', allowSignedIn: true, render: el => {
         el.innerHTML = layout('Set a new password', 'Choose a new password for your staff account.', `<form id="rf" class="space-y-5">${pw('p1', 'New password', 'new-password')}${pw('p2', 'Confirm new password', 'new-password')}<p class="field-hint -mt-3">At least 8 characters.</p>${errBox}<button class="btn btn-forest w-full h-12">Save new password</button></form>`);
         bindEyes(el);
-        el.querySelector('#rf').onsubmit = e => {
+        el.querySelector('#rf').onsubmit = async e => {
             e.preventDefault(); const p1 = el.querySelector('#p1').value;
             if (p1 !== el.querySelector('#p2').value) return showErr(el, 'The passwords do not match.');
-            try { ST.resetPasswordWithToken(S.q('token'), p1); auth.logout(); S.me = null; S.go('/staff/login?reset=1', { replace: true }); } catch (x) { showErr(el, x.message); }
+            try { await ST.resetPasswordWithToken(S.q('token'), p1); await auth.logout(); S.me = null; S.go('/staff/login?reset=1', { replace: true }); } catch (x) { showErr(el, x.message); }
         };
     } });
     // Required before entering the portal when an administrator forced a password reset
@@ -284,7 +284,7 @@
         if (!me || me.role !== 'staff') return S.go('/staff/login', { replace: true });
         el.innerHTML = layout('Change your password', 'For your security, the school administration requires you to set a new password before continuing.', `<form id="cf" class="space-y-5">${pw('c0', 'Current password', 'current-password')}${pw('c1', 'New password', 'new-password')}${pw('c2', 'Confirm new password', 'new-password')}${errBox}<button class="btn btn-forest w-full h-12">Update password and continue</button></form><button id="so" class="block mx-auto text-sm font-semibold text-slate-500 mt-6">Sign out</button>`);
         bindEyes(el);
-        el.querySelector('#so').onclick = () => { auth.logout(); S.go('/staff/login', { replace: true }); };
+        el.querySelector('#so').onclick = async () => { await auth.logout(); S.go('/staff/login', { replace: true }); };
         el.querySelector('#cf').onsubmit = async e => {
             e.preventDefault(); const n = el.querySelector('#c1').value;
             if (n !== el.querySelector('#c2').value) return showErr(el, 'The new passwords do not match.');

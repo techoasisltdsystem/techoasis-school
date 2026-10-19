@@ -106,23 +106,25 @@
         el.addEventListener('click', e => { const b = e.target.closest('[data-switch]'); if (b) switchTo(b.dataset.switch); });
         el.querySelectorAll('[data-show]').forEach(b => b.onclick = () => { const i = el.querySelector('#' + b.dataset.show), show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.textContent = show ? 'HIDE' : 'SHOW'; b.setAttribute('aria-pressed', show); b.setAttribute('aria-label', show ? 'Hide password' : 'Show password'); });
         const first = el.querySelector(mode === 'login' ? '#who' : '#nm'); if (first) first.focus({ preventScroll: true });
-        el.querySelector('#loginForm').onsubmit = e => {
+        el.querySelector('#loginForm').onsubmit = async e => {
             e.preventDefault();
             const err = el.querySelector('#loginErr'), who = el.querySelector('#who').value.trim(), pw = el.querySelector('#pw').value;
             if (!who || !pw) { err.textContent = 'Enter your email or student ID and your password.'; return err.classList.remove('hidden'); }
-            const r = auth.login(who, pw, null, el.querySelector('#remember').checked);
-            if (r.error) { err.textContent = r.error; return err.classList.remove('hidden'); }
-            if (r.user.role !== 'student') { auth.logout(); err.innerHTML = r.user.role === 'staff' ? 'This is a staff account. Use the <a class="underline" href="/staff/login">Staff dashboard sign-in</a>.' : 'This account cannot sign in to the student portal.'; return err.classList.remove('hidden'); }
+            let r; try { r = await auth.login(who, pw, 'student', el.querySelector('#remember').checked); } catch (x) { r = { error: x.message }; }
+            if (r.error) {
+                if (/staff account/i.test(r.error)) err.innerHTML = 'This is a staff account. Use the <a class="underline" href="/staff/login">Staff dashboard sign-in</a>.'; else err.textContent = r.error;
+                return err.classList.remove('hidden');
+            }
             S.me = null;
             const next = safeNext(q('next'));
             if (next.startsWith('/student')) S.go(next, { replace: true }); else location.href = next;
         };
-        if (allowReg) el.querySelector('#regForm').onsubmit = e => {
+        if (allowReg) el.querySelector('#regForm').onsubmit = async e => {
             e.preventDefault();
             const err = el.querySelector('#regErr'), name = el.querySelector('#nm').value.trim(), email = el.querySelector('#em').value.trim(), pass = el.querySelector('#pw1').value;
             const bad = name.length < 2 ? 'Enter your full name.' : !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) ? 'Enter a valid email address, such as name@example.com.' : pass.length < 8 ? 'Use a password of at least 8 characters.' : '';
             if (bad) { err.textContent = bad; return err.classList.remove('hidden'); }
-            const r = auth.register({ name, email, password: pass });
+            let r; try { r = await auth.register({ name, email, password: pass }); } catch (x) { r = { error: x.message }; }
             if (r.error) { err.textContent = r.error; return err.classList.remove('hidden'); }
             S.me = null; ui.toast('Welcome to Tech Oasis! Your student ID is ' + (r.user.studentId || ''));
             const next = safeNext(S.q('next'));
@@ -138,12 +140,17 @@
             <div><label class="field-label" for="note">Anything we should know? <span class="font-normal s-muted">(optional)</span></label><textarea id="note" rows="3" class="field" placeholder="e.g. best phone number to reach you"></textarea></div>
             <button class="btn btn-forest w-full h-12">Request password reset</button></form>
             <a href="/student/login" class="block text-center text-sm font-semibold text-forest-600 mt-6">Back to sign in</a>`);
-        document.getElementById('fpForm').onsubmit = e => {
+        document.getElementById('fpForm').onsubmit = async e => {
             e.preventDefault();
-            const who = document.getElementById('who').value.trim().toLowerCase();
-            const u = db.first('users', x => x.role === 'student' && (x.email === who || (x.studentId || '').toLowerCase() === who));
+            const who = document.getElementById('who').value.trim().toLowerCase(), note = document.getElementById('note').value;
             // Same response whether or not the account exists, so emails can't be probed
-            if (u) TOS.engage.openTicket(u.id, { category: 'account', subject: 'Password reset request', body: 'Password reset requested from the sign-in page.' + (document.getElementById('note').value ? '\n\nNote: ' + document.getElementById('note').value : '') });
+            try {
+                if (TOS.remote) await TOS.remote.rpc('public', 'studentForgot', [who, note]);     // the server finds the account and opens the request
+                else {
+                    const u = db.first('users', x => x.role === 'student' && (x.email === who || (x.studentId || '').toLowerCase() === who));
+                    if (u) TOS.engage.openTicket(u.id, { category: 'account', subject: 'Password reset request', body: 'Password reset requested from the sign-in page.' + (note ? '\n\nNote: ' + note : '') });
+                }
+            } catch (x) { return ui.toast(x.message, 'error'); }
             S.go('/student/login?reset=1', { replace: true });
         };
     } });
