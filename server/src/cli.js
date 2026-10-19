@@ -52,7 +52,7 @@ async function main() {
         // can edit real content instead of starting blank. No students, orders, reviews or logins are created.
         if (raw.tables.courses.length) console.log('This school already has programmes, so nothing was loaded.');
         else {
-            const demoDb = await store.open({});
+            const demoDb = store.memory();     // no database needed: the sample school is only built in memory and copied
             const demo = await Engine.create({ db: demoDb, seedDemo: true, log: { log() { }, error() { } } });
             const KEEP = ['categories', 'courses', 'instructors', 'course_instructors', 'sections', 'lessons', 'contents', 'quizzes', 'quiz_questions', 'assignments', 'resources'];
             const clone = o => JSON.parse(JSON.stringify(o));

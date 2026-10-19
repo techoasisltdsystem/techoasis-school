@@ -31,7 +31,12 @@ async function open(cfg) {
     };
 }
 
-const q = name => '"' + name.replace(/"/g, '""') + '"';
+// A store that keeps nothing: lets the engine build a sample school in memory with no database at all (used by seed-catalog)
+function memory() {
+    return { kind: 'memory', query: async () => [], tx: async fn => fn(async () => []), close: async () => { } };
+}
+
+const q = name =>'"' + name.replace(/"/g, '""') + '"';
 
 async function ensureSchema(store, tables) {
     await store.tx(async query => {
@@ -76,4 +81,4 @@ async function writeOps(store, ops) {
     });
 }
 
-module.exports = { open, ensureSchema, loadState, writeOps };
+module.exports = { open, memory, ensureSchema, loadState, writeOps };
