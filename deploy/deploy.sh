@@ -12,7 +12,7 @@ git fetch --quiet origin main
 git reset --quiet --hard origin/main      # the server copy is deploy-only; it always matches GitHub exactly
 chown -R www-data:www-data "$DIR"
 # New code for the school server? Refresh its libraries and restart it (only if it has been set up with deploy/setup-app.sh)
-if systemctl list-unit-files 2>/dev/null | grep -q '^techoasis-school'; then
+if systemctl cat techoasis-school.service >/dev/null 2>&1; then
     ( cd "$DIR/server" && PATH=/opt/techoasis/node/bin:$PATH npm ci --omit=dev --no-audit --no-fund --loglevel=error ) && systemctl restart techoasis-school && echo "School server restarted."
 fi
 after="$(git rev-parse --short HEAD)"

@@ -37,7 +37,7 @@ git config --global --add safe.directory "$DIR"
 [ -f "$DIR/server/package.json" ] || { echo "The server code is not in the repository yet (server/package.json missing)."; exit 1; }
 
 echo "==> 2/5 Node.js (a private copy for the school only)"
-if [ ! -x "$NODE_DIR/bin/node" ] || ! "$NODE_DIR/bin/node" -v | grep -q '^v22\.'; then
+if [ ! -x "$NODE_DIR/bin/node" ] || [ "$("$NODE_DIR/bin/node" -v | cut -c1-4)" != "v22." ]; then
     case "$(uname -m)" in x86_64) ARCH=linux-x64;; aarch64|arm64) ARCH=linux-arm64;; *) echo "Unsupported CPU: $(uname -m)"; exit 1;; esac
     command -v xz >/dev/null || { apt-get update -qq; DEBIAN_FRONTEND=noninteractive apt-get install -y -qq xz-utils >/dev/null; }
     base="https://nodejs.org/dist/latest-v22.x"
@@ -73,17 +73,23 @@ fi
 
 echo "==> 4/5 Service"
 PORT="${PORT:-3001}"
-if ss -ltnH "sport = :$PORT" 2>/dev/null | grep -q . && ! systemctl is-active --quiet techoasis-school; then
-    for p in $(seq 3101 3199); do ss -ltnH "sport = :$p" 2>/dev/null | grep -q . || { PORT=$p; break; }; done
+if [ -n "$(ss -ltnH "sport = :$PORT" 2>/dev/null)" ] && ! systemctl is-active --quiet techoasis-school; then
+    for p in $(seq 3101 3199); do [ -z "$(ss -ltnH "sport = :$p" 2>/dev/null)" ] && { PORT=$p; break; }; done
     echo "    Port 3001 is used by something else; the school server will use $PORT"
 fi
 sed -i '/^PORT=/d' "$ENV_FILE"; echo "PORT=$PORT" >> "$ENV_FILE"
 cp "$DIR/deploy/techoasis-school.service" "$UNIT"
 cat > "$CLI" <<EOF
 #!/usr/bin/env bash
-# Administration commands for the school server (create-admin, backup, stats). Example: techoasis-school-cli create-admin
+# Administration commands for the school server (create-admin, seed-catalog, backup, stats). Example: techoasis-school-cli create-admin
 set -a; . $ENV_FILE; set +a
-exec runuser -u $SVC_USER -- $NODE_DIR/bin/node $DIR/server/src/cli.js "\$@"
+runuser -u $SVC_USER -- $NODE_DIR/bin/node $DIR/server/src/cli.js "\$@"
+status=\$?
+# These commands write to the database directly, and the running server keeps its own copy in memory: restart it to pick the change up
+case "\${1:-}" in
+    create-admin|seed-catalog|seed-demo) if [ \$status -eq 0 ]; then systemctl restart techoasis-school && echo "School server restarted to pick up the change."; fi ;;
+esac
+exit \$status
 EOF
 chmod 700 "$CLI"
 systemctl daemon-reload

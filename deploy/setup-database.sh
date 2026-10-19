@@ -22,7 +22,7 @@ BACKUP_BIN="/usr/local/sbin/techoasis-school-backup"
 as_pg() { runuser -u postgres -- "$@"; }
 
 echo "==> Looking for PostgreSQL"
-if ! systemctl list-unit-files 2>/dev/null | grep -q '^postgresql'; then
+if ! systemctl cat postgresql.service >/dev/null 2>&1; then
     echo "    Not installed on this server. Installing PostgreSQL (your other sites are not affected)..."
     apt-get update -qq
     DEBIAN_FRONTEND=noninteractive apt-get install -y -qq postgresql postgresql-contrib >/dev/null
@@ -57,7 +57,7 @@ BEGIN
 END
 \$\$;
 SQL
-if ! as_pg psql -tAc "select 1 from pg_database where datname = '$DB'" | grep -q 1; then
+if [ "$(as_pg psql -tAc "select 1 from pg_database where datname = '$DB'")" != "1" ]; then
     as_pg createdb -O "$ROLE" -E UTF8 "$DB"
 fi
 as_pg psql -v ON_ERROR_STOP=1 -q -d "$DB" -c "REVOKE ALL ON DATABASE $DB FROM PUBLIC; GRANT ALL ON DATABASE $DB TO $ROLE; ALTER SCHEMA public OWNER TO $ROLE;"
