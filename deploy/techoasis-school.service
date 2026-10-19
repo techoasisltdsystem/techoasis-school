@@ -1,0 +1,30 @@
+[Unit]
+Description=Tech Oasis School server
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=techoasis
+Group=techoasis
+EnvironmentFile=/etc/techoasis/school.env
+WorkingDirectory=/var/www/techoasis-school/server
+ExecStart=/opt/techoasis/node/bin/node src/index.js
+Restart=always
+RestartSec=3
+# Keeps this one service from crowding out the other sites on the server
+MemoryMax=700M
+TasksMax=200
+LimitNOFILE=4096
+# Locked down: it can read the site's files and talk to PostgreSQL, and nothing else
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+ReadOnlyPaths=/var/www/techoasis-school
+
+[Install]
+WantedBy=multi-user.target

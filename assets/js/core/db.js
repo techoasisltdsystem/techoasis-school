@@ -137,12 +137,14 @@
             state.settings = deepMerge(DEFAULT_SETTINGS, state.settings);
         } else {
             state = emptyState();
-            if (TOS.seed) { batching++; TOS.seed(api); batching--; }
+            if (TOS.seed && !TOS.remote) { batching++; TOS.seed(api); batching--; }
             persist();
         }
         batching++;
-        if (TOS.migrateLegacy) TOS.migrateLegacy(api);
-        (TOS.migrations || []).forEach(fn => { try { fn(api); } catch (e) { console.error('Migration failed', e); } });
+        if (!TOS.remote) {   // with the real server, migrations run there, not in each browser
+            if (TOS.migrateLegacy) TOS.migrateLegacy(api);
+            (TOS.migrations || []).forEach(fn => { try { fn(api); } catch (e) { console.error('Migration failed', e); } });
+        }
         batching--; if (dirty) persist();
         return state;
     }
@@ -210,6 +212,8 @@
         // Run many writes and save once.
         tx(fn) { batching++; try { return fn(api); } finally { batching--; if (!batching && dirty) persist(); } },
 
+        // The live state object. Used by the server engine and the remote adapter only; pages never call this.
+        rawState: () => ensure(),
         settings: () => ensure().settings,
         // Absolute link for emails and certificates: the live domain, or this server while testing locally
         siteUrl(path) {

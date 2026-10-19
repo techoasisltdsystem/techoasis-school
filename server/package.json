@@ -1,0 +1,22 @@
+{
+  "name": "techoasis-school-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tech Oasis School backend: PostgreSQL storage, sessions, and the school's rules enforced on the server",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node test/run.js",
+    "create-admin": "node src/cli.js create-admin",
+    "seed-demo": "node src/cli.js seed-demo"
+  },
+  "dependencies": {
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10"
+  }
+}
