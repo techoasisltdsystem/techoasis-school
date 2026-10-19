@@ -70,9 +70,9 @@
     const DEFAULT_SETTINGS = {
         school: {
             name: 'Tech Oasis School', tagline: 'Where Innovation Meets Expertise',
-            website: 'https://techoasisschool.com',
-            email: 'school@techoasisschool.com', studentEmail: 'students@techoasisschool.com',
-            adminEmail: 'school@techoasisschool.com',
+            website: 'https://school.techoasisltd.com',
+            email: 'school@techoasisltd.com', studentEmail: 'students@techoasisltd.com',
+            adminEmail: 'school@techoasisltd.com',
             // Optional public contact details. Left empty until the school supplies verified ones; the site only shows what is filled in.
             phone: '', socialLinkedin: '', socialX: '', socialInstagram: '', socialYoutube: '', socialFacebook: ''
         },
@@ -248,14 +248,17 @@
 
     TOS.db = api;
 
-    // Domain move to techoasisschool.com: update school emails and the sample instructor saved in older data
+    // Site address is school.techoasisltd.com. Older saved data may still hold earlier addresses
+    // (techoasisschool.com or techoasis.com), so move those school emails, the website address and the sample instructor over.
     (TOS.migrations = TOS.migrations || []).push(function (db) {
-        const st = db.settings().school, patch = {};
-        ['email', 'studentEmail', 'adminEmail'].forEach(k => { if (/@techoasisltd\.com$/i.test(st[k] || '')) patch[k] = st[k].replace(/@techoasisltd\.com$/i, '@techoasisschool.com'); });
-        if (!st.website) patch.website = DEFAULT_SETTINGS.school.website;
+        const st = db.settings().school, patch = {}, MAIL = /@(techoasisschool\.com|techoasis\.com)$/i;
+        ['email', 'studentEmail', 'adminEmail'].forEach(k => { if (MAIL.test(st[k] || '')) patch[k] = st[k].replace(MAIL, '@techoasisltd.com'); });
+        if (!st.website || /^https?:\/\/(www\.)?techoasisschool\.com\/?$/i.test(st.website)) patch.website = DEFAULT_SETTINGS.school.website;
         if (Object.keys(patch).length) db.updateSettings('school', patch);
-        const OLD = 'instructor@techoasis.com', NEW = 'instructor@techoasisschool.com';
-        db.where('users', { email: OLD }).forEach(u => { if (!db.first('users', { email: NEW })) db.update('users', u.id, { email: NEW }); });
-        db.where('instructors', { email: OLD }).forEach(i => db.update('instructors', i.id, { email: NEW }));
+        const NEW = 'instructor@techoasisltd.com';
+        ['instructor@techoasis.com', 'instructor@techoasisschool.com'].forEach(OLD => {
+            db.where('users', { email: OLD }).forEach(u => { if (!db.first('users', { email: NEW })) db.update('users', u.id, { email: NEW }); });
+            db.where('instructors', { email: OLD }).forEach(i => db.update('instructors', i.id, { email: NEW }));
+        });
     });
 })();

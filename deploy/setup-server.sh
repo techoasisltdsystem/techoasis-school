@@ -6,8 +6,8 @@ set -euo pipefail
 
 REPO="${REPO:-https://github.com/techoasisltdsystem/techoasis-school.git}"
 DIR="/var/www/techoasis-school"
-SITE="/etc/nginx/sites-enabled/techoasisschool.conf"
-DOMAINS=(techoasisschool.com www.techoasisschool.com)
+SITE="/etc/nginx/sites-enabled/school.techoasisltd.com.conf"
+DOMAINS=(school.techoasisltd.com)
 
 echo "==> Installing nginx, git and certbot (if missing)"
 apt-get update -qq
@@ -23,7 +23,7 @@ chown -R www-data:www-data "$DIR"
 git config --global --add safe.directory "$DIR"
 
 echo "==> Enabling the nginx site"
-ln -sf "$DIR/deploy/nginx/techoasisschool.conf" "$SITE"
+ln -sf "$DIR/deploy/nginx/school.techoasisltd.com.conf" "$SITE"
 nginx -t
 systemctl reload nginx
 
@@ -34,11 +34,11 @@ for d in "${DOMAINS[@]}"; do
     [ "$(getent ahostsv4 "$d" | awk 'NR==1{print $1}')" = "$IP" ] || ready=0
 done
 if [ "$ready" = 1 ]; then
-    certbot --nginx --non-interactive --agree-tos --redirect -m school@techoasisschool.com $(printf -- '-d %s ' "${DOMAINS[@]}")
+    certbot --nginx --non-interactive --agree-tos --redirect -m school@techoasisltd.com $(printf -- '-d %s ' "${DOMAINS[@]}")
 else
     echo "    Skipped: ${DOMAINS[*]} do not point to this server ($IP) yet."
-    echo "    Add DNS A records for both names -> $IP, wait for them to resolve, then run:"
-    echo "    sudo certbot --nginx --redirect -d techoasisschool.com -d www.techoasisschool.com"
+    echo "    Add a DNS A record for ${DOMAINS[*]} -> $IP, wait for them to resolve, then run:"
+    echo "    sudo certbot --nginx --redirect -d school.techoasisltd.com"
 fi
 
 echo "==> Done. Site files: $DIR   Update later with: sudo bash $DIR/deploy/deploy.sh"

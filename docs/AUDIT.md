@@ -90,7 +90,7 @@ Nothing here can be done honestly in a static site. Work needed, in order:
 2. Authentication on the server (sessions/JWT), password hashing server-side, admin and staff permissions enforced by RLS or API middleware. Today the admin passcode is checked in the browser and the README lists sample credentials; **change/remove them before launch**.
 3. Certificates: store issued certificates server-side with unguessable IDs; `verify.html` should query an endpoint that returns only name, course, date and status (never email or other personal data) and handles missing, revoked and invalid IDs.
 4. Payments: Paystack, Flutterwave or Stripe, orders marked paid only by the provider's webhook. Then switch `lms.onlinePayments()` on.
-5. Contact form and notifications: an endpoint (or a service such as Resend/Formspree) so messages reach `school@techoasisschool.com`; wire `email_outbox`.
+5. Contact form and notifications: an endpoint (or a service such as Resend/Formspree) so messages reach `school@techoasisltd.com`; wire `email_outbox`.
 6. Server-side validation, rate limiting on sign-in/contact/reset, file-type and size validation for uploads, CSRF protection if cookies are used.
 7. A Content-Security-Policy. Not added now because the Tailwind CDN needs inline/eval; it becomes possible once Tailwind is compiled (section 7).
 
@@ -108,7 +108,7 @@ Client-side items already in good shape: HTML is escaped on output (`ui.esc`), s
 | Genuine, permissioned learner testimonials and project showcases | The reviews section and a projects section will not appear until real ones exist. |
 | Official social accounts, phone/WhatsApp | Enter in Admin → Settings → School. Nothing is shown until supplied. |
 | Social sharing image (`og:image`) and a logo PNG | None exists; Open Graph tags have no image. |
-| Confirm the production domain | Canonical, Open Graph, `sitemap.xml` and `robots.txt` use `https://techoasisschool.com` (already set in School settings). If the live site stays on `techoasis-school.vercel.app`, change them. |
+| Confirm the production domain | Canonical, Open Graph, `sitemap.xml` and `robots.txt` use `https://school.techoasisltd.com` (already set in School settings). If the live site stays on `techoasis-school.vercel.app`, change them. |
 | Certificate rules | Read from settings: 100 % lessons, quizzes passed, assignments graded ≥ 50 %. Confirm. |
 | Course-level details | Per-course prerequisites exist in the data model (`requirements`); check each course has them filled. |
 

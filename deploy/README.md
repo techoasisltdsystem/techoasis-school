@@ -6,7 +6,7 @@ headers, caching, and blocking of private files (`.git`, `db/`, `docs/`, `deploy
 
 | File | What it does |
 |---|---|
-| `nginx/techoasisschool.conf` | The nginx site for techoasisschool.com and www.techoasisschool.com |
+| `nginx/school.techoasisltd.com.conf` | The nginx site for school.techoasisltd.com |
 | `nginx/security-headers.conf` | Security headers, shared by every part of the config |
 | `setup-server.sh` | One-time setup: installs nginx, git and certbot, downloads the site, enables it, adds HTTPS |
 | `deploy.sh` | Publishes the latest version from GitHub (`main`) |
@@ -16,12 +16,16 @@ on the server keep running untouched.
 
 ## 1. Point the domain at the VPS
 
-At your domain registrar, add two **A records** pointing to the VPS IP address:
+The site runs on the subdomain **school.techoasisltd.com**. In the DNS settings for techoasisltd.com (at your domain
+registrar or DNS host), add one **A record** pointing to the VPS IP address. Other records for the domain, such as the
+POS subdomain and the email (MX) records, stay as they are.
 
 | Type | Name | Value |
 |---|---|---|
-| A | `@` (techoasisschool.com) | your VPS IP |
-| A | `www` | your VPS IP |
+| A | `school` | your VPS IP |
+
+Moving to a different address later (for example techoasisschool.com) means changing `server_name` in the nginx config,
+the `DOMAINS` line in `setup-server.sh`, and the **Website address** in Admin → Settings → School.
 
 ## 2. Set up the server (once)
 
@@ -34,7 +38,7 @@ If the domain already points at the server, HTTPS is set up automatically. If no
 updated, run:
 
 ```bash
-sudo certbot --nginx --redirect -d techoasisschool.com -d www.techoasisschool.com
+sudo certbot --nginx --redirect -d school.techoasisltd.com
 ```
 
 ## 3. Publish updates
@@ -52,5 +56,5 @@ ssh -i ~/.ssh/oasis_vps root@YOUR_VPS_IP 'bash /var/www/techoasis-school/deploy/
   `REPO=git@github.com:techoasisltdsystem/techoasis-school.git` when running `setup-server.sh`.
 - **Certificates** renew automatically (certbot installs a timer).
 - **Social preview image and email links** use the address set in Admin → Settings → School → Website address
-  (`https://techoasisschool.com`). Update the `og:image` tags in `index.html`, `course.html` and `verify.html` from the
-  vercel.app address to `https://techoasisschool.com/brand/tech-oasis-social.png` once the domain is live on the VPS.
+  (`https://school.techoasisltd.com`). Update the `og:image` tags in `index.html`, `course.html` and `verify.html` from the
+  vercel.app address to `https://school.techoasisltd.com/brand/tech-oasis-social.png` once the domain is live on the VPS.

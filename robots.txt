@@ -7,4 +7,4 @@ Disallow: /portal.html
 Disallow: /admin.html
 Disallow: /learn.html
 
-Sitemap: https://techoasisschool.com/sitemap.xml
+Sitemap: https://school.techoasisltd.com/sitemap.xml
