@@ -28,6 +28,8 @@ assets/js/core/auth.js    Accounts, sessions, account-status checks at sign-in (
 assets/js/core/staff.js   Staff applications, approval, roles & permissions, account lifecycle, password resets, audit trail, email outbox
 assets/js/core/staff-api.js Staff API: session, status, permission and course-ownership checks on every call
 assets/js/core/engage.js  Notifications (row triggers), messaging + permissions, calendar, support tickets, notes, student IDs
+assets/js/core/kit.js     Dashboard kit shared by every dashboard: welcome banner, stat cards, panels, quick actions, schedule,
+                          bar/line/donut charts, mini calendar, data table (search, filters, sort, pages, loading/empty/error)
 assets/js/core/api.js     Student API: the only data interface the portal uses (session + ownership checks)
 assets/js/student/*.js    Portal shell/router shared by both portals (S.APPS.student / S.APPS.staff), plus the student portal: sign-in, dashboard, courses, learning, work, comms, academic, account
 assets/js/core/seed.js    Sample content (12 programs; "Web Development" has the full 6-section curriculum)
