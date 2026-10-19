@@ -14,6 +14,7 @@ S.APPS.staff = {
         { title: 'Account', items: [['profile', 'Profile', 'fa-user'], ['settings', 'Settings', 'fa-gear'], ['help', 'Help', 'fa-life-ring']] }
     ],
     bottom: [['dashboard', 'Home', 'fa-house'], ['courses', 'Courses', 'fa-book-open'], ['grading', 'Grade', 'fa-list-check', 'primary'], ['notifications', 'Alerts', 'fa-bell'], ['profile', 'Profile', 'fa-user']],
+    roleLine: me => me.roleLabel || 'Staff',
     card: me => `<div class="text-[11px] text-forest-600 font-semibold truncate">${esc(me.roleLabel)}</div>${me.department ? `<div class="text-[11px] s-muted truncate">${esc(me.department)}</div>` : ''}`,
     menu: [['profile', 'My Profile', 'fa-regular fa-user'], ['settings', 'Settings', 'fa-solid fa-gear'], ['help', 'Help', 'fa-regular fa-circle-question']]
 };

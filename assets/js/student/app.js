@@ -23,6 +23,7 @@ S.APPS.student = {
         { title: 'Account', items: [['profile', 'Profile', 'fa-user'], ['settings', 'Settings', 'fa-gear'], ['help', 'Help & Support', 'fa-life-ring']] }
     ],
     bottom: [['dashboard', 'Home', 'fa-house'], ['my-courses', 'Courses', 'fa-book-open'], ['continue', 'Learn', 'fa-circle-play', 'primary'], ['notifications', 'Alerts', 'fa-bell'], ['profile', 'Profile', 'fa-user']],
+    roleLine: me => me.program || 'Student',
     card: me => `<div class="text-[11px] s-muted font-mono">${esc(me.studentId || '')}</div>${me.program ? `<div class="text-[11px] text-forest-600 truncate">${esc(me.program)}</div>` : ''}`,
     menu: [['profile', 'My Profile', 'fa-regular fa-user'], ['settings', 'Settings', 'fa-solid fa-gear'], ['help', 'Help', 'fa-regular fa-circle-question']]
 };
@@ -152,7 +153,7 @@ function headerHtml(route) {
             <a href="${S.url('messages')}" class="relative w-10 h-10 rounded-xl hover:bg-slate-100 text-slate-600 flex items-center justify-center" aria-label="Messages"><i class="fa-regular fa-envelope text-[17px]"></i>${badge(S.counts.messages, 'messages')}</a>
             <div class="relative"><button data-bell class="relative w-10 h-10 rounded-xl hover:bg-slate-100 text-slate-600" aria-label="Notifications" aria-haspopup="true"><i class="fa-regular fa-bell text-[17px]"></i>${badge(S.counts.notifications, 'notifications')}</button>
                 <div id="bellPanel" class="hidden absolute right-0 mt-2 w-[min(360px,calc(100vw-1.5rem))] bg-white rounded-2xl shadow-lift border border-[#E6E8EC] overflow-hidden z-40"></div></div>
-            <div class="relative"><button data-profile class="flex items-center gap-2.5 pl-1 pr-1 sm:pr-3 h-10 rounded-xl hover:bg-slate-100" aria-label="Account menu" aria-haspopup="true">${S.avatar(me, 32)}<span class="hidden sm:block text-sm font-medium text-slate-800 max-w-[140px] truncate">${esc(me.name.split(' ')[0])}</span><i class="hidden sm:block fa-solid fa-chevron-down text-[10px] text-slate-400"></i></button>
+            <div class="relative"><button data-profile class="flex items-center gap-2.5 pl-1 pr-1 sm:pr-3 h-10 rounded-xl hover:bg-slate-100" aria-label="Account menu" aria-haspopup="true">${S.avatar(me, 32)}<span class="hidden sm:block text-left leading-tight max-w-[160px]"><span class="block text-sm font-medium text-slate-800 truncate">${esc(me.name.split(' ')[0])}</span><span class="block text-[11px] s-muted truncate">${esc(app.roleLine ? app.roleLine(me) : app.label)}</span></span><i class="hidden sm:block fa-solid fa-chevron-down text-[10px] text-slate-400"></i></button>
                 <div id="profileMenu" class="hidden absolute right-0 mt-2 w-60 bg-white rounded-2xl shadow-lift border border-[#E6E8EC] py-2 z-40 text-sm">
                     <div class="px-4 py-2 border-b border-[#EEF0F3] mb-1"><div class="font-semibold text-slate-900 truncate">${esc(me.name)}</div><div class="text-xs s-muted truncate">${esc(me.email)}</div></div>
                     ${app.menu.map(([k, l, ic]) => `<a href="${S.url(k)}" class="flex items-center gap-3 px-4 py-2 hover:bg-slate-50"><i class="${ic} w-4 text-slate-400"></i>${l}</a>`).join('')}

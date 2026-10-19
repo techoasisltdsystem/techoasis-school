@@ -114,51 +114,11 @@ A.userName = id => (db.get('users', id) || {}).name || 'Deleted user';
 A.courseTitle = id => (db.get('courses', id) || {}).title || '—';
 A.bindSearch = fn => { const el = document.getElementById('globalSearch'); el.oninput = fn; };
 
-// ---------------- Charts (single series, brand hue, hover tooltips) ----------------
-// Vertical bars. data: [{ label, value, tip }]
-A.barChart = (data, opts) => {
-    opts = opts || {};
-    if (!data.length || data.every(d => !d.value)) return `<div class="h-48 flex items-center justify-center text-sm text-slate-400">${opts.empty || 'No data yet'}</div>`;
-    // opts.minMax keeps tiny counts (e.g. one enrollment a day) from filling the whole chart height
-    const max = Math.max(opts.minMax || 0, ...data.map(d => d.value)), h = opts.height || 180;
-    const ticks = [...new Set([0, .5, 1].map(f => Math.round(max * f)))];
-    return `<div class="relative" style="height:${h + 28}px">
-        ${ticks.map(t => `<div class="absolute left-0 right-0 border-t border-dashed border-slate-200" style="bottom:${28 + (max ? t / max : 0) * h}px"><span class="absolute -top-2 left-0 text-[10px] text-slate-400 bg-white pr-1">${opts.fmt ? opts.fmt(t) : t}</span></div>`).join('')}
-        <div class="absolute left-8 right-0 bottom-0 top-0 flex items-end gap-[2px]">${data.map(d => `<div class="flex-1 min-w-0 h-full flex flex-col justify-end items-center group cursor-default" data-tip="${esc(d.tip || d.label + ': ' + (opts.fmt ? opts.fmt(d.value) : d.value))}">
-            <div class="w-full max-w-[36px] rounded-t bg-forest-600 group-hover:bg-gold transition-colors" style="height:${Math.max(d.value ? 3 : 0, d.value / max * h)}px"></div>
-            <div class="h-7 pt-1.5 text-[10px] text-slate-500 whitespace-nowrap w-full flex justify-center">${esc(d.short == null ? d.label : d.short)}</div></div>`).join('')}</div></div>`;
-};
-// Line/area over time. data: [{ label, value }]
-A.lineChart = (data, opts) => {
-    opts = opts || {};
-    if (!data.length || data.every(d => !d.value)) return `<div class="h-48 flex items-center justify-center text-sm text-slate-400">${opts.empty || 'No data yet'}</div>`;
-    const W = 600, H = 180, P = 8, max = Math.max(1, ...data.map(d => d.value));
-    const pts = data.map((d, i) => [P + i * (W - 2 * P) / Math.max(1, data.length - 1), H - P - d.value / max * (H - 2 * P)]);
-    const line = pts.map(p => p.join(',')).join(' ');
-    const id = 'lc' + Math.random().toString(36).slice(2, 7);
-    return `<div class="relative" data-line="${id}"><svg viewBox="0 0 ${W} ${H}" class="w-full h-48" preserveAspectRatio="none">
-        <defs><linearGradient id="${id}g" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#14584A" stop-opacity=".22"/><stop offset="100%" stop-color="#14584A" stop-opacity="0"/></linearGradient></defs>
-        ${[.25, .5, .75].map(f => `<line x1="0" x2="${W}" y1="${H * f}" y2="${H * f}" stroke="#E2E8F0" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>`).join('')}
-        <polygon points="${P},${H - P} ${line} ${W - P},${H - P}" fill="url(#${id}g)"/>
-        <polyline points="${line}" fill="none" stroke="#14584A" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
-        <line class="xh" x1="0" x2="0" y1="0" y2="${H}" stroke="#C4A649" stroke-width="1" vector-effect="non-scaling-stroke" style="display:none"/></svg>
-        <div class="flex justify-between text-[10px] text-slate-400 mt-1"><span>${esc(data[0].label)}</span><span>${esc(data[Math.floor(data.length / 2)].label)}</span><span>${esc(data[data.length - 1].label)}</span></div>
-        <script type="application/json">${JSON.stringify(data.map((d, i) => ({ x: pts[i][0] / W, l: d.label, v: opts.fmt ? opts.fmt(d.value) : d.value }))).replace(/</g, '\\u003c')}</script></div>`;
-};
-// Hover wiring for both chart types (event delegation)
-document.addEventListener('mousemove', e => {
-    const bar = e.target.closest && e.target.closest('[data-tip]');
-    if (bar) return ui.chartTip(e, esc(bar.dataset.tip));
-    const lc = e.target.closest && e.target.closest('[data-line]');
-    if (lc) {
-        const svg = lc.querySelector('svg'), r = svg.getBoundingClientRect(), pts = JSON.parse(lc.querySelector('script').textContent);
-        const fx = (e.clientX - r.left) / r.width, p = pts.reduce((a, b) => Math.abs(b.x - fx) < Math.abs(a.x - fx) ? b : a);
-        const xh = svg.querySelector('.xh'); xh.style.display = ''; xh.setAttribute('x1', p.x * 600); xh.setAttribute('x2', p.x * 600);
-        return ui.chartTip(e, `<b>${esc(p.l)}</b> · ${esc(p.v)}`);
-    }
-    ui.chartTip(e, null);
-    document.querySelectorAll('[data-line] .xh').forEach(x => x.style.display = 'none');
-});
+// ---------------- Charts ----------------
+// Bar and line charts (with their hover tooltips) live in the shared dashboard kit, assets/js/core/kit.js
+A.barChart = TOS.kit.barChart;
+A.lineChart = TOS.kit.lineChart;
+A.donut = TOS.kit.donut;
 // Daily buckets for the last n days
 A.daily = (rows, dateKey, n, valueFn) => {
     const out = [];
