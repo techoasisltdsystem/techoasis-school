@@ -73,6 +73,38 @@
         return rows;
     }
 
+    // Results, monthly performance, today's schedule and this month's calendar for the dashboard. Only this student's own
+    // quiz attempts and graded submissions in courses they are enrolled in are read.
+    function academicSummary(uid, courses) {
+        const courseIds = courses.map(c => c.id), title = id => (db.get('courses', id) || {}).title || '';
+        const results = [];
+        quizRows(uid).forEach(q => lms.attemptsOf(uid, q.id).forEach(a => results.push({ kind: 'Quiz', title: q.title, course: q.course, percent: a.percent, passed: a.passed, at: a.submittedAt, href: '/student/quizzes' })));
+        assignmentRows(uid).forEach(a => {
+            const sub = lms.submissionOf(uid, a.id);
+            if (sub && sub.status === 'graded' && a.maxScore) results.push({ kind: 'Assignment', title: a.title, course: a.course, percent: Math.round(sub.score / a.maxScore * 100), score: sub.score, maxScore: a.maxScore, at: sub.gradedAt || sub.submittedAt, href: '/student/assignments/' + a.id });
+        });
+        results.sort((x, y) => new Date(y.at) - new Date(x.at));
+        // Average score per calendar month, last 6 months; months without any result are left out rather than shown as 0
+        const months = [];
+        for (let i = 5; i >= 0; i--) {
+            const d = new Date(); d.setDate(1); d.setHours(0, 0, 0, 0); d.setMonth(d.getMonth() - i);
+            const next = new Date(d); next.setMonth(d.getMonth() + 1);
+            const inMonth = results.filter(r => new Date(r.at) >= d && new Date(r.at) < next);
+            if (inMonth.length) months.push({ label: d.toLocaleDateString(undefined, { month: 'short' }), value: Math.round(inMonth.reduce((a, r) => a + r.percent, 0) / inMonth.length), count: inMonth.length });
+        }
+        const events = engage.calendarFor(uid).filter(e => e.source !== 'announcement').map(e => Object.assign({}, e, { course: e.courseId ? title(e.courseId) : null }));
+        const start = new Date(); start.setHours(0, 0, 0, 0); const end = new Date(start); end.setDate(start.getDate() + 1);
+        return {
+            results: results.slice(0, 6), resultsCount: results.length,
+            averageScore: results.length ? Math.round(results.reduce((a, r) => a + r.percent, 0) / results.length) : null,
+            performance: months,
+            today: events.filter(e => new Date(e.startsAt) >= start && new Date(e.startsAt) < end).sort((a, b) => new Date(a.startsAt) - new Date(b.startsAt)),
+            calendarEvents: events.map(e => ({ startsAt: e.startsAt, title: e.title })),
+            courseMix: { completed: courses.filter(c => c.status === 'completed').length, inProgress: courses.filter(c => c.status === 'in_progress').length, notStarted: courses.filter(c => c.status === 'not_started').length },
+            courseIds
+        };
+    }
+
     // ===================== Public API =====================
     const api = {
         ApiError,
@@ -100,7 +132,8 @@
                 overall: lessonsTotal ? Math.round(lessonsDone / lessonsTotal * 100) : 0, lessonsDone, lessonsTotal, streak: streak(u.id),
                 continue: recent.find(c => c.status !== 'completed' && c.current) || recent[0] || null, courses: recent.slice(0, 4),
                 assignmentsDue: assignments.slice(0, 4), assignmentsDueCount: assignments.length, upcoming, announcements: anns,
-                notifications: db.where('notifications', { userId: u.id }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5)
+                notifications: db.where('notifications', { userId: u.id }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5),
+                ...academicSummary(u.id, courses)
             };
         }),
 

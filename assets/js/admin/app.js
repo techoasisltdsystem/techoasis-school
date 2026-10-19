@@ -151,12 +151,6 @@ A.route('dashboard', () => {
     const delta = last30 - prev30;
     const trend = `<span class="inline-flex items-center gap-1 whitespace-nowrap text-xs font-semibold px-2 py-0.5 rounded-full ${delta > 0 ? 'bg-emerald-50 text-emerald-700' : delta < 0 ? 'bg-rose-50 text-rose-700' : 'bg-slate-100 text-slate-600'}"><i class="fa-solid ${delta > 0 ? 'fa-arrow-trend-up' : delta < 0 ? 'fa-arrow-trend-down' : 'fa-minus'} text-[10px]"></i>${delta > 0 ? '+' : ''}${delta} vs previous 30 days</span>`;
 
-    // One compact metrics strip instead of six large cards
-    const kpi = (icon, tone, label, value, sub, href) => `<a href="${href}" class="group bg-white p-4 sm:p-5 hover:bg-slate-50 transition-colors min-w-0">
-        <div class="flex items-center gap-2 text-xs font-medium text-slate-500"><span class="w-6 h-6 rounded-md ${tone} flex items-center justify-center text-[11px]"><i class="fa-solid ${icon}"></i></span><span class="truncate">${label}</span></div>
-        <div class="font-display text-[26px] leading-none text-ink mt-3">${value}</div>
-        <div class="text-xs text-slate-500 mt-1.5 truncate">${sub}</div></a>`;
-
     // Work queue: every item is always listed so the admin sees at a glance what is clear and what is waiting
     const tasks = [
         ['#/assignments', 'fa-file-pen', 'bg-gold-50 text-gold-700', 'Submissions to grade', 'Assignments waiting for feedback', badgeFor('assignments')],
@@ -170,20 +164,24 @@ A.route('dashboard', () => {
     const actions = [['#/courses/new', 'fa-plus', 'New course'], ['#/assignments', 'fa-file-pen', 'Grade work'], ['#/students', 'fa-user-plus', 'Add student'],
         ['#/staff-applications', 'fa-user-tie', 'Review staff'], ['#/announcements', 'fa-bullhorn', 'Announce'], ['#/coupons', 'fa-ticket', 'New coupon']];
 
-    A.view().innerHTML = `
-        <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
-            <div class="min-w-0"><div class="text-[11px] font-bold uppercase tracking-[0.2em] text-gold-600">${new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</div><h1 class="font-display text-3xl text-ink mt-1">Welcome back</h1><p class="text-sm text-slate-500 mt-1">Here's what's happening at ${esc(school.name)}.</p></div>
-            <div class="flex gap-2"><a href="index.html" target="_blank" class="btn btn-outline btn-sm"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>View site</a><a href="#/courses/new" class="btn btn-forest btn-sm"><i class="fa-solid fa-plus"></i>Create course</a></div>
-        </div>
+    const K = TOS.kit, dayStart = new Date(new Date().toDateString()), dayEnd = new Date(dayStart.getTime() + 864e5);
+    const today = db.where('calendar_events', e => new Date(e.startsAt) < dayEnd && new Date(e.endsAt || e.startsAt) >= dayStart).sort((x, y) => new Date(x.startsAt) - new Date(y.startsAt));
+    const EVT_TONE = { class: 'forest', exam: 'rose', quiz: 'violet', deadline: 'gold', event: 'sky', holiday: 'emerald' };
+    const aside = `<div class="flex items-center justify-between mb-1"><h2 class="text-xs font-semibold text-slate-900">Today at the school</h2><a href="#/calendar" class="k-link">Calendar</a></div>`
+        + K.schedule(today.slice(0, 4).map(e => ({ time: e.allDay ? 'All day' : new Date(e.startsAt).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' }), title: e.title, sub: e.courseId ? (db.get('courses', e.courseId) || {}).title : (e.location || 'Whole school'), tone: EVT_TONE[e.type], href: '#/calendar' })), 'Nothing scheduled today.');
 
-        <section aria-label="Key figures" class="rounded-2xl border border-slate-200/80 overflow-hidden grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-px bg-slate-200/70">
-            ${kpi('fa-user-graduate', 'bg-sky-50 text-sky-700', 'Students', students.length, `${active7} active this week`, '#/students')}
-            ${kpi('fa-book-open', 'bg-forest-50 text-forest', 'Courses', courses.length, `${published} published · ${courses.length - published} draft`, '#/courses')}
-            ${kpi('fa-id-card', 'bg-violet-50 text-violet-700', 'Enrollments', enrs.length, `${enrs.filter(e => lms.paymentState(e) === 'trial').length} on free trial`, '#/enrollments')}
-            ${kpi('fa-flag-checkered', 'bg-gold-50 text-gold-700', 'Completion rate', (enrs.length ? Math.round(completed / enrs.length * 100) : 0) + '%', `${completed} of ${enrs.length} completed`, '#/analytics/courses')}
-            ${kpi('fa-award', 'bg-amber-50 text-amber-700', 'Certificates', db.count('certificates', c => !c.revoked), 'issued to students', '#/certificates')}
-            ${kpi('fa-sack-dollar', 'bg-emerald-50 text-emerald-700', 'Revenue', ui.money(revenue), `${db.count('orders', { status: 'pending' })} orders pending`, '#/payments')}
-        </section>
+    A.view().innerHTML = `
+        ${K.welcome({ greeting: K.greetingNow(), name: school.name || 'Administrator', sub: open ? `${open} item${open === 1 ? '' : 's'} need${open === 1 ? 's' : ''} your attention today.` : 'Everything is up to date.', aside })}
+        <div class="flex flex-wrap justify-end gap-2 mt-4"><a href="index.html" target="_blank" class="btn btn-outline btn-sm"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>View site</a><a href="#/courses/new" class="btn btn-forest btn-sm"><i class="fa-solid fa-plus"></i>Create course</a></div>
+
+        <section aria-label="Key figures" class="mt-4">${K.stats([
+            { icon: 'fa-user-graduate', tone: 'sky', label: 'Students', value: students.length, sub: `${active7} active this week`, href: '#/students' },
+            { icon: 'fa-book-open', tone: 'forest', label: 'Courses', value: courses.length, sub: `${published} published · ${courses.length - published} draft`, href: '#/courses' },
+            { icon: 'fa-id-card', tone: 'violet', label: 'Enrollments', value: enrs.length, sub: `${enrs.filter(e => lms.paymentState(e) === 'trial').length} on free trial`, href: '#/enrollments' },
+            { icon: 'fa-flag-checkered', tone: 'gold', label: 'Completion rate', value: (enrs.length ? Math.round(completed / enrs.length * 100) : 0) + '%', sub: `${completed} of ${enrs.length} completed`, meter: enrs.length ? completed / enrs.length * 100 : 0, href: '#/analytics/courses' },
+            { icon: 'fa-award', tone: 'amber', label: 'Certificates', value: db.count('certificates', c => !c.revoked), sub: 'issued to students', href: '#/certificates' },
+            { icon: 'fa-sack-dollar', tone: 'emerald', label: 'Revenue', value: ui.money(revenue), sub: `${db.count('orders', { status: 'pending' })} orders pending`, href: '#/payments' }
+        ])}</section>
 
         <div class="grid lg:grid-cols-5 xl:grid-cols-3 gap-5 mt-5">
             <section class="lg:col-span-3 xl:col-span-2 bg-white rounded-2xl border border-slate-200/80 p-5 min-w-0">
@@ -203,9 +201,7 @@ A.route('dashboard', () => {
             </section>
         </div>
 
-        <section aria-label="Quick actions" class="bg-white rounded-2xl border border-slate-200/80 p-2 mt-5 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-1">
-            ${actions.map(([h, ic, l]) => `<a href="${h}" class="flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-medium text-slate-700 hover:bg-forest-50 hover:text-forest transition-colors"><i class="fa-solid ${ic} text-xs text-slate-400"></i>${l}</a>`).join('')}
-        </section>
+        <section class="mt-5">${K.panel({ title: 'Quick actions', icon: 'fa-bolt', tone: 'amber', body: K.quickActions(actions.map(([href, icon, label], i) => ({ href, icon, label, tone: ['forest', 'gold', 'sky', 'violet', 'rose', 'emerald'][i % 6] }))) })}</section>
 
         <div class="grid lg:grid-cols-2 gap-5 mt-5">
             ${A.card(A.cardTitle('Most popular courses', '<a href="#/analytics/courses" class="text-xs font-semibold text-forest hover:underline">Analytics</a>') + (popular.length ? `<div class="space-y-3.5">${popular.map(({ c, n }, i) => `<a href="#/courses/${c.id}" class="flex items-center gap-3 group"><span class="w-5 text-xs font-semibold text-slate-400 text-right">${i + 1}</span><img src="${esc(c.thumbnail)}" alt="" class="w-12 h-9 rounded-lg object-cover bg-slate-100 shrink-0"><div class="flex-1 min-w-0"><div class="text-sm font-medium text-ink truncate group-hover:underline">${esc(c.title)}</div><div class="h-1.5 bg-slate-100 rounded-full mt-1.5"><div class="h-1.5 rounded-full bg-forest-600" style="width:${popular[0].n ? n / popular[0].n * 100 : 0}%"></div></div></div><span class="text-sm font-semibold text-ink w-14 text-right whitespace-nowrap">${n} <span class="text-xs font-normal text-slate-400">${n === 1 ? 'student' : 'students'}</span></span></a>`).join('')}</div>` : '<p class="text-sm text-slate-500">No courses yet.</p>'), 'p-5 min-w-0')}

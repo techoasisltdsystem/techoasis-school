@@ -1,24 +1,33 @@
 // Staff Portal pages: dashboard, students, messages, announcements, notifications, schedule, profile, settings, help.
 (function () {
-    const greeting = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening'; };
     const stat = (icon, tone, label, value, href) => `<a href="${href}" class="s-card s-card-hover p-5"><div class="flex items-center justify-between"><span class="text-sm s-muted">${label}</span><span class="w-9 h-9 rounded-xl ${tone} flex items-center justify-center text-sm"><i class="fa-solid ${icon}"></i></span></div><div class="text-3xl font-bold text-slate-900 mt-2">${value}</div></a>`;
 
     // ---------------- Dashboard ----------------
     S.route('/staff/dashboard', { title: 'Dashboard', nav: 'dashboard', live: true, render: async el => {
         const d = await sapi.dashboard(), me = S.me;
+        const K = TOS.kit, now = new Date(), dayEnd = new Date(now); dayEnd.setHours(23, 59, 59, 999);
+        const today = d.events.filter(e => new Date(e.startsAt) <= dayEnd && new Date(e.endsAt || e.startsAt) >= new Date(now.toDateString()));
+        const EVT_TONE = { class: 'forest', exam: 'rose', quiz: 'violet', deadline: 'gold', event: 'sky', holiday: 'emerald' };
+        const aside = `<div class="flex items-center justify-between mb-1"><h2 class="text-xs font-semibold text-slate-900">Today's schedule</h2><a href="/staff/schedule" class="k-link">Schedule</a></div>`
+            + K.schedule(today.slice(0, 4).map(e => ({ time: e.allDay ? 'All day' : new Date(e.startsAt).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' }), title: e.title, sub: e.course || e.location || '', tone: EVT_TONE[e.type], href: '/staff/schedule' })), 'Nothing scheduled today.');
+        // Quick actions only for what this staff member's permissions allow
+        const actions = [
+            has(me, 'grade_students') && { href: '/staff/grading', label: d.stats.toGrade ? `Grade ${ui.plural(d.stats.toGrade, 'submission')}` : 'Grading queue', icon: 'fa-list-check', tone: 'gold' },
+            has(me, 'view_courses') && { href: '/staff/courses', label: 'My courses', icon: 'fa-book-open', tone: 'forest' },
+            has(me, 'view_students') && { href: '/staff/students', label: 'Student progress', icon: 'fa-user-graduate', tone: 'sky' },
+            has(me, 'manage_schedule') && { href: '/staff/schedule', label: 'Add a class or exam', icon: 'fa-calendar-plus', tone: 'rose' },
+            has(me, 'post_announcements') && { href: '/staff/announcements', label: 'Post announcement', icon: 'fa-bullhorn', tone: 'violet' },
+            { href: '/staff/messages', label: 'Messages', icon: 'fa-envelope', tone: 'emerald' }
+        ].filter(Boolean);
         el.innerHTML = `
-            <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
-                <div><p class="text-sm s-muted">${new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-                    <h1 class="font-display text-[28px] sm:text-[34px] text-slate-900 leading-tight mt-1">${greeting()}, ${esc(me.name.split(' ')[0])}</h1>
-                    <p class="s-muted mt-1">${esc(me.roleLabel)}${me.department ? ' · ' + esc(me.department) : ''}</p></div>
-                ${d.stats.toGrade ? `<a href="/staff/grading" class="btn btn-gold btn-sm"><i class="fa-solid fa-list-check"></i>${ui.plural(d.stats.toGrade, 'submission')} to grade</a>` : ''}
-            </div>
-            <div class="grid grid-cols-2 xl:grid-cols-4 gap-4">
-                ${stat('fa-book-open', 'bg-forest-50 text-forest', 'My courses', d.stats.courses, '/staff/courses')}
-                ${stat('fa-user-graduate', 'bg-sky-50 text-sky-700', 'Students', d.stats.students, '/staff/students')}
-                ${stat('fa-list-check', 'bg-gold-50 text-gold-700', 'To grade', d.stats.toGrade, '/staff/grading')}
-                ${stat('fa-envelope', 'bg-violet-50 text-violet-700', 'Unread messages', d.stats.unreadMessages, '/staff/messages')}
-            </div>
+            ${K.welcome({ name: me.name, sub: me.roleLabel + (me.department ? ' · ' + me.department : ''), aside })}
+            <div class="mt-6">${K.stats([
+                { icon: 'fa-book-open', tone: 'forest', label: 'My courses', value: d.stats.courses, sub: 'Assigned to you', href: has(me, 'view_courses') ? '/staff/courses' : null },
+                { icon: 'fa-user-graduate', tone: 'sky', label: 'Students', value: d.stats.students, sub: 'In your courses', href: has(me, 'view_students') ? '/staff/students' : null },
+                { icon: 'fa-list-check', tone: d.stats.toGrade ? 'rose' : 'gold', label: 'To grade', value: d.stats.toGrade, sub: d.stats.toGrade ? 'Waiting for you' : 'All graded', href: has(me, 'grade_students') ? '/staff/grading' : null },
+                { icon: 'fa-envelope', tone: 'violet', label: 'Unread messages', value: d.stats.unreadMessages, sub: d.stats.unreadMessages ? 'Reply when you can' : 'Inbox clear', href: '/staff/messages' }
+            ])}</div>
+            <div class="mt-5">${K.panel({ title: 'Quick actions', icon: 'fa-bolt', tone: 'amber', body: K.quickActions(actions) })}</div>
             ${!d.courses.length ? `<div class="mt-5">${S.empty('fa-book-open', 'No courses assigned yet', 'The school administration will assign courses to you. They will appear here.', '<a href="/staff/help" class="btn btn-outline btn-sm">Contact administration</a>')}</div>` : ''}
             <div class="grid xl:grid-cols-3 gap-5 mt-5">
                 <section class="xl:col-span-2 s-card p-5"><div class="flex items-center justify-between"><h2 class="s-h2">My courses</h2>${has(me, 'view_courses') ? '<a href="/staff/courses" class="text-xs font-semibold text-forest-600">View all</a>' : ''}</div>
