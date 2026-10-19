@@ -57,6 +57,16 @@ After changes are pushed to GitHub (`main`):
 ssh -i ~/.ssh/oasis_vps root@YOUR_VPS_IP 'bash /var/www/techoasis-school/deploy/deploy.sh'
 ```
 
+## 4. The school database (PostgreSQL)
+
+Creates a database just for the school, with its own user and a random password kept in `/etc/techoasis/school.env`
+(root only, never printed). If PostgreSQL is already on the server for other sites it is used as it is, and no other
+database or user is touched. A nightly backup is kept in `/var/backups/techoasis-school` for 14 days. Safe to run again.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/techoasisltdsystem/techoasis-school/main/deploy/setup-database.sh | sudo bash
+```
+
 ## Notes
 
 - **The nginx site file is a copy** in `/etc/nginx/sites-available/`, not a link into the website folder. Certbot adds the HTTPS
